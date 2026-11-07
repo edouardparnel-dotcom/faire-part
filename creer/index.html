@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maison Lakou · Créer</title>
+<meta name="description" content="Composez votre espace : collection, formule, options, et l&#x27;aperçu de votre invitation.">
+<meta property="og:title" content="Maison Lakou · Créer">
+<meta property="og:description" content="Composez votre espace : collection, formule, options, et l&#x27;aperçu de votre invitation.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/owambe/decor-detail.jpg">
+<meta name="theme-color" content="#F7F3EC">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=3">
+<style>:root{--accent:#A8834A}</style>
+</head>
+<body>
+<header class="entete"><div class="conteneur">
+  <a class="marque" id="retour" href="../index.html"><b>Maison Lakou</b><span id="evt-nom">Mariage</span></a>
+  <nav class="nav" aria-label="Événement" id="evts"></nav>
+</div></header>
+<main class="conteneur creer">
+  <div class="colonne">
+    <span class="etq">Composer</span>
+    <h1 class="serif">Votre <em id="h-objet">espace</em>, en quelques minutes</h1>
+    <p class="doux">Le prix s'affiche au fur et à mesure. Vous validerez l'aperçu avant toute mise en ligne.</p>
+
+    <h2 class="etape-titre"><span>I</span> La collection</h2>
+    <div class="vignettes" id="modeles"></div>
+
+    <h2 class="etape-titre"><span>II</span> Vos informations</h2>
+    <div class="champs">
+      <label>Prénoms ou titre<input id="f-noms" placeholder="Awa et Thomas"></label>
+      <label>Date<input id="f-date" type="date"></label>
+      <label class="large">Lieu<input id="f-lieu" placeholder="Domaine des Tilleuls, Montreuil"></label>
+    </div>
+
+    <h2 class="etape-titre"><span>III</span> La formule</h2>
+    <div class="choix-formules" id="formules"></div>
+
+    <h2 class="etape-titre"><span>IV</span> Les options</h2>
+    <div id="options"></div>
+  </div>
+
+  <aside class="recap">
+    <div class="apercu" id="apercu">
+      <div class="apercu-img" id="ap-img"></div>
+      <div class="apercu-texte">
+        <span class="etq" id="ap-coll"></span>
+        <p class="ap-noms" id="ap-noms"></p>
+        <p class="ap-date" id="ap-date"></p>
+        <p class="ap-lieu" id="ap-lieu"></p>
+      </div>
+    </div>
+    <a class="lien-or" id="ap-voir" href="#" target="_blank" rel="noopener">Ouvrir la collection en entier →</a>
+    <div class="total">
+      <div class="ligne-total"><span id="t-formule"></span><b id="t-formule-prix"></b></div>
+      <div id="t-options"></div>
+      <div class="ligne-total grand"><span>Total</span><b id="t-total"></b></div>
+    </div>
+    <button class="btn" type="button" data-demo="paiement-demo" style="width:100%">Continuer vers le paiement</button>
+    <p class="demo-note" id="paiement-demo">Démonstration : ici, paiement en ligne sécurisé, puis questionnaire guidé et aperçu à valider sous sept jours.</p>
+    <p class="rassure">Sans rendez-vous. Assistance écrite sous 24 heures.</p>
+  </aside>
+</main>
+<script>
+const D = {"mariage": {"nom": "Mariage", "accent": "#A8834A", "cta": "Créer mon espace", "retour": "../index.html", "modeles": [{"slug": "lakay", "nom": "Lakay", "culture": "Haïti", "a": "Naïka", "b": "Jonathan", "titre": ""}, {"slug": "madras", "nom": "Madras", "culture": "Martinique · Guadeloupe", "a": "Maëlle", "b": "Kévin", "titre": ""}, {"slug": "kente", "nom": "Kente", "culture": "Ghana", "a": "Abena", "b": "Kwame", "titre": ""}, {"slug": "owambe", "nom": "Owambe", "culture": "Nigeria (yoruba)", "a": "Tolu", "b": "Femi", "titre": ""}, {"slug": "toghu", "nom": "Toghu", "culture": "Cameroun", "a": "Laure", "b": "Brice", "titre": ""}, {"slug": "teranga", "nom": "Teranga", "culture": "Sénégal", "a": "Awa", "b": "Ousmane", "titre": ""}, {"slug": "sape", "nom": "Sape", "culture": "Congo (RDC, Brazzaville)", "a": "Grâce", "b": "Dieudonné", "titre": ""}, {"slug": "kita", "nom": "Kita", "culture": "Côte d'Ivoire", "a": "Aya", "b": "Koffi", "titre": ""}, {"slug": "bogolan", "nom": "Bogolan", "culture": "Mali", "a": "Fatoumata", "b": "Moussa", "titre": ""}, {"slug": "tibeb", "nom": "Tibeb", "culture": "Éthiopie", "a": "Selam", "b": "Dawit", "titre": ""}, {"slug": "champetre", "nom": "Champêtre", "culture": "Classique · campagne", "a": "Clara", "b": "Julien", "titre": ""}, {"slug": "boheme", "nom": "Bohème chic", "culture": "Classique · bohème", "a": "Inès", "b": "Mathis", "titre": ""}, {"slug": "classique", "nom": "Classique", "culture": "Classique · intemporel", "a": "Sarah", "b": "Thomas", "titre": ""}], "formules": [{"nom": "Essentiel", "prix": 390, "inclus": [], "lignes": ["Votre espace complet : site du mariage, réponses, invités, plan de table, budget, planning", "Un faire-part de la collection, à vos couleurs", "Deux langues"]}, {"nom": "Signature", "prix": 890, "inclus": ["savethedate", "ceremonies", "qr", "murphoto", "livredor", "album", "langue"], "lignes": ["Tout l'Essentiel", "Save-the-date et invitations par cérémonie", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Trois langues"]}, {"nom": "Prestige", "prix": 1690, "inclus": ["savethedate", "ceremonies", "qr", "murphoto", "livredor", "album", "langue", "direct", "etranger", "guide", "merci", "deroule"], "lignes": ["Tout le Signature", "Direct privé pour la famille au pays", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Ouverture retravaillée selon votre histoire"]}], "options": [{"cle": "savethedate", "moment": "Avant", "nom": "Save-the-date animé", "texte": "L'annonce envoyée des mois avant, pour que chacun bloque la date.", "prix": 90, "devis": false}, {"cle": "ceremonies", "moment": "Avant", "nom": "Invitations par cérémonie", "texte": "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", "prix": 120, "devis": false}, {"cle": "guide", "moment": "Avant", "nom": "Guide de la cérémonie", "texte": "La dot, le coutumier, les rites expliqués aux invités d'une autre culture.", "prix": 90, "devis": false}, {"cle": "etranger", "moment": "Avant", "nom": "Invités venus de l'étranger", "texte": "Dates d'arrivée, hébergement, navettes et lettre d'invitation pour le visa.", "prix": 120, "devis": false}, {"cle": "tenues", "moment": "Avant", "nom": "Tenues coordonnées", "texte": "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", "prix": 120, "devis": false}, {"cle": "langue", "moment": "Avant", "nom": "Langue supplémentaire", "texte": "Anglais, créole, wolof, lingala, twi… Le site et l'invitation dans la langue de chacun.", "prix": 60, "devis": false}, {"cle": "qr", "moment": "Le jour J", "nom": "Contrôle d'entrée par QR code", "texte": "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", "prix": 150, "devis": false}, {"cle": "direct", "moment": "Le jour J", "nom": "Direct privé pour la famille au pays", "texte": "La cérémonie en direct, sur un lien réservé à vos invités.", "prix": 190, "devis": false}, {"cle": "deroule", "moment": "Le jour J", "nom": "Déroulé en direct", "texte": "Le programme de la journée sur le téléphone de chacun, avec des rappels.", "prix": 60, "devis": false}, {"cle": "murphoto", "moment": "Le jour J", "nom": "Mur photo en direct", "texte": "Les invités ajoutent leurs photos sans application, elles s'affichent pendant la fête.", "prix": 90, "devis": false}, {"cle": "livredor", "moment": "Le jour J", "nom": "Livre d'or vidéo et audio", "texte": "Des messages enregistrés pendant la fête, à réécouter des années plus tard.", "prix": 90, "devis": false}, {"cle": "jeux", "moment": "Le jour J", "nom": "Jeux des invités", "texte": "Quiz sur les mariés, pronostics, bingo, coin des enfants.", "prix": 60, "devis": false}, {"cle": "album", "moment": "Après", "nom": "Album partagé", "texte": "Les photos des invités et du photographe, réunies en haute définition.", "prix": 90, "devis": false}, {"cle": "merci", "moment": "Après", "nom": "Remerciements personnalisés", "texte": "Une carte pour chaque invité, avec une photo où il apparaît.", "prix": 90, "devis": false}, {"cle": "livre", "moment": "Après", "nom": "Livre souvenir imprimé", "texte": "Les photos et les mots de vos invités, imprimés et reliés.", "prix": 0, "devis": true}]}, "anniversaire": {"nom": "Anniversaires", "accent": "#8E4A52", "cta": "Créer mon invitation", "retour": "../anniversaires/index.html", "modeles": [{"slug": "anniversaire-gala", "nom": "Gala", "culture": "Anniversaire chic", "a": "Nadia", "b": "", "titre": "Les 50 ans de Nadia"}, {"slug": "anniversaire-disco", "nom": "Disco", "culture": "Anniversaire festif", "a": "Yanis", "b": "", "titre": "Les 30 ans de Yanis"}, {"slug": "anniversaire-tropical", "nom": "Tropical", "culture": "Anniversaire en plein air", "a": "Inaya", "b": "", "titre": "Les 18 ans d'Inaya"}], "formules": [{"nom": "Essentiel", "prix": 190, "inclus": [], "lignes": ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Rappels automatiques aux invités"]}, {"nom": "Signature", "prix": 390, "inclus": ["murphoto", "livredor", "langue"], "lignes": ["Tout l'Essentiel", "Mur photo et livre d'or", "Trois langues"]}, {"nom": "Prestige", "prix": 790, "inclus": ["murphoto", "livredor", "langue", "direct", "album", "merci", "jeux"], "lignes": ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]}], "options": [{"cle": "langue", "moment": "Avant", "nom": "Langue supplémentaire", "texte": "L'invitation et la page dans la langue de chacun.", "prix": 60, "devis": false}, {"cle": "direct", "moment": "Le jour J", "nom": "Direct privé pour les proches", "texte": "Le moment en direct, sur un lien réservé à vos invités.", "prix": 190, "devis": false}, {"cle": "murphoto", "moment": "Le jour J", "nom": "Mur photo en direct", "texte": "Les invités ajoutent leurs photos sans application.", "prix": 90, "devis": false}, {"cle": "livredor", "moment": "Le jour J", "nom": "Livre d'or vidéo et audio", "texte": "Des messages enregistrés pendant la fête.", "prix": 90, "devis": false}, {"cle": "jeux", "moment": "Le jour J", "nom": "Jeux et pronostics", "texte": "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", "prix": 60, "devis": false}, {"cle": "album", "moment": "Après", "nom": "Album partagé", "texte": "Toutes les photos réunies en haute définition.", "prix": 90, "devis": false}, {"cle": "merci", "moment": "Après", "nom": "Remerciements personnalisés", "texte": "Une carte pour chaque invité, avec une photo où il apparaît.", "prix": 90, "devis": false}]}, "bapteme": {"nom": "Baptêmes", "accent": "#6E7B4F", "cta": "Créer mon invitation", "retour": "../baptemes/index.html", "modeles": [{"slug": "bapteme-lumiere", "nom": "Lumière", "culture": "Baptême sobre", "a": "Gabriel", "b": "", "titre": "Le baptême de Gabriel"}, {"slug": "bapteme-nuage", "nom": "Nuage", "culture": "Baptême", "a": "Léo", "b": "", "titre": "Le baptême de Léo"}, {"slug": "bapteme-etoiles", "nom": "Petite étoile", "culture": "Baptême", "a": "Maël", "b": "", "titre": "Le baptême de Maël"}], "formules": [{"nom": "Essentiel", "prix": 190, "inclus": [], "lignes": ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Rappels automatiques aux invités"]}, {"nom": "Signature", "prix": 390, "inclus": ["murphoto", "livredor", "langue"], "lignes": ["Tout l'Essentiel", "Mur photo et livre d'or", "Trois langues"]}, {"nom": "Prestige", "prix": 790, "inclus": ["murphoto", "livredor", "langue", "direct", "album", "merci", "jeux"], "lignes": ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]}], "options": [{"cle": "langue", "moment": "Avant", "nom": "Langue supplémentaire", "texte": "L'invitation et la page dans la langue de chacun.", "prix": 60, "devis": false}, {"cle": "direct", "moment": "Le jour J", "nom": "Direct privé pour les proches", "texte": "Le moment en direct, sur un lien réservé à vos invités.", "prix": 190, "devis": false}, {"cle": "murphoto", "moment": "Le jour J", "nom": "Mur photo en direct", "texte": "Les invités ajoutent leurs photos sans application.", "prix": 90, "devis": false}, {"cle": "livredor", "moment": "Le jour J", "nom": "Livre d'or vidéo et audio", "texte": "Des messages enregistrés pendant la fête.", "prix": 90, "devis": false}, {"cle": "jeux", "moment": "Le jour J", "nom": "Jeux et pronostics", "texte": "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", "prix": 60, "devis": false}, {"cle": "album", "moment": "Après", "nom": "Album partagé", "texte": "Toutes les photos réunies en haute définition.", "prix": 90, "devis": false}, {"cle": "merci", "moment": "Après", "nom": "Remerciements personnalisés", "texte": "Une carte pour chaque invité, avec une photo où il apparaît.", "prix": 90, "devis": false}]}, "gender": {"nom": "Gender reveal", "accent": "#9A6B78", "cta": "Créer mon invitation", "retour": "../reveal/index.html", "modeles": [{"slug": "gender-reveal", "nom": "Surprise", "culture": "Gender reveal", "a": "Camille", "b": "Hugo", "titre": "Fille ou garçon ?"}, {"slug": "gender-boite", "nom": "Boîte à ballons", "culture": "Gender reveal", "a": "Awa", "b": "Thomas", "titre": "Rose ou bleu ?"}, {"slug": "gender-secret", "nom": "Top secret", "culture": "Gender reveal", "a": "Fatou", "b": "Kevin", "titre": "Dossier top secret"}], "formules": [{"nom": "Essentiel", "prix": 190, "inclus": [], "lignes": ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Rappels automatiques aux invités"]}, {"nom": "Signature", "prix": 390, "inclus": ["murphoto", "livredor", "langue"], "lignes": ["Tout l'Essentiel", "Mur photo et livre d'or", "Trois langues"]}, {"nom": "Prestige", "prix": 790, "inclus": ["murphoto", "livredor", "langue", "direct", "album", "merci", "jeux"], "lignes": ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]}], "options": [{"cle": "langue", "moment": "Avant", "nom": "Langue supplémentaire", "texte": "L'invitation et la page dans la langue de chacun.", "prix": 60, "devis": false}, {"cle": "direct", "moment": "Le jour J", "nom": "Direct privé pour les proches", "texte": "Le moment en direct, sur un lien réservé à vos invités.", "prix": 190, "devis": false}, {"cle": "murphoto", "moment": "Le jour J", "nom": "Mur photo en direct", "texte": "Les invités ajoutent leurs photos sans application.", "prix": 90, "devis": false}, {"cle": "livredor", "moment": "Le jour J", "nom": "Livre d'or vidéo et audio", "texte": "Des messages enregistrés pendant la fête.", "prix": 90, "devis": false}, {"cle": "jeux", "moment": "Le jour J", "nom": "Jeux et pronostics", "texte": "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", "prix": 60, "devis": false}, {"cle": "album", "moment": "Après", "nom": "Album partagé", "texte": "Toutes les photos réunies en haute définition.", "prix": 90, "devis": false}, {"cle": "merci", "moment": "Après", "nom": "Remerciements personnalisés", "texte": "Une carte pour chaque invité, avec une photo où il apparaît.", "prix": 90, "devis": false}]}};
+const q = new URLSearchParams(location.search);
+let evt = D[q.get('evt')] ? q.get('evt') : 'mariage', choix = { modele: 0, formule: +q.get('formule') || 0, options: new Set() };
+const $ = id => document.getElementById(id), eur = n => n.toLocaleString('fr-FR') + ' €';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+function changerEvt(k) {
+  evt = k; const E = D[evt]; choix.modele = 0; choix.options.clear();
+  if (choix.formule >= E.formules.length) choix.formule = 0;
+  document.documentElement.style.setProperty('--accent', E.accent);
+  $('evt-nom').textContent = E.nom; $('retour').href = E.retour; $('h-objet').textContent = evt === 'mariage' ? 'espace' : 'invitation';
+  $('evts').innerHTML = Object.entries(D).map(([c, x]) => `<a href="?evt=${c}" data-evt="${c}" ${c === evt ? 'class="rdv"' : ''}>${esc(x.nom)}</a>`).join('');
+  const m0 = E.modeles[0]; $('f-noms').placeholder = m0.b ? `${m0.a} et ${m0.b}` : (m0.titre || m0.a);
+  history.replaceState(null, '', `?evt=${evt}`);
+  rendre();
+}
+function rendre() {
+  const E = D[evt], F = E.formules[choix.formule], m = E.modeles[choix.modele];
+  $('modeles').innerHTML = E.modeles.map((x, i) => `<button type="button" class="vignette ${i === choix.modele ? 'choisie' : ''}" data-modele="${i}"><img src="../${x.slug}/photo.jpg" alt=""><span>${esc(x.nom)}</span></button>`).join('');
+  $('formules').innerHTML = E.formules.map((f, i) => `<button type="button" class="choix-formule ${i === choix.formule ? 'choisie' : ''}" data-formule="${i}"><b>${esc(f.nom)}</b><span>${eur(f.prix)}</span><small>${esc(f.lignes.slice(0, 3).join(' · '))}</small></button>`).join('');
+  const moments = [...new Set(E.options.map(o => o.moment))];
+  $('options').innerHTML = moments.map(mo => `<h3 class="moment-titre">${esc(mo)}</h3>` + E.options.filter(o => o.moment === mo).map(o => {
+    const inclus = F.inclus.includes(o.cle), coche = inclus || choix.options.has(o.cle);
+    return `<label class="choix-option ${inclus ? 'inclus' : ''}"><input type="checkbox" data-option="${o.cle}" ${coche ? 'checked' : ''} ${inclus || o.devis ? 'disabled' : ''}><span><b>${esc(o.nom)}</b><small>${esc(o.texte)}</small></span><em>${inclus ? 'Inclus' : o.devis ? 'Sur devis' : '+ ' + eur(o.prix)}</em></label>`;
+  }).join('')).join('');
+  // Aperçu : la photo de la collection, vos prénoms, votre date, votre lieu
+  const noms = $('f-noms').value.trim() || $('f-noms').placeholder, d = $('f-date').value;
+  $('ap-img').style.backgroundImage = `url('../${m.slug}/photo.jpg')`;
+  $('ap-coll').textContent = 'Collection ' + m.nom;
+  $('ap-noms').textContent = noms;
+  const longue = d ? new Date(d + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'La date de votre événement';
+  $('ap-date').textContent = longue.charAt(0).toUpperCase() + longue.slice(1);
+  $('ap-lieu').textContent = $('f-lieu').value.trim() || $('f-lieu').placeholder;
+  $('ap-voir').href = `../${m.slug}/index.html`;
+  // Total
+  const extras = E.options.filter(o => choix.options.has(o.cle) && !F.inclus.includes(o.cle));
+  $('t-formule').textContent = 'Formule ' + F.nom; $('t-formule-prix').textContent = eur(F.prix);
+  $('t-options').innerHTML = extras.map(o => `<div class="ligne-total"><span>${esc(o.nom)}</span><b>+ ${eur(o.prix)}</b></div>`).join('');
+  $('t-total').textContent = eur(F.prix + extras.reduce((s, o) => s + o.prix, 0));
+}
+document.addEventListener('click', ev => {
+  const e2 = ev.target.closest('[data-evt]'); if (e2) { ev.preventDefault(); return changerEvt(e2.dataset.evt); }
+  const mo = ev.target.closest('[data-modele]'); if (mo) { choix.modele = +mo.dataset.modele; return rendre(); }
+  const fo = ev.target.closest('[data-formule]'); if (fo) { choix.formule = +fo.dataset.formule; return rendre(); }
+  const de = ev.target.closest('[data-demo]'); if (de) $(de.dataset.demo).style.display = 'block';
+});
+document.addEventListener('change', ev => { const o = ev.target.closest('[data-option]'); if (o) { o.checked ? choix.options.add(o.dataset.option) : choix.options.delete(o.dataset.option); rendre(); } });
+['f-noms', 'f-date', 'f-lieu'].forEach(id => $(id).addEventListener('input', rendre));
+changerEvt(evt);
+const depart = D[evt].modeles.findIndex(x => x.slug === q.get('modele'));
+if (depart > 0) { choix.modele = depart; rendre(); }
+history.replaceState(null, '', `?evt=${evt}` + (choix.formule ? `&formule=${choix.formule}` : ''));
+</script>
+</body>
+</html>

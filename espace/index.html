@@ -119,6 +119,14 @@ const DEPART = {
     { nom: 'Le coin des enfants', txt: 'Un petit parcours rien que pour eux, avec leur prénom et leur âge.', actif: true },
   ],
 };
+DEPART.ajouts = ['direct'];
+// Options de l'espace mariage : clé, moment, nom, prix (le faire-part est une option comme les autres)
+const OPTS = [['fairepart', 'Avant', 'Le faire-part', 0], ['savethedate', 'Avant', 'Save-the-date animé', 90], ['ceremonies', 'Avant', 'Invitations par cérémonie', 120],
+  ['guide', 'Avant', 'Guide de la cérémonie', 90], ['etranger', 'Avant', "Invités venus de l'étranger", 120], ['tenues', 'Avant', 'Tenues coordonnées', 120], ['langue', 'Avant', 'Langue supplémentaire', 60],
+  ['qr', 'Le jour J', "Contrôle d'entrée par QR code", 150], ['direct', 'Le jour J', 'Direct privé pour la famille au pays', 190], ['deroule', 'Le jour J', 'Déroulé en direct', 60],
+  ['murphoto', 'Le jour J', 'Mur photo en direct', 90], ['livredor', 'Le jour J', "Livre d'or vidéo et audio", 90], ['jeux', 'Le jour J', 'Jeux des invités', 60],
+  ['album', 'Après', 'Album partagé', 90], ['merci', 'Après', 'Remerciements personnalisés', 90]];
+const FORMULE = { nom: 'Signature', prix: 890, inclus: ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue'] };
 const CLE = 'espace-demo-v2';
 let D; try { D = { ...structuredClone(DEPART), ...JSON.parse(localStorage.getItem(CLE)) }; } catch { D = structuredClone(DEPART); }
 const sauver = () => { try { localStorage.setItem(CLE, JSON.stringify(D)); } catch {} };
@@ -178,7 +186,18 @@ const VUES = {
         <label class="champ">Modèle du faire-part<select name="modele">${Object.entries(MODELES).map(([s, n]) => `<option value="${s}" ${s === D.evenement.modele ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
         <label class="champ">Budget total (€)<input name="total" type="number" min="0" value="${D.budget.total}"></label>
         <button class="btn">Enregistrer</button><p class="petit" id="ok" style="display:none">Enregistré.</p></form>`],
-  'invites': ['Invités', 'Ajouter, renommer, supprimer un invité, changer sa réponse', () => `<h1>Invités</h1><p class="sous">${D.invites.length} personnes sur votre liste</p>
+  'options': ['Options', 'Voir ce que comprend votre formule, activer une option', () => {
+    const inclus = FORMULE.inclus, moments = [...new Set(OPTS.map(o => o[1]))];
+    const etat = o => o[0] === 'fairepart' ? `<a class="btn vide" href="../${D.evenement.modele}/" target="_blank" rel="noopener" style="text-decoration:none">Voir mon faire-part</a>`
+      : inclus.includes(o[0]) ? '<span class="puce oui">Inclus</span>'
+      : D.ajouts.includes(o[0]) ? `<button class="puce oui" data-ajout="${o[0]}">Ajoutée · retirer</button>`
+      : `<button class="btn vide" data-ajout="${o[0]}">Ajouter · ${o[3]} €</button>`;
+    const extra = OPTS.filter(o => D.ajouts.includes(o[0])).reduce((s, o) => s + o[3], 0);
+    return `<h1>Options</h1><p class="sous">Formule ${FORMULE.nom} · ${FORMULE.prix} €${extra ? ` · options ajoutées : ${extra} €` : ''}</p>
+      ${moments.map(mo => `<div class="carte"><span class="etq">${mo}</span>${OPTS.filter(o => o[1] === mo).map(o => `<div class="ligne"><span>${esc(o[2])}${o[0] === 'fairepart' ? `<br><span class="petit">Collection ${esc(MODELES[D.evenement.modele])} · <a href="#mariage" style="color:inherit">changer</a></span>` : ''}</span>${etat(o)}</div>`).join('')}</div>`).join('')}
+      <p class="petit">Démonstration : sur votre espace, une option ajoutée se règle en ligne et s'active aussitôt.</p>`;
+  }],
+  'invites': ['Invités','Ajouter, renommer, supprimer un invité, changer sa réponse', () => `<h1>Invités</h1><p class="sous">${D.invites.length} personnes sur votre liste</p>
       <div class="carte"><span class="etq">Envoyer à tout le monde</span>
         <div class="ligne"><span>Faire-part</span><button class="btn vide envoi">Envoyer à ${D.invites.length} invités</button></div>
         <div class="ligne"><span>Relance</span><button class="btn vide envoi">Relancer ${D.invites.filter(i => i.rep === 'attente').length} invités sans réponse</button></div>
@@ -259,6 +278,8 @@ document.addEventListener('click', e => {
     l.splice(+k, 1); E = null; sauver(); return afficher(onglet); }
   const r = e.target.closest('[data-rep]');
   if (r) { const i = D.invites[+r.dataset.rep]; i.rep = { attente: 'oui', oui: 'non', non: 'attente' }[i.rep]; if (i.rep === 'non') i.table = ''; sauver(); return afficher(onglet); }
+  const aj = e.target.closest('[data-ajout]');
+  if (aj) { const k = aj.dataset.ajout; D.ajouts = D.ajouts.includes(k) ? D.ajouts.filter(x => x !== k) : [...D.ajouts, k]; sauver(); return afficher(onglet); }
   const t = e.target.closest('[data-tache]'); if (t && !e.target.closest('form')) { const x = D.taches[+t.dataset.tache]; x.etat = (x.etat + 1) % 3; sauver(); return afficher(onglet); }
   if (e.target.closest('.envoi')) document.getElementById('envoi-msg').style.display = 'block';
 });

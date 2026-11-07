@@ -122,3 +122,77 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .revele{opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s ease}
 .revele.vu{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.revele{opacity:1;transform:none;transition:none}}
+
+/* Offre en ligne : rassurance, espace inclus, options, formules achetables */
+.rassure{font-size:13px;color:var(--doux);margin-top:18px;letter-spacing:.02em}
+.lien-or{color:var(--encre);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px;font-size:14px}
+.fonctions{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--filet)}
+.fonctions article{padding:30px 28px 30px 0;border-bottom:1px solid var(--filet)}
+.fonctions h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:25px;margin-bottom:6px}
+.fonctions p{color:var(--doux);font-size:15px}
+@media (max-width:860px){.fonctions{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.fonctions{grid-template-columns:1fr}}
+.moments{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.moment h3{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:30px;border-bottom:1px solid var(--encre);padding-bottom:10px}
+.moment ul{list-style:none}
+.option{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--filet)}
+.option h4{font-weight:500;font-size:15px}
+.option p{color:var(--doux);font-size:13.5px;line-height:1.55;margin-top:2px}
+.option .tarif{font-family:'Cormorant Garamond',serif;font-size:20px;white-space:nowrap}
+.etoile{color:var(--accent);font-size:12px;vertical-align:2px}
+@media (max-width:960px){.moments{grid-template-columns:1fr}}
+.formule .prix{margin-top:14px}
+.formule .btn{text-align:center;margin-top:28px}
+.formule ul{margin-bottom:8px}
+
+/* Configurateur */
+.creer{display:grid;grid-template-columns:1fr 380px;gap:64px;align-items:start;padding-top:56px;padding-bottom:96px}
+.creer h1{font-weight:500;font-size:clamp(36px,4.4vw,56px);line-height:1.05;margin:14px 0 12px}
+.creer h1 em{color:var(--accent)}
+.doux{color:var(--doux)}
+.etape-titre{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:28px;margin:48px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--filet)}
+.etape-titre span{color:var(--accent);margin-right:12px}
+.vignettes{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px}
+.vignette{font:inherit;border:0;background:none;cursor:pointer;text-align:left;padding:0}
+.vignette img{width:100%;aspect-ratio:4/5;object-fit:cover;outline:1px solid transparent;outline-offset:4px;transition:outline-color .2s}
+.vignette span{display:block;font-family:'Cormorant Garamond',serif;font-size:19px;margin-top:8px}
+.vignette.choisie img{outline-color:var(--accent)}
+.vignette.choisie span{color:var(--accent)}
+.champs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.champs label{display:grid;gap:6px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux)}
+.champs .large{grid-column:1/-1}
+.champs input{font:inherit;font-size:16px;letter-spacing:0;text-transform:none;color:var(--encre);background:var(--papier);border:1px solid var(--filet);padding:12px 14px;border-radius:0}
+.champs input:focus{outline:1px solid var(--accent);border-color:var(--accent)}
+.choix-formules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.choix-formule{font:inherit;text-align:left;cursor:pointer;background:var(--papier);border:1px solid var(--filet);padding:18px;display:grid;gap:4px;color:var(--encre)}
+.choix-formule b{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px}
+.choix-formule span{font-family:'Cormorant Garamond',serif;font-size:22px}
+.choix-formule small{color:var(--doux);font-size:12.5px;line-height:1.5}
+.choix-formule.choisie{border-color:var(--accent);box-shadow:inset 0 3px 0 var(--accent)}
+.moment-titre{font-size:11px;letter-spacing:.3em;text-transform:uppercase;font-weight:500;color:var(--doux);margin:22px 0 4px}
+.choix-option{display:grid;grid-template-columns:22px 1fr auto;gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid var(--filet);cursor:pointer}
+.choix-option input{margin-top:4px;accent-color:var(--accent);width:16px;height:16px}
+.choix-option b{display:block;font-weight:500;font-size:15px}
+.choix-option small{color:var(--doux);font-size:13px;line-height:1.5}
+.choix-option em{font-style:normal;font-family:'Cormorant Garamond',serif;font-size:19px;white-space:nowrap}
+.choix-option.inclus em{color:var(--accent)}
+.recap{position:sticky;top:96px}
+.apercu{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--encre);color:#fff}
+.apercu-img{position:absolute;inset:0;background:center/cover;transition:background-image .3s}
+.apercu-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.05) 30%,rgba(20,18,16,.82))}
+.apercu-texte{position:absolute;left:0;right:0;bottom:0;padding:28px;text-align:center}
+.apercu-texte .etq{color:#E9D9B8}
+.ap-noms{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:40px;line-height:1.05;margin:10px 0 8px}
+.ap-date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px}
+.ap-lieu{font-size:13px;color:#DCD3C6;margin-top:4px}
+.recap .lien-or{display:inline-block;margin:14px 0 22px}
+.total{border-top:1px solid var(--encre);margin-bottom:20px}
+.ligne-total{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--filet);font-size:14px}
+.ligne-total b{font-weight:400;white-space:nowrap}
+.ligne-total.grand{font-size:16px;border-bottom:0;padding-top:14px}
+.ligne-total.grand b{font-family:'Cormorant Garamond',serif;font-size:32px;line-height:1}
+.demo-note{display:none;font-size:13px;color:var(--accent);margin-top:12px}
+@media (max-width:960px){.creer{grid-template-columns:1fr}.recap{position:static}.choix-formules{grid-template-columns:1fr}}
+#evts{gap:16px;overflow-x:auto;scrollbar-width:none}
+#evts a{display:inline-block!important;white-space:nowrap}
+@media (max-width:560px){#evts a.rdv{padding:7px 10px}#evts{font-size:12px;gap:10px}.creer .marque b{font-size:20px}}
