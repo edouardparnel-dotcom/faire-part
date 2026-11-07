@@ -1,213 +1,207 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Faire-part interactifs</title>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Faire-part interactifs : mariage, anniversaire, baptême, gender reveal">
-<meta property="og:description" content="Des invitations à ouvrir sur le téléphone, chacune avec sa direction artistique, et un espace pour organiser tout l'événement.">
-<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/lakay/apercu-whatsapp.jpg">
+<title>Maison Lakou · Mariage</title>
+<meta name="description" content="Invitation, site du mariage, réponses, plan de table, souvenirs : nous créons l&#x27;accueil de votre mariage, dans les codes de votre culture.">
+<meta property="og:title" content="Maison Lakou · Faire-part et site de mariage sur mesure">
+<meta property="og:description" content="Invitation, site du mariage, réponses, plan de table, souvenirs : nous créons l&#x27;accueil de votre mariage, dans les codes de votre culture.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/owambe/decor-detail.jpg">
+<meta name="theme-color" content="#F7F3EC">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{--fond:#FAF7F2;--carte:#fff;--texte:#1F1C19;--doux:#6F685F;--or:#A8834A;--bord:#E9E2D6;--noir:#1F1C19}
-  @media (prefers-color-scheme:dark){:root{--fond:#14120F;--carte:#1D1A16;--texte:#F2EDE4;--doux:#A39B90;--or:#D9B26E;--bord:#2E2A24;--noir:#F2EDE4}}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',system-ui,sans-serif;background:var(--fond);color:var(--texte);line-height:1.55}
-  .haut{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:18px 16px}
-  .marque{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px}
-  .haut a{color:var(--texte);font-size:14px;text-decoration:none;border:1px solid var(--bord);border-radius:999px;padding:8px 14px}
-  .hero{max-width:860px;margin:0 auto;padding:30px 16px 20px;text-align:center}
-  .hero h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,6vw,58px);line-height:1.05}
-  .hero h1 em{color:var(--or)}
-  .hero p{color:var(--doux);margin:14px auto 0;max-width:620px}
-  .onglets{position:sticky;top:0;z-index:5;background:var(--fond);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--bord)}
-  .onglets button{font:inherit;font-size:14px;border:1px solid var(--bord);background:var(--carte);color:var(--texte);border-radius:999px;padding:9px 16px;cursor:pointer}
-  .onglets button span{color:var(--doux);font-size:12px;margin-left:4px}
-  .onglets button[aria-selected="true"]{background:var(--noir);color:var(--fond);border-color:var(--noir)}
-  .onglets button[aria-selected="true"] span{color:inherit;opacity:.7}
-  .grille{max-width:1120px;margin:0 auto;padding:22px 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
-  .carte{background:var(--carte);border:1px solid var(--bord);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s}
-  .carte:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(0,0,0,.35)}
-  .carte[hidden]{display:none}
-  .carte img{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover;background:var(--bord)}
-  .infos{padding:16px 18px 18px} h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;line-height:1.1}
-  .culture{font-weight:600;color:var(--or)} .langues{color:var(--doux);font-size:13px} .da{margin-top:8px;font-size:14px}
-  .voir{display:inline-block;margin-top:10px;font-weight:600;font-size:14px}
-  section.bloc{max-width:1120px;margin:0 auto;padding:30px 16px}
-  section.bloc h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,40px);text-align:center}
-  section.bloc > p{text-align:center;color:var(--doux);max-width:640px;margin:8px auto 22px}
-  .fonctions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-  .fonction{display:block;text-decoration:none;color:inherit;background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:16px;transition:border-color .2s,transform .2s}
-  .fonction:hover{border-color:var(--or);transform:translateY(-2px)}
-  .fonction i{display:block;margin-top:8px;font-style:normal;font-weight:600;font-size:13px;color:var(--or)}
-  section[hidden]{display:none}
-  .fonction b{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:21px}
-  .fonction span{font-size:14px;color:var(--doux)}
-  .cta{text-align:center;margin-top:22px}
-  .cta a{display:inline-block;background:var(--noir);color:var(--fond);text-decoration:none;border-radius:10px;padding:13px 22px;font-weight:500}
-  .niveaux{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-  .niv{background:var(--carte);border:1px solid var(--bord);border-radius:16px;padding:20px}
-  .niv h3{font-size:24px} .niv .prix{color:var(--or);font-weight:600;margin:4px 0 10px}
-  .niv ul{padding-left:18px;color:var(--doux);font-size:14px}
-  footer{text-align:center;color:var(--doux);font-size:13px;padding:10px 16px 40px}
-</style></head><body>
-<div class="haut"><span class="marque">Faire-part interactifs</span><a href="espace/#tableau">Espace mariage</a></div>
-<div class="hero">
-  <h1>Une invitation qui s'ouvre, <em>pour chaque moment</em> de la vie</h1>
-  <p>Mariage, anniversaire, baptême, gender reveal : un lien à envoyer sur WhatsApp, une direction artistique unique, et tout l'événement organisé au même endroit.</p>
-</div>
-<div class="onglets" role="tablist" aria-label="Type d'événement">
-    <button role="tab" data-onglet="mariage" aria-selected="true">Mariage <span>13</span></button>
-    <button role="tab" data-onglet="anniversaire" aria-selected="false">Anniversaire <span>3</span></button>
-    <button role="tab" data-onglet="bapteme" aria-selected="false">Baptême <span>3</span></button>
-    <button role="tab" data-onglet="gender" aria-selected="false">Gender reveal <span>3</span></button>
-</div>
-<main class="grille" id="grille">
-      <a class="carte" data-evt="mariage" href="lakay/index.html">
-        <img src="lakay/apercu-whatsapp.jpg" alt="Modèle Lakay : Naïka et Jonathan" loading="lazy">
-        <div class="infos"><h3>Lakay</h3><p class="culture">Haïti</p><p class="langues">Français · créole haïtien</p><p class="da">Portes de maison gingerbread qui s'ouvrent, lettrage peint des tap-taps</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="madras/index.html">
-        <img src="madras/apercu-whatsapp.jpg" alt="Modèle Madras : Maëlle et Kévin" loading="lazy">
-        <div class="infos"><h3>Madras</h3><p class="culture">Martinique · Guadeloupe</p><p class="langues">Français · créole antillais</p><p class="da">Coiffe tèt maré qui se dénoue, photo dans une fenêtre de case créole</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="kente/index.html">
-        <img src="kente/apercu-whatsapp.jpg" alt="Modèle Kente : Abena et Kwame" loading="lazy">
-        <div class="infos"><h3>Kente</h3><p class="culture">Ghana</p><p class="langues">English · twi</p><p class="da">Bandes tissées qui s'ouvrent comme un métier, noir et or, symbole adinkra</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="owambe/index.html">
-        <img src="owambe/apercu-whatsapp.jpg" alt="Modèle Owambe : Tolu et Femi" loading="lazy">
-        <div class="infos"><h3>Owambe</h3><p class="culture">Nigeria (yoruba)</p><p class="langues">English · yoruba</p><p class="da">Éventail doré qui s'ouvre, couverture de magazine de mode</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="toghu/index.html">
-        <img src="toghu/apercu-whatsapp.jpg" alt="Modèle Toghu : Laure et Brice" loading="lazy">
-        <div class="infos"><h3>Toghu</h3><p class="culture">Cameroun</p><p class="langues">Français</p><p class="da">Pans de toghu brodé qui glissent, médaillon royal, nuit et étoiles</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="teranga/index.html">
-        <img src="teranga/apercu-whatsapp.jpg" alt="Modèle Teranga : Awa et Ousmane" loading="lazy">
-        <div class="infos"><h3>Teranga</h3><p class="culture">Sénégal</p><p class="langues">Français · wolof</p><p class="da">Voile de bazin blanc qui se lève, arabesques et filets dorés</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="sape/index.html">
-        <img src="sape/apercu-whatsapp.jpg" alt="Modèle Sape : Grâce et Dieudonné" loading="lazy">
-        <div class="infos"><h3>Sape</h3><p class="culture">Congo (RDC, Brazzaville)</p><p class="langues">Français · lingala</p><p class="da">Étiquette de couture qui se retourne, catalogue de mode aux couleurs franches</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="champetre/index.html">
-        <img src="champetre/apercu-whatsapp.jpg" alt="Modèle Champêtre : Clara et Julien" loading="lazy">
-        <div class="infos"><h3>Champêtre</h3><p class="culture">Classique · campagne</p><p class="langues">Français</p><p class="da">Serviette de lin nouée d'un brin de lavande, polaroïd et fleurs des champs</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="boheme/index.html">
-        <img src="boheme/apercu-whatsapp.jpg" alt="Modèle Bohème chic : Inès et Mathis" loading="lazy">
-        <div class="infos"><h3>Bohème chic</h3><p class="culture">Classique · bohème</p><p class="langues">Français</p><p class="da">Herbes de la pampa qui s'écartent, arches terre cuite, lumière de fin d'été</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="classique/index.html">
-        <img src="classique/apercu-whatsapp.jpg" alt="Modèle Classique : Sarah et Thomas" loading="lazy">
-        <div class="infos"><h3>Classique</h3><p class="culture">Classique · intemporel</p><p class="langues">Français</p><p class="da">Enveloppe ivoire au sceau de cire, monogramme et double filet doré</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="kita/index.html">
-        <img src="kita/apercu-whatsapp.jpg" alt="Modèle Kita : Aya et Koffi" loading="lazy">
-        <div class="infos"><h3>Kita</h3><p class="culture">Côte d'Ivoire</p><p class="langues">Français</p><p class="da">Mosaïque de carreaux de pagne qui se retournent, grille de tuiles orange et noir</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="bogolan/index.html">
-        <img src="bogolan/apercu-whatsapp.jpg" alt="Modèle Bogolan : Fatoumata et Moussa" loading="lazy">
-        <div class="infos"><h3>Bogolan</h3><p class="culture">Mali</p><p class="langues">Français · bambara</p><p class="da">Rouleau de tissu de boue qui se relève, parchemin et frises géométriques</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="mariage" href="tibeb/index.html">
-        <img src="tibeb/apercu-whatsapp.jpg" alt="Modèle Tibeb : Selam et Dawit" loading="lazy">
-        <div class="infos"><h3>Tibeb</h3><p class="culture">Éthiopie</p><p class="langues">English · amharique</p><p class="da">Pans de coton blanc à bordures tissées qui s'écartent, croix en ornement</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="anniversaire" href="anniversaire-gala/index.html">
-        <img src="anniversaire-gala/apercu-whatsapp.jpg" alt="Modèle Gala : Les 50 ans de Nadia" loading="lazy">
-        <div class="infos"><h3>Gala</h3><p class="culture">Anniversaire chic</p><p class="langues">Français</p><p class="da">Rideau de paillettes dorées qui tombe, chiffre monumental, noir et or</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="bapteme" href="bapteme-nuage/index.html">
-        <img src="bapteme-nuage/apercu-whatsapp.jpg" alt="Modèle Nuage : Le baptême de Léo" loading="lazy">
-        <div class="infos"><h3>Nuage</h3><p class="culture">Baptême</p><p class="langues">Français</p><p class="da">Nuages qui s'écartent sur un ciel bleu, colombe, douceur pastel</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="gender" href="gender-reveal/index.html">
-        <img src="gender-reveal/apercu-whatsapp.jpg" alt="Modèle Surprise : Camille et Hugo" loading="lazy">
-        <div class="infos"><h3>Surprise</h3><p class="culture">Gender reveal</p><p class="langues">Français</p><p class="da">Ballon à éclater, vote des invités, révélation à gratter avec confettis</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="anniversaire" href="anniversaire-disco/index.html">
-        <img src="anniversaire-disco/apercu-whatsapp.jpg" alt="Modèle Disco : Les 30 ans de Yanis" loading="lazy">
-        <div class="infos"><h3>Disco</h3><p class="culture">Anniversaire festif</p><p class="langues">Français</p><p class="da">Boule à facettes qui s'illumine, titres en néon rose et bleu, piste en damier</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="anniversaire" href="anniversaire-tropical/index.html">
-        <img src="anniversaire-tropical/apercu-whatsapp.jpg" alt="Modèle Tropical : Les 18 ans d'Inaya" loading="lazy">
-        <div class="infos"><h3>Tropical</h3><p class="culture">Anniversaire en plein air</p><p class="langues">Français</p><p class="da">Feuilles de monstera qui s'écartent, couleurs jungle et corail, carte des cocktails</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="bapteme" href="bapteme-lumiere/index.html">
-        <img src="bapteme-lumiere/apercu-whatsapp.jpg" alt="Modèle Lumière : Le baptême de Gabriel" loading="lazy">
-        <div class="infos"><h3>Lumière</h3><p class="culture">Baptême sobre</p><p class="langues">Français</p><p class="da">Cierge qui s'allume et inonde l'écran de lumière, rameaux d'olivier, blanc et or</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="bapteme" href="bapteme-etoiles/index.html">
-        <img src="bapteme-etoiles/apercu-whatsapp.jpg" alt="Modèle Petite étoile : Le baptême de Maël" loading="lazy">
-        <div class="infos"><h3>Petite étoile</h3><p class="culture">Baptême</p><p class="langues">Français</p><p class="da">Nuit étoilée et croissant de lune, la nuit devient aube, bleu nuit et or</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="gender" href="gender-boite/index.html">
-        <img src="gender-boite/apercu-whatsapp.jpg" alt="Modèle Boîte à ballons : Awa et Thomas" loading="lazy">
-        <div class="infos"><h3>Boîte à ballons</h3><p class="culture">Gender reveal</p><p class="langues">Français</p><p class="da">Boîte cadeau dont le couvercle se soulève, ballons rose et bleu qui s'envolent, jauge des pronostics</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
-      <a class="carte" data-evt="gender" href="gender-secret/index.html">
-        <img src="gender-secret/apercu-whatsapp.jpg" alt="Modèle Top secret : Fatou et Kevin" loading="lazy">
-        <div class="infos"><h3>Top secret</h3><p class="culture">Gender reveal</p><p class="langues">Français</p><p class="da">Dossier kraft tamponné « confidentiel », rapport tapé à la machine, passages caviardés à toucher</p>
-        <span class="voir">Voir la démonstration →</span></div>
-      </a>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_commun/maison.css?v=2">
+<style>:root{--accent:#A8834A}</style>
+</head>
+<body>
+<header class="entete"><div class="conteneur">
+  <a class="marque" href="#haut"><b>Maison Lakou</b><span>Mariage</span></a>
+  <nav class="nav" aria-label="Sections"><a href="#accueil">L'accueil</a><a href="#collections">Collections</a><a href="#sur-mesure">Sur mesure</a><a href="#tarifs">Tarifs</a><a href="espace/#tableau">Espace mariage</a><a class="rdv" href="#rendez-vous">Rendez-vous</a></nav>
+</div></header>
+
+<main id="haut">
+  <div class="conteneur ouverture">
+    <div class="revele">
+      <span class="etq">Maison Lakou · Mariage</span>
+      <h1>Recevoir vos invités, <em>bien avant</em> le jour J</h1>
+      <p>Invitation, site du mariage, réponses, plan de table, souvenirs : nous créons l&#x27;accueil de votre mariage, dans les codes de votre culture.</p>
+      <div class="actions"><a class="btn" href="#rendez-vous">Prendre rendez-vous</a><a class="btn clair" href="#collections">Découvrir les collections</a></div>
+    </div>
+    <div class="arche revele"><img src="owambe/decor-detail.jpg" alt="" fetchpriority="high"></div>
+  </div>
+
+  <section class="manifeste" id="accueil"><div class="conteneur revele">
+    <span class="etq">L'art de recevoir</span>
+    <div style="height:22px"></div>
+    <blockquote>« Le premier geste d&#x27;accueil, c&#x27;est l&#x27;invitation. Nous la pensons comme on dresse une table : avec soin, pour chacun de vos invités, qu&#x27;il vienne de la rue d&#x27;à côté ou de l&#x27;autre côté de l&#x27;océan. »</blockquote>
+  </div></section>
+
+  <section><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">L'expérience</span><h2>Quatre temps pour accueillir vos invités</h2></div>
+    <div class="temps">
+      <article class="revele"><span class="num">I</span><h3>L&#x27;invitation</h3><p>Elle s&#x27;ouvre comme un objet précieux : des portes, un voile, un tissu, selon votre histoire.</p></article>
+      <article class="revele"><span class="num">II</span><h3>Le site du mariage</h3><p>Programme, lieux, hébergement, tenue : tout ce que vos invités demandent, au même endroit, dans leur langue.</p></article>
+      <article class="revele"><span class="num">III</span><h3>L&#x27;organisation</h3><p>Réponses, relances, plan de table et budget, dans votre espace privé.</p></article>
+      <article class="revele"><span class="num">IV</span><h3>Le jour J, et après</h3><p>Le mur photo, le livre d&#x27;or, l&#x27;album : la fête continue chez vos invités.</p></article>
+    </div>
+  </div></section>
+
+  <section id="collections"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">Collections</span><h2>Chaque invitation a sa propre direction artistique</h2><p>Nous reprenons chaque collection à vos couleurs, à vos prénoms, à votre langue.</p></div>
+      <div class="groupe"><div class="groupe-tete"><h3>Héritages</h3><p>Les codes des cultures d&#x27;Afrique et des Antilles, travaillés avec finesse.</p></div>
+      <div class="oeuvres">
+        <a class="oeuvre revele" href="lakay/index.html">
+          <div class="cadre"><img src="lakay/photo.jpg" alt="Collection Lakay" loading="lazy"></div>
+          <span class="etq">Haïti</span>
+          <h4>Lakay</h4>
+          <p>Portes de maison gingerbread qui s&#x27;ouvrent, lettrage peint des tap-taps</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="madras/index.html">
+          <div class="cadre"><img src="madras/photo.jpg" alt="Collection Madras" loading="lazy"></div>
+          <span class="etq">Martinique · Guadeloupe</span>
+          <h4>Madras</h4>
+          <p>Coiffe tèt maré qui se dénoue, photo dans une fenêtre de case créole</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="kente/index.html">
+          <div class="cadre"><img src="kente/photo.jpg" alt="Collection Kente" loading="lazy"></div>
+          <span class="etq">Ghana</span>
+          <h4>Kente</h4>
+          <p>Bandes tissées qui s&#x27;ouvrent comme un métier, noir et or, symbole adinkra</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="owambe/index.html">
+          <div class="cadre"><img src="owambe/photo.jpg" alt="Collection Owambe" loading="lazy"></div>
+          <span class="etq">Nigeria (yoruba)</span>
+          <h4>Owambe</h4>
+          <p>Éventail doré qui s&#x27;ouvre, couverture de magazine de mode</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="toghu/index.html">
+          <div class="cadre"><img src="toghu/photo.jpg" alt="Collection Toghu" loading="lazy"></div>
+          <span class="etq">Cameroun</span>
+          <h4>Toghu</h4>
+          <p>Pans de toghu brodé qui glissent, médaillon royal, nuit et étoiles</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="teranga/index.html">
+          <div class="cadre"><img src="teranga/photo.jpg" alt="Collection Teranga" loading="lazy"></div>
+          <span class="etq">Sénégal</span>
+          <h4>Teranga</h4>
+          <p>Voile de bazin blanc qui se lève, arabesques et filets dorés</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="sape/index.html">
+          <div class="cadre"><img src="sape/photo.jpg" alt="Collection Sape" loading="lazy"></div>
+          <span class="etq">Congo (RDC, Brazzaville)</span>
+          <h4>Sape</h4>
+          <p>Étiquette de couture qui se retourne, catalogue de mode aux couleurs franches</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="kita/index.html">
+          <div class="cadre"><img src="kita/photo.jpg" alt="Collection Kita" loading="lazy"></div>
+          <span class="etq">Côte d&#x27;Ivoire</span>
+          <h4>Kita</h4>
+          <p>Mosaïque de carreaux de pagne qui se retournent, grille de tuiles orange et noir</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="bogolan/index.html">
+          <div class="cadre"><img src="bogolan/photo.jpg" alt="Collection Bogolan" loading="lazy"></div>
+          <span class="etq">Mali</span>
+          <h4>Bogolan</h4>
+          <p>Rouleau de tissu de boue qui se relève, parchemin et frises géométriques</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="tibeb/index.html">
+          <div class="cadre"><img src="tibeb/photo.jpg" alt="Collection Tibeb" loading="lazy"></div>
+          <span class="etq">Éthiopie</span>
+          <h4>Tibeb</h4>
+          <p>Pans de coton blanc à bordures tissées qui s&#x27;écartent, croix en ornement</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+      </div></div>
+      <div class="groupe"><div class="groupe-tete"><h3>Intemporels</h3><p>Des lignes classiques, pour un mariage hors du temps.</p></div>
+      <div class="oeuvres">
+        <a class="oeuvre revele" href="champetre/index.html">
+          <div class="cadre"><img src="champetre/photo.jpg" alt="Collection Champêtre" loading="lazy"></div>
+          <span class="etq">Classique · campagne</span>
+          <h4>Champêtre</h4>
+          <p>Serviette de lin nouée d&#x27;un brin de lavande, polaroïd et fleurs des champs</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="boheme/index.html">
+          <div class="cadre"><img src="boheme/photo.jpg" alt="Collection Bohème chic" loading="lazy"></div>
+          <span class="etq">Classique · bohème</span>
+          <h4>Bohème chic</h4>
+          <p>Herbes de la pampa qui s&#x27;écartent, arches terre cuite, lumière de fin d&#x27;été</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+        <a class="oeuvre revele" href="classique/index.html">
+          <div class="cadre"><img src="classique/photo.jpg" alt="Collection Classique" loading="lazy"></div>
+          <span class="etq">Classique · intemporel</span>
+          <h4>Classique</h4>
+          <p>Enveloppe ivoire au sceau de cire, monogramme et double filet doré</p>
+          <span class="ouvrir">Ouvrir l'invitation</span>
+        </a>
+      </div></div>
+  </div></section>
+
+  <section id="sur-mesure"><div class="conteneur mesure">
+    <img class="revele" src="lakay/decor-ensemble.jpg" alt="" loading="lazy">
+    <div class="revele">
+      <span class="etq">Sur mesure</span>
+      <h2 class="serif" style="font-weight:500;font-size:clamp(34px,4vw,50px);line-height:1.08;margin:14px 0 18px">De la première conversation à votre mariage</h2>
+      <ol class="etapes">
+        <li><div><h3>Le rendez-vous</h3><p>Votre histoire, vos invités, vos cultures, vos langues.</p></div></li>
+        <li><div><h3>La direction artistique</h3><p>Palette, matières, ouverture : une proposition en une semaine.</p></div></li>
+        <li><div><h3>La création</h3><p>L'invitation, la page de vos invités et votre espace, avec deux séries de retouches.</p></div></li>
+        <li><div><h3>L'accueil</h3><p>L'envoi, les réponses, le jour venu : nous restons à vos côtés.</p></div></li>
+      </ol>
+    </div>
+  </div></section>
+
+  <section class="tarifs" id="tarifs"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">Tarifs</span><h2>Trois façons de travailler ensemble</h2></div>
+    <div class="formules">
+      <div class="formule revele"><h3>Collection</h3><p class="depuis">À partir de</p><p class="prix">690 €</p>
+        <ul><li>Une collection reprise à vos couleurs, vos prénoms et votre langue</li><li>Le site du mariage et les réponses de vos invités</li><li>Votre espace : invités, plan de table, budget</li></ul></div>
+      <div class="formule phare revele"><h3>Signature</h3><p class="depuis">À partir de</p><p class="prix">1 450 €</p>
+        <ul><li>La direction artistique adaptée : tissu, motifs, ouverture</li><li>Deux cultures réunies, jusqu&#x27;à trois langues</li><li>Mur photo, livre d&#x27;or et album après la fête</li></ul></div>
+      <div class="formule revele"><h3>Sur mesure</h3><p class="depuis">À partir de</p><p class="prix">2 900 €</p>
+        <ul><li>Une création partie d&#x27;une page blanche</li><li>Une ouverture imaginée pour vous seuls</li><li>Un accompagnement jusqu&#x27;au jour J</li></ul></div>
+    </div>
+    <p class="note">Chaque projet commence par un rendez-vous. Le prix final dépend du nombre d'invités, des langues et des options choisies.</p>
+  </div></section>
+
+  <section class="rendezvous" id="rendez-vous"><div class="conteneur revele">
+    <svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50M70 7h50" stroke="currentColor" stroke-width=".8"/><path d="M60 1l6 6-6 6-6-6z" fill="none" stroke="currentColor" stroke-width=".8"/></svg>
+    <span class="etq">Rendez-vous</span>
+    <h2>Commençons par vous écouter</h2>
+    <p>Nous accompagnons un nombre limité de mariages chaque mois. Parlons du vôtre.</p>
+    <button class="btn" type="button" data-rdv>Demander un rendez-vous</button>
+    <p class="demo" id="rdv-demo">Démonstration : ce bouton ouvrira l'agenda de rendez-vous de la maison.</p>
+  </div></section>
 </main>
-<section class="bloc" id="espace" data-evt="mariage">
-  <h2>Votre espace mariage</h2>
-  <p>Un espace privé pour organiser tout le mariage. Touchez une partie pour l'ouvrir : chaque élément s'ajoute, se modifie et se supprime depuis l'espace.</p>
-  <div class="fonctions">
-    <a class="fonction" href="espace/#mariage"><b>Mon mariage</b><span>Prénoms, date, lieu, modèle du faire-part et budget total.</span><i>Modifier →</i></a>
-    <a class="fonction" href="espace/#tableau"><b>Les réponses</b><span>Qui vient, qui ne vient pas, qui n'a pas répondu, en un coup d'œil.</span><i>Ouvrir →</i></a>
-    <a class="fonction" href="espace/#invites"><b>Les invités</b><span>Ajouter, renommer, supprimer, changer une réponse ; envoi et relances par WhatsApp ou courriel.</span><i>Modifier →</i></a>
-    <a class="fonction" href="espace/#tables"><b>Le plan de table</b><span>Créer et renommer les tables, choisir le nombre de places, placer chaque invité.</span><i>Modifier →</i></a>
-    <a class="fonction" href="espace/#budget"><b>Le budget</b><span>Ajouter un prestataire, noter un paiement, voir ce qu'il reste.</span><i>Modifier →</i></a>
-    <a class="fonction" href="espace/#planning"><b>Le planning</b><span>Ajouter une tâche, la faire avancer de « à faire » à « fait », la renommer.</span><i>Modifier →</i></a>
-    <a class="fonction" href="espace/#photos"><b>Le mur photo</b><span>Les photos de vos invités en direct ; vous retirez celles que vous ne voulez pas.</span><i>Ouvrir →</i></a>
-    <a class="fonction" href="espace/#livre-or"><b>Le livre d'or et la musique</b><span>Leurs mots et leurs chansons ; vous gardez la main sur ce qui s'affiche.</span><i>Ouvrir →</i></a>
-    <a class="fonction" href="espace/#jeux"><b>Les jeux</b><span>Quiz, pronostics, bingo, coin des enfants : vous activez ceux que vous voulez.</span><i>Choisir →</i></a>
-  </div>
-  <div class="cta"><a href="espace/#tableau">Ouvrir l'espace mariage →</a></div>
-</section>
-<section class="bloc">
-  <h2>La personnalisation, à votre mesure</h2>
-  <p>Chaque modèle se personnalise : vos prénoms, vos photos, vos lieux, vos couleurs.</p>
-  <div class="niveaux">
-    <div class="niv"><h3>Essentiel</h3><p class="prix">à partir de 79 €</p><ul><li>Le modèle choisi, tel quel</li><li>Vos prénoms, photos, lieux, horaires et langue</li><li>Lien prêt en 72 h</li></ul></div>
-    <div class="niv"><h3>Personnalisé</h3><p class="prix">à partir de 179 €</p><ul><li>Le modèle adapté : couleurs, tissu, motifs</li><li>Sections au choix et espace organisateur</li><li>Une série de retouches</li></ul></div>
-    <div class="niv"><h3>Sur mesure</h3><p class="prix">à partir de 349 €</p><ul><li>Une direction artistique créée pour vous</li><li>Deux cultures réunies, ouverture unique</li><li>Mur photo et album privé après la fête</li></ul></div>
-  </div>
-</section>
-<footer>Démonstrations avec des personnes fictives. Photos Pexels.</footer>
+
+<footer class="pied"><div class="conteneur">
+  <div><b>Maison Lakou</b><p>L'art de recevoir, dès l'invitation. Invitations et sites d'événement sur mesure.</p></div>
+  <div><h4>Nos maisons</h4><ul>
+        <li><a href="index.html" aria-current="page">Mariage</a></li>
+        <li><a href="anniversaires/index.html">Anniversaires</a></li>
+        <li><a href="baptemes/index.html">Baptêmes</a></li>
+        <li><a href="reveal/index.html">Gender reveal</a></li>
+  </ul></div>
+  <div><h4>Pour vous</h4><ul><li><a href="espace/#tableau">Votre espace mariage</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#rendez-vous">Prendre rendez-vous</a></li></ul></div>
+  <p class="mention">Site de démonstration · personnes et lieux fictifs · photos Pexels</p>
+</div></footer>
 <script>
-  // Onglets : n'affiche que les modèles du type d'événement choisi (onglet retenu dans l'adresse).
-  const boutons = [...document.querySelectorAll('[data-onglet]')], cartes = [...document.querySelectorAll('[data-evt]')];
-  function choisir(k) {
-    boutons.forEach(b => b.setAttribute('aria-selected', String(b.dataset.onglet === k)));
-    cartes.forEach(c => c.hidden = c.dataset.evt !== k);  // cartes et espace mariage
-    history.replaceState(null, '', '#' + k);
-  }
-  boutons.forEach(b => b.addEventListener('click', () => choisir(b.dataset.onglet)));
-  choisir(boutons.some(b => b.dataset.onglet === location.hash.slice(1)) ? location.hash.slice(1) : 'mariage');
+  // Apparitions au défilement, et bouton de rendez-vous (démonstration).
+  const vu = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vu'); vu.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.revele').forEach(el => vu.observe(el));
+  document.querySelector('[data-rdv]').addEventListener('click', () => document.getElementById('rdv-demo').style.display = 'block');
 </script>
-</body></html>
+</body>
+</html>
