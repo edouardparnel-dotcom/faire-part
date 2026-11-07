@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fille ou garçon ? — Gender reveal (démonstration)</title>
+<meta property="og:title" content="Fille ou garçon ? Votez avant la révélation !">
+<meta property="og:description" content="Samedi 10 avril 2027 · 16h00. Rejoignez l'équipe Fille ou l'équipe Garçon.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/gender-reveal/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#FFF6F2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Surprise » : un gender reveal à jouer. Ouverture par un gros ballon qui éclate,
+   vote des invités (équipe Fille ou Garçon), puis révélation à gratter avec confettis. */
+:root{--rose:#F7A8C4;--rose2:#E86A9A;--bleu:#9FD0F2;--bleu2:#3E92CC;--creme:#FFF6F2;--encre:#4A3B47;--doux:#9A8A94}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;color:var(--encre);background:var(--creme);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.ferme{overflow:hidden}
+.ballon-ecran{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;place-items:center;background:linear-gradient(135deg,#FFE3EC,#E2F2FD);transition:opacity .4s .5s}
+.ballon-ecran.ouvert{opacity:0}
+.ballon{width:200px;height:240px;border-radius:50% 50% 48% 48%;background:radial-gradient(circle at 35% 30%,#fff 0 6%,transparent 18%),linear-gradient(135deg,var(--rose),var(--bleu));position:relative;animation:flotte 2.4s ease-in-out infinite;transition:transform .35s ease,opacity .35s}
+.ballon::after{content:"";position:absolute;left:50%;bottom:-70px;width:2px;height:70px;background:#c9b8c4}
+.ballon-ecran.ouvert .ballon{transform:scale(1.6);opacity:0}
+@keyframes flotte{50%{transform:translateY(-14px)}}
+.ballon-ecran p{position:absolute;bottom:14%;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:22px}
+.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:14px;padding:50px 22px;text-align:center}
+.photo{width:min(300px,76vw);aspect-ratio:4/5;border-radius:28px;background:#eee url('photo.jpg') center/cover;box-shadow:0 24px 50px -24px rgba(74,59,71,.5)}
+.titre{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:clamp(44px,13vw,70px);line-height:1}
+.titre .f{color:var(--rose2)} .titre .g{color:var(--bleu2)}
+.date{font-weight:600;letter-spacing:.06em}
+main{position:relative;max-width:520px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.carte{background:#fff;border-radius:28px;padding:28px 22px;margin:26px 0;box-shadow:0 18px 40px -28px rgba(74,59,71,.5)}
+h2{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:28px;margin-bottom:6px}
+.equipes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.eq{border:0;border-radius:22px;padding:22px 10px;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;color:#fff;cursor:pointer;transition:transform .15s}
+.eq:active{transform:scale(.96)} .eq.fille{background:var(--rose2)} .eq.garcon{background:var(--bleu2)}
+.eq.choisi{outline:4px solid var(--encre);outline-offset:3px}
+.barre{display:flex;height:16px;border-radius:999px;overflow:hidden;margin-top:16px;background:#eee}
+.barre .bf{background:var(--rose2);transition:width .6s} .barre .bg{background:var(--bleu2);transition:width .6s}
+.scores{display:flex;justify-content:space-between;font-weight:600;margin-top:6px;font-size:14px}
+.gratter{position:relative;height:200px;border-radius:22px;overflow:hidden;margin-top:14px;touch-action:none}
+.resultat{position:absolute;inset:0;display:grid;place-items:center;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:44px;color:#fff;background:var(--rose2)}
+canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:600;font-size:14px;color:#fff;background:var(--encre);padding:12px 22px;border-radius:999px;text-decoration:none;border:0;cursor:pointer}
+.lien.vide{background:transparent;color:var(--encre);box-shadow:inset 0 0 0 2px var(--encre)}
+.rebours{display:flex;justify-content:center;gap:14px}
+.rebours div{font-size:11px;color:var(--doux)} .rebours b{display:block;font-family:'Baloo 2',sans-serif;font-size:40px;color:var(--encre)}
+.demo{display:none;margin-top:12px;font-weight:600;color:var(--rose2)}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+.confetti-chute{position:fixed;top:-20px;width:10px;height:14px;z-index:60;pointer-events:none;animation:chute 2.6s linear forwards}
+@keyframes chute{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body class="ferme">
+<div class="ballon-ecran" data-ouverture role="button" aria-label="Ouvrir l'invitation"><div class="ballon"></div><p>Éclatez le ballon !</p></div>
+
+<header class="couv">
+  <div class="photo" role="img" aria-label="Décoration de la fête" data-fond-parallaxe="0.12" data-base="40" data-zoom="160% auto"></div>
+  <h1 class="titre"><span class="f">Fille</span> ou <span class="g">garçon</span> ?</h1>
+  <p>Camille et Hugo vous invitent à découvrir le secret</p>
+  <p class="date">Samedi 10 avril 2027 · 16h00</p>
+</header>
+
+<main>
+  <section class="carte apparait"><h2>Et vous, vous pariez quoi ?</h2><p>Choisissez votre équipe avant la fête.</p>
+    <div class="equipes"><button class="eq fille" data-eq="fille">Équipe Fille</button><button class="eq garcon" data-eq="garcon">Équipe Garçon</button></div>
+    <div class="barre"><div class="bf" id="bf" style="width:50%"></div><div class="bg" id="bg" style="width:50%"></div></div>
+    <div class="scores"><span id="sf">Fille 12</span><span id="sg">Garçon 9</span></div></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La décoration" style="border-radius:28px"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte apparait" data-effet="zoom"><h2>La fête</h2><p>Jardin des Lilas · 16h00<br>Goûter, jeux et la grande révélation à 18h00</p>
+    <a class="lien vide" href="https://www.google.com/maps/search/?api=1&query=jardin" target="_blank" rel="noopener">Voir la carte</a></section>
+  <section class="carte apparait"><h2>La révélation</h2><p>Le jour J, grattez ici pour découvrir le secret.<br><small>(Dans la démonstration, vous pouvez gratter tout de suite.)</small></p>
+    <div class="gratter"><div class="resultat" id="resultat">C'est une fille !</div><canvas id="toile"></canvas></div></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le gâteau" style="border-radius:28px"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte apparait"><h2>Plus que</h2>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>h</div><div><b id="m">--</b>min</div><div><b id="s">--</b>s</div></div>
+    <a class="lien vide" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="carte apparait"><h2>Vous venez ?</h2>
+    <button class="lien reponse">Oui !</button> <button class="lien vide reponse">Je ne pourrai pas</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied">Invitation de démonstration · couple fictif · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-04-10T16:00:00', fin: '20270410T200000', titre: 'Gender reveal de Camille & Hugo', lieu: 'Jardin des Lilas', fichier: 'gender-reveal', jour: 'C\'est aujourd\'hui', duree: 800 };
+// Vote : gardé dans le navigateur pour la démonstration (sur un vrai faire-part, partagé entre les invités).
+(() => {
+  const base = { fille: 12, garcon: 9 };
+  let choix = null; try { choix = localStorage.getItem('gr-equipe'); } catch {}
+  const maj = () => {
+    const f = base.fille + (choix === 'fille'), g = base.garcon + (choix === 'garcon'), t = f + g;
+    document.getElementById('bf').style.width = (f / t * 100) + '%'; document.getElementById('bg').style.width = (g / t * 100) + '%';
+    document.getElementById('sf').textContent = 'Fille ' + f; document.getElementById('sg').textContent = 'Garçon ' + g;
+    document.querySelectorAll('.eq').forEach(b => b.classList.toggle('choisi', b.dataset.eq === choix));
+  };
+  document.querySelectorAll('.eq').forEach(b => b.addEventListener('click', () => { choix = b.dataset.eq; try { localStorage.setItem('gr-equipe', choix); } catch {} maj(); }));
+  maj();
+})();
+// Carte à gratter
+(() => {
+  const c = document.getElementById('toile'), ctx = c.getContext('2d'); let fini = false, appui = false;
+  const peindre = () => {
+    const r = c.getBoundingClientRect(); c.width = r.width; c.height = r.height;
+    const g = ctx.createLinearGradient(0, 0, c.width, c.height); g.addColorStop(0, '#F7A8C4'); g.addColorStop(1, '#9FD0F2');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = '#fff'; ctx.font = '600 20px Quicksand, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('Grattez ici', c.width / 2, c.height / 2 + 7);
+  };
+  const confettis = () => { for (let i = 0; i < 60; i++) { const d = document.createElement('div'); d.className = 'confetti-chute';
+    d.style.left = Math.random() * 100 + 'vw'; d.style.background = ['#F7A8C4', '#E86A9A', '#FFD166', '#fff'][i % 4]; d.style.animationDelay = Math.random() * .8 + 's';
+    document.body.appendChild(d); setTimeout(() => d.remove(), 3600); } };
+  const gratter = e => {
+    if (!appui || fini) return; const r = c.getBoundingClientRect(), p = e.touches ? e.touches[0] : e;
+    ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(p.clientX - r.left, p.clientY - r.top, 22, 0, 7); ctx.fill();
+    const px = ctx.getImageData(0, 0, c.width, c.height).data; let vide = 0; for (let i = 3; i < px.length; i += 64) if (px[i] === 0) vide++;
+    if (vide / (px.length / 64) > .5) { fini = true; c.style.transition = 'opacity .5s'; c.style.opacity = 0; confettis(); }
+  };
+  ['mousedown', 'touchstart'].forEach(t => c.addEventListener(t, e => { appui = true; gratter(e); }, { passive: true }));
+  ['mouseup', 'touchend', 'mouseleave'].forEach(t => c.addEventListener(t, () => appui = false));
+  ['mousemove', 'touchmove'].forEach(t => c.addEventListener(t, gratter, { passive: true }));
+  document.addEventListener('faire-part:ouvert', peindre); peindre();
+})();</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>

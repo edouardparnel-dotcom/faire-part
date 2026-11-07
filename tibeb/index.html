@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Selam & Dawit — Wedding (demo)</title>
+<meta property="og:title" content="Selam & Dawit — Our wedding">
+<meta property="og:description" content="Saturday 25 September 2027 · Addis Ababa.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/tibeb/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Tibeb » : le coton blanc habesha et ses bordures tissées colorées.
+   Ouverture par deux pans de coton qui s'écartent, page blanche bordée de tibeb, croix éthiopiennes en ornement. */
+:root{--coton:#FFFFFF;--ecru:#FAF8F3;--vert:#1F7A4D;--jaune:#F2B705;--rouge:#C1272D;--bleu:#2D4C9C;--encre:#22252B;--doux:#7C7F86;--or:#B8923F}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',sans-serif;font-weight:300;font-size:17px;color:var(--encre);background:var(--ecru);line-height:1.7;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.tibeb{background:
+  linear-gradient(90deg,var(--vert) 0 3px,transparent 3px 6px,var(--vert) 6px 9px,transparent 9px),
+  repeating-linear-gradient(0deg,var(--rouge) 0 8px,var(--jaune) 8px 12px,var(--vert) 12px 20px,var(--jaune) 20px 24px,var(--bleu) 24px 30px,var(--jaune) 30px 34px),
+  var(--jaune);background-size:100% 100%,100% 34px}
+.rideau{position:fixed;inset:0;z-index:50;cursor:pointer;display:flex}
+.pan{flex:1;position:relative;background:var(--coton);transition:transform 1.4s cubic-bezier(.7,0,.2,1);
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.025) 0 1px,transparent 1px 4px)}
+.pan .bord{position:absolute;top:0;bottom:0;width:30px}
+.pan.g .bord{right:0} .pan.d .bord{left:0}
+.rideau.ouvert .pan.g{transform:translateX(-102%)} .rideau.ouvert .pan.d{transform:translateX(102%)}
+.rideau.ouvert{pointer-events:none}
+.croix-o{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:51;text-align:center;pointer-events:none}
+.croix-o svg{width:80px;height:80px}
+.croix-o b{display:block;font-family:'Marcellus',serif;font-weight:400;font-size:28px;margin-top:10px}
+.croix-o small{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux)}
+.bords-page{position:fixed;top:0;bottom:0;width:10px;z-index:1}
+.bords-page.g{left:0} .bords-page.d{right:0}
+.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:20px;padding:44px 26px;text-align:center}
+.photo{width:min(300px,76vw);aspect-ratio:3/4;background:#e5e0d6 url('photo.jpg') center 25%/cover;border-radius:150px 150px 4px 4px;box-shadow:0 0 0 8px var(--coton),0 0 0 9px rgba(184,146,63,.6),0 30px 60px -30px rgba(0,0,0,.5)}
+.sur{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--or)}
+.noms{font-family:'Marcellus',serif;font-weight:400;font-size:clamp(44px,12vw,68px);line-height:1.05}
+.noms em{display:block;font-style:normal;font-size:.4em;color:var(--or);margin:6px 0}
+.date{font-size:14px;letter-spacing:.3em;text-transform:uppercase}
+.ruban{width:100%;max-width:300px;height:12px;margin-top:6px}
+main{position:relative;max-width:520px;margin:0 auto;padding:0 26px 70px;text-align:center}
+.orn{width:44px;height:44px;margin:40px auto 20px;display:block}
+h2{font-family:'Marcellus',serif;font-weight:400;font-size:30px;margin-bottom:8px}
+.etq{display:block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--or);margin-bottom:8px}
+.citation{font-family:'Marcellus',serif;font-size:25px;line-height:1.4}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:700;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#fff;background:var(--vert);padding:12px 22px;text-decoration:none;border:0;border-radius:2px;cursor:pointer}
+.lien.vide{background:transparent;color:var(--vert);box-shadow:inset 0 0 0 1.5px var(--vert)}
+.prog{list-style:none}
+.prog li{padding:10px 0;border-bottom:1px solid rgba(184,146,63,.25)}
+.prog b{font-family:'Marcellus',serif;font-weight:400;color:var(--or);margin-right:10px}
+.teintes{display:flex;justify-content:center;gap:22px;margin-top:12px}
+.teintes i{display:block;width:46px;height:60px;margin:0 auto 6px;border-radius:2px;box-shadow:0 0 0 1px #ddd}
+.rebours{display:flex;justify-content:center;gap:20px}
+.rebours div{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--doux)}
+.rebours b{display:block;font-family:'Marcellus',serif;font-weight:400;font-size:42px;color:var(--encre);letter-spacing:0}
+.demo{display:none;margin-top:12px;color:var(--rouge);font-weight:700}
+.pied{margin-top:30px;font-size:13px;color:var(--doux)}
+.pied b{display:block;font-family:'Marcellus',serif;font-weight:400;font-size:26px;color:var(--encre)}
+</style>
+</head>
+<body class="ferme">
+<div class="rideau" data-ouverture role="button" aria-label="Open the invitation">
+  <div class="pan g"><div class="bord tibeb"></div></div><div class="pan d"><div class="bord tibeb"></div></div>
+</div>
+<div class="croix-o" data-avec-ouverture>
+  <svg viewBox="-40 -40 80 80" aria-hidden="true"><g fill="none" stroke="#B8923F" stroke-width="3"><path d="M0-34V34M-34 0H34"/><circle cy="-30" r="5"/><circle cy="30" r="5"/><circle cx="-30" r="5"/><circle cx="30" r="5"/><rect x="-10" y="-10" width="20" height="20" transform="rotate(45)"/></g></svg>
+  <b>Selam &amp; Dawit</b><small>Tap to open</small>
+</div>
+<div class="bords-page g tibeb" aria-hidden="true"></div><div class="bords-page d tibeb" aria-hidden="true"></div>
+
+<header class="couv">
+  <p class="sur">We are getting married</p>
+  <div class="photo" role="img" aria-label="Photo of the couple" data-fond-parallaxe="0.12" data-base="25" data-zoom="150% auto"></div>
+  <h1 class="noms">Selam<em>and</em>Dawit</h1>
+  <p class="date">25 · 09 · 2027 — Addis Ababa</p>
+  <div class="ruban tibeb" aria-hidden="true"></div>
+</header>
+
+<main>
+  <svg class="orn apparait" viewBox="-40 -40 80 80" aria-hidden="true"><g fill="none" stroke="#B8923F" stroke-width="3"><path d="M0-34V34M-34 0H34"/><circle cy="-30" r="5"/><circle cy="30" r="5"/><circle cx="-30" r="5"/><circle cx="30" r="5"/></g></svg>
+  <section class="apparait"><p class="citation">“Two threads, one weave: may our families be woven together.”</p></section>
+  <svg class="orn apparait" viewBox="-40 -40 80 80" aria-hidden="true"><g fill="none" stroke="#B8923F" stroke-width="3"><path d="M0-34V34M-34 0H34"/><circle cy="-30" r="5"/><circle cy="30" r="5"/><circle cx="-30" r="5"/><circle cx="30" r="5"/></g></svg>
+  <section class="apparait" data-effet="zoom"><span class="etq">The venue</span><h2>Entoto Gardens</h2><p>Entoto Road · Addis Ababa, Ethiopia<br>Saturday 25 September 2027 · 10:00</p>
+    <a class="lien" href="https://www.google.com/maps/search/?api=1&query=Addis+Ababa" target="_blank" rel="noopener">View on the map</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="The venue"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="apparait"><span class="etq">The programme</span><h2>Saturday 25 September</h2>
+    <ul class="prog"><li><b>10:00</b>Church ceremony</li><li><b>13:00</b>Photos in the gardens</li><li><b>17:00</b>Reception and eskista dancing</li><li><b>21:00</b>Coffee ceremony</li></ul></section>
+  <svg class="orn apparait" viewBox="-40 -40 80 80" aria-hidden="true"><g fill="none" stroke="#B8923F" stroke-width="3"><path d="M0-34V34M-34 0H34"/><circle cy="-30" r="5"/><circle cy="30" r="5"/><circle cx="-30" r="5"/><circle cx="30" r="5"/></g></svg>
+  <section class="apparait" data-effet="zoom"><span class="etq">Dress code</span><h2>White and tibeb</h2><p>Habesha kemis welcome</p>
+    <div class="teintes"><span><i style="background:#fff"></i>Cotton white</span><span><i class="tibeb"></i>Tibeb</span></div></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Decoration detail"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="apparait"><span class="etq">Counting down</span>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>days</div><div><b id="h">--</b>hours</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
+    <a class="lien vide" id="agenda" href="#">Add to my calendar</a></section>
+  <svg class="orn apparait" viewBox="-40 -40 80 80" aria-hidden="true"><g fill="none" stroke="#B8923F" stroke-width="3"><path d="M0-34V34M-34 0H34"/><circle cy="-30" r="5"/><circle cy="30" r="5"/><circle cx="-30" r="5"/><circle cx="30" r="5"/></g></svg>
+  <section class="apparait"><span class="etq">Kindly reply</span><h2>Will you join us?</h2>
+    <button class="lien reponse">I will attend</button> <button class="lien vide reponse">I cannot attend</button>
+    <p class="demo" id="demo">Demo: on your invitation, this button opens WhatsApp to your number with the reply already written.</p></section>
+  <p class="pied"><b>Ameseginalehu · Thank you</b>Demo invitation · fictional couple · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-09-25T10:00:00', fin: '20270925T235900', titre: 'Wedding of Selam & Dawit', lieu: 'Entoto Gardens, Addis Ababa, Ethiopia', fichier: 'wedding-selam-dawit', jour: 'Today is the day', duree: 1500 };</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>

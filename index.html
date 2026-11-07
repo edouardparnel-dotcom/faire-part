@@ -2,99 +2,178 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Faire-part interactifs</title>
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Faire-part de mariage interactifs">
-<meta property="og:description" content="10 modèles, chacun sa direction artistique : Haïti, Antilles, Ghana, Nigeria, Cameroun, Sénégal, Congo, champêtre, bohème, classique.">
+<meta property="og:title" content="Faire-part interactifs : mariage, anniversaire, baptême, gender reveal">
+<meta property="og:description" content="Des invitations à ouvrir sur le téléphone, chacune avec sa direction artistique, et un espace pour organiser tout l'événement.">
 <meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/lakay/apercu-whatsapp.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--fond:#F6F2E8;--carte:#fff;--texte:#1E2230;--doux:#666C7E;--or:#B8860B;--bord:#E5DFD0}
-  @media (prefers-color-scheme:dark){:root{--fond:#12141C;--carte:#1C1F2A;--texte:#ECEEF4;--doux:#A2A8B8;--or:#E3C766;--bord:#2C3040}}
+  :root{--fond:#FAF7F2;--carte:#fff;--texte:#1F1C19;--doux:#6F685F;--or:#A8834A;--bord:#E9E2D6;--noir:#1F1C19}
+  @media (prefers-color-scheme:dark){:root{--fond:#14120F;--carte:#1D1A16;--texte:#F2EDE4;--doux:#A39B90;--or:#D9B26E;--bord:#2E2A24;--noir:#F2EDE4}}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font:16px/1.55 system-ui,'Segoe UI',sans-serif;background:var(--fond);color:var(--texte)}
-  header{max-width:1100px;margin:0 auto;padding:48px 16px 24px;text-align:center}
-  h1{font-family:Georgia,serif;font-weight:600;font-size:clamp(28px,5vw,42px)}
-  header p{color:var(--doux);max-width:640px;margin:12px auto 0}
-  .atouts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
-  .atouts span{border:1px solid var(--bord);border-radius:99px;padding:4px 12px;font-size:14px;color:var(--doux)}
-  main{max-width:1100px;margin:0 auto;padding:16px 16px 48px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--fond);color:var(--texte);line-height:1.55}
+  .haut{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:18px 16px}
+  .marque{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px}
+  .haut a{color:var(--texte);font-size:14px;text-decoration:none;border:1px solid var(--bord);border-radius:999px;padding:8px 14px}
+  .hero{max-width:860px;margin:0 auto;padding:30px 16px 20px;text-align:center}
+  .hero h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(34px,6vw,58px);line-height:1.05}
+  .hero h1 em{color:var(--or)}
+  .hero p{color:var(--doux);margin:14px auto 0;max-width:620px}
+  .onglets{position:sticky;top:0;z-index:5;background:var(--fond);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--bord)}
+  .onglets button{font:inherit;font-size:14px;border:1px solid var(--bord);background:var(--carte);color:var(--texte);border-radius:999px;padding:9px 16px;cursor:pointer}
+  .onglets button span{color:var(--doux);font-size:12px;margin-left:4px}
+  .onglets button[aria-selected="true"]{background:var(--noir);color:var(--fond);border-color:var(--noir)}
+  .onglets button[aria-selected="true"] span{color:inherit;opacity:.7}
+  .grille{max-width:1120px;margin:0 auto;padding:22px 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
   .carte{background:var(--carte);border:1px solid var(--bord);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s}
-  .carte:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(0,0,0,.4)}
-  .carte img{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover}
-  .infos{padding:16px 18px 18px} h2{font-family:Georgia,serif;font-size:24px}
-  .culture{font-weight:600;color:var(--or)} .langues{color:var(--doux);font-size:14px}
-  .voir{display:inline-block;margin-top:10px;font-weight:600}
-  .da{margin-top:8px;font-size:14px}
-  .niveaux{max-width:1100px;margin:0 auto;padding:8px 16px 40px}
-  .niveaux h2{text-align:center;font-family:Georgia,serif;font-size:28px;margin-bottom:18px}
-  .grille3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .carte:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(0,0,0,.35)}
+  .carte[hidden]{display:none}
+  .carte img{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover;background:var(--bord)}
+  .infos{padding:16px 18px 18px} h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;line-height:1.1}
+  .culture{font-weight:600;color:var(--or)} .langues{color:var(--doux);font-size:13px} .da{margin-top:8px;font-size:14px}
+  .voir{display:inline-block;margin-top:10px;font-weight:600;font-size:14px}
+  section.bloc{max-width:1120px;margin:0 auto;padding:30px 16px}
+  section.bloc h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,40px);text-align:center}
+  section.bloc > p{text-align:center;color:var(--doux);max-width:640px;margin:8px auto 22px}
+  .fonctions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .fonction{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:16px}
+  .fonction b{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:21px}
+  .fonction span{font-size:14px;color:var(--doux)}
+  .cta{text-align:center;margin-top:22px}
+  .cta a{display:inline-block;background:var(--noir);color:var(--fond);text-decoration:none;border-radius:10px;padding:13px 22px;font-weight:500}
+  .niveaux{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
   .niv{background:var(--carte);border:1px solid var(--bord);border-radius:16px;padding:20px}
-  .niv h3{font-family:Georgia,serif;font-size:22px} .niv .prix{color:var(--or);font-weight:700;margin:4px 0 10px}
-  .niv ul{padding-left:18px;color:var(--doux);font-size:15px}
-  footer{text-align:center;color:var(--doux);font-size:14px;padding:0 16px 40px}
+  .niv h3{font-size:24px} .niv .prix{color:var(--or);font-weight:600;margin:4px 0 10px}
+  .niv ul{padding-left:18px;color:var(--doux);font-size:14px}
+  footer{text-align:center;color:var(--doux);font-size:13px;padding:10px 16px 40px}
 </style></head><body>
-<header>
-  <h1>Faire-part de mariage interactifs</h1>
-  <p>Un lien à envoyer sur WhatsApp : l'enveloppe s'ouvre, le programme, le plan, le compte à rebours et la réponse des invités. Chaque modèle a sa propre direction artistique : cultures d'Afrique et des Antilles, ou styles classiques.</p>
-  <div class="atouts"><span>Plusieurs cérémonies</span><span>Votre langue</span><span>Réponses des invités</span><span>Ajout à l'agenda</span><span>Sans application</span></div>
-</header>
-<main>
-    <a class="carte" href="lakay/index.html">
-      <img src="lakay/apercu-whatsapp.jpg" alt="Modèle Lakay : Naïka et Jonathan" loading="lazy">
-      <div class="infos"><h2>Lakay</h2><p class="culture">Haïti</p><p class="langues">Français · créole haïtien</p><p class="da">Portes de maison gingerbread qui s'ouvrent, lettrage peint des tap-taps</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="madras/index.html">
-      <img src="madras/apercu-whatsapp.jpg" alt="Modèle Madras : Maëlle et Kévin" loading="lazy">
-      <div class="infos"><h2>Madras</h2><p class="culture">Martinique · Guadeloupe</p><p class="langues">Français · créole antillais</p><p class="da">Coiffe tèt maré qui se dénoue, photo dans une fenêtre de case créole</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="kente/index.html">
-      <img src="kente/apercu-whatsapp.jpg" alt="Modèle Kente : Abena et Kwame" loading="lazy">
-      <div class="infos"><h2>Kente</h2><p class="culture">Ghana</p><p class="langues">English · twi</p><p class="da">Bandes tissées qui s'ouvrent comme un métier, noir et or, symbole adinkra</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="owambe/index.html">
-      <img src="owambe/apercu-whatsapp.jpg" alt="Modèle Owambe : Tolu et Femi" loading="lazy">
-      <div class="infos"><h2>Owambe</h2><p class="culture">Nigeria (yoruba)</p><p class="langues">English · yoruba</p><p class="da">Éventail doré qui s'ouvre, couverture de magazine de mode</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="toghu/index.html">
-      <img src="toghu/apercu-whatsapp.jpg" alt="Modèle Toghu : Laure et Brice" loading="lazy">
-      <div class="infos"><h2>Toghu</h2><p class="culture">Cameroun</p><p class="langues">Français</p><p class="da">Pans de toghu brodé qui glissent, médaillon royal, nuit et étoiles</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="teranga/index.html">
-      <img src="teranga/apercu-whatsapp.jpg" alt="Modèle Teranga : Awa et Ousmane" loading="lazy">
-      <div class="infos"><h2>Teranga</h2><p class="culture">Sénégal</p><p class="langues">Français · wolof</p><p class="da">Voile de bazin blanc qui se lève, arabesques et filets dorés</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="sape/index.html">
-      <img src="sape/apercu-whatsapp.jpg" alt="Modèle Sape : Grâce et Dieudonné" loading="lazy">
-      <div class="infos"><h2>Sape</h2><p class="culture">Congo (RDC, Brazzaville)</p><p class="langues">Français · lingala</p><p class="da">Étiquette de couture qui se retourne, catalogue de mode aux couleurs franches</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="champetre/index.html">
-      <img src="champetre/apercu-whatsapp.jpg" alt="Modèle Champêtre : Clara et Julien" loading="lazy">
-      <div class="infos"><h2>Champêtre</h2><p class="culture">Classique · campagne</p><p class="langues">Français</p><p class="da">Serviette de lin nouée d'un brin de lavande, polaroïd et fleurs des champs</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="boheme/index.html">
-      <img src="boheme/apercu-whatsapp.jpg" alt="Modèle Bohème chic : Inès et Mathis" loading="lazy">
-      <div class="infos"><h2>Bohème chic</h2><p class="culture">Classique · bohème</p><p class="langues">Français</p><p class="da">Herbes de la pampa qui s'écartent, arches terre cuite, lumière de fin d'été</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
-    <a class="carte" href="classique/index.html">
-      <img src="classique/apercu-whatsapp.jpg" alt="Modèle Classique : Sarah et Thomas" loading="lazy">
-      <div class="infos"><h2>Classique</h2><p class="culture">Classique · intemporel</p><p class="langues">Français</p><p class="da">Enveloppe ivoire au sceau de cire, monogramme et double filet doré</p>
-      <span class="voir">Voir la démonstration →</span></div>
-    </a>
+<div class="haut"><span class="marque">Faire-part interactifs</span><a href="espace/index.html">Espace organisateur</a></div>
+<div class="hero">
+  <h1>Une invitation qui s'ouvre, <em>pour chaque moment</em> de la vie</h1>
+  <p>Mariage, anniversaire, baptême, gender reveal : un lien à envoyer sur WhatsApp, une direction artistique unique, et tout l'événement organisé au même endroit.</p>
+</div>
+<div class="onglets" role="tablist" aria-label="Type d'événement">
+    <button role="tab" data-onglet="mariage" aria-selected="true">Mariage <span>13</span></button>
+    <button role="tab" data-onglet="anniversaire" aria-selected="false">Anniversaire <span>1</span></button>
+    <button role="tab" data-onglet="bapteme" aria-selected="false">Baptême <span>1</span></button>
+    <button role="tab" data-onglet="gender" aria-selected="false">Gender reveal <span>1</span></button>
+</div>
+<main class="grille" id="grille">
+      <a class="carte" data-evt="mariage" href="lakay/index.html">
+        <img src="lakay/apercu-whatsapp.jpg" alt="Modèle Lakay : Naïka et Jonathan" loading="lazy">
+        <div class="infos"><h3>Lakay</h3><p class="culture">Haïti</p><p class="langues">Français · créole haïtien</p><p class="da">Portes de maison gingerbread qui s'ouvrent, lettrage peint des tap-taps</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="madras/index.html">
+        <img src="madras/apercu-whatsapp.jpg" alt="Modèle Madras : Maëlle et Kévin" loading="lazy">
+        <div class="infos"><h3>Madras</h3><p class="culture">Martinique · Guadeloupe</p><p class="langues">Français · créole antillais</p><p class="da">Coiffe tèt maré qui se dénoue, photo dans une fenêtre de case créole</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="kente/index.html">
+        <img src="kente/apercu-whatsapp.jpg" alt="Modèle Kente : Abena et Kwame" loading="lazy">
+        <div class="infos"><h3>Kente</h3><p class="culture">Ghana</p><p class="langues">English · twi</p><p class="da">Bandes tissées qui s'ouvrent comme un métier, noir et or, symbole adinkra</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="owambe/index.html">
+        <img src="owambe/apercu-whatsapp.jpg" alt="Modèle Owambe : Tolu et Femi" loading="lazy">
+        <div class="infos"><h3>Owambe</h3><p class="culture">Nigeria (yoruba)</p><p class="langues">English · yoruba</p><p class="da">Éventail doré qui s'ouvre, couverture de magazine de mode</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="toghu/index.html">
+        <img src="toghu/apercu-whatsapp.jpg" alt="Modèle Toghu : Laure et Brice" loading="lazy">
+        <div class="infos"><h3>Toghu</h3><p class="culture">Cameroun</p><p class="langues">Français</p><p class="da">Pans de toghu brodé qui glissent, médaillon royal, nuit et étoiles</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="teranga/index.html">
+        <img src="teranga/apercu-whatsapp.jpg" alt="Modèle Teranga : Awa et Ousmane" loading="lazy">
+        <div class="infos"><h3>Teranga</h3><p class="culture">Sénégal</p><p class="langues">Français · wolof</p><p class="da">Voile de bazin blanc qui se lève, arabesques et filets dorés</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="sape/index.html">
+        <img src="sape/apercu-whatsapp.jpg" alt="Modèle Sape : Grâce et Dieudonné" loading="lazy">
+        <div class="infos"><h3>Sape</h3><p class="culture">Congo (RDC, Brazzaville)</p><p class="langues">Français · lingala</p><p class="da">Étiquette de couture qui se retourne, catalogue de mode aux couleurs franches</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="champetre/index.html">
+        <img src="champetre/apercu-whatsapp.jpg" alt="Modèle Champêtre : Clara et Julien" loading="lazy">
+        <div class="infos"><h3>Champêtre</h3><p class="culture">Classique · campagne</p><p class="langues">Français</p><p class="da">Serviette de lin nouée d'un brin de lavande, polaroïd et fleurs des champs</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="boheme/index.html">
+        <img src="boheme/apercu-whatsapp.jpg" alt="Modèle Bohème chic : Inès et Mathis" loading="lazy">
+        <div class="infos"><h3>Bohème chic</h3><p class="culture">Classique · bohème</p><p class="langues">Français</p><p class="da">Herbes de la pampa qui s'écartent, arches terre cuite, lumière de fin d'été</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="classique/index.html">
+        <img src="classique/apercu-whatsapp.jpg" alt="Modèle Classique : Sarah et Thomas" loading="lazy">
+        <div class="infos"><h3>Classique</h3><p class="culture">Classique · intemporel</p><p class="langues">Français</p><p class="da">Enveloppe ivoire au sceau de cire, monogramme et double filet doré</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="kita/index.html">
+        <img src="kita/apercu-whatsapp.jpg" alt="Modèle Kita : Aya et Koffi" loading="lazy">
+        <div class="infos"><h3>Kita</h3><p class="culture">Côte d'Ivoire</p><p class="langues">Français</p><p class="da">Mosaïque de carreaux de pagne qui se retournent, grille de tuiles orange et noir</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="bogolan/index.html">
+        <img src="bogolan/apercu-whatsapp.jpg" alt="Modèle Bogolan : Fatoumata et Moussa" loading="lazy">
+        <div class="infos"><h3>Bogolan</h3><p class="culture">Mali</p><p class="langues">Français · bambara</p><p class="da">Rouleau de tissu de boue qui se relève, parchemin et frises géométriques</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="mariage" href="tibeb/index.html">
+        <img src="tibeb/apercu-whatsapp.jpg" alt="Modèle Tibeb : Selam et Dawit" loading="lazy">
+        <div class="infos"><h3>Tibeb</h3><p class="culture">Éthiopie</p><p class="langues">English · amharique</p><p class="da">Pans de coton blanc à bordures tissées qui s'écartent, croix en ornement</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="anniversaire" href="anniversaire-gala/index.html">
+        <img src="anniversaire-gala/apercu-whatsapp.jpg" alt="Modèle Gala : Les 50 ans de Nadia" loading="lazy">
+        <div class="infos"><h3>Gala</h3><p class="culture">Anniversaire chic</p><p class="langues">Français</p><p class="da">Rideau de paillettes dorées qui tombe, chiffre monumental, noir et or</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="bapteme" href="bapteme-nuage/index.html">
+        <img src="bapteme-nuage/apercu-whatsapp.jpg" alt="Modèle Nuage : Le baptême de Léo" loading="lazy">
+        <div class="infos"><h3>Nuage</h3><p class="culture">Baptême</p><p class="langues">Français</p><p class="da">Nuages qui s'écartent sur un ciel bleu, colombe, douceur pastel</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
+      <a class="carte" data-evt="gender" href="gender-reveal/index.html">
+        <img src="gender-reveal/apercu-whatsapp.jpg" alt="Modèle Surprise : Camille et Hugo" loading="lazy">
+        <div class="infos"><h3>Surprise</h3><p class="culture">Gender reveal</p><p class="langues">Français</p><p class="da">Ballon à éclater, vote des invités, révélation à gratter avec confettis</p>
+        <span class="voir">Voir la démonstration →</span></div>
+      </a>
 </main>
-<section class="niveaux">
+<section class="bloc">
+  <h2>Tout votre événement, au même endroit</h2>
+  <p>Un espace privé pour organiser, et une page pour vos invités.</p>
+  <div class="fonctions">
+    <div class="fonction"><b>Les réponses</b><span>Qui vient, qui ne vient pas, qui n'a pas répondu, en un coup d'œil.</span></div>
+    <div class="fonction"><b>Les invités</b><span>La liste, l'envoi du faire-part et les relances par WhatsApp ou courriel.</span></div>
+    <div class="fonction"><b>Le plan de table</b><span>Chaque invité à sa place, et retrouve sa table sur son téléphone.</span></div>
+    <div class="fonction"><b>Le budget</b><span>Ce qui est prévu, payé, et ce qu'il reste, prestataire par prestataire.</span></div>
+    <div class="fonction"><b>Le planning</b><span>Toutes les tâches, de « à faire » à « fait ».</span></div>
+    <div class="fonction"><b>Le mur photo</b><span>Les photos de vos invités, en direct pendant la fête.</span></div>
+    <div class="fonction"><b>Le livre d'or et la musique</b><span>Leurs mots, et les chansons qu'ils veulent entendre.</span></div>
+    <div class="fonction"><b>Les jeux</b><span>Quiz, pronostics, bingo, et un coin pour les enfants.</span></div>
+  </div>
+  <div class="cta"><a href="espace/index.html">Essayer l'espace organisateur →</a></div>
+</section>
+<section class="bloc">
   <h2>La personnalisation, à votre mesure</h2>
-  <div class="grille3">
+  <p>Chaque modèle se personnalise : vos prénoms, vos photos, vos lieux, vos couleurs.</p>
+  <div class="niveaux">
     <div class="niv"><h3>Essentiel</h3><p class="prix">à partir de 79 €</p><ul><li>Le modèle choisi, tel quel</li><li>Vos prénoms, photos, lieux, horaires et langue</li><li>Lien prêt en 72 h</li></ul></div>
-    <div class="niv"><h3>Personnalisé</h3><p class="prix">à partir de 179 €</p><ul><li>Le modèle adapté à votre mariage : couleurs, tissu, motifs</li><li>Sections au choix : histoire, cérémonies, tenue, cadeaux</li><li>Une série de retouches</li></ul></div>
-    <div class="niv"><h3>Sur mesure</h3><p class="prix">à partir de 349 €</p><ul><li>Une direction artistique créée pour vous</li><li>Deux cultures réunies, animation d'ouverture unique</li><li>Album photo privé après le mariage</li></ul></div>
+    <div class="niv"><h3>Personnalisé</h3><p class="prix">à partir de 179 €</p><ul><li>Le modèle adapté : couleurs, tissu, motifs</li><li>Sections au choix et espace organisateur</li><li>Une série de retouches</li></ul></div>
+    <div class="niv"><h3>Sur mesure</h3><p class="prix">à partir de 349 €</p><ul><li>Une direction artistique créée pour vous</li><li>Deux cultures réunies, ouverture unique</li><li>Mur photo et album privé après la fête</li></ul></div>
   </div>
 </section>
-<footer>Démonstrations avec des couples fictifs. Prénoms, photos, lieux, horaires et couleurs sont personnalisés pour chaque mariage.</footer>
+<footer>Démonstrations avec des personnes fictives. Photos Pexels.</footer>
+<script>
+  // Onglets : n'affiche que les modèles du type d'événement choisi (onglet retenu dans l'adresse).
+  const boutons = [...document.querySelectorAll('[data-onglet]')], cartes = [...document.querySelectorAll('.carte')];
+  function choisir(k) {
+    boutons.forEach(b => b.setAttribute('aria-selected', String(b.dataset.onglet === k)));
+    cartes.forEach(c => c.hidden = c.dataset.evt !== k);
+    history.replaceState(null, '', '#' + k);
+  }
+  boutons.forEach(b => b.addEventListener('click', () => choisir(b.dataset.onglet)));
+  choisir(boutons.some(b => b.dataset.onglet === location.hash.slice(1)) ? location.hash.slice(1) : 'mariage');
+</script>
 </body></html>

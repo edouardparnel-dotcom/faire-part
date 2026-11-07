@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le baptême de Léo — Invitation (démonstration)</title>
+<meta property="og:title" content="Le baptême de Léo">
+<meta property="og:description" content="Dimanche 16 mai 2027 · 11h00.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/bapteme-nuage/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#EAF3FB">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Nuage » : douceur pastel. Ouverture par des nuages qui s'écartent sur un ciel bleu,
+   colombe, petites étoiles et nuages qui flottent au défilement. */
+:root{--ciel:#EAF3FB;--bleu:#9CC3E6;--bleu2:#5E8DB8;--rose:#F6D6DE;--creme:#FFFDF9;--or:#C9A86A;--encre:#3E4B5C;--doux:#8794A6}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;font-weight:300;color:var(--encre);background:linear-gradient(180deg,var(--ciel),var(--creme) 40%);line-height:1.7;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.ciel{position:fixed;inset:0;z-index:50;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,#CFE4F6,#EAF3FB)}
+.nuage{position:absolute;background:#fff;border-radius:999px;filter:drop-shadow(0 10px 20px rgba(94,141,184,.25));transition:transform 1.5s cubic-bezier(.6,0,.2,1)}
+.nuage::before,.nuage::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.nuage::before{width:55%;height:150%;left:15%;bottom:30%} .nuage::after{width:40%;height:120%;right:12%;bottom:35%}
+.n1{width:70vw;height:120px;left:-20vw;top:22%} .n2{width:80vw;height:140px;right:-25vw;top:48%} .n3{width:60vw;height:110px;left:-10vw;bottom:8%}
+.ciel.ouvert .n1,.ciel.ouvert .n3{transform:translateX(-120vw)} .ciel.ouvert .n2{transform:translateX(120vw)}
+.ciel.ouvert{background:transparent;pointer-events:none;transition:background .4s 1s}
+.ciel .msg{position:absolute;left:0;right:0;top:12%;text-align:center;transition:opacity .4s}
+.ciel.ouvert .msg{opacity:0}
+.msg b{display:block;font-family:'Fredoka',sans-serif;font-weight:500;font-size:34px;color:var(--bleu2)}
+.msg small{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux)}
+.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:16px;padding:50px 22px;text-align:center}
+.medaille{width:min(260px,66vw);aspect-ratio:1;border-radius:50%;background:#dfe9f3 url('photo.jpg') center/cover;box-shadow:0 0 0 10px #fff,0 0 0 12px var(--bleu),0 24px 50px -20px rgba(94,141,184,.6)}
+.colombe{width:60px;height:60px}
+.sur{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--bleu2)}
+.prenom{font-family:'Fredoka',sans-serif;font-weight:500;font-size:clamp(56px,17vw,90px);line-height:1;color:var(--bleu2)}
+.date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px}
+main{position:relative;max-width:500px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.bulle{background:#fff;border-radius:36px;padding:30px 22px;margin:28px 0;box-shadow:0 18px 40px -26px rgba(94,141,184,.6)}
+h2{font-family:'Fredoka',sans-serif;font-weight:500;font-size:28px;color:var(--bleu2);margin-bottom:6px}
+.etq{display:block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--or);margin-bottom:6px}
+.citation{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:600;font-size:13px;color:#fff;background:var(--bleu2);padding:12px 22px;border-radius:999px;text-decoration:none;border:0;cursor:pointer}
+.lien.vide{background:transparent;color:var(--bleu2);box-shadow:inset 0 0 0 2px var(--bleu)}
+.prog{list-style:none}.prog li{padding:8px 0}.prog b{font-family:'Fredoka',sans-serif;font-weight:500;color:var(--bleu2);margin-right:10px}
+.rebours{display:flex;justify-content:center;gap:16px}
+.rebours div{font-size:11px;color:var(--doux)}
+.rebours b{display:block;font-family:'Fredoka',sans-serif;font-weight:500;font-size:40px;color:var(--bleu2)}
+.demo{display:none;margin-top:12px;color:var(--bleu2);font-weight:600}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+.pied b{display:block;font-family:'Fredoka',sans-serif;font-weight:500;font-size:26px;color:var(--bleu2)}
+</style>
+</head>
+<body class="ferme">
+<div class="ciel" data-ouverture role="button" aria-label="Ouvrir l'invitation">
+  <div class="msg"><b>Le baptême de Léo</b><small>Touchez les nuages</small></div>
+  <div class="nuage n1"></div><div class="nuage n2"></div><div class="nuage n3"></div>
+</div>
+
+<header class="couv">
+  <svg class="colombe" viewBox="0 0 64 64" aria-hidden="true"><path d="M8 34c10-2 18 2 22 8 2-10 10-18 26-20-6 6-8 12-8 18 0 10-8 16-18 16-8 0-14-4-18-10 4 0 8-1 10-3-6 0-11-3-14-9Z" fill="#fff" stroke="#9CC3E6" stroke-width="2"/><circle cx="46" cy="28" r="1.6" fill="#5E8DB8"/></svg>
+  <p class="sur">Nous avons la joie de vous convier au baptême de</p>
+  <div class="medaille" role="img" aria-label="Photo de la décoration" data-fond-parallaxe="0.1" data-base="50" data-zoom="160% auto"></div>
+  <h1 class="prenom">Léo</h1>
+  <p class="date">Dimanche 16 mai 2027</p>
+</header>
+
+<main>
+  <div class="motif" style="left:-10px;top:5%;width:80px;height:40px;background:#fff;border-radius:999px;box-shadow:0 8px 16px rgba(94,141,184,.2)" data-parallaxe="0.3" aria-hidden="true"></div>
+  <div class="motif" style="right:-14px;top:40%;width:100px;height:46px;background:#fff;border-radius:999px;box-shadow:0 8px 16px rgba(94,141,184,.2)" data-parallaxe="-0.25" aria-hidden="true"></div>
+  <div class="motif" style="left:8%;top:70%;width:22px;height:22px" data-parallaxe="0.2" data-rotation="0.2" aria-hidden="true"><svg viewBox="-10 -10 20 20"><path d="M0-9 2.5-2.5 9 0 2.5 2.5 0 9-2.5 2.5-9 0-2.5-2.5Z" fill="#C9A86A"/></svg></div>
+  <section class="bulle apparait"><p class="citation">« Un petit ange est entré dans nos vies : partagez avec nous ce jour béni. »</p></section>
+  <section class="bulle apparait" data-effet="zoom"><span class="etq">La cérémonie</span><h2>Église Saint-Paul</h2><p>11h00 · centre-ville</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=%C3%A9glise" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La décoration" style="border-radius:36px"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="bulle apparait"><span class="etq">Ensuite</span><h2>Le déjeuner</h2>
+    <ul class="prog"><li><b>11h00</b>Cérémonie</li><li><b>12h30</b>Apéritif en famille</li><li><b>13h30</b>Déjeuner</li><li><b>16h00</b>Gâteau et dragées</li></ul></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Les dragées" style="border-radius:36px"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="bulle apparait"><span class="etq">Plus que</span>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
+    <a class="lien vide" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bulle apparait"><span class="etq">Votre réponse</span><h2>Serez-vous là ?</h2>
+    <button class="lien reponse">Oui, avec joie</button> <button class="lien vide reponse">Je ne pourrai pas</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied"><b>À très bientôt</b>Invitation de démonstration · enfant fictif · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-05-16T11:00:00', fin: '20270516T180000', titre: 'Baptême de Léo', lieu: 'Église Saint-Paul', fichier: 'bapteme-leo', jour: 'C\'est aujourd\'hui', duree: 1500 };</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>
