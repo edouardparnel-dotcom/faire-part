@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dossier top secret — Gender reveal (démonstration)</title>
+<meta property="og:title" content="Dossier top secret : fille ou garçon ?">
+<meta property="og:description" content="Déclassification le samedi 12 juin 2027 · 16h00.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/gender-secret/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#2B2A27">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Top secret » : un dossier d'enquête en papier kraft. Ouverture par un tampon
+   « CONFIDENTIEL » puis la chemise s'ouvre ; rapport tapé à la machine, passages caviardés à toucher, indices. */
+:root{--bureau:#2B2A27;--kraft:#C9A877;--kraft2:#B8955F;--papier:#F4EFE3;--encre:#24221F;--rouge:#B3261E;--doux:#6D665B}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--encre);background:var(--bureau);line-height:1.7;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.bureau{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#3a3833,var(--bureau) 70%);transition:opacity .5s 1.5s;perspective:1200px}
+.bureau.ouvert{opacity:0;pointer-events:none}
+.chemise{position:relative;width:min(300px,78vw);aspect-ratio:3/4;background:var(--kraft);border-radius:4px 14px 4px 4px;box-shadow:0 30px 60px -30px #000;transform-origin:left center;transition:transform 1s .5s}
+.chemise::before{content:"";position:absolute;left:0;top:-18px;width:40%;height:22px;background:var(--kraft);border-radius:8px 8px 0 0}
+.chemise .etiq{position:absolute;left:12%;right:12%;top:16%;background:var(--papier);padding:10px;font-family:'Special Elite',cursive;font-size:14px;line-height:1.5}
+.tampon{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%) rotate(-14deg) scale(2.4);opacity:0;font-family:'Special Elite',cursive;font-size:26px;color:var(--rouge);border:3px solid var(--rouge);padding:4px 12px;letter-spacing:.1em;transition:transform .25s,opacity .25s;white-space:nowrap}
+.bureau.ouvert .tampon{opacity:.9;transform:translate(-50%,-50%) rotate(-14deg) scale(1)}
+.bureau.ouvert .chemise{transform:rotateY(-110deg)}
+.bureau p{position:absolute;bottom:12%;color:#cfc7b6;font-family:'Special Elite',cursive;font-size:17px}
+.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:14px;padding:50px 20px;text-align:center;color:var(--papier)}
+.couv .ref{font-size:12px;letter-spacing:.2em;color:var(--kraft)}
+.couv h1{font-family:'Special Elite',cursive;font-weight:400;font-size:clamp(40px,12vw,70px);line-height:1.05}
+.couv h1 span{color:var(--rouge);display:inline-block;border:3px solid var(--rouge);padding:0 10px;transform:rotate(-4deg)}
+.polaroid{width:min(260px,70vw);background:var(--papier);padding:10px 10px 36px;transform:rotate(3deg);box-shadow:0 20px 40px -20px #000;position:relative}
+.polaroid div{aspect-ratio:1;background:#ccc url('photo.jpg') center/cover;filter:sepia(.25)}
+.polaroid::after{content:"PIÈCE N° 1";position:absolute;bottom:8px;left:0;right:0;font-family:'Special Elite',cursive;font-size:13px;color:var(--encre)}
+.trombone{position:absolute;top:-16px;left:30px;width:16px;height:44px;border:3px solid #9ea3a8;border-radius:8px}
+.couv .date{font-family:'Special Elite',cursive;font-size:19px}
+main{position:relative;max-width:540px;margin:0 auto;padding:10px 18px 80px}
+.feuille{background:var(--papier);padding:26px 22px;margin:22px 0;box-shadow:0 18px 40px -26px #000;position:relative}
+.feuille.kraft{background:var(--kraft)}
+.feuille h2{font-family:'Special Elite',cursive;font-weight:400;font-size:24px;border-bottom:2px solid var(--encre);padding-bottom:6px;margin-bottom:12px}
+.champ{display:flex;gap:10px;padding:5px 0;border-bottom:1px dotted #b9b0a0}.champ b{min-width:110px;font-weight:600}
+.cav{background:var(--encre);color:transparent;border-radius:2px;cursor:pointer;padding:0 4px;transition:background .4s,color .4s;user-select:none}
+.cav.vu{background:#F2D46B;color:var(--encre)}
+.indice{font-size:13px;color:var(--doux)}
+.lien{display:inline-block;margin-top:14px;font-family:'Special Elite',cursive;font-size:15px;color:var(--papier);background:var(--encre);padding:11px 18px;border:0;text-decoration:none;cursor:pointer}
+.lien.rouge{background:var(--rouge)}
+.prog{list-style:none}.prog li{padding:5px 0}.prog b{margin-right:10px}
+.rebours{display:flex;justify-content:center;gap:12px;text-align:center}.rebours div{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--doux)}
+.rebours b{display:block;font-family:'Special Elite',cursive;font-weight:400;font-size:38px;color:var(--rouge)}
+.centre{text-align:center}
+.demo{display:none;margin-top:12px;color:var(--rouge);font-weight:600}
+.pied{margin-top:30px;font-size:12px;color:#9c9585;text-align:center}
+</style>
+</head>
+<body class="ferme">
+<div class="bureau" data-ouverture role="button" aria-label="Ouvrir le dossier">
+  <div class="chemise"><div class="etiq">DOSSIER N° 2027-B<br>OBJET : bébé Mendy<br>ACCÈS : famille et amis</div><div class="tampon">CONFIDENTIEL</div></div>
+  <p>Touchez pour ouvrir le dossier</p>
+</div>
+
+<header class="couv">
+  <p class="ref">RÉF. 2027-B · CLASSÉ SECRET</p>
+  <h1>Fille ou garçon ?<br><span>Top secret</span></h1>
+  <div class="polaroid"><div class="trombone"></div><div data-fond-parallaxe="0.1" data-base="50" data-zoom="160% auto"></div></div>
+  <p>Fatou et Kevin Mendy lèvent le secret devant vous</p>
+  <p class="date">Samedi 12 juin 2027 · 16h00</p>
+</header>
+
+<main>
+  <section class="feuille apparait"><h2>Rapport d'enquête</h2>
+    <div class="champ"><b>Sujet</b><span>Bébé Mendy</span></div>
+    <div class="champ"><b>Arrivée</b><span>Prévue en octobre 2027</span></div>
+    <div class="champ"><b>Sexe</b><span><span class="cav" data-cav>information classée</span></span></div>
+    <div class="champ"><b>Prénom</b><span><span class="cav" data-cav>on ne vous dira rien</span></span></div>
+    <p class="indice" style="margin-top:10px">Touchez les passages noircis… si vous osez.</p></section>
+  <section class="feuille kraft apparait" data-effet="zoom"><h2>Lieu de la mission</h2><p>Le Loft des Tilleuls · Montreuil</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=Montreuil" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La décoration"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="feuille apparait"><h2>Déroulé des opérations</h2>
+    <ul class="prog"><li><b>16h00</b>Accueil des agents</li><li><b>16h30</b>Interrogatoire : vos pronostics</li><li><b>17h30</b>Déclassification du dossier</li><li><b>17h45</b>Gâteau et champagne</li></ul></section>
+  <section class="feuille kraft apparait"><h2>Consignes</h2><p>Tenue d'agent secret recommandée : lunettes noires, trench, ou une touche de rose ou de bleu pour afficher votre camp.</p></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Les détails"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="feuille apparait centre"><h2>Déclassification dans</h2>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>h</div><div><b id="m">--</b>min</div><div><b id="s">--</b>s</div></div>
+    <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="feuille apparait centre"><h2>Ordre de mission</h2><p>Confirmez votre présence, agent.</p>
+    <button class="lien rouge reponse">Mission acceptée</button> <button class="lien reponse">Mission impossible</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied">Invitation de démonstration · couple fictif · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-06-12T16:00:00', fin: '20270612T200000', titre: 'Gender reveal de Fatou et Kevin', lieu: 'Le Loft des Tilleuls, Montreuil', fichier: 'gender-reveal-mendy', jour: 'C\'est aujourd\'hui', duree: 2200 };
+document.querySelectorAll('[data-cav]').forEach(c => c.addEventListener('click', () => c.classList.toggle('vu')));</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>

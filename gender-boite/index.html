@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rose ou bleu ? — Gender reveal (démonstration)</title>
+<meta property="og:title" content="Rose ou bleu ? Ouvrez la boîte">
+<meta property="og:description" content="Samedi 22 mai 2027 · 15h00.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/gender-boite/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#F6EFE8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Boîte à ballons » : une grande boîte cadeau crème au ruban doré. Le couvercle se soulève
+   et les ballons rose poudré et bleu ciel s'envolent. Pastels doux, typographie éditoriale, jauge des pronostics. */
+:root{--creme:#F6EFE8;--papier:#FFFBF6;--rose:#E8A9B8;--rose2:#F4D3DA;--bleu:#9CC3DE;--bleu2:#D3E5F1;--or:#C9A15E;--encre:#3B3330;--doux:#8C807A}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--encre);background:var(--creme);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.ferme{overflow:hidden}
+.ecran{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;place-items:center;background:var(--creme);transition:opacity .6s 1.6s;overflow:hidden}
+.ecran.ouvert{opacity:0;pointer-events:none}
+.boite{position:relative;width:200px;height:170px;margin-top:80px}
+.caisse{position:absolute;inset:30px 0 0;background:var(--papier);border:1px solid #E6DACB;box-shadow:0 20px 40px -24px rgba(59,51,48,.5)}
+.couvercle{position:absolute;left:-12px;right:-12px;top:0;height:42px;background:#FFF8F0;border:1px solid #E6DACB;transition:transform .9s cubic-bezier(.5,-0.4,.3,1);transform-origin:left bottom;z-index:2}
+.ruban-v{position:absolute;left:50%;top:0;bottom:0;width:22px;margin-left:-11px;background:var(--or)}
+.noeud{position:absolute;left:50%;top:-30px;width:80px;height:34px;margin-left:-40px}
+.noeud::before,.noeud::after{content:"";position:absolute;top:0;width:38px;height:30px;border:6px solid var(--or);border-radius:50% 50% 50% 0}
+.noeud::before{left:0;transform:rotate(-20deg)}.noeud::after{right:0;border-radius:50% 50% 0 50%;transform:rotate(20deg)}
+.ecran.ouvert .couvercle{transform:translate(-60px,-120px) rotate(-35deg)}
+.ballon{position:absolute;bottom:40px;width:46px;height:56px;border-radius:50% 50% 48% 48%;opacity:0;z-index:1}
+.ballon::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:70px;background:#bbb}
+.ecran.ouvert .ballon{animation:envol 2.2s ease-in forwards}
+@keyframes envol{0%{opacity:1;transform:translate(0,0)}100%{opacity:1;transform:translate(var(--x),-110vh) rotate(var(--r))}}
+.ecran p{position:absolute;bottom:14%;font-family:'DM Serif Display',serif;font-style:italic;font-size:22px}
+.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:16px;padding:50px 22px;text-align:center}
+.surt{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--or);font-weight:700}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(52px,15vw,88px);line-height:1}
+h1 .r{color:var(--rose);font-style:italic} h1 .b{color:var(--bleu);font-style:italic}
+.cadre{width:min(300px,78vw);aspect-ratio:4/5;background:#eee url('photo.jpg') center/cover;border:10px solid var(--papier);box-shadow:0 24px 50px -30px rgba(59,51,48,.6)}
+.date{font-family:'DM Serif Display',serif;font-size:22px}
+main{position:relative;max-width:500px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.carte{background:var(--papier);border:1px solid #EDE2D5;padding:28px 22px;margin:24px 0}
+h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:30px;margin-bottom:6px}
+.etq{display:block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--or);font-weight:700;margin-bottom:6px}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:700;font-size:13px;color:#fff;background:var(--encre);padding:12px 22px;border:0;border-radius:999px;text-decoration:none;cursor:pointer}
+.lien.vide{background:transparent;color:var(--encre);box-shadow:inset 0 0 0 1.5px var(--encre)}
+.votes{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.vote{flex:1;max-width:170px;font:inherit;font-weight:700;padding:16px 10px;border:0;border-radius:16px;cursor:pointer;transition:transform .2s}
+.vote.r{background:var(--rose2);color:#9B4E61}.vote.b{background:var(--bleu2);color:#3D6A8A}
+.vote.choisi{transform:scale(1.05);box-shadow:0 0 0 3px currentColor}
+.jauge{display:flex;height:14px;border-radius:999px;overflow:hidden;margin-top:16px;background:#eee}
+.jauge i{display:block;transition:width .6s}
+.jauge .jr{background:var(--rose)}.jauge .jb{background:var(--bleu)}
+.legende{display:flex;justify-content:space-between;font-size:13px;color:var(--doux);margin-top:6px}
+.prog{list-style:none}.prog li{padding:8px 0;border-bottom:1px solid #F0E6DA}.prog b{color:var(--or);margin-right:10px}
+.rebours{display:flex;justify-content:center;gap:16px}.rebours div{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--doux)}
+.rebours b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:42px;color:var(--encre)}
+.demo{display:none;margin-top:12px;color:var(--or);font-weight:700}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+</style>
+</head>
+<body class="ferme">
+<div class="ecran" data-ouverture role="button" aria-label="Ouvrir la boîte">
+  <div class="boite">
+    <div class="ballon" style="left:20px;background:var(--rose);--x:-90px;--r:-12deg;animation-delay:.5s"></div>
+    <div class="ballon" style="left:70px;background:var(--bleu);--x:-20px;--r:8deg;animation-delay:.6s"></div>
+    <div class="ballon" style="left:120px;background:var(--rose2);--x:60px;--r:14deg;animation-delay:.7s"></div>
+    <div class="ballon" style="left:45px;background:var(--bleu2);--x:120px;--r:-6deg;animation-delay:.8s"></div>
+    <div class="ballon" style="left:100px;background:var(--rose);--x:-150px;--r:10deg;animation-delay:.9s"></div>
+    <div class="caisse"><div class="ruban-v"></div></div>
+    <div class="couvercle"><div class="ruban-v"></div><div class="noeud"></div></div>
+  </div>
+  <p>Ouvrez la boîte</p>
+</div>
+
+<header class="couv">
+  <p class="surt">Gender reveal</p>
+  <h1><span class="r">Rose</span> ou <span class="b">bleu</span> ?</h1>
+  <div class="cadre" role="img" aria-label="Décoration de la fête" data-fond-parallaxe="0.1" data-base="50" data-zoom="160% auto"></div>
+  <p>Awa et Thomas vous invitent à découvrir avec eux</p>
+  <p class="date">Samedi 22 mai 2027 · 15h00</p>
+</header>
+
+<main>
+  <section class="carte apparait"><span class="etq">Vos pronostics</span><h2>Fille ou garçon ?</h2><p>Votez maintenant, la réponse tombera pendant la fête.</p>
+    <div class="votes"><button class="vote r" data-vote="r">C'est une fille</button><button class="vote b" data-vote="b">C'est un garçon</button></div>
+    <div class="jauge"><i class="jr" id="jr"></i><i class="jb" id="jb"></i></div>
+    <div class="legende"><span id="lr"></span><span id="lb"></span></div></section>
+  <section class="carte apparait" data-effet="zoom"><span class="etq">Le lieu</span><h2>La Maison des Roses</h2><p>Jardin et véranda</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=jardin" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La décoration"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte apparait"><span class="etq">L'après-midi</span><h2>Au programme</h2>
+    <ul class="prog"><li><b>15h00</b>Goûter et jeux</li><li><b>16h30</b>Derniers pronostics</li><li><b>17h00</b>Ouverture de la grande boîte</li><li><b>17h15</b>Gâteau et photos</li></ul></section>
+  <section class="carte apparait"><span class="etq">Dress code</span><h2>Votre camp</h2><p>Une touche de rose ou de bleu, selon votre pronostic</p></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Les détails"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte apparait"><span class="etq">La boîte s'ouvre dans</span>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>h</div><div><b id="m">--</b>min</div><div><b id="s">--</b>s</div></div>
+    <a class="lien vide" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="carte apparait"><span class="etq">Votre réponse</span><h2>Serez-vous là ?</h2>
+    <button class="lien reponse">Oui, je viens</button> <button class="lien vide reponse">Je ne pourrai pas</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied">Invitation de démonstration · couple fictif · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-05-22T15:00:00', fin: '20270522T190000', titre: 'Gender reveal d\'Awa et Thomas', lieu: 'La Maison des Roses', fichier: 'gender-reveal-awa-thomas', jour: 'C\'est aujourd\'hui', duree: 2600 };
+// Pronostics : votes fictifs de départ + le vôtre (gardé dans ce navigateur)
+(() => { const BASE = { r: 14, b: 11 }; let moi = null; try { moi = localStorage.getItem('grb-vote'); } catch {}
+  function maj() { const r = BASE.r + (moi === 'r'), b = BASE.b + (moi === 'b'), t = r + b;
+    document.getElementById('jr').style.width = r / t * 100 + '%'; document.getElementById('jb').style.width = b / t * 100 + '%';
+    document.getElementById('lr').textContent = `Fille · ${r} votes`; document.getElementById('lb').textContent = `${b} votes · Garçon`;
+    document.querySelectorAll('[data-vote]').forEach(v => v.classList.toggle('choisi', v.dataset.vote === moi)); }
+  document.querySelectorAll('[data-vote]').forEach(v => v.addEventListener('click', () => { moi = v.dataset.vote; try { localStorage.setItem('grb-vote', moi); } catch {} maj(); }));
+  maj(); })();</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>

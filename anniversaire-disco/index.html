@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les 30 ans de Yanis — Soirée disco (démonstration)</title>
+<meta property="og:title" content="Les 30 ans de Yanis — Soirée disco">
+<meta property="og:description" content="Samedi 5 juin 2027 · 21h00 · Lyon.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/anniversaire-disco/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#1A0B2E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Disco » : années 80, néons rose et bleu sur nuit violette. Ouverture par une boule à facettes
+   qui descend et lance ses éclats, titres en néon, piste de danse en damier. */
+:root{--nuit:#1A0B2E;--violet:#2D1250;--rose:#FF3CAC;--cyan:#2DE2E6;--jaune:#FFE45E;--blanc:#F8F0FF;--doux:#B9A6D6}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;color:var(--blanc);background:var(--nuit);line-height:1.6;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.neon{font-family:'Monoton',cursive;font-weight:400;color:#fff;text-shadow:0 0 6px var(--rose),0 0 18px var(--rose),0 0 40px var(--rose)}
+.neon.b{text-shadow:0 0 6px var(--cyan),0 0 18px var(--cyan),0 0 40px var(--cyan)}
+.boule-ecran{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,#3a1766,var(--nuit) 70%);transition:opacity .5s 1s}
+.boule-ecran.ouvert{opacity:0;pointer-events:none}
+.fil{position:absolute;left:50%;top:0;width:2px;height:calc(42% - 70px);background:#888}
+.boule{width:140px;height:140px;border-radius:50%;margin-top:-40px;animation:tourne 4s linear infinite;
+  background:repeating-conic-gradient(from 0deg,#e9e9f5 0 10deg,#9aa0b8 10deg 20deg),radial-gradient(circle,#fff,#888);
+  background-blend-mode:multiply;box-shadow:0 0 40px rgba(45,226,230,.6),0 0 80px rgba(255,60,172,.4);transition:transform .8s}
+.boule-ecran.ouvert .boule{transform:scale(3);opacity:0}
+@keyframes tourne{to{filter:hue-rotate(360deg)}}
+.boule-ecran p{position:absolute;bottom:16%;font-size:14px;letter-spacing:.3em;text-transform:uppercase}
+.couv{position:relative;min-height:100svh;display:grid;align-content:center;justify-items:center;text-align:center;padding:50px 20px;overflow:hidden;isolation:isolate}
+.couv-fond{position:absolute;left:0;right:0;top:-18%;bottom:-18%;z-index:-1;background:linear-gradient(180deg,rgba(26,11,46,.55),rgba(26,11,46,.92)),#222 url('photo.jpg') center/cover}
+.couv h1{font-size:clamp(46px,15vw,92px);line-height:1}
+.couv .ans{font-size:clamp(90px,30vw,170px);line-height:.9}
+.date{margin-top:16px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--jaune)}
+.damier{height:70px;max-width:560px;margin:30px auto;background:conic-gradient(var(--blanc) 25%,var(--violet) 0 50%,var(--blanc) 0 75%,var(--violet) 0) 0 0/35px 35px;transform:perspective(300px) rotateX(55deg);opacity:.8}
+main{position:relative;max-width:520px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.boite{border:2px solid var(--rose);border-radius:18px;padding:28px 20px;margin:24px 0;box-shadow:0 0 18px rgba(255,60,172,.35),inset 0 0 18px rgba(255,60,172,.15)}
+.boite.b{border-color:var(--cyan);box-shadow:0 0 18px rgba(45,226,230,.35),inset 0 0 18px rgba(45,226,230,.15)}
+h2{font-size:28px;margin-bottom:10px}
+.etq{display:block;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--jaune);margin-bottom:6px}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--nuit);background:var(--cyan);padding:12px 20px;border-radius:999px;border:0;text-decoration:none;cursor:pointer}
+.lien.rose{background:var(--rose);color:#fff}
+.prog{list-style:none}.prog li{padding:8px 0;border-bottom:1px dashed rgba(185,166,214,.3)}.prog b{color:var(--cyan);margin-right:8px}
+.rebours{display:flex;justify-content:center;gap:14px}
+.rebours div{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--doux)}
+.rebours b{display:block;font-size:40px;color:#fff;text-shadow:0 0 12px var(--rose)}
+.demo{display:none;margin-top:12px;color:var(--jaune)}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+</style>
+</head>
+<body class="ferme">
+<div class="boule-ecran" data-ouverture role="button" aria-label="Ouvrir l'invitation"><div class="fil"></div><div class="boule"></div><p>Touchez la boule</p></div>
+
+<header class="couv">
+  <div class="couv-fond" data-parallaxe="0.35"></div>
+  <p class="etq">Soirée disco</p>
+  <div class="ans neon">30</div>
+  <h1 class="neon b">Yanis</h1>
+  <p class="date">Samedi 5 juin 2027 · 21h00</p>
+</header>
+
+<main>
+  <div class="damier apparait" aria-hidden="true"></div>
+  <section class="boite apparait"><h2 class="neon" style="font-size:34px">Let's dance</h2><p>Paillettes, pattes d'eph et tubes des années 80 : on fête mes 30 ans comme il se doit.</p></section>
+  <section class="boite b apparait" data-effet="zoom"><span class="etq">Le lieu</span><h2>Le Studio 54 bis</h2><p>Quai de Saône · Lyon</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=Lyon" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La piste"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="boite apparait"><span class="etq">La soirée</span>
+    <ul class="prog"><li><b>21h00</b>Cocktails fluo</li><li><b>22h00</b>Buffet</li><li><b>23h00</b>Karaoké des années 80</li><li><b>00h00</b>Gâteau, puis piste de danse</li></ul></section>
+  <section class="boite b apparait"><span class="etq">Dress code</span><h2>Disco</h2><p>Paillettes, néon, perruques : tout est permis</p></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Les détails"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="boite apparait"><span class="etq">Compte à rebours</span>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>h</div><div><b id="m">--</b>min</div><div><b id="s">--</b>s</div></div>
+    <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="boite b apparait"><span class="etq">Votre réponse</span><h2>Tu viens danser ?</h2>
+    <button class="lien rose reponse">Je serai là</button> <button class="lien reponse">Pas cette fois</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied">Invitation de démonstration · personne fictive · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-06-05T21:00:00', fin: '20270606T040000', titre: 'Les 30 ans de Yanis', lieu: 'Le Studio 54 bis, Lyon', fichier: 'anniversaire-yanis', jour: 'C\'est ce soir', duree: 1300 };</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>

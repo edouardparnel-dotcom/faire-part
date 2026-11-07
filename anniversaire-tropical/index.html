@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les 18 ans d'Inaya — Fête tropicale (démonstration)</title>
+<meta property="og:title" content="Les 18 ans d'Inaya — Fête tropicale">
+<meta property="og:description" content="Samedi 17 juillet 2027 · 18h00.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/anniversaire-tropical/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#0F5132">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Tropical » : fête d'été. Ouverture par des feuilles de monstera qui s'écartent,
+   couleurs jungle et corail, feuilles qui flottent au défilement, carte des cocktails. */
+:root{--jungle:#0F5132;--feuille:#1E7A4C;--corail:#FF7A59;--ananas:#FFC845;--sable:#FFF4E2;--encre:#183A2A;--doux:#5F7A6C}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;font-weight:300;color:var(--encre);background:var(--sable);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.ferme{overflow:hidden}
+.jungle{position:fixed;inset:0;z-index:50;cursor:pointer;overflow:hidden;background:var(--jungle)}
+.monstera{position:absolute;width:75vmax;height:75vmax;transition:transform 1.5s cubic-bezier(.6,0,.2,1)}
+.m1{left:-30vmax;top:-25vmax;transform:rotate(20deg)} .m2{right:-32vmax;top:-10vmax;transform:rotate(-150deg)} .m3{left:-20vmax;bottom:-40vmax;transform:rotate(80deg)} .m4{right:-28vmax;bottom:-36vmax;transform:rotate(-110deg)}
+.jungle.ouvert .m1{transform:translate(-60vw,-50vh) rotate(0deg)} .jungle.ouvert .m2{transform:translate(60vw,-50vh) rotate(-170deg)}
+.jungle.ouvert .m3{transform:translate(-60vw,50vh) rotate(60deg)} .jungle.ouvert .m4{transform:translate(60vw,50vh) rotate(-90deg)}
+.jungle.ouvert{background:transparent;pointer-events:none;transition:background .3s 1.2s}
+.jungle .msg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;color:#fff;transition:opacity .4s;z-index:2}
+.jungle.ouvert .msg{opacity:0}
+.msg b{display:block;font-family:'Pacifico',cursive;font-weight:400;font-size:46px}
+.couv{position:relative;min-height:100svh;display:grid;align-content:center;justify-items:center;text-align:center;padding:50px 22px;gap:14px}
+.photo{width:min(300px,76vw);aspect-ratio:1;border-radius:46% 54% 52% 48%/48% 46% 54% 52%;background:#cfe url('photo.jpg') center/cover;box-shadow:12px 12px 0 var(--corail)}
+.titre{font-family:'Pacifico',cursive;font-weight:400;font-size:clamp(46px,14vw,78px);line-height:1.1;color:var(--jungle)}
+.ans{display:inline-block;background:var(--ananas);color:var(--jungle);font-weight:600;border-radius:999px;padding:6px 18px;font-size:20px}
+.date{font-weight:600;color:var(--corail)}
+main{position:relative;max-width:520px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.carte{background:#fff;border-radius:26px;padding:28px 22px;margin:24px 0;box-shadow:0 18px 40px -28px rgba(15,81,50,.5)}
+.carte.vert{background:var(--feuille);color:#fff}
+h2{font-family:'Pacifico',cursive;font-weight:400;font-size:30px;color:var(--corail);margin-bottom:8px}
+.carte.vert h2{color:var(--ananas)}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:600;font-size:14px;color:#fff;background:var(--corail);padding:12px 20px;border-radius:999px;border:0;text-decoration:none;cursor:pointer}
+.lien.vide{background:transparent;color:var(--jungle);box-shadow:inset 0 0 0 2px var(--jungle)}
+.cocktails{list-style:none;text-align:left}.cocktails li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.3)}
+.prog{list-style:none}.prog li{padding:7px 0}.prog b{color:var(--corail);margin-right:8px}
+.rebours{display:flex;justify-content:center;gap:14px}.rebours div{font-size:11px;color:var(--doux)}
+.rebours b{display:block;font-family:'Pacifico',cursive;font-weight:400;font-size:38px;color:var(--jungle)}
+.demo{display:none;margin-top:12px;color:var(--corail);font-weight:600}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+</style>
+</head>
+<body class="ferme">
+<div class="jungle" data-ouverture role="button" aria-label="Ouvrir l'invitation">
+  <svg class="monstera m1" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 190C40 170 10 110 30 60 50 20 110 5 150 30c40 25 50 90 20 130-15 20-40 30-70 30Z" fill="#1E7A4C"/><g fill="#0F5132"><ellipse cx="70" cy="70" rx="10" ry="22" transform="rotate(-30 70 70)"/><ellipse cx="130" cy="80" rx="10" ry="22" transform="rotate(30 130 80)"/><ellipse cx="80" cy="130" rx="10" ry="20" transform="rotate(-50 80 130)"/><ellipse cx="135" cy="140" rx="9" ry="18" transform="rotate(40 135 140)"/></g><path d="M100 190 105 40" stroke="#0F5132" stroke-width="5"/></svg>
+  <svg class="monstera m2" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 190C40 170 10 110 30 60 50 20 110 5 150 30c40 25 50 90 20 130-15 20-40 30-70 30Z" fill="#25915A"/><g fill="#0F5132"><ellipse cx="70" cy="70" rx="10" ry="22" transform="rotate(-30 70 70)"/><ellipse cx="130" cy="80" rx="10" ry="22" transform="rotate(30 130 80)"/><ellipse cx="80" cy="130" rx="10" ry="20" transform="rotate(-50 80 130)"/></g><path d="M100 190 105 40" stroke="#0F5132" stroke-width="5"/></svg>
+  <svg class="monstera m3" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 190C40 170 10 110 30 60 50 20 110 5 150 30c40 25 50 90 20 130-15 20-40 30-70 30Z" fill="#1A6B43"/><g fill="#0F5132"><ellipse cx="70" cy="70" rx="10" ry="22" transform="rotate(-30 70 70)"/><ellipse cx="130" cy="80" rx="10" ry="22" transform="rotate(30 130 80)"/></g><path d="M100 190 105 40" stroke="#0F5132" stroke-width="5"/></svg>
+  <svg class="monstera m4" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 190C40 170 10 110 30 60 50 20 110 5 150 30c40 25 50 90 20 130-15 20-40 30-70 30Z" fill="#228553"/><g fill="#0F5132"><ellipse cx="70" cy="70" rx="10" ry="22" transform="rotate(-30 70 70)"/><ellipse cx="80" cy="130" rx="10" ry="20" transform="rotate(-50 80 130)"/></g><path d="M100 190 105 40" stroke="#0F5132" stroke-width="5"/></svg>
+  <div class="msg"><b>Inaya</b>Écartez les feuilles</div>
+</div>
+
+<header class="couv">
+  <div class="photo" role="img" aria-label="Décoration de la fête" data-fond-parallaxe="0.12" data-base="50" data-zoom="160% auto"></div>
+  <span class="ans">18 ans</span>
+  <h1 class="titre">Inaya</h1>
+  <p>vous invite à sa fête tropicale</p>
+  <p class="date">Samedi 17 juillet 2027 · 18h00</p>
+</header>
+
+<main>
+  <div class="motif" style="left:-26px;top:6%;width:80px;height:80px" data-parallaxe="0.3" data-rotation="0.08" aria-hidden="true"><svg viewBox="0 0 200 200"><path d="M100 190C40 170 10 110 30 60 50 20 110 5 150 30c40 25 50 90 20 130-15 20-40 30-70 30Z" fill="#1E7A4C"/><ellipse cx="80" cy="90" rx="10" ry="22" fill="#FFF4E2" transform="rotate(-30 80 90)"/></svg></div>
+  <div class="motif" style="right:-20px;top:42%;width:60px;height:60px" data-parallaxe="-0.25" data-rotation="-0.1" aria-hidden="true"><svg viewBox="-30 -30 60 60"><circle r="22" fill="#FFC845"/><path d="M-6-22 0-36 6-22" fill="#1E7A4C"/></svg></div>
+  <section class="carte apparait"><h2>Aloha !</h2><p>Chemise à fleurs, colliers de fleurs et bonne humeur : on fête mes 18 ans au soleil.</p></section>
+  <section class="carte apparait" data-effet="zoom"><h2>Le lieu</h2><p>Villa Palmeraie · bord de piscine</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=villa" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La décoration" style="border-radius:26px"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte vert apparait"><h2>La carte des cocktails</h2>
+    <ul class="cocktails"><li><span>Coco Loco</span><span>sans alcool</span></li><li><span>Mangue passion</span><span>sans alcool</span></li><li><span>Ananas glacé</span><span>sans alcool</span></li></ul></section>
+  <section class="carte apparait"><h2>Au programme</h2><ul class="prog"><li><b>18h00</b>Accueil et cocktails</li><li><b>19h30</b>Barbecue</li><li><b>21h00</b>Gâteau</li><li><b>21h30</b>Soirée dansante</li></ul></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Les détails" style="border-radius:26px"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte apparait"><h2>Plus que</h2>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>h</div><div><b id="m">--</b>min</div><div><b id="s">--</b>s</div></div>
+    <a class="lien vide" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="carte apparait"><h2>Tu viens ?</h2>
+    <button class="lien reponse">Oui !</button> <button class="lien vide reponse">Je ne pourrai pas</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied">Invitation de démonstration · personne fictive · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-07-17T18:00:00', fin: '20270718T010000', titre: 'Les 18 ans d\'Inaya', lieu: 'Villa Palmeraie', fichier: 'anniversaire-inaya', jour: 'C\'est aujourd\'hui', duree: 1500 };</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>

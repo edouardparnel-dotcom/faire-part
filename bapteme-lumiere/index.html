@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le baptême de Gabriel — Invitation (démonstration)</title>
+<meta property="og:title" content="Le baptême de Gabriel">
+<meta property="og:description" content="Dimanche 6 juin 2027 · 10h30.">
+<meta property="og:image" content="https://edouardparnel-dotcom.github.io/faire-part/bapteme-lumiere/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#FBF9F4">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Mulish:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Lumière » : baptême sobre et lumineux. Ouverture par un cierge qui s'allume
+   et inonde l'écran de lumière, blanc, vert olive et or, rameaux d'olivier. */
+:root{--blanc:#FBF9F4;--ivoire:#F3EEE3;--olive:#6E7B4F;--olive2:#A3AE84;--or:#C2A15C;--encre:#33352C;--doux:#868A78}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Mulish',sans-serif;font-weight:300;color:var(--encre);background:var(--blanc);line-height:1.75;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.nuit{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;place-items:center;background:#16140f;transition:background 1.2s .3s,opacity .6s 1.4s}
+.nuit.ouvert{background:#fffdf5;opacity:0;pointer-events:none}
+.cierge{position:relative;width:26px;height:170px;margin-top:80px;background:linear-gradient(90deg,#efe9da,#fff,#e6dfcc);border-radius:4px}
+.cierge::before{content:"";position:absolute;left:50%;top:-12px;width:2px;height:12px;margin-left:-1px;background:#444}
+.flamme{position:absolute;left:50%;top:-52px;width:22px;height:40px;margin-left:-11px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff 0 20%,#ffd36b 40%,#ff9a2e 70%,transparent 72%);opacity:0;transform:scale(.4);transition:opacity .4s,transform .6s}
+.nuit.ouvert .flamme,.nuit:hover .flamme{opacity:1;transform:scale(1)}
+.halo{position:absolute;left:50%;top:-80px;width:300px;height:300px;margin-left:-150px;border-radius:50%;background:radial-gradient(circle,rgba(255,211,107,.45),transparent 60%);opacity:0;transition:opacity .8s,transform 1.4s}
+.nuit.ouvert .halo{opacity:1;transform:scale(8)}
+.nuit p{position:absolute;bottom:14%;color:#d8cfb8;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px}
+.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:16px;padding:50px 24px;text-align:center}
+.rameau{width:150px}
+.arche{width:min(280px,72vw);aspect-ratio:3/4;border-radius:140px 140px 0 0;background:#e9e4d6 url('photo.jpg') center/cover;outline:1px solid var(--or2,var(--or));outline-offset:8px}
+.sur{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--olive)}
+.prenom{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(58px,17vw,92px);line-height:1}
+.date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--doux)}
+main{position:relative;max-width:500px;margin:0 auto;padding:0 24px 80px;text-align:center}
+.orn{display:block;width:120px;margin:40px auto 24px}
+h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:30px;margin-bottom:6px}
+.etq{display:block;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--or);margin-bottom:6px}
+.citation{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px}
+.lien{display:inline-block;margin-top:14px;font-family:inherit;font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#fff;background:var(--olive);padding:12px 22px;border:0;text-decoration:none;cursor:pointer}
+.lien.vide{background:transparent;color:var(--olive);box-shadow:inset 0 0 0 1px var(--olive)}
+.prog{list-style:none}.prog li{padding:8px 0;border-bottom:1px solid var(--ivoire)}.prog b{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--or);margin-right:10px}
+.rebours{display:flex;justify-content:center;gap:18px}.rebours div{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--doux)}
+.rebours b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:42px;color:var(--encre)}
+.demo{display:none;margin-top:12px;color:var(--olive);font-weight:600}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+</style>
+</head>
+<body class="ferme">
+<div class="nuit" data-ouverture role="button" aria-label="Ouvrir l'invitation"><div class="cierge"><div class="halo"></div><div class="flamme"></div></div><p>Touchez pour allumer le cierge</p></div>
+
+<header class="couv">
+  <svg class="rameau" viewBox="0 0 150 40" aria-hidden="true"><path d="M5 30C40 26 90 26 145 12" stroke="#6E7B4F" stroke-width="1.5" fill="none"/><g fill="#A3AE84"><ellipse cx="30" cy="24" rx="9" ry="3.5" transform="rotate(-25 30 24)"/><ellipse cx="55" cy="28" rx="9" ry="3.5" transform="rotate(20 55 28)"/><ellipse cx="78" cy="20" rx="9" ry="3.5" transform="rotate(-25 78 20)"/><ellipse cx="102" cy="22" rx="9" ry="3.5" transform="rotate(20 102 22)"/><ellipse cx="124" cy="13" rx="9" ry="3.5" transform="rotate(-25 124 13)"/></g><g fill="#6E7B4F"><circle cx="66" cy="31" r="3"/><circle cx="113" cy="25" r="3"/></g></svg>
+  <p class="sur">Nous avons la joie de vous inviter au baptême de</p>
+  <div class="arche" role="img" aria-label="Décoration du baptême" data-fond-parallaxe="0.1" data-base="50" data-zoom="160% auto"></div>
+  <h1 class="prenom">Gabriel</h1>
+  <p class="date">Dimanche 6 juin 2027</p>
+</header>
+
+<main>
+  <svg class="orn apparait" viewBox="0 0 120 20" aria-hidden="true"><path d="M2 10h46M72 10h46M60 2v16M53 8h14" stroke="#C2A15C" fill="none"/></svg>
+  <section class="apparait"><p class="citation">« Que la lumière de ce jour t'accompagne toute ta vie. »</p></section>
+  <svg class="orn apparait" viewBox="0 0 120 20" aria-hidden="true"><path d="M2 10h46M72 10h46M60 2v16M53 8h14" stroke="#C2A15C" fill="none"/></svg>
+  <section class="apparait" data-effet="zoom"><span class="etq">La cérémonie</span><h2>Église Notre-Dame</h2><p>10h30 · centre-ville</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=%C3%A9glise+notre-dame" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="La décoration"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="apparait"><span class="etq">Ensuite</span><h2>Le déjeuner</h2>
+    <ul class="prog"><li><b>10h30</b>Cérémonie</li><li><b>12h00</b>Apéritif au jardin</li><li><b>13h00</b>Déjeuner en famille</li><li><b>16h00</b>Dragées et gâteau</li></ul></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Les détails"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="apparait"><span class="etq">Dans</span>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
+    <a class="lien vide" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="apparait"><span class="etq">Votre réponse</span><h2>Serez-vous là ?</h2>
+    <button class="lien reponse">Je serai présent(e)</button> <button class="lien vide reponse">Je ne pourrai pas</button>
+    <p class="demo" id="demo">Démonstration : sur votre invitation, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied">Invitation de démonstration · enfant fictif · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-06-06T10:30:00', fin: '20270606T180000', titre: 'Baptême de Gabriel', lieu: 'Église Notre-Dame', fichier: 'bapteme-gabriel', jour: 'C\'est aujourd\'hui', duree: 1900 };</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+</body>
+</html>
