@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Espace organisateur (démonstration)</title>
+<title>Espace mariage (démonstration)</title>
 <meta name="theme-color" content="#FAF7F2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -17,12 +17,12 @@
 body{font-family:'Inter',system-ui,sans-serif;font-weight:400;font-size:15px;color:var(--texte);background:var(--fond);line-height:1.5}
 .demo-bandeau{background:var(--or);color:#fff;text-align:center;font-size:12px;padding:6px 10px}
 header{position:sticky;top:0;z-index:5;background:var(--fond);border-bottom:1px solid var(--bord)}
-.barre-haut{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+.barre-haut{max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between;padding:12px 16px}
 .marque{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px}
 .evt{font-size:13px;color:var(--doux)}
 nav{max-width:900px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
-nav button{flex:none;border:1px solid var(--bord);background:var(--carte);color:var(--texte);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
-nav button.actif{background:var(--noir);color:var(--fond);border-color:var(--noir)}
+nav a{text-decoration:none;flex:none;border:1px solid var(--bord);background:var(--carte);color:var(--texte);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+nav a.actif{background:var(--noir);color:var(--fond);border-color:var(--noir)}
 main{max-width:900px;margin:0 auto;padding:20px 16px 60px}
 h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:36px;line-height:1.1}
 .sous{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--doux);margin:4px 0 18px}
@@ -59,20 +59,36 @@ input,select,textarea{font:inherit;font-size:14px;padding:9px 11px;border:1px so
 .jeux .carte h3{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px}
 .cache{display:none}
 .message{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px}
+.crayon{border:0;background:none;color:var(--doux);font:inherit;font-size:13px;cursor:pointer;padding:4px 6px;border-radius:6px}
+.crayon:hover{background:var(--bord);color:var(--texte)}
+.edition{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));align-items:center;padding:10px;margin:6px 0;border:1px solid var(--or);border-radius:10px;background:var(--fond)}
+.edition .actions{display:flex;gap:6px;flex-wrap:wrap;grid-column:1/-1}
+.btn.danger{background:transparent;color:var(--rouge);border:1px solid var(--rouge)}
+.aide{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.aide a{display:block;text-decoration:none;color:inherit;border:1px solid var(--bord);border-radius:12px;padding:12px;background:var(--fond)}
+.aide a:hover{border-color:var(--or)}
+.aide b{display:block;font-size:14px}
+.aide span{font-size:12px;color:var(--doux)}
+.retour{font-size:13px;color:var(--doux);text-decoration:none}
+.interrupteur{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.interrupteur input{width:auto;transform:scale(1.3)}
+label.champ{display:grid;gap:4px;font-size:12px;color:var(--doux)}
 </style>
 </head>
 <body>
 <div class="demo-bandeau">Démonstration · données fictives, enregistrées seulement dans ce navigateur · <a href="#" id="reinit" style="color:#fff">réinitialiser</a></div>
 <header>
-  <div class="barre-haut"><span class="marque">Votre espace</span><span class="evt">Naïka &amp; Jonathan · 19 juin 2027</span></div>
+  <div class="barre-haut"><a class="retour" href="../#mariage">← Modèles de mariage</a><span class="marque">Votre espace mariage</span><span class="evt" id="evt"></span></div>
   <nav id="onglets"></nav>
 </header>
 <main id="vue"></main>
 
 <script>
 // ── Données de démonstration (persistées dans le navigateur) ─────────────────
+const MODELES = { lakay: 'Lakay', madras: 'Madras', kente: 'Kente', owambe: 'Owambe', toghu: 'Toghu', teranga: 'Teranga', sape: 'Sape',
+  champetre: 'Champêtre', boheme: 'Bohème chic', classique: 'Classique', kita: 'Kita', bogolan: 'Bogolan', tibeb: 'Tibeb' };
 const DEPART = {
-  evenement: { titre: 'Naïka & Jonathan', date: '2027-06-19T15:00:00', lien: '../lakay/' },
+  evenement: { titre: 'Naïka & Jonathan', date: '2027-06-19T15:00', lieu: 'Domaine des Flamboyants, Pétion-Ville', modele: 'lakay' },
   invites: [
     ['Rosa Ferrante', 'oui', 'Lakou'], ['David Wells', 'oui', 'Lakou'], ['Luca De Santis', 'oui', 'Flanbwayan'], ['James Carter', 'attente', ''],
     ['Samuel Price', 'non', ''], ['Marie Joseph', 'oui', 'Flanbwayan'], ['Jean Baptiste', 'oui', 'Lakou'], ['Nadège Pierre', 'oui', 'Kalfou'],
@@ -93,19 +109,35 @@ const DEPART = {
     { t: 'Essayage de la robe', cat: 'Tenues', etat: 0 }, { t: 'Réserver le photographe', cat: 'Photo', etat: 2 },
     { t: 'Playlist du bal konpa', cat: 'Musique', etat: 0 }, { t: 'Plan de table', cat: 'Invités', etat: 0 },
   ],
+  photos: ['../lakay/decor-ensemble.jpg', '../lakay/decor-detail.jpg', '../madras/decor-ensemble.jpg', '../teranga/decor-detail.jpg', '../champetre/decor-detail.jpg', '../boheme/decor-ensemble.jpg', '../classique/decor-detail.jpg', '../owambe/decor-detail.jpg', '../toghu/decor-detail.jpg'],
   livre: [{ de: 'Marie', mot: 'Tout le bonheur du monde à vous deux. Lanmou se yon lakay !' }, { de: 'Ralph', mot: 'On a hâte de danser avec vous jusqu\'au bout de la nuit.' }],
   musique: [{ de: 'Jean', titre: 'Lanmou', artiste: 'Kompa Gouyad' }],
+  jeux: [
+    { nom: 'Quiz des mariés', txt: 'Un quiz chronométré sur le couple. Bonus pour les plus rapides.', actif: true },
+    { nom: 'Pronostics', txt: 'Qui pleurera le premier ? Quelle chanson ouvrira le bal ? Réponses dévoilées après la fête.', actif: true },
+    { nom: 'Bingo du mariage', txt: 'Cochez les moments au fil de la soirée. La première ligne gagne.', actif: false },
+    { nom: 'Le coin des enfants', txt: 'Un petit parcours rien que pour eux, avec leur prénom et leur âge.', actif: true },
+  ],
 };
-const CLE = 'espace-demo-v1';
-let D; try { D = JSON.parse(localStorage.getItem(CLE)) || structuredClone(DEPART); } catch { D = structuredClone(DEPART); }
+const CLE = 'espace-demo-v2';
+let D; try { D = { ...structuredClone(DEPART), ...JSON.parse(localStorage.getItem(CLE)) }; } catch { D = structuredClone(DEPART); }
 const sauver = () => { try { localStorage.setItem(CLE, JSON.stringify(D)); } catch {} };
-document.getElementById('reinit').onclick = e => { e.preventDefault(); D = structuredClone(DEPART); sauver(); afficher(onglet); };
+document.getElementById('reinit').onclick = e => { e.preventDefault(); D = structuredClone(DEPART); E = null; sauver(); afficher(onglet); };
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-const eur = n => n.toLocaleString('fr-FR') + ' €';
+const eur = n => (+n || 0).toLocaleString('fr-FR') + ' €';
 const initiales = n => n.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
+const dateLongue = d => new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 const COULEURS = { oui: 'var(--vert)', non: 'var(--rouge)', attente: 'var(--gris)' };
 const LIB = { oui: 'Présent', non: 'Absent', attente: 'En attente' };
+const CAT = { Lieu: '#8A6A3A', Traiteur: '#2E6E73', Papeterie: '#B0573E', Tenues: '#9A5C8C', Photo: '#4D6FA1', Musique: '#C08A2C', Invités: '#5E7D52' };
+
+// Élément en cours de modification : { liste, k } (une seule fiche ouverte à la fois)
+let E = null;
+const enEdition = (liste, k) => E && E.liste === liste && E.k === k;
+const crayon = (liste, k) => `<button class="crayon" data-editer="${liste}:${k}" aria-label="Modifier">✎ Modifier</button>`;
+const actions = (liste, k) => `<div class="actions"><button class="btn">Enregistrer</button><button type="button" class="btn vide" data-annuler>Annuler</button><button type="button" class="btn danger" data-suppr="${liste}:${k}">Supprimer</button></div>`;
+const optTables = sel => `<option value="">Sans table</option>` + D.tables.map(t => `<option ${t.nom === sel ? 'selected' : ''}>${esc(t.nom)}</option>`).join('');
 
 // Anneau SVG (parts d'un total)
 function anneau(parts, taille = 150) {
@@ -114,119 +146,147 @@ function anneau(parts, taille = 150) {
   return `<svg width="${taille}" height="${taille}" viewBox="0 0 140 140" role="img" aria-label="Répartition">${arcs}</svg>`;
 }
 
-// ── Vues ─────────────────────────────────────────────────────────────────────
+// ── Vues : [adresse, titre, aide, rendu] ─────────────────────────────────────
 const VUES = {
-  'Tableau de bord'() {
+  'tableau': ['Tableau de bord', 'Le résumé de votre mariage', () => {
     const n = k => D.invites.filter(i => i.rep === k).length, jours = Math.max(0, Math.ceil((new Date(D.evenement.date) - Date.now()) / 864e5));
     const dep = D.budget.depenses, paye = dep.reduce((s, d) => s + d.paye, 0), faites = D.taches.filter(t => t.etat === 2).length;
-    return `<h1>${esc(D.evenement.titre)}</h1><p class="sous">${jours} jours avant le grand jour · samedi 19 juin 2027</p>
-      <a class="btn" href="${D.evenement.lien}" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;margin-bottom:16px">Voir le faire-part →</a>
+    return `<h1>${esc(D.evenement.titre)}</h1><p class="sous">${jours} jours avant le grand jour · ${dateLongue(D.evenement.date)} · ${esc(D.evenement.lieu)}</p>
+      <a class="btn" href="../${D.evenement.modele}/" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;margin:0 6px 16px 0">Voir le faire-part →</a>
+      <a class="btn vide" href="#mariage" style="display:inline-block;text-decoration:none;margin-bottom:16px">Modifier les informations</a>
       <div class="grille">
-        <div class="carte stat"><b>${D.invites.length}</b><span>Invités</span></div>
-        <div class="carte stat"><b>${n('oui')}</b><span>Présents</span></div>
-        <div class="carte stat"><b>${n('non')}</b><span>Absents</span></div>
-        <div class="carte stat"><b>${n('attente')}</b><span>En attente</span></div>
+        <a class="carte stat" href="#invites" style="text-decoration:none;color:inherit"><b>${D.invites.length}</b><span>Invités</span></a>
+        <a class="carte stat" href="#invites" style="text-decoration:none;color:inherit"><b>${n('oui')}</b><span>Présents</span></a>
+        <a class="carte stat" href="#invites" style="text-decoration:none;color:inherit"><b>${n('non')}</b><span>Absents</span></a>
+        <a class="carte stat" href="#invites" style="text-decoration:none;color:inherit"><b>${n('attente')}</b><span>En attente</span></a>
       </div>
       <div class="carte"><span class="etq">Réponses</span><div class="anneau">${anneau([{ v: n('oui'), c: COULEURS.oui }, { v: n('non'), c: COULEURS.non }, { v: n('attente'), c: COULEURS.attente }])}
         <div class="legende"><span><i style="background:var(--vert)"></i>Présents</span><span><i style="background:var(--rouge)"></i>Absents</span><span><i style="background:var(--gris)"></i>En attente</span></div></div></div>
       <div class="grille">
-        <div class="carte stat"><b>${eur(paye)}</b><span>Déjà payé</span></div>
-        <div class="carte stat"><b>${faites}/${D.taches.length}</b><span>Tâches faites</span></div>
-        <div class="carte stat"><b>${D.livre.length}</b><span>Mots au livre d'or</span></div>
-      </div>`;
-  },
-  'Invités'() {
-    return `<h1>Invités</h1><p class="sous">${D.invites.length} personnes sur votre liste</p>
+        <a class="carte stat" href="#budget" style="text-decoration:none;color:inherit"><b>${eur(paye)}</b><span>Déjà payé</span></a>
+        <a class="carte stat" href="#planning" style="text-decoration:none;color:inherit"><b>${faites}/${D.taches.length}</b><span>Tâches faites</span></a>
+        <a class="carte stat" href="#livre-or" style="text-decoration:none;color:inherit"><b>${D.livre.length}</b><span>Mots au livre d'or</span></a>
+      </div>
+      <div class="carte"><span class="etq">Comment modifier votre espace</span><div class="aide">
+        ${Object.entries(VUES).filter(([k]) => k !== 'tableau').map(([k, [t, a]]) => `<a href="#${k}"><b>${t} →</b><span>${a}</span></a>`).join('')}</div></div>`;
+  }],
+  'mariage': ['Mon mariage', 'Prénoms, date, lieu et modèle du faire-part', () => `<h1>Mon mariage</h1><p class="sous">Ces informations s'affichent sur votre faire-part et dans l'espace</p>
+      <form class="carte form" id="f-evenement">
+        <label class="champ">Vos prénoms<input name="titre" value="${esc(D.evenement.titre)}" required></label>
+        <label class="champ">Date et heure<input name="date" type="datetime-local" value="${esc(D.evenement.date)}" required></label>
+        <label class="champ">Lieu<input name="lieu" value="${esc(D.evenement.lieu)}" required></label>
+        <label class="champ">Modèle du faire-part<select name="modele">${Object.entries(MODELES).map(([s, n]) => `<option value="${s}" ${s === D.evenement.modele ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+        <label class="champ">Budget total (€)<input name="total" type="number" min="0" value="${D.budget.total}"></label>
+        <button class="btn">Enregistrer</button><p class="petit" id="ok" style="display:none">Enregistré.</p></form>`],
+  'invites': ['Invités', 'Ajouter, renommer, supprimer un invité, changer sa réponse', () => `<h1>Invités</h1><p class="sous">${D.invites.length} personnes sur votre liste</p>
       <div class="carte"><span class="etq">Envoyer à tout le monde</span>
         <div class="ligne"><span>Faire-part</span><button class="btn vide envoi">Envoyer à ${D.invites.length} invités</button></div>
         <div class="ligne"><span>Relance</span><button class="btn vide envoi">Relancer ${D.invites.filter(i => i.rep === 'attente').length} invités sans réponse</button></div>
         <p class="petit" id="envoi-msg" style="display:none;margin-top:8px">Démonstration : sur votre espace, l'envoi part par WhatsApp ou par courriel.</p></div>
-      <div class="carte"><span class="etq">Liste (touchez une réponse pour la changer)</span>
-        ${D.invites.map((i, k) => `<div class="ligne"><span>${esc(i.nom)}${i.table ? `<br><span class="petit">Table ${esc(i.table)}</span>` : ''}</span><button class="puce ${i.rep}" data-rep="${k}">${LIB[i.rep]}</button></div>`).join('')}
-        <form class="form deux" id="ajout-invite"><input name="nom" placeholder="Prénom et nom" required><span></span><button class="btn">Ajouter</button></form></div>`;
-  },
-  'Plan de table'() {
-    const places = (nom) => D.invites.filter(i => i.table === nom && i.rep !== 'non');
+      <div class="carte"><span class="etq">Touchez une réponse pour la changer · ✎ pour modifier ou supprimer</span>
+        ${D.invites.map((i, k) => enEdition('invites', k)
+          ? `<form class="edition" data-form="invites:${k}"><input name="nom" value="${esc(i.nom)}" required><select name="rep">${Object.entries(LIB).map(([v, l]) => `<option value="${v}" ${v === i.rep ? 'selected' : ''}>${l}</option>`).join('')}</select><select name="table">${optTables(i.table)}</select>${actions('invites', k)}</form>`
+          : `<div class="ligne"><span>${esc(i.nom)}${i.table ? `<br><span class="petit">Table ${esc(i.table)}</span>` : ''}</span><span><button class="puce ${i.rep}" data-rep="${k}">${LIB[i.rep]}</button>${crayon('invites', k)}</span></div>`).join('')}
+        <form class="form deux" id="ajout-invite"><input name="nom" placeholder="Prénom et nom" required><span></span><button class="btn">Ajouter</button></form></div>`],
+  'tables': ['Plan de table', 'Créer, renommer une table, changer le nombre de places, placer les invités', () => {
+    const places = nom => D.invites.filter(i => i.table === nom && i.rep !== 'non');
     const assis = D.invites.filter(i => i.table && i.rep !== 'non').length, aPlacer = D.invites.filter(i => !i.table && i.rep === 'oui');
     return `<h1>Plan de table</h1><p class="sous">${D.tables.length} tables · ${assis} invités placés</p>
       <div class="tables">${D.tables.map(t => { const p = places(t.nom); return `<div class="table"><div class="rond">${esc(t.nom)}<br><span class="petit">${p.length}/${t.places}</span></div>
         ${Array.from({ length: t.places }, (_, k) => { const a = (k / t.places) * 2 * Math.PI - Math.PI / 2, x = 50 + 38 * Math.cos(a), y = 50 + 38 * Math.sin(a), inv = p[k];
           return `<div class="siege ${inv ? '' : 'vide'}" style="left:${x}%;top:${y}%" title="${inv ? esc(inv.nom) : 'Libre'}">${inv ? initiales(inv.nom) : ''}</div>`; }).join('')}</div>`; }).join('')}</div>
       <div class="carte" style="margin-top:14px"><span class="etq">À placer</span>
-        ${aPlacer.length ? aPlacer.map(i => `<div class="ligne"><span>${esc(i.nom)}</span><select data-placer="${esc(i.nom)}" style="width:auto"><option value="">Choisir une table</option>${D.tables.map(t => `<option>${esc(t.nom)}</option>`).join('')}</select></div>`).join('') : '<p class="petit">Tous les invités présents ont une place.</p>'}</div>`;
-  },
-  'Budget'() {
+        ${aPlacer.length ? aPlacer.map(i => `<div class="ligne"><span>${esc(i.nom)}</span><select data-placer="${esc(i.nom)}" style="width:auto"><option value="">Choisir une table</option>${D.tables.map(t => `<option>${esc(t.nom)}</option>`).join('')}</select></div>`).join('') : '<p class="petit">Tous les invités présents ont une place. Pour changer quelqu\'un de table, passez par Invités.</p>'}</div>
+      <div class="carte"><span class="etq">Les tables</span>
+        ${D.tables.map((t, k) => enEdition('tables', k)
+          ? `<form class="edition" data-form="tables:${k}"><input name="nom" value="${esc(t.nom)}" required><input name="places" type="number" min="1" max="20" value="${t.places}" required>${actions('tables', k)}</form>`
+          : `<div class="ligne"><span>${esc(t.nom)}<br><span class="petit">${t.places} places</span></span>${crayon('tables', k)}</div>`).join('')}
+        <form class="form deux" id="ajout-table"><input name="nom" placeholder="Nom de la table" required><input name="places" type="number" min="1" max="20" value="8" required><button class="btn">Ajouter</button></form></div>`;
+  }],
+  'budget': ['Budget', 'Changer le budget total, ajouter un prestataire, noter un paiement', () => {
     const dep = D.budget.depenses, prevu = dep.reduce((s, d) => s + d.montant, 0), paye = dep.reduce((s, d) => s + d.paye, 0);
     const pal = ['#A8834A', '#7A9E6B', '#C9705A', '#D9A75A', '#8C8A86', '#5E8DB8'];
-    return `<h1>Budget</h1><p class="sous">Suivi privé, invisible pour les invités</p>
+    return `<h1>Budget</h1><p class="sous">Suivi privé, invisible pour les invités · <a href="#mariage" style="color:inherit">changer le budget total</a></p>
       <div class="grille"><div class="carte stat"><b>${eur(D.budget.total)}</b><span>Budget total</span></div><div class="carte stat"><b>${eur(paye)}</b><span>Payé</span></div>
         <div class="carte stat"><b>${eur(prevu - paye)}</b><span>Reste à payer</span></div><div class="carte stat"><b>${eur(D.budget.total - prevu)}</b><span>Encore disponible</span></div></div>
       <div class="carte"><span class="etq">Répartition</span><div class="anneau">${anneau(dep.map((d, k) => ({ v: d.montant, c: pal[k % pal.length] })))}
         <div class="legende">${dep.map((d, k) => `<span><i style="background:${pal[k % pal.length]}"></i>${esc(d.poste)}</span>`).join('')}</div></div></div>
-      <div class="carte"><span class="etq">Prestataires et paiements</span>
-        ${dep.map(d => `<div class="ligne"><span>${esc(d.fournisseur)}<br><span class="petit">${esc(d.poste)} · payé ${eur(d.paye)}</span></span><b>${eur(d.montant)}</b></div>`).join('')}
+      <div class="carte"><span class="etq">Prestataires et paiements · ✎ pour noter un paiement</span>
+        ${dep.map((d, k) => enEdition('depenses', k)
+          ? `<form class="edition" data-form="depenses:${k}"><label class="champ">Prestataire<input name="fournisseur" value="${esc(d.fournisseur)}" required></label><label class="champ">Poste<input name="poste" value="${esc(d.poste)}" required></label><label class="champ">Montant (€)<input name="montant" type="number" min="0" value="${d.montant}" required></label><label class="champ">Déjà payé (€)<input name="paye" type="number" min="0" value="${d.paye}" required></label>${actions('depenses', k)}</form>`
+          : `<div class="ligne"><span>${esc(d.fournisseur)}<br><span class="petit">${esc(d.poste)} · payé ${eur(d.paye)}</span></span><span><b>${eur(d.montant)}</b> ${crayon('depenses', k)}</span></div>`).join('')}
         <form class="form" id="ajout-depense"><input name="fournisseur" placeholder="Prestataire" required><input name="poste" placeholder="Poste (ex. Gâteau)" required><input name="montant" type="number" min="0" placeholder="Montant en €" required><button class="btn">Ajouter</button></form></div>`;
-  },
-  'Planning'() {
-    const COLS = ['À faire', 'En cours', 'Fait'], CAT = { Lieu: '#8A6A3A', Traiteur: '#2E6E73', Papeterie: '#B0573E', Tenues: '#9A5C8C', Photo: '#4D6FA1', Musique: '#C08A2C', Invités: '#5E7D52' };
-    return `<h1>Planning</h1><p class="sous">Touchez une tâche pour la faire avancer · ${D.taches.filter(t => t.etat === 2).length} sur ${D.taches.length} faites</p>
+  }],
+  'planning': ['Planning', 'Ajouter une tâche, la faire avancer, la renommer ou la supprimer', () => {
+    const COLS = ['À faire', 'En cours', 'Fait'];
+    return `<h1>Planning</h1><p class="sous">Touchez une tâche pour la faire avancer · ✎ pour la modifier · ${D.taches.filter(t => t.etat === 2).length} sur ${D.taches.length} faites</p>
       <div class="kanban">${COLS.map((c, e) => `<div class="colonne"><h3>${c}<span class="petit">${D.taches.filter(t => t.etat === e).length}</span></h3>
-        ${D.taches.map((t, k) => t.etat === e ? `<div class="tache" data-tache="${k}"><span class="cat" style="background:${CAT[t.cat] || '#888'}">${esc(t.cat)}</span><div>${esc(t.t)}</div></div>` : '').join('')}</div>`).join('')}</div>
+        ${D.taches.map((t, k) => t.etat !== e ? '' : enEdition('taches', k)
+          ? `<form class="edition" data-form="taches:${k}" style="grid-template-columns:1fr"><input name="t" value="${esc(t.t)}" required><select name="cat">${Object.keys(CAT).map(c => `<option ${c === t.cat ? 'selected' : ''}>${c}</option>`).join('')}</select>${actions('taches', k)}</form>`
+          : `<div class="tache" data-tache="${k}"><span class="cat" style="background:${CAT[t.cat] || '#888'}">${esc(t.cat)}</span><div>${esc(t.t)}</div>${crayon('taches', k)}</div>`).join('')}</div>`).join('')}</div>
       <form class="form deux" id="ajout-tache" style="margin-top:12px"><input name="t" placeholder="Nouvelle tâche" required><select name="cat">${Object.keys(CAT).map(c => `<option>${c}</option>`).join('')}</select><button class="btn">Ajouter</button></form>`;
-  },
-  'Photos'() {
-    const imgs = ['../lakay/decor-ensemble.jpg', '../lakay/decor-detail.jpg', '../madras/decor-ensemble.jpg', '../teranga/decor-detail.jpg', '../champetre/decor-detail.jpg', '../boheme/decor-ensemble.jpg', '../classique/decor-detail.jpg', '../owambe/decor-detail.jpg', '../toghu/decor-detail.jpg'];
-    return `<h1>Mur photo</h1><p class="sous">Les photos de vos invités, en direct pendant la fête</p>
-      <div class="carte"><span class="etq">${imgs.length} photos partagées</span><div class="mur">${imgs.map(s => `<div style="background-image:url('${s}')"></div>`).join('')}</div>
-      <p class="petit" style="margin-top:10px">Sur votre événement, chaque invité ajoute ses photos depuis son téléphone, sans application.</p></div>`;
-  },
-  'Livre d\'or'() {
-    return `<h1>Livre d'or</h1><p class="sous">Les mots de vos proches</p>
-      <div class="carte">${D.livre.map(l => `<div class="ligne" style="display:block"><p class="message">« ${esc(l.mot)} »</p><span class="petit">${esc(l.de)}</span></div>`).join('')}
+  }],
+  'photos': ['Mur photo', 'Retirer une photo du mur', () => `<h1>Mur photo</h1><p class="sous">Les photos de vos invités, en direct pendant la fête</p>
+      <div class="carte"><span class="etq">${D.photos.length} photos partagées · touchez ✕ pour retirer une photo</span><div class="mur">${D.photos.map((s, k) => `<div style="background-image:url('${s}');position:relative"><button class="crayon" data-suppr="photos:${k}" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.55);color:#fff" aria-label="Retirer">✕</button></div>`).join('')}</div>
+      <p class="petit" style="margin-top:10px">Sur votre événement, chaque invité ajoute ses photos depuis son téléphone, sans application.</p></div>`],
+  'livre-or': ['Livre d\'or', 'Signer, retirer un message ou une chanson', () => `<h1>Livre d'or</h1><p class="sous">Les mots de vos proches</p>
+      <div class="carte">${D.livre.map((l, k) => `<div class="ligne"><span><p class="message">« ${esc(l.mot)} »</p><span class="petit">${esc(l.de)}</span></span><button class="crayon" data-suppr="livre:${k}">Retirer</button></div>`).join('')}
         <form class="form" id="ajout-mot"><input name="de" placeholder="Votre prénom" required><textarea name="mot" rows="3" maxlength="500" placeholder="Votre message aux mariés…" required></textarea><button class="btn">Signer le livre d'or</button></form></div>
-      <div class="carte"><span class="etq">Demandes de chansons</span>${D.musique.map(m => `<div class="ligne"><span>${esc(m.titre)} · ${esc(m.artiste)}</span><span class="petit">${esc(m.de)}</span></div>`).join('')}
-        <form class="form" id="ajout-son"><input name="de" placeholder="Votre prénom" required><input name="titre" placeholder="Titre" required><input name="artiste" placeholder="Artiste" required><button class="btn">Demander la chanson</button></form></div>`;
-  },
-  'Jeux'() {
-    return `<h1>Jeux</h1><p class="sous">De petits jeux pour vos invités, à jouer quand ils veulent</p><div class="jeux">
-      <div class="carte"><h3>Quiz des mariés</h3><p class="petit">Un quiz chronométré sur le couple. Bonus pour les plus rapides.</p></div>
-      <div class="carte"><h3>Pronostics</h3><p class="petit">Qui pleurera le premier ? Quelle chanson ouvrira le bal ? Réponses dévoilées après la fête.</p></div>
-      <div class="carte"><h3>Bingo du mariage</h3><p class="petit">Cochez les moments au fil de la soirée. La première ligne gagne.</p></div>
-      <div class="carte"><h3>Le coin des enfants</h3><p class="petit">Un petit parcours rien que pour eux, avec leur prénom et leur âge.</p></div></div>`;
-  },
+      <div class="carte"><span class="etq">Demandes de chansons</span>${D.musique.map((m, k) => `<div class="ligne"><span>${esc(m.titre)} · ${esc(m.artiste)}<br><span class="petit">${esc(m.de)}</span></span><button class="crayon" data-suppr="musique:${k}">Retirer</button></div>`).join('')}
+        <form class="form" id="ajout-son"><input name="de" placeholder="Votre prénom" required><input name="titre" placeholder="Titre" required><input name="artiste" placeholder="Artiste" required><button class="btn">Demander la chanson</button></form></div>`],
+  'jeux': ['Jeux', 'Choisir les jeux proposés aux invités', () => `<h1>Jeux</h1><p class="sous">Activez les jeux que vos invités verront</p><div class="jeux">
+      ${D.jeux.map((j, k) => `<div class="carte interrupteur"><span><h3>${esc(j.nom)}</h3><span class="petit">${esc(j.txt)}</span></span><input type="checkbox" data-jeu="${k}" ${j.actif ? 'checked' : ''} aria-label="Proposer ${esc(j.nom)}"></div>`).join('')}</div>`],
 };
 
-// ── Navigation et interactions ───────────────────────────────────────────────
-let onglet = 'Tableau de bord';
-try { onglet = localStorage.getItem('espace-onglet') || onglet; } catch {}
+// ── Navigation (chaque partie a son adresse : espace/#invites, #budget…) ─────
+let onglet = 'tableau';
 function afficher(nom) {
-  onglet = VUES[nom] ? nom : 'Tableau de bord';
-  try { localStorage.setItem('espace-onglet', onglet); } catch {}
-  document.getElementById('onglets').innerHTML = Object.keys(VUES).map(k => `<button class="${k === onglet ? 'actif' : ''}" data-onglet="${esc(k)}">${esc(k)}</button>`).join('');
-  document.getElementById('vue').innerHTML = VUES[onglet]();
-  scrollTo({ top: 0 });
+  onglet = VUES[nom] ? nom : 'tableau';
+  if (location.hash.slice(1) !== onglet) history.replaceState(null, '', '#' + onglet);
+  document.getElementById('evt').textContent = `${D.evenement.titre} · ${new Date(D.evenement.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+  document.getElementById('onglets').innerHTML = Object.entries(VUES).map(([k, [t]]) => `<a class="${k === onglet ? 'actif' : ''}" href="#${k}">${esc(t)}</a>`).join('');
+  document.getElementById('vue').innerHTML = VUES[onglet][2]();
 }
+addEventListener('hashchange', () => { E = null; afficher(location.hash.slice(1)); scrollTo({ top: 0 }); });
+
+const LISTES = { invites: () => D.invites, tables: () => D.tables, depenses: () => D.budget.depenses, taches: () => D.taches, photos: () => D.photos, livre: () => D.livre, musique: () => D.musique };
 document.addEventListener('click', e => {
-  const o = e.target.closest('[data-onglet]'); if (o) return afficher(o.dataset.onglet);
+  const ed = e.target.closest('[data-editer]'); if (ed) { e.stopPropagation(); const [liste, k] = ed.dataset.editer.split(':'); E = { liste, k: +k }; return afficher(onglet); }
+  if (e.target.closest('[data-annuler]')) { E = null; return afficher(onglet); }
+  const su = e.target.closest('[data-suppr]');
+  if (su) { const [liste, k] = su.dataset.suppr.split(':'), l = LISTES[liste]();
+    if (liste === 'tables') D.invites.forEach(i => { if (i.table === l[+k].nom) i.table = ''; });
+    l.splice(+k, 1); E = null; sauver(); return afficher(onglet); }
   const r = e.target.closest('[data-rep]');
   if (r) { const i = D.invites[+r.dataset.rep]; i.rep = { attente: 'oui', oui: 'non', non: 'attente' }[i.rep]; if (i.rep === 'non') i.table = ''; sauver(); return afficher(onglet); }
-  const t = e.target.closest('[data-tache]'); if (t) { const x = D.taches[+t.dataset.tache]; x.etat = (x.etat + 1) % 3; sauver(); return afficher(onglet); }
+  const t = e.target.closest('[data-tache]'); if (t && !e.target.closest('form')) { const x = D.taches[+t.dataset.tache]; x.etat = (x.etat + 1) % 3; sauver(); return afficher(onglet); }
   if (e.target.closest('.envoi')) document.getElementById('envoi-msg').style.display = 'block';
 });
 document.addEventListener('change', e => {
+  const j = e.target.closest('[data-jeu]'); if (j) { D.jeux[+j.dataset.jeu].actif = j.checked; return sauver(); }
   const s = e.target.closest('[data-placer]'); if (!s || !s.value) return;
   const i = D.invites.find(x => x.nom === s.dataset.placer); i.table = s.value; sauver(); afficher(onglet);
 });
 document.addEventListener('submit', e => {
-  e.preventDefault(); const f = Object.fromEntries(new FormData(e.target));
-  if (e.target.id === 'ajout-invite') D.invites.push({ nom: f.nom, rep: 'attente', table: '' });
-  if (e.target.id === 'ajout-depense') D.budget.depenses.push({ fournisseur: f.fournisseur, poste: f.poste, montant: +f.montant, paye: 0 });
-  if (e.target.id === 'ajout-tache') D.taches.push({ t: f.t, cat: f.cat, etat: 0 });
-  if (e.target.id === 'ajout-mot') D.livre.push({ de: f.de, mot: f.mot });
-  if (e.target.id === 'ajout-son') D.musique.push({ de: f.de, titre: f.titre, artiste: f.artiste });
+  e.preventDefault(); const f = Object.fromEntries(new FormData(e.target)), id = e.target.id, fiche = e.target.dataset.form;
+  if (fiche) {
+    const [liste, k] = fiche.split(':'), x = LISTES[liste]()[+k];
+    if (liste === 'tables' && x.nom !== f.nom) D.invites.forEach(i => { if (i.table === x.nom) i.table = f.nom; });
+    for (const c in f) x[c] = typeof x[c] === 'number' ? +f[c] : f[c];
+    if (liste === 'invites' && x.rep === 'non') x.table = '';
+    E = null;
+  }
+  if (id === 'f-evenement') { Object.assign(D.evenement, { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele }); D.budget.total = +f.total || 0; }
+  if (id === 'ajout-invite') D.invites.push({ nom: f.nom, rep: 'attente', table: '' });
+  if (id === 'ajout-table') D.tables.push({ nom: f.nom, places: +f.places });
+  if (id === 'ajout-depense') D.budget.depenses.push({ fournisseur: f.fournisseur, poste: f.poste, montant: +f.montant, paye: 0 });
+  if (id === 'ajout-tache') D.taches.push({ t: f.t, cat: f.cat, etat: 0 });
+  if (id === 'ajout-mot') D.livre.push({ de: f.de, mot: f.mot });
+  if (id === 'ajout-son') D.musique.push({ de: f.de, titre: f.titre, artiste: f.artiste });
   sauver(); afficher(onglet);
+  if (id === 'f-evenement') document.getElementById('ok').style.display = 'block';
 });
-afficher(onglet);
+afficher(location.hash.slice(1));
 </script>
 </body>
 </html>

@@ -36,7 +36,10 @@
   section.bloc h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(28px,4vw,40px);text-align:center}
   section.bloc > p{text-align:center;color:var(--doux);max-width:640px;margin:8px auto 22px}
   .fonctions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-  .fonction{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:16px}
+  .fonction{display:block;text-decoration:none;color:inherit;background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:16px;transition:border-color .2s,transform .2s}
+  .fonction:hover{border-color:var(--or);transform:translateY(-2px)}
+  .fonction i{display:block;margin-top:8px;font-style:normal;font-weight:600;font-size:13px;color:var(--or)}
+  section[hidden]{display:none}
   .fonction b{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:21px}
   .fonction span{font-size:14px;color:var(--doux)}
   .cta{text-align:center;margin-top:22px}
@@ -47,7 +50,7 @@
   .niv ul{padding-left:18px;color:var(--doux);font-size:14px}
   footer{text-align:center;color:var(--doux);font-size:13px;padding:10px 16px 40px}
 </style></head><body>
-<div class="haut"><span class="marque">Faire-part interactifs</span><a href="espace/index.html">Espace organisateur</a></div>
+<div class="haut"><span class="marque">Faire-part interactifs</span><a href="espace/#tableau">Espace mariage</a></div>
 <div class="hero">
   <h1>Une invitation qui s'ouvre, <em>pour chaque moment</em> de la vie</h1>
   <p>Mariage, anniversaire, baptême, gender reveal : un lien à envoyer sur WhatsApp, une direction artistique unique, et tout l'événement organisé au même endroit.</p>
@@ -140,20 +143,21 @@
         <span class="voir">Voir la démonstration →</span></div>
       </a>
 </main>
-<section class="bloc">
-  <h2>Tout votre événement, au même endroit</h2>
-  <p>Un espace privé pour organiser, et une page pour vos invités.</p>
+<section class="bloc" id="espace" data-evt="mariage">
+  <h2>Votre espace mariage</h2>
+  <p>Un espace privé pour organiser tout le mariage. Touchez une partie pour l'ouvrir : chaque élément s'ajoute, se modifie et se supprime depuis l'espace.</p>
   <div class="fonctions">
-    <div class="fonction"><b>Les réponses</b><span>Qui vient, qui ne vient pas, qui n'a pas répondu, en un coup d'œil.</span></div>
-    <div class="fonction"><b>Les invités</b><span>La liste, l'envoi du faire-part et les relances par WhatsApp ou courriel.</span></div>
-    <div class="fonction"><b>Le plan de table</b><span>Chaque invité à sa place, et retrouve sa table sur son téléphone.</span></div>
-    <div class="fonction"><b>Le budget</b><span>Ce qui est prévu, payé, et ce qu'il reste, prestataire par prestataire.</span></div>
-    <div class="fonction"><b>Le planning</b><span>Toutes les tâches, de « à faire » à « fait ».</span></div>
-    <div class="fonction"><b>Le mur photo</b><span>Les photos de vos invités, en direct pendant la fête.</span></div>
-    <div class="fonction"><b>Le livre d'or et la musique</b><span>Leurs mots, et les chansons qu'ils veulent entendre.</span></div>
-    <div class="fonction"><b>Les jeux</b><span>Quiz, pronostics, bingo, et un coin pour les enfants.</span></div>
+    <a class="fonction" href="espace/#mariage"><b>Mon mariage</b><span>Prénoms, date, lieu, modèle du faire-part et budget total.</span><i>Modifier →</i></a>
+    <a class="fonction" href="espace/#tableau"><b>Les réponses</b><span>Qui vient, qui ne vient pas, qui n'a pas répondu, en un coup d'œil.</span><i>Ouvrir →</i></a>
+    <a class="fonction" href="espace/#invites"><b>Les invités</b><span>Ajouter, renommer, supprimer, changer une réponse ; envoi et relances par WhatsApp ou courriel.</span><i>Modifier →</i></a>
+    <a class="fonction" href="espace/#tables"><b>Le plan de table</b><span>Créer et renommer les tables, choisir le nombre de places, placer chaque invité.</span><i>Modifier →</i></a>
+    <a class="fonction" href="espace/#budget"><b>Le budget</b><span>Ajouter un prestataire, noter un paiement, voir ce qu'il reste.</span><i>Modifier →</i></a>
+    <a class="fonction" href="espace/#planning"><b>Le planning</b><span>Ajouter une tâche, la faire avancer de « à faire » à « fait », la renommer.</span><i>Modifier →</i></a>
+    <a class="fonction" href="espace/#photos"><b>Le mur photo</b><span>Les photos de vos invités en direct ; vous retirez celles que vous ne voulez pas.</span><i>Ouvrir →</i></a>
+    <a class="fonction" href="espace/#livre-or"><b>Le livre d'or et la musique</b><span>Leurs mots et leurs chansons ; vous gardez la main sur ce qui s'affiche.</span><i>Ouvrir →</i></a>
+    <a class="fonction" href="espace/#jeux"><b>Les jeux</b><span>Quiz, pronostics, bingo, coin des enfants : vous activez ceux que vous voulez.</span><i>Choisir →</i></a>
   </div>
-  <div class="cta"><a href="espace/index.html">Essayer l'espace organisateur →</a></div>
+  <div class="cta"><a href="espace/#tableau">Ouvrir l'espace mariage →</a></div>
 </section>
 <section class="bloc">
   <h2>La personnalisation, à votre mesure</h2>
@@ -167,10 +171,10 @@
 <footer>Démonstrations avec des personnes fictives. Photos Pexels.</footer>
 <script>
   // Onglets : n'affiche que les modèles du type d'événement choisi (onglet retenu dans l'adresse).
-  const boutons = [...document.querySelectorAll('[data-onglet]')], cartes = [...document.querySelectorAll('.carte')];
+  const boutons = [...document.querySelectorAll('[data-onglet]')], cartes = [...document.querySelectorAll('[data-evt]')];
   function choisir(k) {
     boutons.forEach(b => b.setAttribute('aria-selected', String(b.dataset.onglet === k)));
-    cartes.forEach(c => c.hidden = c.dataset.evt !== k);
+    cartes.forEach(c => c.hidden = c.dataset.evt !== k);  // cartes et espace mariage
     history.replaceState(null, '', '#' + k);
   }
   boutons.forEach(b => b.addEventListener('click', () => choisir(b.dataset.onglet)));
