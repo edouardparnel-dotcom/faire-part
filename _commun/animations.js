@@ -20,7 +20,7 @@
     .bande-photo .bp-voile{position:absolute;inset:0}
     .bande-photo .bp-texte{position:relative;padding:0 24px;max-width:520px}
     .motif{position:absolute;pointer-events:none;z-index:0;opacity:.9}
-    .decor{position:relative;height:min(118vw,640px);margin:46px 0 58px}
+    .decor{position:relative;height:min(118vw,640px);max-width:560px;margin:46px auto 58px}
     .decor .d-ens{position:absolute;left:0;top:0;width:80%;height:76%;overflow:hidden;background-color:rgba(0,0,0,.08);box-shadow:0 30px 50px -34px rgba(0,0,0,.55)}
     .decor .d-img{position:absolute;left:0;right:0;top:-16%;bottom:-16%;background:center/cover}
     .decor .d-det{position:absolute;right:0;bottom:0;width:50%;height:54%;background:center/cover;border:7px solid var(--decor-bord,#fff);box-shadow:0 24px 40px -24px rgba(0,0,0,.6)}
