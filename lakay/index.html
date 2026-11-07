@@ -139,7 +139,7 @@ main{max-width:560px;margin:0 auto;padding:30px 18px 60px}
     <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=P%C3%A9tion-Ville+Ha%C3%AFti" target="_blank" rel="noopener">Voir la carte</a>
   </section>
 
-  <div class="decor apparait" data-effet="fondu" style="--decor-bord:#FFF6E5"><div class="d-ens" role="img" aria-label="Le lieu, vue d'ensemble"><div class="d-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.18"></div></div><div class="d-det" role="img" aria-label="Détail de la décoration" style="background-image:url('decor-detail.jpg')" data-parallaxe="-0.08"></div><p class="d-leg">Dekorasyon an<br>Le décor</p></div>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
 <section class="panneau-peint apparait" data-effet="droite" style="--c:var(--vert)">
     <div class="titre">PWOGRAM · PROGRAMME</div>
     <ul class="prog">
@@ -159,6 +159,7 @@ main{max-width:560px;margin:0 auto;padding:30px 18px 60px}
     </div>
   </section>
 
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
   <section class="panneau-peint apparait" style="--c:var(--corail)">
     <div class="titre">TAN K RETE · IL RESTE</div>
     <div class="rebours" id="rebours">
@@ -212,6 +213,6 @@ $('agenda').addEventListener('click', e => {
 // Réponses : démonstration seulement
 document.querySelectorAll('.reponse').forEach(b => b.addEventListener('click', e => { e.preventDefault(); $('demo').style.display = 'block'; }));
 </script>
-<script src="../_commun/animations.js?v=3"></script>
+<script src="../_commun/animations.js?v=4"></script>
 </body>
 </html>

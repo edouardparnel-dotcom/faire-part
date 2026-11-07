@@ -126,7 +126,7 @@ body.ferme{overflow:hidden}
   </div>
 </section>
 
-<div class="decor apparait" data-effet="fondu" style="--decor-bord:#0A0A0A"><div class="d-ens" role="img" aria-label="Le lieu, vue d'ensemble"><div class="d-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.18"></div></div><div class="d-det" role="img" aria-label="Détail de la décoration" style="background-image:url('decor-detail.jpg')" data-parallaxe="-0.08"></div><p class="d-leg">The setting</p></div>
+<div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
 <section class="section apparait">
   <div class="bandeau kente"><span>The programme</span></div>
   <div class="corps prog">
@@ -146,7 +146,8 @@ body.ferme{overflow:hidden}
   </div>
 </section>
 
-<section class="section apparait">
+<div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="section apparait">
   <div class="bandeau kente"><span>Counting down</span></div>
   <div class="corps">
     <div class="rebours" id="rebours"><div><b id="j">--</b>days</div><div><b id="h">--</b>hours</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
@@ -190,6 +191,6 @@ $('agenda').addEventListener('click', e => {
 });
 document.querySelectorAll('.reponse').forEach(b => b.addEventListener('click', () => { $('demo').style.display = 'block'; }));
 </script>
-<script src="../_commun/animations.js?v=3"></script>
+<script src="../_commun/animations.js?v=4"></script>
 </body>
 </html>

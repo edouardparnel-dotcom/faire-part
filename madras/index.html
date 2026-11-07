@@ -127,7 +127,7 @@ main{position:relative;max-width:540px;margin:0 auto;padding:10px 20px 70px}
     <a class="lien" href="https://www.google.com/maps/search/?api=1&query=Le+Fran%C3%A7ois+Martinique" target="_blank" rel="noopener">Voir sur la carte</a>
   </section>
 
-  <div class="decor apparait" data-effet="fondu" style="--decor-bord:#FBF7EF"><div class="d-ens" role="img" aria-label="Le lieu, vue d'ensemble"><div class="d-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.18"></div></div><div class="d-det" role="img" aria-label="Détail de la décoration" style="background-image:url('decor-detail.jpg')" data-parallaxe="-0.08"></div><p class="d-leg">Le décor<br>face à la mer</p></div>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
 <section class="carte apparait c-madras">
     <h2><em>Le programme</em>Samedi 10 juillet</h2>
     <ul class="ligne">
@@ -145,6 +145,7 @@ main{position:relative;max-width:540px;margin:0 auto;padding:10px 20px 70px}
     <div class="pastilles"><span><i class="madras"></i>Madras</span><span><i style="background:#fff"></i>Blanc</span></div>
   </section>
 
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
   <section class="carte apparait c-madras">
     <h2><em>Plus que</em>Le compte à rebours</h2>
     <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
@@ -187,6 +188,6 @@ $('agenda').addEventListener('click', e => {
 });
 document.querySelectorAll('.reponse').forEach(b => b.addEventListener('click', () => { $('demo').style.display = 'block'; }));
 </script>
-<script src="../_commun/animations.js?v=3"></script>
+<script src="../_commun/animations.js?v=4"></script>
 </body>
 </html>

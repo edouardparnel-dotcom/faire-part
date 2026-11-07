@@ -104,7 +104,7 @@ h2{font-family:'Cinzel',serif;font-weight:700;font-size:22px;letter-spacing:.2em
   </section>
 
   <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-<div class="decor apparait" data-effet="fondu" style="--decor-bord:#070707"><div class="d-ens" role="img" aria-label="Le lieu, vue d'ensemble"><div class="d-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.18"></div></div><div class="d-det" role="img" aria-label="Détail de la décoration" style="background-image:url('decor-detail.jpg')" data-parallaxe="-0.08"></div><p class="d-leg">Le décor</p></div>
+<div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
   <section class="apparait">
     <h2>Le programme</h2>
     <ul class="prog">
@@ -124,6 +124,7 @@ h2{font-family:'Cinzel',serif;font-weight:700;font-size:22px;letter-spacing:.2em
   </section>
 
   <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
   <section class="apparait">
     <h2>Le compte à rebours</h2>
     <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
@@ -164,6 +165,6 @@ $('agenda').addEventListener('click', () => {
 });
 document.querySelectorAll('.reponse').forEach(b => b.addEventListener('click', () => { $('demo').style.display = 'block'; }));
 </script>
-<script src="../_commun/animations.js?v=3"></script>
+<script src="../_commun/animations.js?v=4"></script>
 </body>
 </html>
