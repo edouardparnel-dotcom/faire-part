@@ -1,13 +1,19 @@
 // Moteur de faire-part : affiche une direction artistique (themes.js) avec les réglages des organisateurs (design)
 // et les informations de l'événement. Trois formats : faire-part (fp), save-the-date (std) et site (site : menu,
 // couverture plein écran et toutes les parties). La structure vient de la direction : couverture, programme, rythme.
+// Langues (option « Langue supplémentaire ») : textes fixes traduits dans langues.js, textes des organisateurs
+// traduits dans l'éditeur (« titre@en »…). Une partie liée à une option payante ne s'affiche que si l'option est active.
 import { theme as themeDe, POLICES } from './themes.js?v=2';
+import { traduire, champ as enLangue, LOCALES, memoriserLangue, LANGUES } from './langues.js?v=1';
+import { GUIDES } from './guides.js?v=1';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const paragraphes = s => esc(s).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-const dateLongue = d => { const s = d ? new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : ''; return s.charAt(0).toUpperCase() + s.slice(1); };
-const dateCourte = d => d ? new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '';
-const heure = d => d ? new Date(d).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', ' h ') : '';
+let L = 'fr';   // langue du rendu en cours
+const t = x => traduire(L, x), loc = () => LOCALES[L] || 'fr-FR';
+const dateLongue = d => { let s = ''; try { s = d ? new Date(d).toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : ''; } catch { s = new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } return s.charAt(0).toUpperCase() + s.slice(1); };
+const dateCourte = d => d ? new Date(d).toLocaleDateString(loc(), { day: 'numeric', month: 'short' }) : '';
+const heure = d => { if (!d) return ''; const h = new Date(d).toLocaleTimeString(L === 'en' ? 'en-GB' : 'fr-FR', { hour: '2-digit', minute: '2-digit' }); return L === 'fr' || L === 'ht' ? h.replace(':', ' h ') : h; };
 const surUrl = u => /^https?:\/\//i.test(u || '') ? u : '';
 const ROMAIN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV'];
 
@@ -27,6 +33,8 @@ export const SECTIONS = {
   bebe: { nom: 'Fiche de naissance', champs: { titre: 'Titre', prenom: 'Prénom', ne: 'Né ou née le', heure: 'Heure', poids: 'Poids', taille: 'Taille' }, defaut: { titre: 'Bienvenue', prenom: 'Léo', ne: '3 mars 2027', heure: '4 h 12', poids: '3,4 kg', taille: '51 cm' } },
   parrains: { nom: 'Parrain et marraine', champs: { titre: 'Titre', parrain: 'Parrain', marraine: 'Marraine', texte: 'Texte' }, defaut: { titre: 'Parrain et marraine', parrain: 'Jonathan', marraine: 'Naïka', texte: 'Ils veilleront sur lui, toute sa vie.' } },
   pronostic: { nom: 'Pronostics', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Fille ou garçon ?', texte: 'Faites vos pronostics : donnez le vôtre en répondant à l\'invitation.' } },
+  guide: { nom: 'Guide de la cérémonie', option: 'guide', champs: { titre: 'Titre', intro: 'Introduction', texte: 'Les étapes (un bloc par étape : titre sur la première ligne, puis l\'explication ; « Conseil : » pour un bon à savoir)' },
+    defaut: { titre: 'Le guide de la cérémonie', intro: GUIDES.dot.intro, texte: GUIDES.dot.texte } },
   texte: { nom: 'Texte libre', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Un mot', texte: '' } },
   reponse: { nom: 'Bouton de réponse', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Votre réponse', texte: 'Merci de nous répondre avant le grand jour.' } },
 };
@@ -103,28 +111,34 @@ function ics(evt) {
 
 // Programme : mêmes données, six présentations (classe prog-…) ; chaque moment porte son numéro, son heure et sa date courte.
 function programme(C) {
-  const plan = c => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.lieu || '')}" target="_blank" rel="noopener">plan</a>`;
+  const plan = c => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.lieu || '')}" target="_blank" rel="noopener">${t('plan')}</a>`;
   return `<ol class="programme">${C.map((c, k) => `<li style="--n:${k}"><span class="num">${String(k + 1).padStart(2, '0')}</span><span class="h">${heure(c.date)}</span><span class="jour">${esc(dateCourte(c.date))}</span>
-    <div class="corps"><b>${esc(c.nom)}</b><span class="d">${esc(dateLongue(c.date))}</span><span class="l">${esc(c.lieu)} · ${plan(c)}</span></div></li>`).join('')}</ol>`;
+    <div class="corps"><b>${esc(enLangue(c, 'nom', L))}</b><span class="d">${esc(dateLongue(c.date))}</span><span class="l">${esc(c.lieu)} · ${plan(c)}</span></div></li>`).join('')}</ol>`;
 }
 
 function section(s, ctx) {
-  const { evt, invite, lienReponse } = ctx, t = s.titre ? `<h2>${esc(s.titre)}</h2>` : '';
+  const { evt, invite, lienReponse } = ctx, v = nom => enLangue(s, nom, L), titre = v('titre'), h = titre ? `<h2>${esc(titre)}</h2>` : '';
   switch (s.type) {
-    case 'programme': return t + programme((evt.ceremonies || []).filter(c => !invite || invite.ceremonies?.includes(c.cle)));
-    case 'compte': return `${t}<div class="rebours" data-rebours="${esc(evt.date)}"><div><b>--</b>jours</div><div><b>--</b>heures</div><div><b>--</b>min</div><div><b>--</b>sec</div></div>`;
+    case 'programme': return h + programme((evt.ceremonies || []).filter(c => !invite || invite.ceremonies?.includes(c.cle)));
+    case 'compte': return `${h}<div class="rebours" data-rebours="${esc(evt.date)}"><div><b>--</b>${t('jours')}</div><div><b>--</b>${t('heures')}</div><div><b>--</b>${t('min')}</div><div><b>--</b>${t('sec')}</div></div>`;
     case 'tenue': {
       const cs = (s.couleurs || '').split(',').map(x => x.trim()).filter(x => /^#[0-9a-f]{3,8}$/i.test(x));
-      return `${t}${paragraphes(s.texte)}${cs.length ? `<div class="nuancier">${cs.map(c => `<i style="background:${c}"></i>`).join('')}</div>` : ''}`;
+      return `${h}${paragraphes(v('texte'))}${cs.length ? `<div class="nuancier">${cs.map(c => `<i style="background:${c}"></i>`).join('')}</div>` : ''}`;
     }
-    case 'faq': return `${t}<dl class="faq">${(s.texte || '').split(/\n{2,}/).map(b => { const [q, ...r] = b.split('\n'); return q ? `<dt>${esc(q)}</dt><dd>${esc(r.join(' '))}</dd>` : ''; }).join('')}</dl>`;
-    case 'reponse': return `${t}${paragraphes(s.texte)}<a class="bouton" href="${esc(lienReponse || '#')}"${lienReponse ? '' : ' data-demo'}>Répondre</a>`;
-    case 'bebe': return `${t}<p class="bebe-prenom">${esc(s.prenom)}</p><dl class="fiche">${[['Né le', s.ne], ['À', s.heure], ['Poids', s.poids], ['Taille', s.taille]].filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`;
-    case 'parrains': return `${t}<div class="duo"><div><span>Parrain</span><b>${esc(s.parrain)}</b></div><i aria-hidden="true">&amp;</i><div><span>Marraine</span><b>${esc(s.marraine)}</b></div></div>${paragraphes(s.texte)}`;
-    case 'pronostic': return `${t}<div class="pronos"><span class="fille">Fille</span><span class="ou">ou</span><span class="garcon">Garçon</span></div>${paragraphes(s.texte)}`;
+    case 'faq': return `${h}<dl class="faq">${(v('texte') || '').split(/\n{2,}/).map(b => { const [q, ...r] = b.split('\n'); return q ? `<dt>${esc(q)}</dt><dd>${esc(r.join(' '))}</dd>` : ''; }).join('')}</dl>`;
+    case 'reponse': return `${h}${paragraphes(v('texte'))}<a class="bouton" href="${esc(lienReponse || '#')}"${lienReponse ? '' : ' data-demo'}>${t('Répondre')}</a>`;
+    case 'bebe': return `${h}<p class="bebe-prenom">${esc(s.prenom)}</p><dl class="fiche">${[['Né le', v('ne')], ['À', s.heure], ['Poids', s.poids], ['Taille', s.taille]].filter(([, x]) => x).map(([k, x]) => `<div><dt>${t(k)}</dt><dd>${esc(x)}</dd></div>`).join('')}</dl>`;
+    case 'parrains': return `${h}<div class="duo"><div><span>${t('Parrain')}</span><b>${esc(s.parrain)}</b></div><i aria-hidden="true">&amp;</i><div><span>${t('Marraine')}</span><b>${esc(s.marraine)}</b></div></div>${paragraphes(v('texte'))}`;
+    case 'pronostic': return `${h}<div class="pronos"><span class="fille">${t('Fille')}</span><span class="ou">${t('ou')}</span><span class="garcon">${t('Garçon')}</span></div>${paragraphes(v('texte'))}`;
+    case 'guide': {
+      // Un bloc par étape ; « Conseil : » devient un encadré.
+      const etapes = (v('texte') || '').split(/\n{2,}/).map(b => b.split('\n').filter(x => x.trim())).filter(b => b.length);
+      return `${h}${v('intro') ? `<p class="guide-intro">${esc(v('intro'))}</p>` : ''}<ol class="guide">${etapes.map(([titre, ...lignes], k) => `<li><span class="guide-n">${t('Étape')} ${k + 1}</span><h3>${esc(titre)}</h3>
+        ${lignes.map(x => /^\s*(conseil|tip|consejo|dica|konsèy)\s*:/i.test(x) ? `<p class="guide-conseil"><b>${t('Bon à savoir')}</b> ${esc(x.replace(/^[^:]*:\s*/, ''))}</p>` : `<p>${esc(x)}</p>`).join('')}</li>`).join('')}</ol>`;
+    }
     default: {
       const l = surUrl(s.lien);
-      return `${t}${paragraphes(s.texte)}${l ? `<a class="bouton clair" href="${esc(l)}" target="_blank" rel="noopener">${esc(s.libelle || 'Ouvrir')}</a>` : ''}`;
+      return `${h}${paragraphes(v('texte'))}${l ? `<a class="bouton clair" href="${esc(l)}" target="_blank" rel="noopener">${esc(v('libelle') || t('Ouvrir'))}</a>` : ''}`;
     }
   }
 }
@@ -141,6 +155,9 @@ function ouverture(type, d, nom) {
 
 // Point d'entrée : racine = élément à remplir. ctx = { evt, design, format: 'fp'|'std'|'site', invite, lienReponse, sansOuverture }
 export function rendre(racine, ctx) {
+  const langues = ctx.design.langues?.length ? ctx.design.langues : ['fr'];
+  L = langues.includes(ctx.langue) ? ctx.langue : langues[0];
+  document.documentElement.lang = L === 'ht' ? 'ht' : L;
   const d = ctx.design, th = themeDe(d.theme), pal = { ...th.palette, ...(d.palette || {}) }, pol = POLICES[d.polices || th.polices] || POLICES.cormorant;
   if (racine._minuteur) clearInterval(racine._minuteur);
   if (!document.querySelector(`link[data-police="${pol.url}"]`)) {
@@ -156,22 +173,24 @@ export function rendre(racine, ctx) {
     : `<div class="couv-photo couv-motif" aria-hidden="true"><span>${init}</span></div>`;
   const couverture = `<header class="couv couv-${couv}" id="haut">${visuel}
       <div class="couv-texte">
-        ${prenom ? `<p class="pour">Pour ${esc(prenom)}</p>` : ''}
-        <p class="surtitre">${esc(std ? (d.std?.surtitre || 'Réservez la date') : c.surtitre)}</p>
+        ${prenom ? `<p class="pour">${t('Pour')} ${esc(prenom)}</p>` : ''}
+        <p class="surtitre">${esc(std ? (enLangue(d.std, 'surtitre', L) || 'Réservez la date') : enLangue(c, 'surtitre', L))}</p>
         <h1>${esc(c.titre || ctx.evt.titre)}</h1>
-        ${c.soustitre && !std ? `<p class="soustitre">${esc(c.soustitre)}</p>` : ''}
+        ${c.soustitre && !std ? `<p class="soustitre">${esc(enLangue(c, 'soustitre', L))}</p>` : ''}
         ${couv === 'polaroid' && !std ? `<p class="legende">${esc(ctx.evt.lieu || '')}</p>` : ''}
         <p class="date">${esc(dateLongue(ctx.evt.date))}</p>
         ${std ? `<p class="lieu-std">${esc(ctx.evt.lieu || '')}</p>` : ''}
       </div></header>`;
-  const parties = (d.sections || []).filter(s => s.visible !== false && SECTIONS[s.type]);
+  const optionAbsente = s => SECTIONS[s.type].option && Array.isArray(ctx.evt.options) && !ctx.evt.options.includes(SECTIONS[s.type].option);
+  const parties = (d.sections || []).filter(s => s.visible !== false && SECTIONS[s.type] && !optionAbsente(s));
   const corps = std
-    ? `<section class="bloc std"><p class="std-texte">${esc(d.std?.texte || 'Invitation à suivre')}</p><a class="bouton" href="${ics(ctx.evt)}" download="${esc((ctx.evt.titre || 'evenement').replace(/[^\w]+/g, '-'))}.ics">Ajouter à mon agenda</a></section>`
+    ? `<section class="bloc std"><p class="std-texte">${esc(enLangue(d.std, 'texte', L) || 'Invitation à suivre')}</p><a class="bouton" href="${ics(ctx.evt)}" download="${esc((ctx.evt.titre || 'evenement').replace(/[^\w]+/g, '-'))}.ics">${t('Ajouter à mon agenda')}</a></section>`
     : parties.map((s, k) => `<section class="bloc bloc-${s.type}" id="p-${k}" data-chapitre="${ROMAIN[k] || k + 1}"><div class="bloc-in">${section(s, ctx)}</div></section>`).join('');
-  const menu = site ? `<nav class="site-nav" aria-label="Sommaire"><a class="site-marque" href="#haut">${esc(initialesDe(c.titre || ctx.evt.titre))}</a><div class="site-liens">${parties.map((s, k) => s.titre ? `<a href="#p-${k}">${esc(s.type === 'compte' ? 'Le jour J' : s.titre)}</a>` : '').join('')}</div></nav>` : '';
+  const menu = site ? `<nav class="site-nav" aria-label="Sommaire"><a class="site-marque" href="#haut">${esc(initialesDe(c.titre || ctx.evt.titre))}</a><div class="site-liens">${parties.map((s, k) => s.titre ? `<a href="#p-${k}">${esc(s.type === 'compte' ? (L === 'fr' ? 'Le jour J' : '⏳') : enLangue(s, 'titre', L))}</a>` : '').join('')}</div></nav>` : '';
+  const choixLangue = langues.length > 1 && !std ? `<div class="langues" role="group" aria-label="${t('Langue')}">${langues.map(l => `<button type="button" data-langue="${l}" class="${l === L ? 'actif' : ''}" lang="${l}">${esc(LANGUES[l] || l)}</button>`).join('')}</div>` : '';
   racine.className = `fp mep-${th.mep} orn-${th.ornement} prog-${th.prog} ry-${th.rythme} format-${ctx.format || 'fp'}`;
   racine.setAttribute('style', style);
-  racine.innerHTML = (ctx.sansOuverture || site ? '' : ouverture(th.ouverture, d, ctx.evt.titre)) + menu + `<main class="fp-page">${couverture}${corps}<footer class="fp-pied">Maison Vivat</footer></main>`;
+  racine.innerHTML = (ctx.sansOuverture || site ? '' : ouverture(th.ouverture, d, ctx.evt.titre)) + menu + choixLangue + `<main class="fp-page">${couverture}${corps}<footer class="fp-pied">Maison Vivat</footer></main>`;
 
   const ov = racine.querySelector('[data-ouverture]');
   if (ov) {
@@ -179,6 +198,7 @@ export function rendre(racine, ctx) {
     const ouvrir = () => { if (ov.classList.contains('ouvert')) return; ov.classList.add('ouvert'); document.body.classList.remove('fp-ferme'); setTimeout(() => ov.remove(), 1900); };
     ov.addEventListener('click', ouvrir); ov.addEventListener('keydown', e => (e.key === 'Enter' || e.key === ' ') && ouvrir());
   } else document.body.classList.remove('fp-ferme');
+  racine.querySelectorAll('[data-langue]').forEach(b => b.addEventListener('click', () => { memoriserLangue(b.dataset.langue); rendre(racine, { ...ctx, langue: b.dataset.langue, sansOuverture: true }); }));
   racine.querySelectorAll('[data-demo]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); a.textContent = 'Démonstration : ce bouton ouvre la page de réponse'; }));
   const rb = racine.querySelector('[data-rebours]');
   if (rb) {

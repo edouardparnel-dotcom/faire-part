@@ -1,9 +1,10 @@
 // Espace de l'organisateur : ses événements, ses invités (par cérémonie), les envois et relances, le plan de table,
 // le budget, les prestataires, le planning, le déroulé du jour J, l'équipe (co-organisateur, wedding planner),
-// les réponses en direct, les entrées, la modération des photos et du livre d'or, le lien du direct, les exports.
+// les réponses en direct, les entrées, la modération des photos et du livre d'or, le lien du direct, les exports ;
+// et les options : jeux (quiz, pronostics, classement), tenues coordonnées, remerciements, album en haute définition.
 import { auth, db, storage, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=3';
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
-import { ref, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
+import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -12,10 +13,12 @@ const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Bapt
 const ROLES = { coorganisateur: 'Co-organisateur', planner: 'Wedding planner' };
 let user, E = null, evt = null, proprio = false, onglet = 'accueil', abonnements = [];
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
+let album = [], jeuxRep = [], partage = {}, photoPour = null, msgOption = '';
 let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
 // Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.
 const lienInvite = t => new URL(`fp.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
+const lienPage = t => new URL(`invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
 const lienEquipe = c => new URL(`organisateur.html?rejoindre=${encodeURIComponent(E)}&code=${encodeURIComponent(c)}`, location.href).href;
 const a = o => evt?.options?.includes(o);
 const jours = d => Math.ceil((new Date(d) - Date.now()) / 864e5);
@@ -84,6 +87,8 @@ function ouvrir(id) {
       suivre('prestataires', l => prestataires = l.sort((x, y) => METIERS.indexOf(x.metier) - METIERS.indexOf(y.metier)));
       suivre('taches', l => taches = l.sort((x, y) => (x.echeance || '').localeCompare(y.echeance || '') || (x.ordre ?? 0) - (y.ordre ?? 0)));
       suivre('equipe', l => equipe = l);
+      suivre('album', l => album = recents(l)); suivre('jeuxReponses', l => jeuxRep = l);
+      suivre('partage', l => partage = Object.fromEntries(l.map(d => [d.id, d])));
       suivre('outils', l => outils = Object.fromEntries(l.map(d => [d.id, d])));
       if (proprio) suivre('acces', l => acces = recents(l));
     }
@@ -101,7 +106,9 @@ function rendre() {
   const C = evt.ceremonies || [], oui = c => invites.filter(i => i.reponses?.[c.cle] === 'oui').reduce((s, i) => s + 1 + (i.accompagnants || 0), 0);
   const entrees = invites.filter(i => i.entree).length, repondu = invites.filter(i => i.reponduLe).length;
   const onglets = { accueil: 'Vue d\'ensemble', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
-    budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', souvenirs: "Photos et livre d'or", equipe: 'Équipe', reglages: 'Réglages et exports' };
+    budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
+    ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
+    equipe: 'Équipe', reglages: 'Réglages et exports' };
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
@@ -118,6 +125,12 @@ function rendre() {
   appliquerRecherche(); scrollTo(0, y);
 }
 
+// Onglet d'une option : visible si elle est active, ou pendant l'essai pour la découvrir.
+const voirOption = o => a(o) || evt.formule === 'essai';
+const noteOption = o => a(o) ? '' : `<p class="app-note" style="margin-bottom:12px">Option « ${esc(NOMS_OPTIONS[o])} » non activée : vous pouvez tout préparer, vos invités le verront une fois l'option ajoutée.</p>`;
+// Format des questions : un bloc par question (ligne vide entre deux), la question puis un choix par ligne ; « * » devant la bonne réponse.
+const lireQuestions = texte => (texte || '').split(/\n{2,}/).map(b => b.split('\n').map(x => x.trim()).filter(Boolean)).filter(b => b.length > 2)
+  .map(([q, ...choix]) => ({ q, choix: choix.map(c => c.replace(/^\*\s*/, '')), bonne: Math.max(0, choix.findIndex(c => c.startsWith('*'))) }));
 const rep = (i, c) => { const r = i.reponses?.[c.cle]; return !i.ceremonies?.includes(c.cle) ? '' : r === 'oui' ? '<span class="ok">Oui</span>' : r === 'non' ? '<span class="non">Non</span>' : '<span class="attente">…</span>'; };
 const date = d => d ? new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '';
 const dateTs = t => t?.toDate ? date(t.toDate()) : '';
@@ -296,7 +309,61 @@ const VUES = {
     return `<div class="app-carte"><h2>Photos des invités</h2>${a('murphoto') ? '<p class="app-note" style="margin-bottom:10px">« Masquer » retire la photo du mur et de la galerie des invités, réversible ; « Supprimer » l\'efface définitivement.</p>' : '<p class="app-note">Option « Mur photo » non activée.</p>'}
       <div class="galerie">${photos.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.auteur)}${p.visible ? '' : ' · masquée'}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-photo="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-photo="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>
       <div class="app-carte"><h2>Livre d'or</h2>${a('livredor') ? '' : '<p class="app-note">Option « Livre d\'or » non activée.</p>'}
-      ${livre.map(m => `<div class="mot" style="${m.visible ? '' : 'opacity:.4'}"><p>« ${esc(m.texte)} »</p><span>${esc(m.de)} · <a href="#" data-visible-mot="${m.id}">${m.visible ? 'masquer' : 'afficher'}</a> · <a href="#" data-suppr-mot="${m.id}">supprimer</a></span></div>`).join('')}</div>`;
+      ${livre.map(m => `<div class="mot" style="${m.visible ? '' : 'opacity:.4'}">${m.media ? (m.media.type === 'video' ? `<video src="${esc(m.media.url)}" controls playsinline preload="metadata"></video>` : `<audio src="${esc(m.media.url)}" controls preload="metadata"></audio>`) : ''}${m.texte ? `<p>« ${esc(m.texte)} »</p>` : ''}<span>${esc(m.de)} · <a href="#" data-visible-mot="${m.id}">${m.visible ? 'masquer' : 'afficher'}</a> · <a href="#" data-suppr-mot="${m.id}">supprimer</a></span></div>`).join('')}</div>
+      ${voirOption('album') ? `<div class="app-carte"><h2>Album en haute définition</h2>${noteOption('album')}<p class="app-note" style="margin-bottom:12px">Les photos du photographe et celles que vos invités ajoutent en qualité originale. Vous pouvez tout télécharger d'un coup.</p>
+        <div class="puces"><label class="btn petit" style="cursor:pointer">Ajouter les photos du photographe<input type="file" accept="image/*" multiple id="i-album-photographe" hidden></label>${album.length ? `<button class="btn petit clair" data-zip="1">Tout télécharger (${album.length} photos, .zip)</button>` : ''}</div><p class="ok-msg" id="m-album">${esc(msgOption)}</p>
+        <div class="galerie" style="margin-top:12px">${album.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.photographe ? 'Photographe' : p.auteur)}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-album="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-album="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>` : ''}`;
+  },
+
+  // ── Jeux : quiz sur les mariés et pronostics, ouverture, révélation, classement ──
+  jeux() {
+    const q = partage.quiz || {}, brouillon = outils.quiz || {}, Q = lireQuestions(brouillon.quiz ?? MODELE_QUIZ), P = lireQuestions((brouillon.pronos ?? MODELE_PRONOS).replace(/^(?!\*)/gm, '')).map(x => ({ ...x, bonne: undefined }));
+    const scores = jeuxRep.map(r => ({ prenom: r.prenom, score: (q.questions || Q).filter((x, i) => r.quiz?.[i] === x.bonne).length })).sort((x, y) => y.score - x.score);
+    return `<div class="app-carte"><h2>Jeux des invités</h2>${noteOption('jeux')}
+        <p class="app-note" style="margin-bottom:12px">Un quiz sur vous (avec les bonnes réponses) et des pronostics (sans bonne réponse : l'heure du premier slow, le prénom du premier enfant…). Ouvrez les jeux quand vous voulez ; les invités répondent depuis leur page, puis vous révélez les réponses et le classement.</p>
+        <p><b>État :</b> ${q.revele ? 'réponses révélées' : q.ouvert ? 'ouverts aux invités' : 'pas encore ouverts'} · ${jeuxRep.length} invité${jeuxRep.length > 1 ? 's ont' : ' a'} joué</p>
+        <div class="puces" style="margin-top:12px">${!q.ouvert && !q.revele ? '<button class="btn petit" data-jeux="ouvrir">Ouvrir les jeux</button>' : ''}${q.ouvert && !q.revele ? '<button class="btn petit" data-jeux="reveler">Révéler les réponses et le classement</button><button class="btn petit clair" data-jeux="fermer">Fermer sans révéler</button>' : ''}${q.revele ? '<button class="btn petit clair" data-jeux="rouvrir">Rouvrir (efface la révélation)</button>' : ''}</div>
+        <p class="ok-msg">${esc(msgOption)}</p></div>
+      <form class="app-carte" id="f-jeux"><h2>Les questions</h2><p class="app-note" style="margin-bottom:10px">Une question par bloc (ligne vide entre deux) : la question, puis un choix par ligne ; mettez « * » devant la bonne réponse du quiz.</p>
+        <div class="app-grille"><label>Quiz (${Q.length} questions)<textarea name="quiz" rows="14">${esc(brouillon.quiz ?? MODELE_QUIZ)}</textarea></label><label>Pronostics (${P.length})<textarea name="pronos" rows="14">${esc(brouillon.pronos ?? MODELE_PRONOS)}</textarea></label></div>
+        <button class="btn">Enregistrer les questions</button>${q.ouvert ? '<p class="app-note" style="margin-top:8px">Les jeux sont ouverts : enregistrer met aussi à jour les questions vues par les invités.</p>' : ''}</form>
+      ${scores.length ? `<div class="app-carte"><h2>Classement provisoire</h2><ol class="classement">${scores.slice(0, 15).map(x => `<li><span>${esc(x.prenom)}</span><b>${x.score} / ${(q.questions || Q).length}</b></li>`).join('')}</ol></div>` : ''}`;
+  },
+
+  // ── Tenues coordonnées : tissus, commandes, règlements ─────────────────────
+  tenues() {
+    const c = partage.tenues || { tissus: [], tailles: ['XS', 'S', 'M', 'L', 'XL', 'XXL'] }, prix = id => +(c.tissus.find(x => x.id === id)?.prix || 0);
+    const cmd = invites.filter(i => i.tenue?.tissu), total = cmd.reduce((s, i) => s + prix(i.tenue.tissu) * (i.tenue.qte || 1), 0), encaisse = cmd.filter(i => i.tenue.paye).reduce((s, i) => s + prix(i.tenue.tissu) * (i.tenue.qte || 1), 0);
+    return `<div class="app-grille"><div class="app-stat"><b>${cmd.length}</b><span>Commandes</span></div><div class="app-stat"><b>${euros(total)}</b><span>Commandé</span></div><div class="app-stat"><b>${euros(encaisse)}</b><span>Réglé</span></div><div class="app-stat"><b>${euros(total - encaisse)}</b><span>Reste à régler</span></div></div>
+      <div class="app-carte"><h2>Les tissus</h2>${noteOption('tenues')}
+        ${c.tissus.map((x, k) => `<div class="ligne-conseil"><span><i class="pastille" style="background:${esc(x.couleur)}"></i><b>${esc(x.nom)}</b> · ${euros(x.prix)} / ${esc(x.unite)}${x.description ? ` · ${esc(x.description)}` : ''} · ${cmd.filter(i => i.tenue.tissu === x.id).reduce((s, i) => s + (i.tenue.qte || 1), 0)} ${esc(x.unite)}(s) commandé(s)</span><button class="icone" data-suppr-tissu="${k}">✕</button></div>`).join('') || '<p class="app-note">Ajoutez le ou les tissus de la famille (aso ebi, pagne).</p>'}
+        <form id="f-tissu" class="form-ligne" style="grid-template-columns:1.6fr 70px 1fr 1fr 1.6fr auto;margin-top:12px"><label>Tissu<input name="nom" required maxlength="60" placeholder="Pagne or, famille de la mariée"></label><label>Couleur<input name="couleur" type="color" value="#C9A04A"></label><label>Prix<input name="prix" type="number" min="0" step="0.5" required></label><label>Par<select name="unite"><option>pièce</option><option>yard</option><option>mètre</option><option>tenue</option></select></label><label>Précision<input name="description" maxlength="100" placeholder="6 yards, cousu ou non"></label><button class="btn">Ajouter</button></form></div>
+      <form class="app-carte" id="f-tenues-reglages"><h2>Consignes aux invités</h2><div class="app-grille">
+        <label>Tailles proposées (séparées par des virgules)<input name="tailles" value="${esc((c.tailles || []).join(', '))}"></label><label>Commander avant le<input name="dateLimite" type="date" value="${esc(c.dateLimite || '')}"></label></div>
+        <label>Mot d'introduction<input name="consigne" maxlength="200" value="${esc(c.consigne || '')}" placeholder="Toute la famille porte le même pagne pour la dot."></label>
+        <label>Comment régler<input name="paiement" maxlength="200" value="${esc(c.paiement || '')}" placeholder="Virement à Marie (IBAN sur demande) ou espèces à Tata Rose"></label>
+        <button class="btn" style="margin-top:12px">Enregistrer</button></form>
+      <div class="app-carte table-defile"><h2>Les commandes</h2><table class="app-table"><thead><tr><th>Invité</th><th>Tissu</th><th>Qté</th><th>Taille</th><th>Précisions</th><th>Montant</th><th>Réglé</th></tr></thead><tbody>
+        ${cmd.map(i => `<tr><td>${esc(i.nom)}</td><td>${esc(c.tissus.find(x => x.id === i.tenue.tissu)?.nom || '?')}</td><td>${i.tenue.qte || 1}</td><td>${esc(i.tenue.taille || '')}</td><td>${esc(i.tenue.note || '')}</td><td>${euros(prix(i.tenue.tissu) * (i.tenue.qte || 1))}</td><td><input type="checkbox" data-paye="${i.id}" ${i.tenue.paye ? 'checked' : ''}></td></tr>`).join('')}
+      </tbody></table>${cmd.length ? '' : '<p class="app-note">Les commandes de vos invités arrivent ici.</p>'}<button class="btn petit clair" data-export="tenues" style="margin-top:12px">Exporter (Excel)</button></div>`;
+  },
+
+  // ── Remerciements : une carte par invité, avec une photo choisie et un mot ─
+  merci() {
+    const m = evt.merci || {}, galerie = [...album, ...photos].filter(p => p.visible !== false), presents = invites.filter(i => !declineTout(i));
+    const mess = i => `Merci ${prenom(i.nom)} ! Votre carte de remerciement vous attend : ${lienPage(i.id)}`;
+    return `<form class="app-carte" id="f-merci"><h2>La carte de remerciement</h2>${noteOption('merci')}
+        <p class="app-note" style="margin-bottom:10px">Après la fête, chaque invité trouve en haut de sa page une carte à son prénom, avec la photo que vous choisissez pour lui et, si vous le souhaitez, un mot personnel.</p>
+        <label>Votre message à tous<textarea name="texte" rows="5" maxlength="1500">${esc(m.texte || 'Merci d\'avoir été là, d\'avoir dansé, ri et partagé ce jour avec nous. Votre présence en a fait un souvenir inoubliable.')}</textarea></label>
+        <label class="coche" style="margin-top:10px"><input type="checkbox" name="actif" ${m.actif ? 'checked' : ''}> Afficher la carte sur la page de chaque invité</label>
+        <button class="btn" style="margin-top:12px">Enregistrer</button></form>
+      <div class="app-carte table-defile"><h2>Carte par invité</h2>${galerie.length ? '' : '<p class="app-note">Les photos du mur et de l\'album apparaîtront ici pour choisir celle de chaque invité.</p>'}
+        <table class="app-table"><thead><tr><th>Invité</th><th>Photo</th><th>Mot personnel</th><th>Envoyer</th></tr></thead><tbody>
+        ${presents.map(i => `<tr><td><b>${esc(i.nom)}</b></td><td>${i.merci?.photo ? `<img class="vignette-merci" src="${esc(i.merci.photo)}" alt="">` : ''}${galerie.length ? `<button class="btn petit clair" data-choisir-photo="${i.id}">${i.merci?.photo ? 'Changer' : 'Choisir'}</button>` : ''}
+          ${photoPour === i.id ? `<div class="choix-photos">${galerie.map(p => `<img src="${esc(p.url)}" alt="" data-photo-merci="${esc(p.url)}" loading="lazy">`).join('')}</div>` : ''}</td>
+          <td><input data-mot-merci="${i.id}" value="${esc(i.merci?.mot || '')}" maxlength="300" placeholder="Merci pour ton discours, Tonton !"></td>
+          <td style="white-space:nowrap">${i.tel ? `<a class="btn petit clair" target="_blank" rel="noopener" data-merci-envoye="${i.id}" href="https://wa.me/${esc(i.tel.replace('+', ''))}?text=${encodeURIComponent(mess(i))}">WhatsApp</a>` : ''}${i.email ? ` <a class="btn petit clair" data-merci-envoye="${i.id}" href="mailto:${encodeURIComponent(i.email)}?subject=${encodeURIComponent('Merci')}&body=${encodeURIComponent(mess(i))}">E-mail</a>` : ''}${i.merciEnvoye ? ' <span class="ok">envoyé</span>' : ''}</td></tr>`).join('')}
+        </tbody></table></div>`;
   },
 
   // ── Équipe : co-organisateur, wedding planner, famille qui aide ────────────
@@ -348,8 +415,40 @@ function exporter(quoi) {
     ...invites.filter(i => !declineTout(i) && !tables.some(t => t.id === i.table)).map(i => ['Sans table', i.nom, personnes(i), i.regime])]);
   if (quoi === 'budget') telechargerCSV(nom('budget'), [['Poste', 'Dépense', 'Prévu', 'Payé', 'Reste', 'Échéance'], ...budget.map(b => [b.poste, b.libelle, +b.prevu || 0, +b.paye || 0, (+b.prevu || 0) - (+b.paye || 0), b.echeance])]);
   if (quoi === 'prestataires') telechargerCSV(nom('prestataires'), [['Métier', 'Nom', 'Statut', 'Téléphone', 'E-mail', 'Montant', 'Versé', 'Notes'], ...prestataires.map(p => [p.metier, p.nom, STATUTS[p.statut], p.tel, p.email, p.montant, p.verse, p.notes])]);
+  if (quoi === 'tenues') { const c = partage.tenues || { tissus: [] }; telechargerCSV(nom('tenues'), [['Invité', 'Tissu', 'Quantité', 'Taille', 'Précisions', 'Montant', 'Réglé'], ...invites.filter(i => i.tenue?.tissu).map(i => { const x = c.tissus.find(y => y.id === i.tenue.tissu); return [i.nom, x?.nom, i.tenue.qte || 1, i.tenue.taille, i.tenue.note, (+x?.prix || 0) * (i.tenue.qte || 1), i.tenue.paye ? 'Oui' : 'Non']; })]); }
   if (quoi === 'planning') telechargerCSV(nom('planning'), [['Tâche', 'Échéance', 'Faite'], ...taches.map(t => [t.titre, t.echeance, t.fait ? 'Oui' : 'Non'])]);
 }
+
+// ── Album : dépôt des photos du photographe (originales) et téléchargement de tout l'album en .zip ──
+async function deposerAlbum(fichiers) {
+  const uid = user.uid;
+  try {
+    for (const [k, fi] of fichiers.entries()) {
+      msgOption = `Envoi ${k + 1} sur ${fichiers.length}…`; if ($('#m-album')) $('#m-album').textContent = msgOption;
+      const chemin = `events/${E}/album/${uid}/${Date.now()}-${k}.${(fi.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')}`, r = ref(storage, chemin);
+      await uploadBytes(r, fi, { contentType: fi.type || 'image/jpeg' });
+      await addDoc(collection(db, `events/${E}/album`), { auteur: 'Photographe', photographe: true, chemin, url: await getDownloadURL(r), nom: fi.name.slice(0, 120), creeLe: serverTimestamp(), visible: true });
+    }
+    msgOption = `${fichiers.length} photo${fichiers.length > 1 ? 's ajoutées' : ' ajoutée'} à l'album.`;
+  } catch (e) { console.error('Album', e); msgOption = 'Une photo n\'a pas pu être envoyée (40 Mo au plus par photo). Réessayez.'; }
+  rendre();
+}
+async function toutTelecharger(bouton) {
+  bouton.disabled = true;
+  try {
+    const { default: JSZip } = await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm');
+    const zip = new JSZip(), noms = new Set();
+    for (const [k, p] of album.entries()) {
+      bouton.textContent = `Préparation ${k + 1} / ${album.length}…`;
+      let n = (p.nom || `photo-${k + 1}.jpg`).replace(/[\\/:*?"<>|]/g, '-'); while (noms.has(n)) n = `${k + 1}-${n}`; noms.add(n);
+      zip.file((p.photographe ? 'Photographe/' : 'Invités/') + n, await (await fetch(p.url)).blob());
+    }
+    const blob = await zip.generateAsync({ type: 'blob' }), u = URL.createObjectURL(blob);
+    Object.assign(document.createElement('a'), { href: u, download: `${evt.titre.replace(/[^\p{L}\d]+/gu, '-')}-album.zip` }).click(); setTimeout(() => URL.revokeObjectURL(u), 2000);
+  } catch (e) { console.error('Zip', e); alerteZip(); }
+  rendre();
+}
+const alerteZip = () => { msgOption = 'Le téléchargement groupé a échoué ; téléchargez les photos une à une.'; };
 
 // ── Écritures ───────────────────────────────────────────────────────────────
 async function lots(ecritures) {   // par paquets de 400 (limite Firestore : 500 par lot)
@@ -361,14 +460,38 @@ async function majDeroule(items) {
   await setDoc(doc(db, `events/${E}/outils/deroule`), { items });
   await updateDoc(doc(db, 'events', E), { deroulePublic: items.filter(d => d.public).map(({ heure, titre, lieu }) => ({ heure, titre, lieu: lieu || '' })) });
 }
+const MODELE_QUIZ = `Où nous sommes-nous rencontrés ?
+À une fête chez des amis
+*À l'église
+Au travail
+
+Qui a dit « je t'aime » le premier ?
+*Elle
+Lui
+
+Quel est notre plat préféré ?
+Le griot
+*Le poulet DG
+La pizza`;
+const MODELE_PRONOS = `À quelle heure la piste sera-t-elle pleine ?
+Avant 22 h
+Entre 22 h et minuit
+Après minuit
+
+Qui pleurera le premier pendant la cérémonie ?
+La mariée
+Le marié
+Une maman`;
 const DEROULE_TYPE = [['14:00', 'Préparatifs, photos des mariés', 'Photographe'], ['15:00', 'Cérémonie', 'Officiant', true], ['16:30', 'Vin d\'honneur', 'Traiteur', true], ['17:30', 'Photos de groupe', 'Photographe, témoins', true],
   ['19:30', 'Entrée des mariés', 'DJ', true], ['20:00', 'Dîner', 'Traiteur', true], ['21:30', 'Discours et surprises', 'Témoins', true], ['22:30', 'Ouverture du bal', 'DJ', true], ['23:30', 'Gâteau', 'Traiteur', true]];
 
 // ── Actions ─────────────────────────────────────────────────────────────────
 document.addEventListener('click', async ev => {
+  const img = ev.target.closest('[data-photo-merci]');
+  if (img && E && photoPour) { const id = photoPour; photoPour = null; return updateDoc(doc(db, `events/${E}/invites/${id}`), { 'merci.photo': img.dataset.photoMerci }); }
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
-  if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; avantPlacement = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
+  if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; msgOption = ''; avantPlacement = null; photoPour = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
   if (d.copier) { await navigator.clipboard?.writeText(lienInvite(d.copier)).catch(() => {}); $('#m-copie').textContent = 'Lien copié : ' + lienInvite(d.copier); return; }
   if (d.copierMessage) { const i = invites.find(x => x.id === d.copierMessage), m = { ...MESSAGES, ...outils.messages };
@@ -384,7 +507,7 @@ document.addEventListener('click', async ev => {
   if (d.supprPhoto) { const p = photos.find(x => x.id === d.supprPhoto); await deleteObject(ref(storage, p.chemin)).catch(() => {}); return deleteDoc(doc(db, `events/${E}/photos/${p.id}`)); }
   if (d.visiblePhoto) { const p = photos.find(x => x.id === d.visiblePhoto); return updateDoc(doc(db, `events/${E}/photos/${p.id}`), { visible: !p.visible }); }
   if (d.visibleMot) { ev.preventDefault(); const m = livre.find(x => x.id === d.visibleMot); return updateDoc(doc(db, `events/${E}/livre/${m.id}`), { visible: !m.visible }); }
-  if (d.supprMot) { ev.preventDefault(); return deleteDoc(doc(db, `events/${E}/livre/${d.supprMot}`)); }
+  if (d.supprMot) { ev.preventDefault(); const m = livre.find(x => x.id === d.supprMot); if (m?.media) await deleteObject(ref(storage, m.media.chemin)).catch(() => {}); return deleteDoc(doc(db, `events/${E}/livre/${d.supprMot}`)); }
   if (d.suppr) return deleteDoc(doc(db, `events/${E}/${d.suppr}`));
   if (d.importer && apercuImport) {
     const l = apercuImport; apercuImport = null;
@@ -402,6 +525,26 @@ document.addEventListener('click', async ev => {
   if (d.derouleType) return majDeroule(DEROULE_TYPE.map(([heure, titre, qui, pub]) => ({ heure, titre, lieu: '', qui, public: !!pub })));
   if (d.supprDeroule) { const L = [...(outils.deroule?.items || [])]; L.splice(+d.supprDeroule, 1); return majDeroule(L); }
   if (d.export) return exporter(d.export);
+  if (d.jeux) {
+    const brouillon = outils.quiz || {}, Q = lireQuestions(brouillon.quiz ?? MODELE_QUIZ), P = lireQuestions(brouillon.pronos ?? MODELE_PRONOS).map(({ q, choix }) => ({ q, choix }));
+    const publiques = Q.map(({ q, choix }) => ({ q, choix }));
+    if (d.jeux === 'ouvrir' || d.jeux === 'rouvrir') { await setDoc(doc(db, `events/${E}/partage/quiz`), { ouvert: true, revele: false, questions: publiques, pronos: P }); await deleteDoc(doc(db, `events/${E}/partage/classement`)).catch(() => {}); msgOption = 'Les jeux sont ouverts : vos invités les voient sur leur page.'; }
+    if (d.jeux === 'fermer') { await setDoc(doc(db, `events/${E}/partage/quiz`), { ouvert: false, revele: false, questions: publiques, pronos: P }); msgOption = 'Jeux fermés.'; }
+    if (d.jeux === 'reveler') {
+      const quiz = jeuxRep.map(r => ({ prenom: r.prenom, score: Q.filter((x, i) => r.quiz?.[i] === x.bonne).length, sur: Q.length })).sort((x, y) => y.score - x.score);
+      const pronos = P.map((x, i) => x.choix.map((_, k) => jeuxRep.filter(r => r.pronos?.[i] === k).length));
+      await setDoc(doc(db, `events/${E}/partage/classement`), { quiz, pronos: Object.fromEntries(pronos.map((x, i) => [i, x])) });
+      await setDoc(doc(db, `events/${E}/partage/quiz`), { ouvert: true, revele: true, questions: Q, pronos: P });
+      msgOption = 'Réponses et classement révélés.';
+    }
+    return rendre();
+  }
+  if (d.supprTissu) { const c = partage.tenues || { tissus: [] }; const L = [...c.tissus]; L.splice(+d.supprTissu, 1); return setDoc(doc(db, `events/${E}/partage/tenues`), { tissus: L }, { merge: true }); }
+  if (d.choisirPhoto) { photoPour = photoPour === d.choisirPhoto ? null : d.choisirPhoto; return rendre(); }
+  if (d.merciEnvoye) return updateDoc(doc(db, `events/${E}/invites/${d.merciEnvoye}`), { merciEnvoye: serverTimestamp() });
+  if (d.visibleAlbum) { const p = album.find(x => x.id === d.visibleAlbum); return updateDoc(doc(db, `events/${E}/album/${p.id}`), { visible: !p.visible }); }
+  if (d.supprAlbum) { const p = album.find(x => x.id === d.supprAlbum); await deleteObject(ref(storage, p.chemin)).catch(() => {}); return deleteDoc(doc(db, `events/${E}/album/${p.id}`)); }
+  if (d.zip) return toutTelecharger(t);
   if (d.supprLien) { const L = [...(outils.placement?.liens || [])]; L.splice(+d.supprLien, 1); return setDoc(doc(db, `events/${E}/outils/placement`), { liens: L }); }
   if (d.proposer) {
     const attendus = invites.filter(i => !declineTout(i)), r = proposerPlacement(attendus, tables, outils.placement?.liens || [], { garder: d.proposer === 'garder' });
@@ -428,6 +571,9 @@ document.addEventListener('click', async ev => {
 document.addEventListener('change', async ev => {
   const t = ev.target; if (!E) return;
   if (t.dataset.maj) { const [col, id, champ] = t.dataset.maj.split('/'), v = t.type === 'number' ? (t.value === '' ? 0 : +t.value) : t.value; return setDoc(doc(db, `events/${E}/${col}/${id}`), { [champ]: v }, { merge: true }); }
+  if (t.dataset.paye) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.paye}`), { 'tenue.paye': t.checked });
+  if (t.dataset.motMerci) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.motMerci}`), { 'merci.mot': t.value.slice(0, 300) });
+  if (t.id === 'i-album-photographe' && t.files.length) return deposerAlbum([...t.files]);
   if (t.dataset.fait) return updateDoc(doc(db, `events/${E}/taches/${t.dataset.fait}`), { fait: t.checked, faitLe: t.checked ? aujourdhui() : '' });
   if (t.dataset.placer !== undefined) return placer(t.dataset.placer, t.value);
   if ('tablesVisibles' in t.dataset) return updateDoc(doc(db, 'events', E), { tablesVisibles: t.checked });
@@ -466,6 +612,19 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-presta') { ev.target.reset(); await addDoc(collection(db, `events/${E}/prestataires`), { metier: f.metier, nom: f.nom.trim(), tel: f.tel.trim(), email: f.email.trim(), montant: +f.montant || 0, verse: 0, statut: f.montant ? 'devis' : 'piste', notes: '' }); }
   if (id === 'f-tache') { ev.target.reset(); await addDoc(collection(db, `events/${E}/taches`), { titre: f.titre.trim(), echeance: f.echeance || '', fait: false, ordre: taches.length }); }
   if (id === 'f-deroule') { ev.target.reset(); await majDeroule([...(outils.deroule?.items || []), { heure: f.heure, titre: f.titre.trim(), lieu: f.lieu.trim(), qui: f.qui.trim(), public: true }]); }
+  if (id === 'f-jeux') {
+    await setDoc(doc(db, `events/${E}/outils/quiz`), { quiz: f.quiz, pronos: f.pronos });
+    if (partage.quiz?.ouvert && !partage.quiz?.revele) await setDoc(doc(db, `events/${E}/partage/quiz`), { ouvert: true, revele: false, questions: lireQuestions(f.quiz).map(({ q, choix }) => ({ q, choix })), pronos: lireQuestions(f.pronos).map(({ q, choix }) => ({ q, choix })) });
+    msgOption = 'Questions enregistrées.'; document.activeElement?.blur(); rendre();
+  }
+  if (id === 'f-tissu') {
+    const c = partage.tenues || { tissus: [], tailles: ['XS', 'S', 'M', 'L', 'XL', 'XXL'] }; ev.target.reset();
+    await setDoc(doc(db, `events/${E}/partage/tenues`), { tailles: c.tailles || [], consigne: c.consigne || '', paiement: c.paiement || '', dateLimite: c.dateLimite || '', tissus: [...(c.tissus || []), { id: jeton().slice(0, 8), nom: f.nom.trim(), couleur: f.couleur, prix: +f.prix || 0, unite: f.unite, description: f.description.trim() }] });
+  }
+  if (id === 'f-tenues-reglages') {
+    await setDoc(doc(db, `events/${E}/partage/tenues`), { tissus: partage.tenues?.tissus || [], tailles: f.tailles.split(',').map(x => x.trim()).filter(Boolean).slice(0, 20), dateLimite: f.dateLimite || '', consigne: f.consigne.trim(), paiement: f.paiement.trim() });
+  }
+  if (id === 'f-merci') { await updateDoc(doc(db, 'events', E), { merci: { ...(evt.merci || {}), texte: f.texte.trim(), actif: 'actif' in f } }); }
   if (id === 'f-acces') { ev.target.reset(); await setDoc(doc(db, `events/${E}/acces/${jeton()}`), { role: f.role, nom: f.nom.trim(), creeLe: serverTimestamp() }); }
   if (id === 'f-cer') {
     const cle = f.nom.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'ceremonie';

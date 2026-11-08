@@ -1,0 +1,125 @@
+// Langues de l'invitation (option « Langue supplémentaire ») : textes fixes de l'interface, traduits ici ;
+// les textes écrits par les organisateurs se traduisent dans l'éditeur (champ « titre@en », « texte@en »…).
+// Le créole haïtien est à faire relire par un locuteur avant la première vente.
+export const LANGUES = { fr: 'Français', en: 'English', es: 'Español', pt: 'Português', ht: 'Kreyòl ayisyen' };
+export const LOCALES = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', pt: 'pt-PT', ht: 'fr-HT' };
+
+const T = {
+  fr: {},
+  en: {
+    'Répondre': 'Reply', 'jours': 'days', 'heures': 'hours', 'min': 'min', 'sec': 'sec', 'plan': 'map', 'Pour': 'For', 'Ajouter à mon agenda': 'Add to my calendar',
+    'Parrain': 'Godfather', 'Marraine': 'Godmother', 'Fille': 'Girl', 'Garçon': 'Boy', 'ou': 'or', 'Né le': 'Born on', 'À': 'At', 'Poids': 'Weight', 'Taille': 'Length',
+    'Étape': 'Step', 'Bon à savoir': 'Good to know', 'Ouvrir': 'Open',
+    'Votre invitation': 'Your invitation', 'Ouvrir le faire-part': 'Open the invitation', 'Bonjour': 'Hello',
+    'Vous êtes invité(e) aux moments suivants. Merci de répondre pour chacun.': 'You are invited to the following moments. Please reply for each one.',
+    'Merci de nous dire si vous serez présent(e).': 'Please let us know if you can attend.', 'à': 'at', 'Je serai là': 'I will be there', 'Je ne pourrai pas': 'I cannot come',
+    'Accompagnants': 'Guests with you', 'Régime, allergies': 'Diet, allergies', 'Un mot pour les mariés': 'A word for the couple', 'Un mot pour les organisateurs': 'A word for the hosts',
+    'Envoyer ma réponse': 'Send my reply', 'Réponse bien reçue, merci. Vous pouvez la modifier à tout moment.': 'Reply received, thank you. You can change it at any time.',
+    'Vous venez de loin ?': 'Coming from far away?', "Dites-nous quand vous arrivez : nous organisons l'accueil, les navettes et, si besoin, la lettre d'invitation pour le visa.": 'Tell us when you arrive: we arrange the welcome, the shuttles and, if needed, the invitation letter for your visa.',
+    "Date d'arrivée": 'Arrival date', 'Vol ou train': 'Flight or train', "J'ai besoin d'un hébergement": 'I need accommodation', "J'ai besoin d'une lettre pour le visa": 'I need a visa letter', 'Enregistrer': 'Save', 'Enregistré, merci.': 'Saved, thank you.',
+    "Votre pass d'entrée": 'Your entry pass', "Présentez ce code à l'entrée. Il est personnel": 'Show this code at the entrance. It is personal', 'et vaut pour vous et': 'and is valid for you and', 'accompagnant': 'guest', 'accompagnants': 'guests',
+    'Entrée validée à': 'Entry confirmed at', 'Bonne fête !': 'Enjoy the party!', 'Votre table': 'Your table', 'Le déroulé': 'The schedule', 'Le direct': 'Live stream',
+    'Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.': 'Cannot come? Watch the ceremony live, here.', 'Le mur photo': 'Photo wall',
+    "Partagez vos photos de la fête : elles s'affichent sur le mur.": 'Share your photos of the party: they appear on the wall.', 'Ajouter des photos': 'Add photos', 'Retirer': 'Remove',
+    "Le livre d'or": 'Guestbook', 'Votre prénom': 'Your first name', 'Votre message': 'Your message', "Signer le livre d'or": 'Sign the guestbook',
+    'Laisser un message vocal': 'Leave a voice message', 'Laisser une vidéo': 'Leave a video', 'Arrêter': 'Stop', 'Envoyer': 'Send', 'Recommencer': 'Start again', 'Enregistrement…': 'Recording…',
+    'Message envoyé, merci !': 'Message sent, thank you!', "Le message n'a pas pu être envoyé. Réessayez.": 'The message could not be sent. Please try again.', "Votre téléphone ne permet pas l'enregistrement ici : choisissez un fichier.": 'Your phone cannot record here: choose a file instead.', 'ou choisir un fichier': 'or choose a file',
+    "L'album": 'The album', 'Les photos de la fête, en haute définition. Ajoutez les vôtres en qualité originale.': 'The photos of the party, in high definition. Add yours in original quality.', 'Télécharger': 'Download', 'Ajouter à l\'album': 'Add to the album', 'Photographe': 'Photographer',
+    'Les jeux': 'Games', 'Le quiz': 'The quiz', 'Les pronostics': 'Predictions', 'Valider mes réponses': 'Submit my answers', 'Réponses enregistrées. Vous pouvez les changer jusqu\'à la révélation.': 'Answers saved. You can change them until the reveal.',
+    'Les réponses sont révélées.': 'The answers are revealed.', 'Votre score': 'Your score', 'Le classement': 'Leaderboard', 'Les jeux ouvrent bientôt.': 'The games open soon.',
+    'Les tenues': 'Outfits', 'Le tissu': 'Fabric', 'Quantité': 'Quantity', 'Votre taille': 'Your size', 'Précisions (mesures, couleur…)': 'Details (measurements, colour…)', 'Commander': 'Order', 'Commande enregistrée.': 'Order saved.', 'Payé': 'Paid', 'À régler': 'To pay', 'Avant le': 'Before',
+    'Merci': 'Thank you', 'Langue': 'Language', 'Le guide de la cérémonie': 'Ceremony guide',
+    'Photos partagées, merci !': "Photos shared, thank you!", 'Photo partagée, merci !': "Photo shared, thank you!",
+    'Votre invitation personnelle': 'Your personal invitation',
+  },
+  es: {
+    'Répondre': 'Responder', 'jours': 'días', 'heures': 'horas', 'min': 'min', 'sec': 'seg', 'plan': 'mapa', 'Pour': 'Para', 'Ajouter à mon agenda': 'Añadir a mi calendario',
+    'Parrain': 'Padrino', 'Marraine': 'Madrina', 'Fille': 'Niña', 'Garçon': 'Niño', 'ou': 'o', 'Né le': 'Nació el', 'À': 'A las', 'Poids': 'Peso', 'Taille': 'Talla',
+    'Étape': 'Etapa', 'Bon à savoir': 'Conviene saber', 'Ouvrir': 'Abrir',
+    'Votre invitation': 'Su invitación', 'Ouvrir le faire-part': 'Abrir la invitación', 'Bonjour': 'Hola',
+    'Vous êtes invité(e) aux moments suivants. Merci de répondre pour chacun.': 'Está invitado/a a los siguientes momentos. Responda para cada uno, por favor.',
+    'Merci de nous dire si vous serez présent(e).': 'Díganos si podrá venir, por favor.', 'à': 'a las', 'Je serai là': 'Allí estaré', 'Je ne pourrai pas': 'No podré ir',
+    'Accompagnants': 'Acompañantes', 'Régime, allergies': 'Dieta, alergias', 'Un mot pour les mariés': 'Unas palabras para los novios', 'Un mot pour les organisateurs': 'Unas palabras para los anfitriones',
+    'Envoyer ma réponse': 'Enviar mi respuesta', 'Réponse bien reçue, merci. Vous pouvez la modifier à tout moment.': 'Respuesta recibida, gracias. Puede cambiarla cuando quiera.',
+    'Vous venez de loin ?': '¿Viene de lejos?', "Dites-nous quand vous arrivez : nous organisons l'accueil, les navettes et, si besoin, la lettre d'invitation pour le visa.": 'Díganos cuándo llega: organizamos la acogida, los traslados y, si hace falta, la carta de invitación para el visado.',
+    "Date d'arrivée": 'Fecha de llegada', 'Vol ou train': 'Vuelo o tren', "J'ai besoin d'un hébergement": 'Necesito alojamiento', "J'ai besoin d'une lettre pour le visa": 'Necesito una carta para el visado', 'Enregistrer': 'Guardar', 'Enregistré, merci.': 'Guardado, gracias.',
+    "Votre pass d'entrée": 'Su pase de entrada', "Présentez ce code à l'entrée. Il est personnel": 'Muestre este código en la entrada. Es personal', 'et vaut pour vous et': 'y vale para usted y', 'accompagnant': 'acompañante', 'accompagnants': 'acompañantes',
+    'Entrée validée à': 'Entrada validada a las', 'Bonne fête !': '¡Disfrute de la fiesta!', 'Votre table': 'Su mesa', 'Le déroulé': 'El programa', 'Le direct': 'En directo',
+    'Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.': '¿No puede venir? Siga la ceremonia aquí, en directo.', 'Le mur photo': 'El muro de fotos',
+    "Partagez vos photos de la fête : elles s'affichent sur le mur.": 'Comparta sus fotos de la fiesta: aparecen en el muro.', 'Ajouter des photos': 'Añadir fotos', 'Retirer': 'Quitar',
+    "Le livre d'or": 'Libro de visitas', 'Votre prénom': 'Su nombre', 'Votre message': 'Su mensaje', "Signer le livre d'or": 'Firmar el libro',
+    'Laisser un message vocal': 'Dejar un mensaje de voz', 'Laisser une vidéo': 'Dejar un vídeo', 'Arrêter': 'Detener', 'Envoyer': 'Enviar', 'Recommencer': 'Volver a empezar', 'Enregistrement…': 'Grabando…',
+    'Message envoyé, merci !': '¡Mensaje enviado, gracias!', "Le message n'a pas pu être envoyé. Réessayez.": 'No se pudo enviar el mensaje. Inténtelo de nuevo.', "Votre téléphone ne permet pas l'enregistrement ici : choisissez un fichier.": 'Su teléfono no permite grabar aquí: elija un archivo.', 'ou choisir un fichier': 'o elegir un archivo',
+    "L'album": 'El álbum', 'Les photos de la fête, en haute définition. Ajoutez les vôtres en qualité originale.': 'Las fotos de la fiesta, en alta definición. Añada las suyas en calidad original.', 'Télécharger': 'Descargar', 'Ajouter à l\'album': 'Añadir al álbum', 'Photographe': 'Fotógrafo',
+    'Les jeux': 'Juegos', 'Le quiz': 'El cuestionario', 'Les pronostics': 'Pronósticos', 'Valider mes réponses': 'Validar mis respuestas', 'Réponses enregistrées. Vous pouvez les changer jusqu\'à la révélation.': 'Respuestas guardadas. Puede cambiarlas hasta la revelación.',
+    'Les réponses sont révélées.': 'Se han revelado las respuestas.', 'Votre score': 'Su puntuación', 'Le classement': 'La clasificación', 'Les jeux ouvrent bientôt.': 'Los juegos abren pronto.',
+    'Les tenues': 'Los trajes', 'Le tissu': 'La tela', 'Quantité': 'Cantidad', 'Votre taille': 'Su talla', 'Précisions (mesures, couleur…)': 'Detalles (medidas, color…)', 'Commander': 'Pedir', 'Commande enregistrée.': 'Pedido guardado.', 'Payé': 'Pagado', 'À régler': 'Por pagar', 'Avant le': 'Antes del',
+    'Merci': 'Gracias', 'Langue': 'Idioma', 'Le guide de la cérémonie': 'Guía de la ceremonia',
+    'Photos partagées, merci !': "¡Fotos compartidas, gracias!", 'Photo partagée, merci !': "¡Foto compartida, gracias!",
+    'Votre invitation personnelle': 'Su invitación personal',
+  },
+  pt: {
+    'Répondre': 'Responder', 'jours': 'dias', 'heures': 'horas', 'min': 'min', 'sec': 'seg', 'plan': 'mapa', 'Pour': 'Para', 'Ajouter à mon agenda': 'Adicionar à minha agenda',
+    'Parrain': 'Padrinho', 'Marraine': 'Madrinha', 'Fille': 'Menina', 'Garçon': 'Menino', 'ou': 'ou', 'Né le': 'Nasceu a', 'À': 'Às', 'Poids': 'Peso', 'Taille': 'Altura',
+    'Étape': 'Etapa', 'Bon à savoir': 'Bom saber', 'Ouvrir': 'Abrir',
+    'Votre invitation': 'O seu convite', 'Ouvrir le faire-part': 'Abrir o convite', 'Bonjour': 'Olá',
+    'Vous êtes invité(e) aux moments suivants. Merci de répondre pour chacun.': 'Está convidado/a para os momentos seguintes. Responda a cada um, por favor.',
+    'Merci de nous dire si vous serez présent(e).': 'Diga-nos se poderá estar presente, por favor.', 'à': 'às', 'Je serai là': 'Estarei lá', 'Je ne pourrai pas': 'Não poderei ir',
+    'Accompagnants': 'Acompanhantes', 'Régime, allergies': 'Dieta, alergias', 'Un mot pour les mariés': 'Uma palavra para os noivos', 'Un mot pour les organisateurs': 'Uma palavra para os anfitriões',
+    'Envoyer ma réponse': 'Enviar a minha resposta', 'Réponse bien reçue, merci. Vous pouvez la modifier à tout moment.': 'Resposta recebida, obrigado. Pode alterá-la a qualquer momento.',
+    'Vous venez de loin ?': 'Vem de longe?', "Dites-nous quand vous arrivez : nous organisons l'accueil, les navettes et, si besoin, la lettre d'invitation pour le visa.": 'Diga-nos quando chega: organizamos a receção, os transportes e, se necessário, a carta-convite para o visto.',
+    "Date d'arrivée": 'Data de chegada', 'Vol ou train': 'Voo ou comboio', "J'ai besoin d'un hébergement": 'Preciso de alojamento', "J'ai besoin d'une lettre pour le visa": 'Preciso de uma carta para o visto', 'Enregistrer': 'Guardar', 'Enregistré, merci.': 'Guardado, obrigado.',
+    "Votre pass d'entrée": 'O seu passe de entrada', "Présentez ce code à l'entrée. Il est personnel": 'Mostre este código à entrada. É pessoal', 'et vaut pour vous et': 'e vale para si e', 'accompagnant': 'acompanhante', 'accompagnants': 'acompanhantes',
+    'Entrée validée à': 'Entrada validada às', 'Bonne fête !': 'Boa festa!', 'Votre table': 'A sua mesa', 'Le déroulé': 'O programa', 'Le direct': 'Em direto',
+    'Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.': 'Não pode vir? Acompanhe a cerimónia aqui, em direto.', 'Le mur photo': 'O mural de fotos',
+    "Partagez vos photos de la fête : elles s'affichent sur le mur.": 'Partilhe as suas fotos da festa: aparecem no mural.', 'Ajouter des photos': 'Adicionar fotos', 'Retirer': 'Retirar',
+    "Le livre d'or": 'Livro de honra', 'Votre prénom': 'O seu nome', 'Votre message': 'A sua mensagem', "Signer le livre d'or": 'Assinar o livro',
+    'Laisser un message vocal': 'Deixar uma mensagem de voz', 'Laisser une vidéo': 'Deixar um vídeo', 'Arrêter': 'Parar', 'Envoyer': 'Enviar', 'Recommencer': 'Recomeçar', 'Enregistrement…': 'A gravar…',
+    'Message envoyé, merci !': 'Mensagem enviada, obrigado!', "Le message n'a pas pu être envoyé. Réessayez.": 'Não foi possível enviar a mensagem. Tente de novo.', "Votre téléphone ne permet pas l'enregistrement ici : choisissez un fichier.": 'O seu telemóvel não permite gravar aqui: escolha um ficheiro.', 'ou choisir un fichier': 'ou escolher um ficheiro',
+    "L'album": 'O álbum', 'Les photos de la fête, en haute définition. Ajoutez les vôtres en qualité originale.': 'As fotos da festa, em alta definição. Adicione as suas em qualidade original.', 'Télécharger': 'Descarregar', 'Ajouter à l\'album': 'Adicionar ao álbum', 'Photographe': 'Fotógrafo',
+    'Les jeux': 'Jogos', 'Le quiz': 'O questionário', 'Les pronostics': 'Prognósticos', 'Valider mes réponses': 'Validar as minhas respostas', 'Réponses enregistrées. Vous pouvez les changer jusqu\'à la révélation.': 'Respostas guardadas. Pode alterá-las até à revelação.',
+    'Les réponses sont révélées.': 'As respostas foram reveladas.', 'Votre score': 'A sua pontuação', 'Le classement': 'A classificação', 'Les jeux ouvrent bientôt.': 'Os jogos abrem em breve.',
+    'Les tenues': 'Os trajes', 'Le tissu': 'O tecido', 'Quantité': 'Quantidade', 'Votre taille': 'O seu tamanho', 'Précisions (mesures, couleur…)': 'Detalhes (medidas, cor…)', 'Commander': 'Encomendar', 'Commande enregistrée.': 'Encomenda guardada.', 'Payé': 'Pago', 'À régler': 'Por pagar', 'Avant le': 'Antes de',
+    'Merci': 'Obrigado', 'Langue': 'Língua', 'Le guide de la cérémonie': 'Guia da cerimónia',
+    'Photos partagées, merci !': "Fotos partilhadas, obrigado!", 'Photo partagée, merci !': "Foto partilhada, obrigado!",
+    'Votre invitation personnelle': 'O seu convite pessoal',
+  },
+  ht: {
+    'Répondre': 'Reponn', 'jours': 'jou', 'heures': 'èdtan', 'min': 'min', 'sec': 'sek', 'plan': 'kat', 'Pour': 'Pou', 'Ajouter à mon agenda': 'Mete l nan kalandriye m',
+    'Parrain': 'Parenn', 'Marraine': 'Marenn', 'Fille': 'Tifi', 'Garçon': 'Tigason', 'ou': 'oswa', 'Né le': 'Fèt', 'À': 'A', 'Poids': 'Pwa', 'Taille': 'Wotè',
+    'Étape': 'Etap', 'Bon à savoir': 'Bon pou konnen', 'Ouvrir': 'Louvri',
+    'Votre invitation': 'Envitasyon ou', 'Ouvrir le faire-part': 'Louvri envitasyon an', 'Bonjour': 'Bonjou',
+    'Vous êtes invité(e) aux moments suivants. Merci de répondre pour chacun.': 'Ou envite nan moman sa yo. Tanpri reponn pou chak.',
+    'Merci de nous dire si vous serez présent(e).': 'Tanpri di nou si w ap la.', 'à': 'a', 'Je serai là': 'M ap la', 'Je ne pourrai pas': 'M p ap ka vini',
+    'Accompagnants': 'Moun k ap vini avè w', 'Régime, allergies': 'Rejim, alèji', 'Un mot pour les mariés': 'Yon ti mo pou marye yo', 'Un mot pour les organisateurs': 'Yon ti mo pou moun k ap resevwa yo',
+    'Envoyer ma réponse': 'Voye repons mwen', 'Réponse bien reçue, merci. Vous pouvez la modifier à tout moment.': 'Nou resevwa repons ou, mèsi. Ou ka chanje l nenpòt lè.',
+    'Vous venez de loin ?': 'Ou soti lwen ?', "Dites-nous quand vous arrivez : nous organisons l'accueil, les navettes et, si besoin, la lettre d'invitation pour le visa.": 'Di nou ki lè w ap rive : n ap òganize akèy la, transpò yo epi, si sa nesesè, lèt envitasyon pou viza a.',
+    "Date d'arrivée": 'Dat w ap rive', 'Vol ou train': 'Vòl oswa tren', "J'ai besoin d'un hébergement": 'Mwen bezwen kote pou m dòmi', "J'ai besoin d'une lettre pour le visa": 'Mwen bezwen yon lèt pou viza', 'Enregistrer': 'Anrejistre', 'Enregistré, merci.': 'Anrejistre, mèsi.',
+    "Votre pass d'entrée": 'Kat antre ou', "Présentez ce code à l'entrée. Il est personnel": 'Montre kòd sa a nan pòtay la. Se pou ou sèlman', 'et vaut pour vous et': 'li valab pou ou ak', 'accompagnant': 'moun avè w', 'accompagnants': 'moun avè w',
+    'Entrée validée à': 'Ou antre a', 'Bonne fête !': 'Bòn fèt !', 'Votre table': 'Tab ou', 'Le déroulé': 'Pwogram lan', 'Le direct': 'An dirèk',
+    'Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.': 'Ou pa ka vini ? Swiv seremoni an isit la, an dirèk.', 'Le mur photo': 'Mi foto a',
+    "Partagez vos photos de la fête : elles s'affichent sur le mur.": 'Pataje foto fèt la : y ap parèt sou mi an.', 'Ajouter des photos': 'Ajoute foto', 'Retirer': 'Retire',
+    "Le livre d'or": 'Liv lò a', 'Votre prénom': 'Non ou', 'Votre message': 'Mesaj ou', "Signer le livre d'or": 'Siyen liv lò a',
+    'Laisser un message vocal': 'Kite yon mesaj vokal', 'Laisser une vidéo': 'Kite yon videyo', 'Arrêter': 'Kanpe', 'Envoyer': 'Voye', 'Recommencer': 'Rekòmanse', 'Enregistrement…': 'Anrejistreman…',
+    'Message envoyé, merci !': 'Mesaj la ale, mèsi !', "Le message n'a pas pu être envoyé. Réessayez.": 'Mesaj la pa t ka ale. Eseye ankò.', "Votre téléphone ne permet pas l'enregistrement ici : choisissez un fichier.": 'Telefòn ou pa ka anrejistre isit la : chwazi yon fichye.', 'ou choisir un fichier': 'oswa chwazi yon fichye',
+    "L'album": 'Albòm lan', 'Les photos de la fête, en haute définition. Ajoutez les vôtres en qualité originale.': 'Foto fèt la, an bon kalite. Ajoute pa w yo jan yo ye a.', 'Télécharger': 'Telechaje', 'Ajouter à l\'album': 'Ajoute nan albòm lan', 'Photographe': 'Fotograf',
+    'Les jeux': 'Jwèt yo', 'Le quiz': 'Kesyon yo', 'Les pronostics': 'Pwonostik yo', 'Valider mes réponses': 'Valide repons mwen', 'Réponses enregistrées. Vous pouvez les changer jusqu\'à la révélation.': 'Repons ou anrejistre. Ou ka chanje yo jiskaske nou devwale yo.',
+    'Les réponses sont révélées.': 'Repons yo devwale.', 'Votre score': 'Nòt ou', 'Le classement': 'Klasman an', 'Les jeux ouvrent bientôt.': 'Jwèt yo ap louvri talè.',
+    'Les tenues': 'Rad yo', 'Le tissu': 'Twal la', 'Quantité': 'Kantite', 'Votre taille': 'Gwosè ou', 'Précisions (mesures, couleur…)': 'Detay (mezi, koulè…)', 'Commander': 'Kòmande', 'Commande enregistrée.': 'Kòmand lan anrejistre.', 'Payé': 'Peye', 'À régler': 'Pou peye', 'Avant le': 'Anvan',
+    'Merci': 'Mèsi', 'Langue': 'Lang', 'Le guide de la cérémonie': 'Gid seremoni an',
+    'Photos partagées, merci !': "Foto yo pataje, mèsi !", 'Photo partagée, merci !': "Foto a pataje, mèsi !",
+    'Votre invitation personnelle': 'Envitasyon pèsonèl ou',
+  },
+};
+
+// Traduction d'un texte fixe ; le français sert de clé et de repli.
+export const traduire = (langue, texte) => T[langue]?.[texte] ?? texte;
+// Texte écrit par les organisateurs : la version de la langue si elle existe (« texte@en »), sinon l'original.
+export const champ = (objet, nom, langue) => (langue && langue !== 'fr' && objet?.[`${nom}@${langue}`]) || objet?.[nom] || '';
+// Langue à afficher : choix mémorisé du visiteur, sinon celle du téléphone si l'événement la propose, sinon la première.
+export function langueChoisie(proposees = ['fr'], fixee = '') {
+  let memo = ''; try { memo = localStorage.getItem('mv-langue') || ''; } catch {}
+  const tel = (navigator.language || 'fr').slice(0, 2);
+  return [fixee, memo, tel].find(l => l && proposees.includes(l)) || proposees[0] || 'fr';
+}
+export function memoriserLangue(l) { try { localStorage.setItem('mv-langue', l); } catch {} }
