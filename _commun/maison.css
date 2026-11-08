@@ -211,3 +211,9 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .legal td{border-bottom:1px solid var(--filet);padding:10px 8px;vertical-align:top}
 .pied .mention a{color:#8B8378;text-decoration:underline}
 .rassure a{color:inherit}
+.case{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;font-size:13px;line-height:1.5;color:var(--doux);margin-bottom:12px;cursor:pointer}
+.case input{margin-top:3px;accent-color:var(--accent)}
+.case a{color:var(--encre)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn:disabled:hover{background:var(--encre);color:var(--ivoire)}
+.legal ol{padding-left:22px}
