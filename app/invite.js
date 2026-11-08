@@ -6,7 +6,7 @@ import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } fro
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { traduire, champ, LANGUES, LOCALES, langueChoisie, memoriserLangue } from './langues.js?v=1';
+import { traduire, champ, LANGUES, LOCALES, langueChoisie, memoriserLangue } from './langues.js?v=2';
 import { theme } from './themes.js?v=2';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -72,6 +72,7 @@ function rendre() {
         ${inv.max ? `<label>${t('Accompagnants')}<select name="accompagnants">${Array.from({ length: inv.max + 1 }, (_, k) => `<option ${k === (inv.accompagnants || 0) ? 'selected' : ''}>${k}</option>`).join('')}</select></label>` : ''}
         <label>${t('Régime, allergies')}<input name="regime" maxlength="120" value="${esc(inv.regime || '')}"></label></div>
       <label>${t(evt.type === 'mariage' ? 'Un mot pour les mariés' : 'Un mot pour les organisateurs')}<textarea name="message" rows="2" maxlength="500">${esc(inv.message || '')}</textarea></label>
+      ${evt.dateLimiteReponse && !inv.reponduLe ? `<p class="app-note" style="margin-top:12px">${t('Merci de répondre avant le')} ${esc(dateLongue(evt.dateLimiteReponse + 'T12:00'))}.</p>` : ''}
       <button class="btn" style="margin-top:14px">${t('Envoyer ma réponse')}</button><p class="ok-msg" id="m-rep">${inv.reponduLe ? t('Réponse bien reçue, merci. Vous pouvez la modifier à tout moment.') : ''}</p></form>
     ${a('etranger') ? `<form class="app-carte" id="f-voyage"><h2>${t('Vous venez de loin ?')}</h2><p class="app-note" style="margin-bottom:12px">${t("Dites-nous quand vous arrivez : nous organisons l'accueil, les navettes et, si besoin, la lettre d'invitation pour le visa.")}</p>
       <div class="app-grille"><label>${t("Date d'arrivée")}<input name="date" type="date" value="${esc(inv.arrivee?.date || '')}"></label><label>${t('Vol ou train')}<input name="vol" maxlength="40" value="${esc(inv.arrivee?.vol || '')}"></label></div>

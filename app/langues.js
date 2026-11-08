@@ -30,6 +30,7 @@ const T = {
     'Les tenues': 'Outfits', 'Le tissu': 'Fabric', 'Quantité': 'Quantity', 'Votre taille': 'Your size', 'Précisions (mesures, couleur…)': 'Details (measurements, colour…)', 'Commander': 'Order', 'Commande enregistrée.': 'Order saved.', 'Payé': 'Paid', 'À régler': 'To pay', 'Avant le': 'Before',
     'Merci': 'Thank you', 'Langue': 'Language', 'Le guide de la cérémonie': 'Ceremony guide',
     'Photos partagées, merci !': "Photos shared, thank you!", 'Photo partagée, merci !': "Photo shared, thank you!",
+    'Merci de répondre avant le': 'Please reply before',
     'Votre invitation personnelle': 'Your personal invitation',
   },
   es: {
@@ -56,6 +57,7 @@ const T = {
     'Les tenues': 'Los trajes', 'Le tissu': 'La tela', 'Quantité': 'Cantidad', 'Votre taille': 'Su talla', 'Précisions (mesures, couleur…)': 'Detalles (medidas, color…)', 'Commander': 'Pedir', 'Commande enregistrée.': 'Pedido guardado.', 'Payé': 'Pagado', 'À régler': 'Por pagar', 'Avant le': 'Antes del',
     'Merci': 'Gracias', 'Langue': 'Idioma', 'Le guide de la cérémonie': 'Guía de la ceremonia',
     'Photos partagées, merci !': "¡Fotos compartidas, gracias!", 'Photo partagée, merci !': "¡Foto compartida, gracias!",
+    'Merci de répondre avant le': 'Responda antes del',
     'Votre invitation personnelle': 'Su invitación personal',
   },
   pt: {
@@ -82,6 +84,7 @@ const T = {
     'Les tenues': 'Os trajes', 'Le tissu': 'O tecido', 'Quantité': 'Quantidade', 'Votre taille': 'O seu tamanho', 'Précisions (mesures, couleur…)': 'Detalhes (medidas, cor…)', 'Commander': 'Encomendar', 'Commande enregistrée.': 'Encomenda guardada.', 'Payé': 'Pago', 'À régler': 'Por pagar', 'Avant le': 'Antes de',
     'Merci': 'Obrigado', 'Langue': 'Língua', 'Le guide de la cérémonie': 'Guia da cerimónia',
     'Photos partagées, merci !': "Fotos partilhadas, obrigado!", 'Photo partagée, merci !': "Foto partilhada, obrigado!",
+    'Merci de répondre avant le': 'Responda antes de',
     'Votre invitation personnelle': 'O seu convite pessoal',
   },
   ht: {
@@ -108,6 +111,7 @@ const T = {
     'Les tenues': 'Rad yo', 'Le tissu': 'Twal la', 'Quantité': 'Kantite', 'Votre taille': 'Gwosè ou', 'Précisions (mesures, couleur…)': 'Detay (mezi, koulè…)', 'Commander': 'Kòmande', 'Commande enregistrée.': 'Kòmand lan anrejistre.', 'Payé': 'Peye', 'À régler': 'Pou peye', 'Avant le': 'Anvan',
     'Merci': 'Mèsi', 'Langue': 'Lang', 'Le guide de la cérémonie': 'Gid seremoni an',
     'Photos partagées, merci !': "Foto yo pataje, mèsi !", 'Photo partagée, merci !': "Foto a pataje, mèsi !",
+    'Merci de répondre avant le': 'Tanpri reponn anvan',
     'Votre invitation personnelle': 'Envitasyon pèsonèl ou',
   },
 };

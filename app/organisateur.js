@@ -409,7 +409,10 @@ const VUES = {
         <label>Prénoms ou titre<input name="titre" value="${esc(evt.titre)}" required maxlength="120"></label>
         <label>Date et heure<input name="date" type="datetime-local" value="${esc(evt.date)}" required></label>
         <label>Lieu<input name="lieu" value="${esc(evt.lieu)}" required></label>
-        <label>Collection du faire-part<input name="modele" value="${esc(evt.modele || '')}" placeholder="lakay"></label></div>
+        <label>Collection du faire-part<input name="modele" value="${esc(evt.modele || '')}" placeholder="lakay"></label>
+        <label>Date limite de réponse<input name="dateLimiteReponse" type="date" value="${esc(evt.dateLimiteReponse || '')}"></label></div>
+        <label class="coche" style="margin-top:6px"><input type="checkbox" name="notifReponses" ${evt.notifReponses === false ? '' : 'checked'}> Recevoir un courriel à chaque réponse d'invité</label>
+        <p class="app-note">Les invités dont vous avez l'adresse e-mail reçoivent un rappel 7 jours puis 1 jour avant la date limite s'ils n'ont pas répondu, et la veille de l'événement s'ils viennent.</p>
         ${a('direct') ? `<label style="margin-top:12px">Lien du direct (YouTube non répertorié, par exemple)<input name="live" id="i-live" placeholder="https://www.youtube.com/watch?v=…"></label>` : ''}
         <button class="btn" style="margin-top:14px">Enregistrer</button><p class="ok-msg" id="m-reglages"></p></form>
       <div class="app-carte"><h2>Exporter vos données</h2><p class="app-note" style="margin-bottom:12px">Des fichiers qui s'ouvrent dans Excel, Numbers ou Google Sheets : pour le traiteur, le lieu, le wedding planner, ou vos archives.</p>
@@ -676,7 +679,7 @@ document.addEventListener('submit', async ev => {
     await updateDoc(doc(db, 'events', E), { ceremonies: [...C, { cle: C.some(c => c.cle === cle) ? cle + '-' + C.length : cle, nom: f.nom, date: f.date, lieu: f.lieu }] });
   }
   if (id === 'f-reglages') {
-    await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim() });
+    await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f });
     if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim() }, { merge: true });
     if ($('#m-reglages')) $('#m-reglages').textContent = 'Enregistré.';
   }
