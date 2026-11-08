@@ -37,7 +37,7 @@ exigerOrganisateur(vue, async user => {
   vue.innerHTML = `<a class="app-note" href="organisateur.html?e=${esc(E)}">← ${esc(evt.titre)}</a>
     <h1 class="serif">Contrôle d'entrée</h1><p class="app-note" id="compteur"></p>
     <div id="lecteur" style="margin-top:16px"></div>
-    <form class="form-ligne" id="f-code" style="margin-top:14px"><label>Ou saisir le code<input name="code" placeholder="LAKOU:…"></label><span></span><button class="btn clair">Vérifier</button></form>
+    <form class="form-ligne" id="f-code" style="margin-top:14px"><label>Ou saisir le code<input name="code" placeholder="Lien ou code du pass"></label><span></span><button class="btn clair">Vérifier</button></form>
     <div id="verdict" style="margin-top:18px"></div>`;
   onSnapshot(collection(db, `events/${E}/invites`), s => {
     invites = s.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -53,8 +53,11 @@ exigerOrganisateur(vue, async user => {
 
 async function verifier(code) {
   if (enCours) return; enCours = true;
-  const [prefixe, e, t] = code.split(':'), zone = $('#verdict');
-  const i = prefixe === 'LAKOU' && e === E ? invites.find(x => x.id === t) : null;
+  // Pass = lien personnel de l'invité (…/invite.html?e=…&g=…) ; les anciens codes « LAKOU:e:g » restent acceptés.
+  let e = '', t = '';
+  if (/^https?:\/\//i.test(code)) { try { const u = new URL(code); e = u.searchParams.get('e') || ''; t = u.searchParams.get('g') || ''; } catch {} }
+  else { const p = code.split(':'); if (p.length === 3) [, e, t] = p; }
+  const zone = $('#verdict'), i = e === E ? invites.find(x => x.id === t) : null;
   if (!i) zone.innerHTML = `<div class="app-carte verdict refus"><h2 class="serif">Code inconnu</h2><p>Ce pass n'appartient pas à cet événement.</p></div>`;
   else if (i.entree) zone.innerHTML = `<div class="app-carte verdict deja"><h2 class="serif">${esc(i.nom)}</h2><p>Déjà entré(e) à ${heure(i.entree.toDate())}.</p></div>`;
   else {

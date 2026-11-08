@@ -32,6 +32,7 @@ async function demarrer() {
   if (a('livredor')) onSnapshot(query(collection(db, `events/${E}/livre`), where('visible', '==', true)), s => { mots = s.docs.map(d => d.data()).sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0)); rendreMots(); });
 }
 
+const lienPerso = () => new URL(`invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}`, location.href).href;
 const embed = u => { const m = u.match(/(?:youtu\.be\/|v=|embed\/|live\/)([\w-]{11})/); return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : u; };
 
 function rendre() {
@@ -60,7 +61,9 @@ function rendre() {
       <label class="btn clair" style="display:inline-block;cursor:pointer">Ajouter des photos<input type="file" accept="image/*" multiple id="i-photo" hidden></label><p class="ok-msg" id="m-photo"></p><div class="galerie" id="galerie" style="margin-top:14px"></div></div>` : ''}
     ${a('livredor') ? `<form class="app-carte" id="f-mot"><h2>Le livre d'or</h2><label>Votre prénom<input name="de" maxlength="60" required value="${esc(prenom)}"></label>
       <label style="margin-top:10px">Votre message<textarea name="texte" rows="3" maxlength="1000" required></textarea></label><button class="btn clair" style="margin-top:12px">Signer le livre d'or</button><div id="mots" style="margin-top:14px"></div></form>` : ''}`;
-  if (a('qr') && window.qrcode) { const q = qrcode(0, 'M'); q.addData(`LAKOU:${E}:${T}`); q.make(); $('#qr').innerHTML = q.createImgTag(6, 8, "Pass d'entrée"); }
+  // Le pass contient le lien personnel : l'appareil photo de n'importe quel téléphone l'ouvre, et le scanner de l'entrée le reconnaît.
+  if (a('qr') && window.qrcode) { const q = qrcode(0, 'M'); q.addData(lienPerso()); q.make(); $('#qr').innerHTML = q.createImgTag(5, 8, "Pass d'entrée"); }
+  else if (a('qr')) $('#qr').innerHTML = '<p class="app-erreur">Le pass n\'a pas pu s\'afficher. Rechargez la page.</p>';
   rendreGalerie(); rendreMots();
 }
 function rendreGalerie() { const g = $('#galerie'); if (g) g.innerHTML = photos.map(x => `<figure><img src="${esc(x.url)}" alt="" loading="lazy"><figcaption>${esc(x.auteur)}</figcaption></figure>`).join(''); }
