@@ -6,31 +6,48 @@
 <meta name="robots" content="noindex">
 <title>Faire-part</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="moteur.css?v=1">
+<link rel="stylesheet" href="moteur.css?v=4">
 </head>
 <body>
 <div id="fp"><p style="font-family:sans-serif;text-align:center;padding:40px;color:#888">Ouverture…</p></div>
 <script type="module">
 // Trois usages :
-//  fp.html?demo=<direction>[&f=std]        démonstration d'une direction artistique (sans serveur) ;
+//  fp.html?demo=<direction>[&f=std|site]   démonstration d'une direction artistique (sans serveur), en faire-part, save-the-date ou site ;
 //  fp.html?apercu=1[&f=std]                aperçu en direct dans l'éditeur (réglages reçus par message) ;
 //  fp.html?e=<événement>[&g=<jeton>][&f=std] la vraie invitation ; avec un jeton, elle est personnelle.
-import { rendre, designParDefaut } from './moteur.js?v=1';
-import { theme } from './themes.js?v=1';
+import { rendre, designParDefaut } from './moteur.js?v=4';
+import { theme } from './themes.js?v=2';
 
 const q = new URLSearchParams(location.search), racine = document.getElementById('fp');
-const format = q.get('f') === 'std' ? 'std' : 'fp', sansOuverture = q.has('sans-ouverture');
-const DEMO = {
-  titre: 'Naïka & Jonathan', type: 'mariage', date: '2027-06-19T15:00', lieu: 'Domaine des Flamboyants',
-  ceremonies: [
+const format = ['std', 'site'].includes(q.get('f')) ? q.get('f') : 'fp', sansOuverture = q.has('sans-ouverture');
+// Un événement de démonstration par type : prénoms, lieux et programme crédibles.
+const DEMOS = {
+  mariage: { titre: 'Naïka & Jonathan', date: '2027-06-19T15:00', lieu: 'Domaine des Flamboyants', ceremonies: [
     { cle: 'mairie', nom: 'Mariage civil', date: '2027-06-18T11:00', lieu: 'Mairie de Pétion-Ville' },
     { cle: 'eglise', nom: 'Cérémonie religieuse', date: '2027-06-19T15:00', lieu: 'Église Saint-Pierre' },
-    { cle: 'soiree', nom: 'Réception', date: '2027-06-19T19:00', lieu: 'Domaine des Flamboyants' },
-  ],
+    { cle: 'soiree', nom: 'Réception', date: '2027-06-19T19:00', lieu: 'Domaine des Flamboyants' }] },
+  anniversaire: { titre: 'Les 40 ans de Nadia', date: '2027-05-22T19:30', lieu: 'Le Pavillon, Paris 16e', ceremonies: [
+    { cle: 'cocktail', nom: 'Cocktail', date: '2027-05-22T19:30', lieu: 'Le Pavillon, terrasse' },
+    { cle: 'diner', nom: 'Dîner', date: '2027-05-22T21:00', lieu: 'Le Pavillon, grand salon' },
+    { cle: 'soiree', nom: 'Soirée dansante', date: '2027-05-22T23:00', lieu: 'Le Pavillon' }] },
+  bapteme: { titre: 'Gabriel', date: '2027-04-11T11:00', lieu: 'Église Notre-Dame', ceremonies: [
+    { cle: 'ceremonie', nom: 'Baptême', date: '2027-04-11T11:00', lieu: 'Église Notre-Dame, Vincennes' },
+    { cle: 'dejeuner', nom: 'Déjeuner en famille', date: '2027-04-11T13:00', lieu: 'Maison des Tilleuls' }] },
+  gender: { titre: 'Fille ou garçon ?', date: '2027-03-20T15:00', lieu: 'Chez Awa et Thomas', ceremonies: [
+    { cle: 'accueil', nom: 'Goûter et pronostics', date: '2027-03-20T15:00', lieu: 'Chez Awa et Thomas, Montreuil' },
+    { cle: 'revelation', nom: 'La révélation', date: '2027-03-20T17:00', lieu: 'Dans le jardin' }] },
+  naissance: { titre: 'Léo', date: '2027-03-03T04:12', lieu: 'Paris', ceremonies: [
+    { cle: 'presentation', nom: 'Goûter de présentation', date: '2027-04-18T15:00', lieu: 'Chez nous, Vincennes' }] },
 };
+const TITRES = { gala: 'Les 50 ans de Nadia', disco: 'Les 30 ans de Yanis', champagne: 'Les 40 ans de Clara', tropicana: 'Les 30 ans de Kenzo', vinyle: 'Les 60 ans de Michel',
+  gardenparty: 'Les 70 ans de Mamie Rose', cabaret: 'Les 40 ans de Nadia', pop: 'Les 18 ans de Maya', minuit: 'Les 50 ans de Patrick', fiesta: 'Les 30 ans de Inès',
+  nuage: 'Léo', cierge: 'Gabriel', colombe: 'Élise', olivier: 'Noé', aube: 'Aya', lin: 'Jules', dragee: 'Léna', plume: 'Raphaël', source: 'Nathan', lys: 'Marie' };
 
 if (q.get('demo')) {
-  const t = theme(q.get('demo')), evt = { ...DEMO, ...(t.famille === 'festifs' ? { titre: { gala: 'Les 50 ans de Nadia', disco: 'Les 30 ans de Yanis', nuage: 'Le baptême de Léo', cierge: 'Le baptême de Gabriel', rosebleu: 'Fille ou garçon ?', secret: 'Top secret' }[t.id], type: 'fete' } : {}) };
+  const t = theme(q.get('demo')), evt = { type: t.evenement, ...DEMOS[t.evenement] };
+  if (TITRES[t.id]) evt.titre = TITRES[t.id];
+  const perso = { titre: (q.get('titre') || '').slice(0, 80), date: /^\d{4}-\d{2}-\d{2}$/.test(q.get('date') || '') ? q.get('date') : '', lieu: (q.get('lieu') || '').slice(0, 120) };
+  if (t.evenement === 'naissance' && ['envol', 'savane', 'eden', 'perle', 'soleil'].includes(t.id)) evt.titre = { envol: 'Lila', savane: 'Malik', eden: 'Iris', perle: 'Adam', soleil: 'Zoé' }[t.id];
   document.title = `${t.nom} · Maison Vivat`;
   // Photo de démonstration : celle d'une collection proche (le couple met la sienne dans l'éditeur).
   const PHOTOS = { lakou: 'lakay/photo', kreyol: 'lakay/decor-ensemble', madras: 'madras/photo', kanaval: 'madras/decor-detail', kente: 'kente/photo', adinkra: 'kente/decor-ensemble',
@@ -42,8 +59,16 @@ if (q.get('demo')) {
     terracotta: 'boheme/decor-detail', eucalyptus: 'champetre/decor-ensemble', oliveraie: 'bogolan/decor-detail', lagon: 'madras/decor-ensemble', flamboyant: 'kita/decor-ensemble',
     galerie: 'sape/decor-ensemble', atelier: 'sape/decor-detail', neon: 'anniversaire-disco/decor-detail', kintsugi: 'teranga/decor-ensemble', aquarelle: 'bapteme-nuage/decor-detail',
     riviera: 'anniversaire-tropical/photo', gala: 'anniversaire-gala/decor-detail', disco: 'anniversaire-disco/photo', nuage: 'bapteme-nuage/photo', cierge: 'bapteme-lumiere/photo',
-    rosebleu: 'gender-boite/decor-ensemble', secret: 'gender-secret/decor-detail' };
-  const design = designParDefaut(evt, t.id);
+    rosebleu: 'gender-boite/decor-ensemble', secret: 'gender-secret/decor-detail', champagne: 'anniversaire-gala/photo', tropicana: 'anniversaire-tropical/decor-ensemble',
+    gardenparty: 'anniversaire-tropical/decor-detail', cabaret: 'anniversaire-gala/decor-ensemble', colombe: 'bapteme-lumiere/decor-detail', olivier: 'bapteme-lumiere/decor-ensemble',
+    aube: 'bapteme-etoiles/photo', lys: 'bapteme-lumiere/photo', ballons: 'gender-reveal/photo', feux: 'gender-reveal/decor-detail', duel: 'gender-boite/photo', surprise: 'gender-secret/photo',
+    envol: 'bapteme-nuage/decor-ensemble', eden: 'bapteme-etoiles/decor-detail' };
+  if (perso.titre) evt.titre = perso.titre;
+  const local = x => new Date(x.getTime() - x.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
+  if (perso.date) { const decalage = new Date(perso.date + 'T' + evt.date.slice(11)) - new Date(evt.date); evt.date = perso.date + 'T' + evt.date.slice(11); evt.ceremonies = evt.ceremonies.map(c => ({ ...c, date: local(new Date(new Date(c.date).getTime() + decalage)) })); }
+  if (perso.lieu) { evt.lieu = perso.lieu; evt.ceremonies = evt.ceremonies.map((c, k) => k === evt.ceremonies.length - 1 ? { ...c, lieu: perso.lieu } : c); }
+  const design = designParDefaut(evt, t.id, format);
+  if (evt.type === 'naissance') { const b = design.sections.find(s => s.type === 'bebe'); if (b) b.prenom = evt.titre; const acc = design.sections.find(s => s.type === 'accueil'); if (acc && ['lila', 'iris', 'zoe'].includes(evt.titre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) Object.assign(acc, { titre: 'Elle est là', texte: 'Après neuf mois d\'attente, notre petite fille est arrivée. Nous avons hâte de vous la présenter.' }); }
   if (PHOTOS[t.id]) design.couverture.photo = `../${PHOTOS[t.id]}.jpg`;
   rendre(racine, { evt, design, format, sansOuverture });
 } else if (q.has('apercu')) {
@@ -78,7 +103,7 @@ if (q.get('demo')) {
       }
       document.title = evt.titre;
       const lienReponse = T ? `invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}` : '';
-      rendre(racine, { evt, design: evt.design || designParDefaut(evt, 'ivoire'), format, invite, lienReponse, sansOuverture });
+      rendre(racine, { evt, design: evt.design || designParDefaut(evt, evt.type === 'mariage' ? 'ivoire' : { anniversaire: 'champagne', bapteme: 'nuage', gender: 'rosebleu', naissance: 'lune' }[evt.type], format), format, invite, lienReponse, sansOuverture });
     }
   }
 } else {

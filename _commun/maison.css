@@ -182,6 +182,7 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .apercu-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.05) 30%,rgba(20,18,16,.82))}
 .apercu-texte{position:absolute;left:0;right:0;bottom:0;padding:28px;text-align:center}
 .apercu-texte .etq{color:#E9D9B8}
+.apercu-direct{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
 .ap-noms{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:40px;line-height:1.05;margin:10px 0 8px}
 .ap-date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px}
 .ap-lieu{font-size:13px;color:#DCD3C6;margin-top:4px}
@@ -230,3 +231,10 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .vignette-cat .etq{display:block;margin-top:12px}
 .vignette-cat b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px;line-height:1.1}
 .vignette-cat small{color:var(--doux);font-size:13px}
+/* Lien vers le site d'une collection, liens des vignettes du catalogue (invitation, annonce, site) */
+.lien-site{display:inline-block;margin-top:10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux);text-decoration:none;border-bottom:1px solid var(--filet);padding-bottom:2px}
+.lien-site:hover{color:var(--encre);border-color:var(--accent)}
+.vignette-cat>a{display:block}
+.liens-cat{display:flex;gap:14px;margin-top:6px}
+.liens-cat a{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux);text-decoration:none;border-bottom:1px solid var(--filet)}
+.liens-cat a:hover{color:var(--encre);border-color:var(--accent)}

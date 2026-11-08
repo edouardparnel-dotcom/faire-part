@@ -4,15 +4,15 @@
 import { auth, db, storage, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=3';
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros } from './espace.js?v=1';
+import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), Q = new URLSearchParams(location.search);
-const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Baptême', gender: 'Gender reveal' };
+const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Baptême', gender: 'Gender reveal', naissance: 'Naissance' };
 const ROLES = { coorganisateur: 'Co-organisateur', planner: 'Wedding planner' };
 let user, E = null, evt = null, proprio = false, onglet = 'accueil', abonnements = [];
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
-let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', recherche = '', enAttente = false;
+let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
 // Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.
 const lienInvite = t => new URL(`fp.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
@@ -106,7 +106,7 @@ function rendre() {
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))} · ${esc(evt.lieu)}</p></div>
-    <div class="puces"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser le faire-part</a>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
+    <div class="puces"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser le faire-part</a><a class="btn petit clair" href="fp.html?e=${E}&amp;f=site" target="_blank" rel="noopener">Voir le site</a>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
     ${onglet === 'invites' ? `<div class="app-grille">
       <div class="app-stat"><b>${invites.length}</b><span>Invitations</span></div>
       <div class="app-stat"><b>${repondu}</b><span>Ont répondu</span></div>
@@ -208,15 +208,25 @@ const VUES = {
     const attendus = invites.filter(i => !declineTout(i)), sans = attendus.filter(i => !i.table || !tables.some(t => t.id === i.table));
     const total = attendus.reduce((s, i) => s + personnes(i), 0), places = tables.reduce((s, t) => s + (+t.places || 0), 0);
     const options = i => `<select data-placer="${i.id}" aria-label="Table de ${esc(i.nom)}"><option value="">Sans table</option>${tables.map(t => `<option value="${t.id}" ${i.table === t.id ? 'selected' : ''}>${esc(t.nom)}</option>`).join('')}</select>`;
+    const liens = outils.placement?.liens || [], fautes = infractions(attendus, tables, liens), fautesDe = id => fautes.filter(f => f.tables.includes(id));
+    const choixInvite = n => `<select name="${n}" required><option value="">Choisir…</option>${attendus.map(i => `<option value="${i.id}">${esc(i.nom)}</option>`).join('')}</select>`;
+    const nom = id => invites.find(i => i.id === id)?.nom || '…';
     const puce = i => `<div class="convive" draggable="true" data-glisser="${i.id}"><span><b>${esc(i.nom)}</b>${personnes(i) > 1 ? ` +${personnes(i) - 1}` : ''}${i.groupe ? `<small>${esc(i.groupe)}</small>` : ''}${i.regime ? `<small>${esc(i.regime)}</small>` : ''}</span>${options(i)}</div>`;
     return `<div class="app-carte"><div class="barre-outils" style="justify-content:space-between"><p class="app-note">${total} personnes attendues · ${places} places sur ${tables.length} tables · ${sans.reduce((s, i) => s + personnes(i), 0)} sans table. Les invités qui ont décliné n'apparaissent pas.</p>
         <label class="coche"><input type="checkbox" data-tables-visibles ${evt.tablesVisibles ? 'checked' : ''}> Chaque invité voit sa table sur son invitation</label></div>
         <form id="f-table" class="form-ligne" style="grid-template-columns:2fr 1fr auto auto"><label>Nom de la table<input name="nom" required maxlength="40" placeholder="Baobab, Table 1, Famille…"></label><label>Places<input name="places" type="number" min="1" max="40" value="10"></label><button class="btn">Ajouter</button>${tables.length ? '' : '<button class="btn clair" type="button" data-tables-type="1">Créer 10 tables de 10</button>'}</form></div>
+      <div class="app-carte"><h2>Qui avec qui</h2>
+        <p class="app-note" style="margin-bottom:12px">Indiquez qui doit être ensemble, qui doit être à des tables séparées, et qui doit être éloigné dans la salle (au moins ${DISTANCE} tables d'écart, dans l'ordre des tables). Les invités d'un même groupe sont rapprochés d'eux-mêmes.</p>
+        <form id="f-lien" class="form-ligne" style="grid-template-columns:2fr 1.4fr 2fr auto"><label>Invité${choixInvite('a')}</label><label>Doit être<select name="type">${Object.entries(LIENS).map(([k, v]) => `<option value="${k}">${v.toLowerCase()}</option>`).join('')}</select></label><label>de, avec${choixInvite('b')}</label><button class="btn">Ajouter</button></form>
+        ${liens.length ? `<div style="margin-top:12px">${liens.map((l, k) => `<div class="ligne-conseil"><span><b>${esc(nom(l.a))}</b> · ${esc(LIENS[l.type].toLowerCase())} · <b>${esc(nom(l.b))}</b></span><button class="icone" data-suppr-lien="${k}" title="Retirer">✕</button></div>`).join('')}</div>` : ''}
+        ${fautes.length ? `<div class="alertes">${fautes.map(f => `<p>⚠ ${esc(f.texte)}</p>`).join('')}</div>` : liens.length && attendus.some(i => i.table) ? '<p class="ok-msg" style="margin-top:10px">Toutes les contraintes sont respectées.</p>' : ''}
+        <div class="puces" style="margin-top:14px"><button class="btn petit" data-proposer="garder" ${tables.length ? '' : 'disabled'}>Placer les invités sans table</button><button class="btn petit clair" data-proposer="tout" ${tables.length ? '' : 'disabled'}>Tout replacer</button>${avantPlacement ? '<button class="btn petit clair" data-annuler-placement="1">Annuler le placement</button>' : ''}</div>
+        ${msgPlacement ? `<p class="${msgPlacement.startsWith('⚠') ? 'app-erreur' : 'ok-msg'}" style="margin-top:10px">${esc(msgPlacement)}</p>` : ''}</div>
       <div class="plan">
         <div class="table-plan sans" data-deposer=""><div class="table-tete"><h3>Sans table</h3><span>${sans.reduce((s, i) => s + personnes(i), 0)}</span></div>${sans.map(puce).join('') || '<p class="app-note">Tout le monde est placé.</p>'}</div>
-        ${tables.map(t => { const ici = attendus.filter(i => i.table === t.id), n = ici.reduce((s, i) => s + personnes(i), 0); return `<div class="table-plan" data-deposer="${t.id}">
+        ${tables.map(t => { const ici = attendus.filter(i => i.table === t.id), n = ici.reduce((s, i) => s + personnes(i), 0), f = fautesDe(t.id); return `<div class="table-plan${f.length ? ' alerte' : ''}" data-deposer="${t.id}">
           <div class="table-tete"><input class="nom-table" data-renommer-table="${t.id}" value="${esc(t.nom)}" aria-label="Nom de la table"><span class="${n > t.places ? 'non' : ''}">${n}/<input type="number" min="1" max="40" data-maj="tables/${t.id}/places" value="${+t.places || 0}" aria-label="Places"></span><button class="icone" data-suppr-table="${t.id}" title="Supprimer la table">✕</button></div>
-          ${ici.map(puce).join('') || '<p class="app-note">Déposez des invités ici.</p>'}</div>`; }).join('')}
+          ${f.map(x => `<p class="alerte-table">⚠ ${esc(x.texte)}</p>`).join('')}${ici.map(puce).join('') || '<p class="app-note">Déposez des invités ici.</p>'}</div>`; }).join('')}
       </div>
       <div class="app-carte"><button class="btn petit clair" data-export="plan">Exporter le plan (Excel)</button> <button class="btn petit clair" onclick="print()">Imprimer</button></div>`;
   },
@@ -358,7 +368,7 @@ const DEROULE_TYPE = [['14:00', 'Préparatifs, photos des mariés', 'Photographe
 document.addEventListener('click', async ev => {
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
-  if (d.onglet) { onglet = d.onglet; msgImport = ''; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
+  if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; avantPlacement = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
   if (d.copier) { await navigator.clipboard?.writeText(lienInvite(d.copier)).catch(() => {}); $('#m-copie').textContent = 'Lien copié : ' + lienInvite(d.copier); return; }
   if (d.copierMessage) { const i = invites.find(x => x.id === d.copierMessage), m = { ...MESSAGES, ...outils.messages };
@@ -392,6 +402,22 @@ document.addEventListener('click', async ev => {
   if (d.derouleType) return majDeroule(DEROULE_TYPE.map(([heure, titre, qui, pub]) => ({ heure, titre, lieu: '', qui, public: !!pub })));
   if (d.supprDeroule) { const L = [...(outils.deroule?.items || [])]; L.splice(+d.supprDeroule, 1); return majDeroule(L); }
   if (d.export) return exporter(d.export);
+  if (d.supprLien) { const L = [...(outils.placement?.liens || [])]; L.splice(+d.supprLien, 1); return setDoc(doc(db, `events/${E}/outils/placement`), { liens: L }); }
+  if (d.proposer) {
+    const attendus = invites.filter(i => !declineTout(i)), r = proposerPlacement(attendus, tables, outils.placement?.liens || [], { garder: d.proposer === 'garder' });
+    avantPlacement = Object.fromEntries(attendus.map(i => [i.id, i.table || '']));
+    const changes = attendus.filter(i => (r.place[i.id] || '') !== (i.table || ''));
+    await lots(changes.map(i => b => { const t = tables.find(x => x.id === r.place[i.id]); b.update(doc(db, `events/${E}/invites/${i.id}`), { table: t?.id || '', tableNom: t?.nom || '' }); }));
+    msgPlacement = (r.infractions.length ? `⚠ ${r.infractions.length} contrainte${r.infractions.length > 1 ? 's' : ''} impossible${r.infractions.length > 1 ? 's' : ''} à respecter avec ces tables. ` : '')
+      + `${changes.length} invité${changes.length > 1 ? 's' : ''} placé${changes.length > 1 ? 's' : ''} ou déplacé${changes.length > 1 ? 's' : ''}.`
+      + (r.debordement.length ? ` Tables trop pleines : ${r.debordement.join(', ')} ; ajoutez des places ou une table.` : '');
+    return rendre();
+  }
+  if (d.annulerPlacement && avantPlacement) {
+    const avant = avantPlacement; avantPlacement = null; msgPlacement = 'Placement annulé.';
+    await lots(invites.filter(i => i.id in avant && (i.table || '') !== avant[i.id]).map(i => b => { const t = tables.find(x => x.id === avant[i.id]); b.update(doc(db, `events/${E}/invites/${i.id}`), { table: t?.id || '', tableNom: t?.nom || '' }); }));
+    return rendre();
+  }
   if (d.retirerMembre) {
     await deleteDoc(doc(db, `events/${E}/equipe/${d.retirerMembre}`));
     if (d.retirerMembre === user.uid) { await deleteDoc(doc(db, `utilisateurs/${user.uid}/acces/${E}`)).catch(() => {}); location.href = 'organisateur.html'; }
@@ -429,6 +455,12 @@ document.addEventListener('submit', async ev => {
   }
   if (id === 'f-import') { apercuImport = invitesDepuisCSV(lireCSV(f.texte || ''), C); if (!apercuImport.length) apercuImport = null; msgImport = apercuImport ? '' : 'Aucun invité reconnu : vérifiez qu\'il y a au moins une colonne de noms.'; document.activeElement?.blur(); rendre(); }
   if (id === 'f-messages') { await setDoc(doc(db, `events/${E}/outils/messages`), { invitation: f.invitation, relance: f.relance }); if ($('#m-messages')) $('#m-messages').textContent = 'Messages enregistrés.'; }
+  if (id === 'f-lien') {
+    if (!f.a || !f.b || f.a === f.b) { msgPlacement = '⚠ Choisissez deux invités différents.'; return rendre(); }
+    const L = (outils.placement?.liens || []).filter(l => !((l.a === f.a && l.b === f.b) || (l.a === f.b && l.b === f.a)));
+    msgPlacement = ''; ev.target.reset();
+    await setDoc(doc(db, `events/${E}/outils/placement`), { liens: [...L, { a: f.a, b: f.b, type: f.type }] });
+  }
   if (id === 'f-table') { ev.target.reset(); await addDoc(collection(db, `events/${E}/tables`), { nom: f.nom.trim(), places: Math.max(1, +f.places || 10), ordre: tables.length + 1 }); }
   if (id === 'f-budget') { ev.target.reset(); await addDoc(collection(db, `events/${E}/budget`), { poste: f.poste, libelle: f.libelle.trim(), prevu: +f.prevu || 0, paye: 0 }); }
   if (id === 'f-presta') { ev.target.reset(); await addDoc(collection(db, `events/${E}/prestataires`), { metier: f.metier, nom: f.nom.trim(), tel: f.tel.trim(), email: f.email.trim(), montant: +f.montant || 0, verse: 0, statut: f.montant ? 'devis' : 'piste', notes: '' }); }

@@ -85,3 +85,5 @@
 .galerie-perso{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.92);border:0;font:inherit;font-size:12px;padding:4px 8px;cursor:pointer}
 @media (max-width:640px){.tache{grid-template-columns:1fr 120px 30px}.form-ligne{grid-template-columns:1fr!important}}
 @media print{.entete,.app-haut,.app-grille,.app-onglets,.app-carte,.convive select,.icone,.app-bandeau{display:none!important}.plan{grid-template-columns:repeat(3,1fr)}.table-plan.sans{display:none}.convive{border:0;padding:2px 0}}
+.alertes{margin-top:12px;border-left:3px solid #B3261E;padding:6px 12px;background:#FBEDEC}.alertes p{color:#8C1D18;font-size:14px;margin:4px 0}
+.table-plan.alerte{border-color:#B3261E}.alerte-table{color:#B3261E;font-size:12.5px;line-height:1.4}

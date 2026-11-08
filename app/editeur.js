@@ -1,8 +1,8 @@
 // Éditeur du faire-part : le couple choisit sa direction artistique, ses couleurs, ses polices, sa photo,
 // ajoute, retire, masque et réordonne les parties ; l'aperçu (fp.html?apercu=1) se met à jour en direct.
 import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=3';
-import { THEMES, FAMILLES, POLICES, theme } from './themes.js?v=1';
-import { SECTIONS, designParDefaut } from './moteur.js?v=1';
+import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, theme } from './themes.js?v=2';
+import { SECTIONS, designParDefaut } from './moteur.js?v=4';
 import { doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 
@@ -15,12 +15,12 @@ exigerOrganisateur(vue, async user => {
   const s = await getDoc(doc(db, 'events', E));
   evt = s.data();
   if (!(await aLaMain(evt, E, user.uid))) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
-  design = structuredClone(evt.design || designParDefaut(evt, 'ivoire'));
+  design = structuredClone(evt.design || designParDefaut(evt, evt.type === 'mariage' ? 'ivoire' : { anniversaire: 'champagne', bapteme: 'nuage', gender: 'rosebleu', naissance: 'lune' }[evt.type]));
   vue.className = 'ed';
   vue.innerHTML = `<div class="ed-panneau">
       <div><span class="etq">${esc(evt.titre)}</span><h1 class="serif" style="font-size:36px;margin:6px 0 4px">Votre faire-part</h1>
         <p class="app-note">Chaque changement apparaît à droite. Pensez à enregistrer.</p></div>
-      <details class="boite" open><summary>Direction artistique</summary><div><div class="familles" id="familles"></div><div class="themes" id="themes"></div></div></details>
+      <details class="boite" open><summary>Direction artistique</summary><div><div class="familles" id="familles"></div><div class="themes" id="themes"></div><p class="app-note" id="structure"></p></div></details>
       <details class="boite"><summary>Couleurs</summary><div><div class="couleurs" id="couleurs"></div><button class="mini" id="b-couleurs-modele">Revenir aux couleurs du modèle</button></div></details>
       <details class="boite"><summary>Polices</summary><div><label>Couple de polices<select id="polices"></select></label></div></details>
       <details class="boite"><summary>Couverture</summary><div>
@@ -37,7 +37,7 @@ exigerOrganisateur(vue, async user => {
       <div class="enregistrer"><button class="btn" id="b-enregistrer">Enregistrer</button><span class="etat" id="etat">Tout est enregistré.</span></div>
     </div>
     <div class="ed-apercu">
-      <div class="barre-apercu"><button class="mini actif" data-format="fp">Faire-part</button><button class="mini" data-format="std">Save-the-date</button><button class="mini" id="b-rejouer">Rejouer l'ouverture</button></div>
+      <div class="barre-apercu"><button class="mini actif" data-format="fp">Faire-part</button><button class="mini" data-format="std">Save-the-date</button><button class="mini" data-format="site">Site</button><button class="mini" id="b-rejouer">Rejouer l'ouverture</button></div>
       <div class="telephone"><iframe id="apercu" src="fp.html?apercu=1" title="Aperçu du faire-part"></iframe></div>
       <p class="app-note"><a class="lien-or" target="_blank" rel="noopener" href="fp.html?e=${encodeURIComponent(E)}">Voir la page publiée</a></p>
     </div>`;
@@ -48,9 +48,12 @@ exigerOrganisateur(vue, async user => {
 
 // ── Affichage des réglages ──────────────────────────────────────────────────
 function remplir() {
-  $('#familles').innerHTML = [['tous', 'Toutes'], ...Object.entries(FAMILLES)].map(([k, v]) => `<button data-famille="${k}" class="${k === famille ? 'actif' : ''}">${v}</button>`).join('');
-  $('#themes').innerHTML = THEMES.filter(t => famille === 'tous' || t.famille === famille).map(t => `<button class="th ${t.id === design.theme ? 'choisi' : ''}" data-theme="${t.id}">
+  const miennes = FAMILLES_DE[evt.type] || FAMILLES_DE.mariage;
+  $('#familles').innerHTML = (miennes.length > 1 ? [['tous', 'Toutes'], ...miennes.map(k => [k, FAMILLES[k]])] : []).map(([k, v]) => `<button data-famille="${k}" class="${k === famille ? 'actif' : ''}">${v}</button>`).join('');
+  $('#themes').innerHTML = THEMES.filter(t => miennes.includes(t.famille) && (famille === 'tous' || t.famille === famille)).map(t => `<button class="th ${t.id === design.theme ? 'choisi' : ''}" data-theme="${t.id}">
       <span class="nuances">${['fond', 'papier', 'accent', 'accent2', 'texte'].map(k => `<i style="background:${t.palette[k]}"></i>`).join('')}</span><b>${esc(t.nom)}</b><small>${esc(t.culture)}</small></button>`).join('');
+  const th = theme(design.theme);
+  $('#structure').textContent = `${COUVERTURES[th.couv]} · programme : ${PROGRAMMES[th.prog].toLowerCase()} · ${RYTHMES[th.rythme].toLowerCase()}.`;
   const pal = { ...theme(design.theme).palette, ...(design.palette || {}) };
   $('#couleurs').innerHTML = [['fond', 'Fond'], ['papier', 'Papier'], ['texte', 'Texte'], ['accent', 'Accent'], ['accent2', 'Second accent']].map(([k, l]) => `<label>${l}<input type="color" data-couleur="${k}" value="${pal[k]}"></label>`).join('');
   $('#polices').innerHTML = Object.entries(POLICES).map(([k, p]) => `<option value="${k}" ${(design.polices || theme(design.theme).polices) === k ? 'selected' : ''}>${p.nom}</option>`).join('');

@@ -1,6 +1,7 @@
 // Catalogue des directions artistiques du moteur de faire-part.
 // Une direction = une ouverture (l'animation d'entrée) + une mise en page + un ornement + une palette + des polices.
-// Chaque direction s'affiche en faire-part et en save-the-date : 50 directions = 50 + 50.
+// Chaque direction s'affiche en faire-part, en save-the-date et en site : 44 pour le mariage, 10 pour chaque site annexe.
+// Au-delà des couleurs, la structure change : couverture, programme et rythme des parties (voir plus bas).
 
 export const OUVERTURES = {
   enveloppe: "Une enveloppe dont le rabat s'ouvre",
@@ -41,7 +42,7 @@ export const POLICES = {
 export const ORNEMENTS = {
   aucun: 'Sans ornement', filet: 'Filets dorés', floral: 'Feuillage', kente: 'Bandes tissées (kente)', madras: 'Carreaux madras',
   bogolan: 'Motifs bogolan', wax: 'Cercles wax', artdeco: 'Éventails art déco', zellige: 'Étoiles zellige', etoiles: 'Étoiles',
-  vague: 'Vagues', palmes: 'Palmes',
+  vague: 'Vagues', palmes: 'Palmes', confettis: 'Confettis', points: 'Pois', nuages: 'Nuages', ballons: 'Ballons', lune: 'Lune et étoiles', rayons: 'Rayons de soleil',
 };
 
 // Palette : fond de page, papier (cartes), texte, accent, accent secondaire.
@@ -63,7 +64,7 @@ export const THEMES = [
   { id: 'teranga', nom: 'Teranga', famille: 'heritages', culture: 'Sénégal', ouverture: 'voile', mep: 'classique', ornement: 'zellige', polices: 'cormorant', palette: P('#F6F4EF', '#FFFFFF', '#262420', '#B08D4C', '#7E9C8E') },
   { id: 'bazin', nom: 'Bazin', famille: 'heritages', culture: 'Sénégal · Mali', ouverture: 'pliage', mep: 'editorial', ornement: 'filet', polices: 'marcellus', palette: P('#EEF3F4', '#FFFFFF', '#1B2A30', '#2F6E7C', '#C9A55B') },
   { id: 'bogolan', nom: 'Bogolan', famille: 'heritages', culture: 'Mali', ouverture: 'rouleau', mep: 'cadre', ornement: 'bogolan', polices: 'fraunces', palette: P('#EFE4D2', '#F8F0E2', '#2E2216', '#7A4A24', '#2A2A26') },
-  { id: 'kita', nom: 'Kita', famille: 'heritages', culture: "Côte d'Ivoire", ouverture: 'tuiles', mep: 'carte', ornement: 'kente', polices: 'dmserif', palette: P('#FFF5EB', '#FFFFFF', '#241A12', '#E2701F', '#1F1F1F') },
+  { id: 'kita', nom: 'Kita', famille: 'heritages', culture: 'Côte d\'Ivoire', ouverture: 'tuiles', mep: 'carte', ornement: 'kente', polices: 'dmserif', palette: P('#FFF5EB', '#FFFFFF', '#241A12', '#E2701F', '#1F1F1F') },
   { id: 'sape', nom: 'Sape', famille: 'heritages', culture: 'Congo', ouverture: 'cadre', mep: 'editorial', ornement: 'aucun', polices: 'bodoni', palette: P('#F2F0EC', '#FFFFFF', '#141414', '#C8102E', '#1E4FA0') },
   { id: 'liputa', nom: 'Liputa', famille: 'heritages', culture: 'Congo', ouverture: 'ruban', mep: 'arche', ornement: 'wax', polices: 'playfair', palette: P('#F5F0E6', '#FFFFFF', '#1D2A1F', '#2E7D4F', '#E3B23C') },
   { id: 'tibeb', nom: 'Tibeb', famille: 'heritages', culture: 'Éthiopie', ouverture: 'rideau', mep: 'classique', ornement: 'kente', polices: 'cinzel', palette: P('#FAF8F3', '#FFFFFF', '#24211C', '#2D7A4A', '#C79A2B') },
@@ -97,15 +98,95 @@ export const THEMES = [
   { id: 'kintsugi', nom: 'Kintsugi', famille: 'modernes', culture: 'Contemporain', ouverture: 'sceau', mep: 'minimal', ornement: 'filet', polices: 'marcellus', palette: P('#1B1B1C', '#232325', '#EDE8DF', '#C9A44C', '#5A5A5C') },
   { id: 'aquarelle', nom: 'Aquarelle', famille: 'modernes', culture: 'Contemporain', ouverture: 'voile', mep: 'carte', ornement: 'vague', polices: 'script', palette: P('#F3F5F8', '#FFFFFF', '#2B3140', '#7A93C2', '#F2C9C1') },
   { id: 'riviera', nom: 'Riviera', famille: 'modernes', culture: 'Côte d\'Azur', ouverture: 'enveloppe', mep: 'editorial', ornement: 'vague', polices: 'bodoni', palette: P('#F1F4F7', '#FFFFFF', '#14253A', '#2E6FB0', '#F0C866') },
-  // ── Festifs (anniversaire, baptême, gender reveal) ─────────────────────────
-  { id: 'gala', nom: 'Gala', famille: 'festifs', culture: 'Anniversaire', ouverture: 'rideau', mep: 'cadre', ornement: 'artdeco', polices: 'bodoni', palette: P('#0D0D0F', '#17171A', '#F1E6CF', '#D4AF37', '#8A8A8A') },
-  { id: 'disco', nom: 'Disco', famille: 'festifs', culture: 'Anniversaire', ouverture: 'lumiere', mep: 'editorial', ornement: 'etoiles', polices: 'dmserif', palette: P('#1A0B2E', '#251040', '#F8F0FF', '#FF3CAC', '#2DE2E6') },
-  { id: 'nuage', nom: 'Nuage', famille: 'festifs', culture: 'Baptême', ouverture: 'voile', mep: 'classique', ornement: 'etoiles', polices: 'playfair', palette: P('#EEF4FA', '#FFFFFF', '#2A3A4E', '#7FA9D6', '#F4D9E2') },
-  { id: 'cierge', nom: 'Cierge', famille: 'festifs', culture: 'Baptême', ouverture: 'lumiere', mep: 'arche', ornement: 'floral', polices: 'cormorant', palette: P('#FBF9F4', '#FFFFFF', '#33352C', '#6E7B4F', '#C2A15C') },
-  { id: 'rosebleu', nom: 'Rose ou bleu', famille: 'festifs', culture: 'Gender reveal', ouverture: 'ruban', mep: 'carte', ornement: 'aucun', polices: 'dmserif', palette: P('#F6EFE8', '#FFFBF6', '#3B3330', '#E8A9B8', '#9CC3DE') },
-  { id: 'secret', nom: 'Top secret', famille: 'festifs', culture: 'Gender reveal', ouverture: 'enveloppe', mep: 'editorial', ornement: 'aucun', polices: 'fraunces', palette: P('#2B2A27', '#F4EFE3', '#24221F', '#B3261E', '#C9A877') },
+  // ── Anniversaires ───────────────────────────────────────────────────────────
+  { id: 'gala', nom: 'Gala', famille: 'anniversaires', culture: 'Soirée habillée', ouverture: 'rideau', mep: 'cadre', ornement: 'artdeco', polices: 'bodoni', palette: P('#0D0D0F', '#17171A', '#F1E6CF', '#D4AF37', '#8A8A8A') },
+  { id: 'disco', nom: 'Disco', famille: 'anniversaires', culture: 'Années 70', ouverture: 'lumiere', mep: 'editorial', ornement: 'etoiles', polices: 'dmserif', palette: P('#1A0B2E', '#251040', '#F8F0FF', '#FF3CAC', '#2DE2E6') },
+  { id: 'champagne', nom: 'Champagne', famille: 'anniversaires', culture: 'Bulles et or rose', ouverture: 'sceau', mep: 'classique', ornement: 'confettis', polices: 'cormorant', palette: P('#F8EFE8', '#FFFBF7', '#3A2A24', '#C08A5B', '#E9C9B6') },
+  { id: 'tropicana', nom: 'Tropicana', famille: 'anniversaires', culture: 'Fête sous les palmiers', ouverture: 'eventail', mep: 'carte', ornement: 'palmes', polices: 'dmserif', palette: P('#FFF4E6', '#FFFFFF', '#1F2B22', '#E85D3F', '#1E8C6E') },
+  { id: 'vinyle', nom: 'Vinyle', famille: 'anniversaires', culture: 'Rétro', ouverture: 'tuiles', mep: 'editorial', ornement: 'points', polices: 'fraunces', palette: P('#F3E7D3', '#FBF4E8', '#2E1D12', '#C4572A', '#E0A43A') },
+  { id: 'gardenparty', nom: 'Garden-party', famille: 'anniversaires', culture: 'Jardin, après-midi', ouverture: 'pliage', mep: 'arche', ornement: 'floral', polices: 'playfair', palette: P('#F1F4EC', '#FFFFFF', '#26301F', '#5F8A4A', '#E7B7A3') },
+  { id: 'cabaret', nom: 'Cabaret', famille: 'anniversaires', culture: 'Velours rouge', ouverture: 'rideau', mep: 'minimal', ornement: 'filet', polices: 'cinzel', palette: P('#1C0A0C', '#2A1013', '#F6E8DA', '#C2283A', '#D9B46A') },
+  { id: 'pop', nom: 'Pop', famille: 'anniversaires', culture: 'Couleurs franches', ouverture: 'cadre', mep: 'carte', ornement: 'confettis', polices: 'dmserif', palette: P('#FFF8E8', '#FFFFFF', '#141414', '#FF4D3D', '#2F5BFF') },
+  { id: 'minuit', nom: 'Minuit', famille: 'anniversaires', culture: 'Nuit étoilée', ouverture: 'lumiere', mep: 'cadre', ornement: 'etoiles', polices: 'marcellus', palette: P('#0D1424', '#141D33', '#EDE7DA', '#C9A85A', '#5B6E9C') },
+  { id: 'fiesta', nom: 'Fiesta', famille: 'anniversaires', culture: 'Couleurs et confettis', ouverture: 'ruban', mep: 'classique', ornement: 'confettis', polices: 'fraunces', palette: P('#FFF3EA', '#FFFFFF', '#2A1D2E', '#E2366B', '#F2A93B') },
+  // ── Baptêmes ────────────────────────────────────────────────────────────────
+  { id: 'nuage', nom: 'Nuage', famille: 'baptemes', culture: 'Douceur', ouverture: 'voile', mep: 'classique', ornement: 'nuages', polices: 'playfair', palette: P('#EEF4FA', '#FFFFFF', '#2A3A4E', '#7FA9D6', '#F4D9E2') },
+  { id: 'cierge', nom: 'Cierge', famille: 'baptemes', culture: 'Lumière', ouverture: 'lumiere', mep: 'arche', ornement: 'floral', polices: 'cormorant', palette: P('#FBF9F4', '#FFFFFF', '#33352C', '#6E7B4F', '#C2A15C') },
+  { id: 'colombe', nom: 'Colombe', famille: 'baptemes', culture: 'Blanc et olivier', ouverture: 'enveloppe', mep: 'minimal', ornement: 'aucun', polices: 'cormorant', palette: P('#F7F6F2', '#FFFFFF', '#2B2C27', '#7C8A63', '#DAD6C8') },
+  { id: 'olivier', nom: 'Olivier', famille: 'baptemes', culture: 'Vert sauge', ouverture: 'rouleau', mep: 'cadre', ornement: 'floral', polices: 'marcellus', palette: P('#EFF1EA', '#FBFCF7', '#25291F', '#66724F', '#C9B98E') },
+  { id: 'aube', nom: 'Aube', famille: 'baptemes', culture: 'Pêche et or', ouverture: 'voile', mep: 'carte', ornement: 'etoiles', polices: 'script', palette: P('#FBF0EA', '#FFFFFF', '#3A2B27', '#D9906E', '#EBC7A0') },
+  { id: 'lin', nom: 'Lin', famille: 'baptemes', culture: 'Naturel', ouverture: 'pliage', mep: 'editorial', ornement: 'aucun', polices: 'fraunces', palette: P('#F1ECE3', '#F9F6F0', '#2F2A22', '#8E7A5C', '#CFC3AE') },
+  { id: 'dragee', nom: 'Dragée', famille: 'baptemes', culture: 'Pastels', ouverture: 'ruban', mep: 'carte', ornement: 'points', polices: 'dmserif', palette: P('#F7F2F4', '#FFFFFF', '#3A3036', '#C79AAE', '#A9C4DC') },
+  { id: 'plume', nom: 'Plume', famille: 'baptemes', culture: 'Gris perle', ouverture: 'sceau', mep: 'arche', ornement: 'aucun', polices: 'cormorant', palette: P('#F2F2F1', '#FFFFFF', '#2C2D2F', '#8A8F98', '#D9D6CF') },
+  { id: 'source', nom: 'Source', famille: 'baptemes', culture: 'Eau vive', ouverture: 'lumiere', mep: 'classique', ornement: 'vague', polices: 'playfair', palette: P('#EDF4F6', '#FFFFFF', '#1D3138', '#4A8DA0', '#C8DDE3') },
+  { id: 'lys', nom: 'Lys', famille: 'baptemes', culture: 'Blanc et or', ouverture: 'portes', mep: 'cadre', ornement: 'filet', polices: 'cinzel', palette: P('#FAF8F2', '#FFFFFF', '#2A2620', '#B39352', '#E8DFC8') },
+  // ── Gender reveal ───────────────────────────────────────────────────────────
+  { id: 'rosebleu', nom: 'Rose ou bleu', famille: 'reveals', culture: 'Le grand suspense', ouverture: 'ruban', mep: 'carte', ornement: 'aucun', polices: 'dmserif', palette: P('#F6EFE8', '#FFFBF6', '#3B3330', '#E8A9B8', '#9CC3DE') },
+  { id: 'secret', nom: 'Top secret', famille: 'reveals', culture: 'Dossier confidentiel', ouverture: 'enveloppe', mep: 'editorial', ornement: 'aucun', polices: 'fraunces', palette: P('#2B2A27', '#F4EFE3', '#24221F', '#B3261E', '#C9A877') },
+  { id: 'ballons', nom: 'Ballons', famille: 'reveals', culture: 'Lâcher de ballons', ouverture: 'cadre', mep: 'classique', ornement: 'ballons', polices: 'playfair', palette: P('#FBF6F1', '#FFFFFF', '#33302E', '#E59AAE', '#8DB8D8') },
+  { id: 'bulles', nom: 'Bulles', famille: 'reveals', culture: 'Légèreté', ouverture: 'voile', mep: 'minimal', ornement: 'points', polices: 'script', palette: P('#F3F6FA', '#FFFFFF', '#2F3440', '#9BB6D9', '#EBB7C6') },
+  { id: 'feux', nom: 'Feu d\'artifice', famille: 'reveals', culture: 'Nuit de fête', ouverture: 'lumiere', mep: 'cadre', ornement: 'etoiles', polices: 'bodoni', palette: P('#11131F', '#191C2C', '#F1ECF6', '#F08BB0', '#7FB3F0') },
+  { id: 'duel', nom: 'Le duel', famille: 'reveals', culture: 'Équipe rose, équipe bleue', ouverture: 'portes', mep: 'editorial', ornement: 'aucun', polices: 'dmserif', palette: P('#FFF7F4', '#FFFFFF', '#262326', '#E2557F', '#3E7CC9') },
+  { id: 'nuancier', nom: 'Nuancier', famille: 'reveals', culture: 'Aquarelle', ouverture: 'pliage', mep: 'carte', ornement: 'vague', polices: 'cormorant', palette: P('#F6F3F1', '#FFFFFF', '#38323A', '#D59BB0', '#9EC0D8') },
+  { id: 'surprise', nom: 'Surprise', famille: 'reveals', culture: 'Confettis', ouverture: 'tuiles', mep: 'classique', ornement: 'confettis', polices: 'fraunces', palette: P('#FFF9EF', '#FFFFFF', '#2B2724', '#EC7FA0', '#6FA8DC') },
+  { id: 'cigogne', nom: 'Cigogne', famille: 'reveals', culture: 'Livraison attendue', ouverture: 'ruban', mep: 'arche', ornement: 'nuages', polices: 'playfair', palette: P('#F2F6F8', '#FFFFFF', '#2A3338', '#E6A1B5', '#86B2CF') },
+  { id: 'enigme', nom: 'Énigme', famille: 'reveals', culture: 'Point d\'interrogation', ouverture: 'sceau', mep: 'minimal', ornement: 'aucun', polices: 'bodoni', palette: P('#F4F1EC', '#FFFFFF', '#1D1B19', '#C4708A', '#5F8DB8') },
+  // ── Naissances ──────────────────────────────────────────────────────────────
+  { id: 'lune', nom: 'Lune', famille: 'naissances', culture: 'Nuit douce', ouverture: 'lumiere', mep: 'classique', ornement: 'lune', polices: 'cormorant', palette: P('#141B2E', '#1C2540', '#EEE8DB', '#D8BE7E', '#8C9CC4') },
+  { id: 'envol', nom: 'Envol', famille: 'naissances', culture: 'Petits oiseaux', ouverture: 'voile', mep: 'arche', ornement: 'nuages', polices: 'playfair', palette: P('#F1F5F7', '#FFFFFF', '#28343B', '#7FA6B8', '#E8C3B0') },
+  { id: 'doudou', nom: 'Doudou', famille: 'naissances', culture: 'Tout doux', ouverture: 'enveloppe', mep: 'carte', ornement: 'points', polices: 'dmserif', palette: P('#F6F0E8', '#FFFDF9', '#3A3029', '#B98E6A', '#E2CDB5') },
+  { id: 'coton', nom: 'Coton', famille: 'naissances', culture: 'Blanc pur', ouverture: 'pliage', mep: 'minimal', ornement: 'aucun', polices: 'cormorant', palette: P('#F8F7F4', '#FFFFFF', '#2C2B29', '#A7A08F', '#E3DFD5') },
+  { id: 'savane', nom: 'Savane', famille: 'naissances', culture: 'Petits animaux', ouverture: 'rouleau', mep: 'cadre', ornement: 'palmes', polices: 'fraunces', palette: P('#F4ECDD', '#FBF6EC', '#33281C', '#B07A3B', '#6F8452') },
+  { id: 'berceuse', nom: 'Berceuse', famille: 'naissances', culture: 'Lavande et étoiles', ouverture: 'rideau', mep: 'classique', ornement: 'etoiles', polices: 'script', palette: P('#F3F1F8', '#FFFFFF', '#2E2A3C', '#8C7DB8', '#D6CDE9') },
+  { id: 'petitspas', nom: 'Petits pas', famille: 'naissances', culture: 'Pastels', ouverture: 'tuiles', mep: 'editorial', ornement: 'confettis', polices: 'dmserif', palette: P('#FBF5F2', '#FFFFFF', '#3A3233', '#E3A7A0', '#A8C9C0') },
+  { id: 'eden', nom: 'Éden', famille: 'naissances', culture: 'Feuillage', ouverture: 'eventail', mep: 'arche', ornement: 'floral', polices: 'marcellus', palette: P('#EEF2EA', '#FFFFFF', '#23301F', '#5E8255', '#D7C49A') },
+  { id: 'perle', nom: 'Perle', famille: 'naissances', culture: 'Gris et nacre', ouverture: 'sceau', mep: 'cadre', ornement: 'filet', polices: 'cinzel', palette: P('#F1F1F2', '#FFFFFF', '#2A2B2E', '#9A9AA3', '#DCD8D2') },
+  { id: 'soleil', nom: 'Soleil', famille: 'naissances', culture: 'Jaune tendre', ouverture: 'portes', mep: 'carte', ornement: 'rayons', polices: 'fraunces', palette: P('#FFF8E8', '#FFFFFF', '#33291A', '#E0A43A', '#F2CF8C') },
 ];
 
-export const FAMILLES = { heritages: 'Héritages', intemporels: 'Intemporels', nature: 'Nature et bohème', modernes: 'Modernes', festifs: 'Festifs' };
+// Familles : les quatre premières pour le mariage, puis une par événement des sites annexes.
+export const FAMILLES = { heritages: 'Héritages', intemporels: 'Intemporels', nature: 'Nature et bohème', modernes: 'Modernes',
+  anniversaires: 'Anniversaires', baptemes: 'Baptêmes', reveals: 'Gender reveal', naissances: 'Naissances' };
+export const FAMILLES_DE = { mariage: ['heritages', 'intemporels', 'nature', 'modernes'], anniversaire: ['anniversaires'], bapteme: ['baptemes'], gender: ['reveals'], naissance: ['naissances'] };
+export const EVENEMENT_DE = { heritages: 'mariage', intemporels: 'mariage', nature: 'mariage', modernes: 'mariage', anniversaires: 'anniversaire', baptemes: 'bapteme', reveals: 'gender', naissances: 'naissance' };
+
+// ── Structure : ce qui distingue deux directions au-delà des couleurs ─────────
+// Couverture : la composition de la première page.
+export const COUVERTURES = {
+  portrait: 'Photo verticale centrée', plein: 'Photo plein écran, texte par-dessus', scinde: 'Page coupée en deux : photo et texte côte à côte',
+  medaillon: 'Photo ronde cerclée', bandeau: 'Bandeau panoramique, titre aligné à gauche', monogramme: 'Sans photo : grandes initiales', polaroid: 'Photo légèrement inclinée, légende manuscrite',
+};
+// Programme : la façon de présenter le déroulé.
+export const PROGRAMMES = {
+  liste: 'Liste horaire', frise: 'Frise verticale, étapes en alternance', cartes: 'Cartes, une par moment', horaire: 'Menu : heures en grand, points de conduite',
+  billets: 'Billets détachables', etapes: 'Étapes numérotées, côte à côte',
+};
+// Rythme : l'enchaînement des parties.
+export const RYTHMES = {
+  centre: 'Parties centrées', alterne: 'Parties alternées à gauche et à droite', chapitres: 'Chapitres numérotés en chiffres romains',
+  bandes: 'Bandes de couleur alternées, pleine largeur', encadre: 'Chaque partie dans un cadre fin',
+};
+
+// Chaque direction reçoit une couverture, un programme et un rythme, attribués une fois pour toutes dans l'ordre du catalogue :
+// la structure complète (mise en page, couverture, programme, rythme) n'est jamais celle d'une autre direction, et deux
+// directions d'une même famille n'ont jamais le même couple couverture et programme, ni la même couverture sur la même mise en page.
+const C = Object.keys(COUVERTURES), PR = Object.keys(PROGRAMMES), R = Object.keys(RYTHMES);
+const AVEC_PHOTO = new Set(['portrait', 'plein', 'scinde', 'medaillon', 'bandeau', 'polaroid']);
+{
+  const pris = new Set(), parFamille = {};
+  THEMES.forEach((t, k) => {
+    const f = parFamille[t.famille] ??= new Set();
+    for (let n = 0; n < C.length * PR.length * R.length; n++) {
+      const couv = t.couv ?? C[(k * 3 + n) % C.length], prog = t.prog ?? PR[(k * 5 + Math.floor(n / C.length)) % PR.length], rythme = t.rythme ?? R[(k * 2 + Math.floor(n / (C.length * PR.length))) % R.length];
+      const cle = [t.mep, couv, prog, rythme].join('/');
+      if (pris.has(cle) || f.has(couv + '+' + prog) || f.has(t.mep + '#' + couv) && n < C.length * PR.length) continue;
+      pris.add(cle); f.add(couv + '+' + prog); f.add(t.mep + '#' + couv);
+      Object.assign(t, { couv, prog, rythme }); break;
+    }
+    t.evenement = EVENEMENT_DE[t.famille];
+  });
+}
+export const couvAvecPhoto = c => AVEC_PHOTO.has(c);
+export const themesPour = type => THEMES.filter(t => (FAMILLES_DE[type] || FAMILLES_DE.mariage).includes(t.famille));
 
 export const theme = id => THEMES.find(t => t.id === id) || THEMES[0];

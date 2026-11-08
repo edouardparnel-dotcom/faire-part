@@ -5,39 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Maison Vivat · Collections</title>
-<meta name="description" content="50 directions artistiques, chacune en faire-part et en save-the-date, toutes personnalisables.">
+<meta name="description" content="84 directions artistiques, chacune en faire-part, save-the-date et site, toutes personnalisables.">
 <meta property="og:title" content="Maison Vivat · Collections">
-<meta property="og:description" content="50 directions artistiques, chacune en faire-part et en save-the-date, toutes personnalisables.">
+<meta property="og:description" content="84 directions artistiques, chacune en faire-part, save-the-date et site, toutes personnalisables.">
 <meta property="og:image" content="https://maisonvivat.com/owambe/decor-detail.jpg">
 <meta name="theme-color" content="#F7F3EC">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../_commun/maison.css?v=6">
+<link rel="stylesheet" href="../_commun/maison.css?v=8">
 <style>:root{--accent:#A8834A}</style>
 </head>
 <body>
 <header class="entete"><div class="conteneur">
   <a class="marque" href="../index.html"><b>Maison Vivat</b><span>Collections</span></a>
-  <nav class="nav" aria-label="Sections"><a href="../index.html">Mariage</a><a href="../anniversaires/index.html">Anniversaires</a><a href="../baptemes/index.html">Baptêmes</a><a href="../reveal/index.html">Gender reveal</a><a class="rdv" href="../creer/?evt=mariage">Créer mon espace</a></nav>
+  <nav class="nav" aria-label="Sites"><a href="../index.html">Mariage</a><a href="../anniversaires/index.html">Anniversaires</a><a href="../baptemes/index.html">Baptêmes</a><a href="../reveal/index.html">Gender reveal</a><a href="../naissances/index.html">Naissances</a><a class="rdv" href="../creer/index.html">Créer</a></nav>
 </div></header>
 <main class="conteneur" style="padding-top:56px;padding-bottom:96px">
-  <div class="titre-section"><span class="etq">Collections</span><h2>50 directions artistiques</h2>
-    <p>Chacune existe en faire-part et en save-the-date. Couleurs, polices, photo et parties se changent ensuite dans votre espace, avec un aperçu en direct.</p></div>
+  <div class="titre-section"><span class="etq">Collections</span><h2>84 directions artistiques</h2>
+    <p>Chacune a sa propre structure : la composition de la couverture, la présentation du programme, le rythme des parties. Toutes existent en faire-part, en save-the-date et en site ; couleurs, polices, photo et parties se changent ensuite dans votre espace, avec un aperçu en direct.</p></div>
   <div class="filtres" id="filtres"></div>
-  <div class="bascule" id="bascule"><button data-format="fp" class="actif">Faire-part</button><button data-format="std">Save-the-date</button></div>
+  <div class="bascule" id="bascule"><button data-format="fp" class="actif">Faire-part</button><button data-format="std">Save-the-date</button><button data-format="site">Site</button></div>
   <div class="catalogue" id="catalogue"></div>
 </main>
 <script type="module">
-  import { THEMES, FAMILLES, OUVERTURES } from '../app/themes.js?v=1';
-  let famille = 'tous', format = 'fp';
+  import { THEMES, FAMILLES, FAMILLES_DE, COUVERTURES, PROGRAMMES } from '../app/themes.js?v=2';
+  const q = new URLSearchParams(location.search);
+  let famille = FAMILLES_DE[q.get('evt')]?.length === 1 ? FAMILLES_DE[q.get('evt')][0] : 'tous', format = 'fp';
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   function rendre() {
     document.getElementById('filtres').innerHTML = [['tous', 'Toutes (' + THEMES.length + ')'], ...Object.entries(FAMILLES).map(([k, v]) => [k, v + ' (' + THEMES.filter(t => t.famille === k).length + ')'])]
       .map(([k, v]) => `<button data-famille="${k}" class="${k === famille ? 'actif' : ''}">${v}</button>`).join('');
     document.getElementById('catalogue').innerHTML = THEMES.filter(t => famille === 'tous' || t.famille === famille).map(t => `
-      <a class="vignette-cat" href="../app/fp.html?demo=${t.id}${format === 'std' ? '&f=std' : ''}" target="_blank" rel="noopener">
-        <img src="apercus/${t.id}-${format}.jpg" alt="${esc(t.nom)}, ${format === 'std' ? 'save-the-date' : 'faire-part'}" loading="lazy">
-        <span class="etq">${esc(t.culture)}</span><b>${esc(t.nom)}</b><small>${esc(OUVERTURES[t.ouverture])}</small></a>`).join('');
+      <a class="vignette-cat" href="../app/fp.html?demo=${t.id}${format === 'fp' ? '' : '&f=' + format}" target="_blank" rel="noopener">
+        <img src="apercus/${t.id}-${format === 'std' ? 'std' : 'fp'}.jpg" alt="${esc(t.nom)}" loading="lazy">
+        <span class="etq">${esc(t.culture)}</span><b>${esc(t.nom)}</b><small>${esc(COUVERTURES[t.couv])} · programme en ${esc(PROGRAMMES[t.prog].toLowerCase())}</small></a>`).join('');
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
@@ -53,6 +54,7 @@
         <li><a href="../anniversaires/index.html">Anniversaires</a></li>
         <li><a href="../baptemes/index.html">Baptêmes</a></li>
         <li><a href="../reveal/index.html">Gender reveal</a></li>
+        <li><a href="../naissances/index.html">Naissances</a></li>
   </ul></div>
   <div><h4>Pour vous</h4><ul><li><a href="../creer/?evt=mariage">Créer mon espace</a></li><li><a href="../espace/#tableau">Essayer l'espace mariage</a></li><li><a href="../index.html#formules">Formules</a></li><li><a href="../index.html#assistance">Assistance</a></li></ul></div>
   <p class="mention"><a href="../mentions-legales/index.html">Mentions légales</a> · <a href="../confidentialite/index.html">Confidentialité</a> · <a href="../cgv/index.html">CGV</a> · démonstrations : personnes et lieux fictifs, photos Pexels</p>

@@ -105,3 +105,90 @@ export const METIERS = ['Lieu', 'Traiteur', 'Photographe', 'Vidéaste', 'DJ ou o
   'Coiffure et maquillage', 'Couturier ou créateur', 'Location de voitures', 'Officiant', 'Animation enfants', 'Autre'];
 export const STATUTS = { piste: 'Piste', devis: 'Devis demandé', reserve: 'Réservé', ecarte: 'Écarté' };
 export const euros = n => (Number(n) || 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' €';
+
+// ── Plan de table : affinités et placement proposé ──────────────────────────
+// Un lien relie deux invités : « ensemble » (même table), « separe » (tables différentes), « loin » (au moins DISTANCE tables d'écart,
+// dans l'ordre des tables, qui suit en général la disposition de la salle).
+export const LIENS = { ensemble: 'Ensemble', separe: 'Tables séparées', loin: 'Éloignés dans la salle' };
+export const DISTANCE = 3;
+
+// Contraintes non respectées avec le placement donné (place : id d'invité → id de table, ou '').
+export function infractions(invites, tables, liens, place = Object.fromEntries(invites.map(i => [i.id, i.table || '']))) {
+  const rang = Object.fromEntries(tables.map((t, k) => [t.id, k])), nom = Object.fromEntries(invites.map(i => [i.id, i.nom]));
+  return liens.filter(l => nom[l.a] && nom[l.b]).map(l => {
+    const ta = place[l.a], tb = place[l.b];
+    if (l.type === 'ensemble' && ta && tb && ta !== tb) return { ...l, texte: `${nom[l.a]} et ${nom[l.b]} devraient être à la même table`, tables: [ta, tb] };
+    if (l.type === 'separe' && ta && ta === tb) return { ...l, texte: `${nom[l.a]} et ${nom[l.b]} sont à la même table`, tables: [ta] };
+    if (l.type === 'loin' && ta && tb && Math.abs(rang[ta] - rang[tb]) < DISTANCE) return { ...l, texte: `${nom[l.a]} et ${nom[l.b]} sont trop proches (${ta === tb ? 'même table' : Math.abs(rang[ta] - rang[tb]) + ' table d\'écart'})`, tables: [ta, tb] };
+    return null;
+  }).filter(Boolean);
+}
+
+// Propose un placement : les invités liés « ensemble » forment un bloc (avec leurs accompagnants), placé d'un seul tenant ;
+// les blocs les plus grands passent d'abord, chacun à la table qui enfreint le moins de contraintes, puis qui réunit le plus
+// de membres de son groupe (famille, amis…), puis qui est déjà la plus remplie. garder : on ne déplace pas ceux qui ont une table.
+// Plusieurs essais dans des ordres différents (le premier : blocs contraints puis grands), on garde le meilleur.
+export function proposerPlacement(invites, tables, liens, options = {}) {
+  let graine = 7; const hasard = () => (graine = (graine * 16807) % 2147483647) / 2147483647;
+  let meilleur = null;
+  for (let essai = 0; essai < 40; essai++) {
+    const r = unPlacement(invites, tables, liens, options, essai ? hasard : null);
+    const debord = tables.reduce((s, t) => s + Math.max(0, invites.filter(i => r.place[i.id] === t.id).reduce((n, i) => n + personnes(i), 0) - (+t.places || 0)), 0);
+    const groupes = tables.reduce((s, t) => s + new Set(invites.filter(i => r.place[i.id] === t.id).map(i => i.groupe || i.id)).size, 0);
+    r.score = r.infractions.length * 1000 + debord * 100 + groupes;
+    if (!meilleur || r.score < meilleur.score) meilleur = r;
+    if (!r.infractions.length && !debord && essai > 8) break;
+  }
+  return meilleur;
+}
+
+function unPlacement(invites, tables, liens, { garder = true } = {}, hasard) {  const ids = new Set(invites.map(i => i.id)), parent = Object.fromEntries(invites.map(i => [i.id, i.id]));
+  const racine = x => parent[x] === x ? x : (parent[x] = racine(parent[x]));
+  liens.filter(l => l.type === 'ensemble' && ids.has(l.a) && ids.has(l.b)).forEach(l => { parent[racine(l.a)] = racine(l.b); });
+  const blocs = {}; invites.forEach(i => (blocs[racine(i.id)] ??= []).push(i));
+  const place = {}, occupe = Object.fromEntries(tables.map(t => [t.id, 0])), rang = Object.fromEntries(tables.map((t, k) => [t.id, k]));
+  const existe = id => tables.some(t => t.id === id);
+  const aPlacer = [];
+  for (const b of Object.values(blocs)) {
+    if (garder && b.every(i => i.table && existe(i.table))) { b.forEach(i => { place[i.id] = i.table; occupe[i.table] += personnes(i); }); continue; }
+    if (garder && b.some(i => i.table && existe(i.table))) { const t = b.find(i => i.table && existe(i.table)).table; b.forEach(i => { place[i.id] = t; occupe[t] += personnes(i); }); continue; }
+    aPlacer.push(b);
+  }
+  const contre = {}; liens.filter(l => l.type !== 'ensemble').forEach(l => { (contre[l.a] ??= []).push(l); (contre[l.b] ??= []).push({ ...l, a: l.b, b: l.a }); });
+  const taille = b => b.reduce((s, i) => s + personnes(i), 0), contraint = b => b.some(i => contre[i.id]);
+  // Coût d'une table pour un bloc : contraintes enfreintes, débordement, puis affinités de groupe et tables déjà entamées.
+  const cout = (b, t) => {
+    const dedans = new Set(b.map(i => i.id)), groupes = new Set(b.map(i => i.groupe).filter(Boolean));
+    let s = 0;
+    for (const i of b) for (const l of contre[i.id] || []) {
+      const autre = place[l.b]; if (!autre || dedans.has(l.b)) continue;
+      if (l.type === 'separe' && autre === t.id) s += 1000;
+      if (l.type === 'loin' && Math.abs(rang[autre] - rang[t.id]) < DISTANCE) s += 1000;
+    }
+    const occ = occupe[t.id] - (place[b[0].id] === t.id ? taille(b) : 0), reste = (+t.places || 0) - occ - taille(b);
+    if (reste < 0) s += 500 + 50 * -reste;
+    s -= 20 * invites.filter(i => place[i.id] === t.id && !dedans.has(i.id) && groupes.has(i.groupe)).length;
+    return s - (occ > 0 ? 5 : 0);
+  };
+  const poser = (b, t) => { if (place[b[0].id]) occupe[place[b[0].id]] -= taille(b); b.forEach(i => { place[i.id] = t; }); occupe[t] += taille(b); };
+  // Les blocs contraints d'abord, puis les plus grands.
+  const bruit = new Map(aPlacer.map(b => [b, hasard ? hasard() : 0]));
+  aPlacer.sort((x, y) => contraint(y) - contraint(x) || (hasard ? bruit.get(x) - bruit.get(y) : taille(y) - taille(x)));
+  for (const b of aPlacer) {
+    let meilleure = null, score = Infinity;
+    for (const t of tables) { const c = cout(b, t); if (c < score) { score = c; meilleure = t.id; } }
+    if (!meilleure) break;
+    poser(b, meilleure);
+  }
+  // Quelques passes d'amélioration : un bloc déplaçable change de table si cela réduit son coût.
+  for (let passe = 0; passe < 4; passe++) {
+    let mieux = false;
+    for (const b of aPlacer) {
+      const ici = tables.find(t => t.id === place[b[0].id]); if (!ici) continue;
+      const actuel = cout(b, ici);
+      for (const t of tables) if (t.id !== ici.id && cout(b, t) < actuel - 1) { poser(b, t.id); mieux = true; break; }
+    }
+    if (!mieux) break;
+  }
+  return { place, infractions: infractions(invites, tables, liens, place), debordement: tables.filter(t => occupe[t.id] > (+t.places || 0)).map(t => t.nom) };
+}
