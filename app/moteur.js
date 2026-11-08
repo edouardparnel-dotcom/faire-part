@@ -35,6 +35,7 @@ export const SECTIONS = {
   pronostic: { nom: 'Pronostics', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Fille ou garçon ?', texte: 'Faites vos pronostics : donnez le vôtre en répondant à l\'invitation.' } },
   guide: { nom: 'Guide de la cérémonie', option: 'guide', champs: { titre: 'Titre', intro: 'Introduction', texte: 'Les étapes (un bloc par étape : titre sur la première ligne, puis l\'explication ; « Conseil : » pour un bon à savoir)' },
     defaut: { titre: 'Le guide de la cérémonie', intro: GUIDES.dot.intro, texte: GUIDES.dot.texte } },
+  galerie: { nom: 'Galerie de photos', champs: { titre: 'Titre', texte: 'Texte (facultatif)' }, defaut: { titre: 'En images', texte: '', photos: [] }, auto: 'Ajoutez vos photos ci-dessous ; elles s\'affichent en mosaïque' },
   texte: { nom: 'Texte libre', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Un mot', texte: '' } },
   reponse: { nom: 'Bouton de réponse', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Votre réponse', texte: 'Merci de nous répondre avant le grand jour.' } },
 };
@@ -51,7 +52,7 @@ const TRAMES = {
   naissances: ['bebe', 'accueil', 'programme', 'cadeaux', 'reponse'],
 };
 const TRAMES_SITE = {
-  mariage: ['accueil', 'histoire', 'programme', 'compte', 'tenue', 'hebergement', 'transport', 'cadeaux', 'faq', 'contact', 'reponse'],
+  mariage: ['accueil', 'histoire', 'galerie', 'programme', 'compte', 'tenue', 'hebergement', 'transport', 'cadeaux', 'faq', 'contact', 'reponse'],
   anniversaire: ['accueil', 'programme', 'compte', 'tenue', 'transport', 'cadeaux', 'faq', 'reponse'],
   bapteme: ['accueil', 'parrains', 'programme', 'texte', 'transport', 'hebergement', 'cadeaux', 'reponse'],
   gender: ['accueil', 'pronostic', 'programme', 'compte', 'tenue', 'transport', 'faq', 'reponse'],
@@ -129,6 +130,10 @@ function section(s, ctx) {
     case 'reponse': return `${h}${paragraphes(v('texte'))}<a class="bouton" href="${esc(lienReponse || '#')}"${lienReponse ? '' : ' data-demo'}>${t('Répondre')}</a>`;
     case 'bebe': return `${h}<p class="bebe-prenom">${esc(s.prenom)}</p><dl class="fiche">${[['Né le', v('ne')], ['À', s.heure], ['Poids', s.poids], ['Taille', s.taille]].filter(([, x]) => x).map(([k, x]) => `<div><dt>${t(k)}</dt><dd>${esc(x)}</dd></div>`).join('')}</dl>`;
     case 'parrains': return `${h}<div class="duo"><div><span>${t('Parrain')}</span><b>${esc(s.parrain)}</b></div><i aria-hidden="true">&amp;</i><div><span>${t('Marraine')}</span><b>${esc(s.marraine)}</b></div></div>${paragraphes(v('texte'))}`;
+    case 'galerie': {
+      const photos = (s.photos || []).filter(u => /^(https?:\/\/|\.\.\/)/.test(u));
+      return `${h}${paragraphes(v('texte'))}<div class="galerie-fp">${photos.map(u => `<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" loading="lazy"></a>`).join('')}</div>`;
+    }
     case 'pronostic': return `${h}<div class="pronos"><span class="fille">${t('Fille')}</span><span class="ou">${t('ou')}</span><span class="garcon">${t('Garçon')}</span></div>${paragraphes(v('texte'))}`;
     case 'guide': {
       // Un bloc par étape ; « Conseil : » devient un encadré.
@@ -158,7 +163,8 @@ export function rendre(racine, ctx) {
   const langues = ctx.design.langues?.length ? ctx.design.langues : ['fr'];
   L = langues.includes(ctx.langue) ? ctx.langue : langues[0];
   document.documentElement.lang = L === 'ht' ? 'ht' : L;
-  const d = ctx.design, th = themeDe(d.theme), pal = { ...th.palette, ...(d.palette || {}) }, pol = POLICES[d.polices || th.polices] || POLICES.cormorant;
+  // La structure choisie dans l'éditeur (ouverture, mise en page, couverture, programme, rythme) remplace celle de la direction.
+  const d = ctx.design, th = { ...themeDe(d.theme), ...Object.fromEntries(Object.entries(d.structure || {}).filter(([, x]) => x)) }, pal = { ...th.palette, ...(d.palette || {}) }, pol = POLICES[d.polices || th.polices] || POLICES.cormorant;
   if (racine._minuteur) clearInterval(racine._minuteur);
   if (!document.querySelector(`link[data-police="${pol.url}"]`)) {
     const l = document.createElement('link'); l.rel = 'stylesheet'; l.dataset.police = pol.url; l.href = `https://fonts.googleapis.com/css2?family=${pol.url}&display=swap`; document.head.append(l);

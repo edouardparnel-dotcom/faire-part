@@ -300,3 +300,10 @@ body.fp-ferme{overflow:hidden}
 .guide p{margin:0 0 6px!important;max-width:none!important}
 .guide-conseil{background:color-mix(in srgb,var(--accent) 9%,transparent);border-left:2px solid var(--accent);padding:8px 12px;font-size:14.5px}
 .guide-conseil b{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:500}
+
+/* ── Galerie de photos ──────────────────────────────────────────────────── */
+.galerie-fp{columns:2 200px;column-gap:10px;max-width:640px;margin:14px auto 0}
+.galerie-fp a{display:block;break-inside:avoid;margin-bottom:10px}
+.galerie-fp img{width:100%;display:block;transition:opacity .2s}
+.galerie-fp a:hover img{opacity:.88}
+.format-site .galerie-fp{columns:3 220px;max-width:none}

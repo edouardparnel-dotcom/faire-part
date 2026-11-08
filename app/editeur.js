@@ -3,8 +3,8 @@
 // Langues : deux langues dans toute formule, trois avec l'option « Langue supplémentaire » ; chaque texte se saisit
 // dans la langue choisie en haut de l'éditeur (le français reste l'original).
 import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=3';
-import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, theme } from './themes.js?v=2';
-import { SECTIONS, designParDefaut } from './moteur.js?v=5';
+import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, OUVERTURES, MISES_EN_PAGE, theme } from './themes.js?v=2';
+import { SECTIONS, designParDefaut } from './moteur.js?v=6';
 import { LANGUES } from './langues.js?v=1';
 import { GUIDES } from './guides.js?v=1';
 import { doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
@@ -28,6 +28,7 @@ exigerOrganisateur(vue, async user => {
       <div><span class="etq">${esc(evt.titre)}</span><h1 class="serif" style="font-size:36px;margin:6px 0 4px">Votre faire-part</h1>
         <p class="app-note">Chaque changement apparaît à droite. Pensez à enregistrer.</p></div>
       <details class="boite" open><summary>Direction artistique</summary><div><div class="familles" id="familles"></div><div class="themes" id="themes"></div><p class="app-note" id="structure"></p></div></details>
+      <details class="boite"><summary>Structure</summary><div><p class="app-note">Chaque direction a sa propre structure ; vous pouvez en changer chaque élément.</p><div id="structure-choix"></div><button class="mini" id="b-structure-modele">Revenir à la structure de la direction</button></div></details>
       <details class="boite"><summary>Couleurs</summary><div><div class="couleurs" id="couleurs"></div><button class="mini" id="b-couleurs-modele">Revenir aux couleurs du modèle</button></div></details>
       <details class="boite"><summary>Langues</summary><div id="langues"></div></details>
       <details class="boite"><summary>Polices</summary><div><label>Couple de polices<select id="polices"></select></label></div></details>
@@ -61,8 +62,11 @@ function remplir() {
   $('#familles').innerHTML = (miennes.length > 1 ? [['tous', 'Toutes'], ...miennes.map(k => [k, FAMILLES[k]])] : []).map(([k, v]) => `<button data-famille="${k}" class="${k === famille ? 'actif' : ''}">${v}</button>`).join('');
   $('#themes').innerHTML = THEMES.filter(t => miennes.includes(t.famille) && (famille === 'tous' || t.famille === famille)).map(t => `<button class="th ${t.id === design.theme ? 'choisi' : ''}" data-theme="${t.id}">
       <span class="nuances">${['fond', 'papier', 'accent', 'accent2', 'texte'].map(k => `<i style="background:${t.palette[k]}"></i>`).join('')}</span><b>${esc(t.nom)}</b><small>${esc(t.culture)}</small></button>`).join('');
-  const th = theme(design.theme);
+  const th = { ...theme(design.theme), ...(design.structure || {}) };
   $('#structure').textContent = `${COUVERTURES[th.couv]} · programme : ${PROGRAMMES[th.prog].toLowerCase()} · ${RYTHMES[th.rythme].toLowerCase()}.`;
+  const base = theme(design.theme), st = design.structure || {};
+  $('#structure-choix').innerHTML = [['ouverture', 'Ouverture', OUVERTURES], ['mep', 'Mise en page', MISES_EN_PAGE], ['couv', 'Couverture', COUVERTURES], ['prog', 'Programme', PROGRAMMES], ['rythme', 'Enchaînement des parties', RYTHMES]]
+    .map(([k, lib, liste]) => `<label>${lib}<select data-structure="${k}">${Object.entries(liste).map(([v, n]) => `<option value="${v}" ${(st[k] || base[k]) === v ? 'selected' : ''}>${esc(n)}${v === base[k] ? ' (direction)' : ''}</option>`).join('')}</select></label>`).join('');
   const pal = { ...theme(design.theme).palette, ...(design.palette || {}) };
   $('#couleurs').innerHTML = [['fond', 'Fond'], ['papier', 'Papier'], ['texte', 'Texte'], ['accent', 'Accent'], ['accent2', 'Second accent']].map(([k, l]) => `<label>${l}<input type="color" data-couleur="${k}" value="${pal[k]}"></label>`).join('');
   $('#polices').innerHTML = Object.entries(POLICES).map(([k, p]) => `<option value="${k}" ${(design.polices || theme(design.theme).polices) === k ? 'selected' : ''}>${p.nom}</option>`).join('');
@@ -91,6 +95,8 @@ function parties() {
         <button class="icone" data-retirer="${k}" title="Retirer">✕</button></div>
       ${ouverte === k ? `<div class="partie-corps">${SECTIONS[s.type]?.auto ? `<p class="app-note">${esc(SECTIONS[s.type].auto)}.</p>` : ''}
         ${optionManquante(s.type) ? `<p class="app-note">Partie liée à l'option « ${esc(SECTIONS[s.type].nom)} » : vos invités la verront une fois l'option activée.</p>` : ''}
+        ${s.type === 'galerie' ? `<div class="photos-galerie">${(s.photos || []).map((u, i) => `<span><img src="${esc(u)}" alt=""><button class="icone" data-retirer-galerie="${k}:${i}" title="Retirer">✕</button></span>`).join('')}</div>
+          <label class="btn petit clair" style="cursor:pointer;justify-self:start">Ajouter des photos<input type="file" accept="image/*" multiple data-galerie="${k}" hidden></label><p class="app-note" id="m-galerie"></p>` : ''}
         ${s.type === 'guide' && saisie === 'fr' ? `<label>Partir d'un modèle<select data-guide="${k}"><option value="">Choisir un modèle…</option>${Object.entries(GUIDES).map(([g, x]) => `<option value="${g}">${esc(x.nom)}</option>`).join('')}</select></label>` : ''}
         ${saisie !== 'fr' ? `<p class="app-note">Saisie en ${esc(LANGUES[saisie])} ; laissé vide, le texte français s'affiche.</p>` : ''}
         ${Object.entries(SECTIONS[s.type]?.champs || {}).filter(([ch]) => saisie === 'fr' || !['prenom', 'heure', 'poids', 'taille', 'parrain', 'marraine', 'couleurs', 'lien'].includes(ch)).map(([ch, lib]) => ch === 'texte'
@@ -118,10 +124,12 @@ document.addEventListener('click', async ev => {
   const S = design.sections, d = b.dataset;
   if (d.famille) { famille = d.famille; return remplir(); }
   if (d.saisie) { saisie = d.saisie; ouverte = null; remplir(); return envoyer(false); }
-  if (d.theme) { design.theme = d.theme; design.palette = null; design.polices = null; return changer(true); }
+  if (d.theme) { design.theme = d.theme; design.palette = null; design.polices = null; design.structure = null; return changer(true); }
   if (d.format) { format = d.format; document.querySelectorAll('[data-format]').forEach(x => x.classList.toggle('actif', x === b)); return envoyer(true); }
   if (b.id === 'b-rejouer') return envoyer(true);
   if (b.id === 'b-couleurs-modele') { design.palette = null; return changer(true); }
+  if (b.id === 'b-structure-modele') { design.structure = null; return changer(true); }
+  if (d.retirerGalerie) { const [k, i] = d.retirerGalerie.split(':').map(Number); S[k].photos.splice(i, 1); parties(); return changer(); }
   if (b.id === 'b-sans-photo') { design.couverture.photo = ''; return changer(true); }
   if (d.monter) { const k = +d.monter; [S[k - 1], S[k]] = [S[k], S[k - 1]]; ouverte = null; parties(); return changer(); }
   if (d.descendre) { const k = +d.descendre; [S[k + 1], S[k]] = [S[k], S[k + 1]]; ouverte = null; parties(); return changer(); }
@@ -150,6 +158,22 @@ document.addEventListener('input', ev => {
 document.addEventListener('change', async ev => {
   const t = ev.target; if (!design) return;
   if (t.id === 'polices') { design.polices = t.value; return changer(); }
+  if (t.dataset.structure) { const k = t.dataset.structure, base = theme(design.theme)[k]; design.structure = { ...(design.structure || {}), [k]: t.value === base ? '' : t.value }; return changer(true); }
+  if (t.dataset.galerie && t.files.length) {
+    const S = design.sections[+t.dataset.galerie]; S.photos ??= [];
+    try {
+      for (const [n, fi] of [...t.files].entries()) {
+        $('#m-galerie').textContent = `Envoi ${n + 1} sur ${t.files.length}…`;
+        const img = await createImageBitmap(fi), k = Math.min(1, 1800 / Math.max(img.width, img.height));
+        const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        const r = ref(storage, `events/${E}/design/galerie-${Date.now()}-${n}.jpg`);
+        await uploadBytes(r, await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.86)), { contentType: 'image/jpeg' });
+        S.photos.push(await getDownloadURL(r));
+      }
+      parties(); return changer();
+    } catch (e) { console.error(e); $('#m-galerie').textContent = 'Une photo n\'a pas pu être envoyée.'; }
+  }
   if (t.dataset.langue) { const l = t.dataset.langue; design.langues = t.checked ? [...new Set([...design.langues, l])].slice(0, maxLangues()) : design.langues.filter(x => x !== l); return changer(true); }
   if (t.dataset.guide && t.value) { const g = GUIDES[t.value], S = design.sections[+t.dataset.guide]; Object.assign(S, { intro: g.intro, texte: g.texte }); parties(); return changer(); }
   if (t.id === 'i-photo' && t.files[0]) {
