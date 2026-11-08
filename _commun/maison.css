@@ -14,8 +14,8 @@ a{color:inherit}
 /* En-tête */
 .entete{position:sticky;top:0;z-index:10;background:rgba(247,243,236,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--filet)}
 .entete .conteneur{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
-.marque{text-decoration:none;display:flex;align-items:baseline;gap:10px}
-.marque b{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:25px;letter-spacing:.01em}
+.marque{text-decoration:none;display:flex;align-items:center;gap:14px}
+.marque b{display:block;width:192px;height:21px;background:url(maison-vivat-marque.svg) no-repeat left center/contain;font-size:0;color:transparent}
 .marque span{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux)}
 .nav{display:flex;align-items:center;gap:26px;font-size:13px;letter-spacing:.06em}
 .nav a{text-decoration:none;color:var(--doux);transition:color .2s}
@@ -196,7 +196,7 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 @media (max-width:960px){.creer{grid-template-columns:1fr}.recap{position:static}.choix-formules{grid-template-columns:1fr}}
 #evts{gap:16px;overflow-x:auto;scrollbar-width:none}
 #evts a{display:inline-block!important;white-space:nowrap}
-@media (max-width:560px){#evts a.rdv{padding:7px 10px}#evts{font-size:12px;gap:10px}.creer .marque b{font-size:20px}}
+@media (max-width:560px){#evts a.rdv{padding:7px 10px}#evts{font-size:12px;gap:10px}.creer .marque b{width:160px;height:18px}}
 
 /* Pages légales */
 .legal{max-width:820px;padding-top:56px;padding-bottom:96px}
