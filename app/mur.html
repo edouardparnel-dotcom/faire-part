@@ -20,25 +20,29 @@
   .mur figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;font-size:13px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
   @keyframes entre{from{opacity:0;transform:scale(.96)}}
   #vue .app{color:var(--encre)}
+  .mur figure button{position:absolute;top:8px;right:8px;opacity:0;transition:opacity .2s;font:inherit;font-size:12px;background:rgba(20,18,16,.8);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);padding:5px 10px;cursor:pointer}
+  .mur figure:hover button,.mur figure button:focus{opacity:1}
 </style>
 </head>
 <body>
 <div id="vue"></div>
 <script type="module">
 // Mur photo à projeter pendant la fête (option murphoto) : les photos visibles arrivent en direct, les plus récentes en haut.
-import { db, $, esc, exigerOrganisateur } from './commun.js';
-import { doc, getDoc, onSnapshot, collection } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+// Au survol, « Retirer » masque une photo tout de suite (elle reste récupérable dans l'espace, onglet Photos).
+import { db, $, esc, exigerOrganisateur, aLaMain } from './commun.js?v=3';
+import { doc, getDoc, updateDoc, onSnapshot, collection } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');
 const conteneur = document.createElement('main'); conteneur.className = 'app'; vue.append(conteneur);
 exigerOrganisateur(conteneur, async user => {
   const evt = (await getDoc(doc(db, 'events', E))).data();
-  if (!evt || evt.owner !== user.uid) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
+  if (!(await aLaMain(evt, E, user.uid))) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
   vue.innerHTML = `<div class="mur-haut"><h1>${esc(evt.titre)}</h1><p>Partagez vos photos depuis votre invitation personnelle</p></div><div class="mur" id="mur"></div>`;
   onSnapshot(collection(db, `events/${E}/photos`), s => {
-    const photos = s.docs.map(d => d.data()).filter(p => p.visible).sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
-    $('#mur').innerHTML = photos.map(p => `<figure><img src="${esc(p.url)}" alt=""><figcaption>${esc(p.auteur)}</figcaption></figure>`).join('') || '<p style="text-align:center;color:#BDB4A7">Les premières photos arrivent…</p>';
+    const photos = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.visible).sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
+    $('#mur').innerHTML = photos.map(p => `<figure><img src="${esc(p.url)}" alt=""><button data-masquer="${p.id}">Retirer</button><figcaption>${esc(p.auteur)}</figcaption></figure>`).join('') || '<p style="text-align:center;color:#BDB4A7">Les premières photos arrivent…</p>';
   });
+  document.addEventListener('click', ev => { const b = ev.target.closest('[data-masquer]'); if (b) updateDoc(doc(db, `events/${E}/photos/${b.dataset.masquer}`), { visible: false }); });
 });
 </script>
 </body>

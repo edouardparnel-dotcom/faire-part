@@ -56,7 +56,7 @@ if (q.get('demo')) {
   });
   parent.postMessage({ pret: true }, location.origin);
 } else if (q.get('e')) {
-  const { db, auth, PRET } = await import('./commun.js?v=2');
+  const { db, auth, PRET } = await import('./commun.js?v=3');
   const { doc, getDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
   const { signInAnonymously, signOut, onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js');
   if (!PRET) racine.textContent = 'Invitation indisponible.';

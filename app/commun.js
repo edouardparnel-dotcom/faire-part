@@ -3,7 +3,7 @@
 // En ligne, il faut renseigner CONFIG_PRODUCTION avec la configuration du projet Firebase de la maison.
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
 import { getAuth, connectAuthEmulator, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-import { getFirestore, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { getFirestore, connectFirestoreEmulator, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { getStorage, connectStorageEmulator } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 
 // Projet Firebase de production « maison-vivat » (identifiants publics d'application web, protégés par les règles).
@@ -76,3 +76,10 @@ export function exigerOrganisateur(conteneur, quandConnecte) {
   });
 }
 export const deconnecter = () => signOut(auth);
+
+// L'organisateur, ou un membre de son équipe (co-organisateur, wedding planner) : mêmes pages de gestion.
+export async function aLaMain(evt, e, uid) {
+  if (!evt) return false;
+  if (evt.owner === uid) return true;
+  return (await getDoc(doc(db, `events/${e}/equipe/${uid}`)).catch(() => null))?.exists() || false;
+}

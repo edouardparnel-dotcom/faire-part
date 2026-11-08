@@ -1,6 +1,6 @@
 // Éditeur du faire-part : le couple choisit sa direction artistique, ses couleurs, ses polices, sa photo,
 // ajoute, retire, masque et réordonne les parties ; l'aperçu (fp.html?apercu=1) se met à jour en direct.
-import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur } from './commun.js?v=2';
+import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=3';
 import { THEMES, FAMILLES, POLICES, theme } from './themes.js?v=1';
 import { SECTIONS, designParDefaut } from './moteur.js?v=1';
 import { doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
@@ -14,7 +14,7 @@ $('#retour').href = `organisateur.html?e=${encodeURIComponent(E || '')}`;
 exigerOrganisateur(vue, async user => {
   const s = await getDoc(doc(db, 'events', E));
   evt = s.data();
-  if (!evt || evt.owner !== user.uid) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
+  if (!(await aLaMain(evt, E, user.uid))) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
   design = structuredClone(evt.design || designParDefaut(evt, 'ivoire'));
   vue.className = 'ed';
   vue.innerHTML = `<div class="ed-panneau">

@@ -23,7 +23,7 @@
 <main class="app" id="vue" style="max-width:640px"></main>
 <script type="module">
 // Contrôle d'entrée (option qr) : l'organisateur ou un proche connecté au compte scanne le pass de chaque invité.
-import { db, $, esc, heure, LOCAL, bandeau, exigerOrganisateur } from './commun.js';
+import { db, $, esc, heure, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=3';
 import { doc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -32,7 +32,7 @@ let evt, invites = [], lecteur, enCours = false;
 
 exigerOrganisateur(vue, async user => {
   evt = (await getDoc(doc(db, 'events', E))).data();
-  if (!evt || evt.owner !== user.uid) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
+  if (!(await aLaMain(evt, E, user.uid))) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
   if (!evt.options.includes('qr')) { vue.innerHTML = '<p class="app-note">L\'option « Contrôle d\'entrée » n\'est pas activée pour cet événement.</p>'; return; }
   vue.innerHTML = `<a class="app-note" href="organisateur.html?e=${esc(E)}">← ${esc(evt.titre)}</a>
     <h1 class="serif">Contrôle d'entrée</h1><p class="app-note" id="compteur"></p>
