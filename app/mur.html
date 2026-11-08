@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maison Vivat · Mur photo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=3">
+<link rel="stylesheet" href="app.css?v=1">
+<style>
+  body{background:#141210;color:#F7F3EC}
+  .mur-haut{text-align:center;padding:28px 16px 10px}
+  .mur-haut h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(34px,5vw,64px)}
+  .mur-haut p{color:#BDB4A7}
+  .mur{columns:4 260px;column-gap:10px;padding:10px}
+  .mur figure{break-inside:avoid;margin:0 0 10px;position:relative;animation:entre .8s ease}
+  .mur img{width:100%;display:block}
+  .mur figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;font-size:13px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+  @keyframes entre{from{opacity:0;transform:scale(.96)}}
+  #vue .app{color:var(--encre)}
+</style>
+</head>
+<body>
+<div id="vue"></div>
+<script type="module">
+// Mur photo à projeter pendant la fête (option murphoto) : les photos visibles arrivent en direct, les plus récentes en haut.
+import { db, $, esc, exigerOrganisateur } from './commun.js';
+import { doc, getDoc, onSnapshot, collection } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
+const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');
+const conteneur = document.createElement('main'); conteneur.className = 'app'; vue.append(conteneur);
+exigerOrganisateur(conteneur, async user => {
+  const evt = (await getDoc(doc(db, 'events', E))).data();
+  if (!evt || evt.owner !== user.uid) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
+  vue.innerHTML = `<div class="mur-haut"><h1>${esc(evt.titre)}</h1><p>Partagez vos photos depuis votre invitation personnelle</p></div><div class="mur" id="mur"></div>`;
+  onSnapshot(collection(db, `events/${E}/photos`), s => {
+    const photos = s.docs.map(d => d.data()).filter(p => p.visible).sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
+    $('#mur').innerHTML = photos.map(p => `<figure><img src="${esc(p.url)}" alt=""><figcaption>${esc(p.auteur)}</figcaption></figure>`).join('') || '<p style="text-align:center;color:#BDB4A7">Les premières photos arrivent…</p>';
+  });
+});
+</script>
+</body>
+</html>

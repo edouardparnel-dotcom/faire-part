@@ -1,0 +1,52 @@
+/* Pages de l'application : mêmes codes que les sites (maison.css), en plus dense. */
+.app{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
+.app h1{font-weight:500;font-size:clamp(32px,4vw,46px);line-height:1.1;margin:8px 0 6px}
+.app h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;margin:0 0 12px}
+.app-carte{background:var(--papier);border:1px solid var(--filet);padding:24px;margin-bottom:18px}
+.app-connexion{max-width:420px;margin:40px auto;display:grid;gap:14px}
+.app label{display:grid;gap:5px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--doux)}
+.app input,.app select,.app textarea{font:inherit;font-size:15px;letter-spacing:0;text-transform:none;color:var(--encre);background:#fff;border:1px solid var(--filet);padding:10px 12px;border-radius:0;width:100%}
+.app input[type=checkbox],.app input[type=radio]{width:auto;accent-color:var(--accent)}
+.app-erreur{color:#B3261E;font-size:14px;min-height:1em}
+.app-note{color:var(--doux);font-size:14px}
+.app-bandeau{background:var(--accent);color:#fff;text-align:center;font-size:12px;padding:6px 10px;letter-spacing:.04em}
+.app-haut{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.app-onglets{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}
+.app-onglets button{font:inherit;font-size:13px;border:1px solid var(--filet);background:var(--papier);padding:8px 14px;cursor:pointer;color:var(--encre)}
+.app-onglets button.actif{background:var(--encre);color:var(--ivoire);border-color:var(--encre)}
+.app-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.app-stat{background:var(--papier);border:1px solid var(--filet);padding:16px}
+.app-stat b{display:block;font-family:'Cormorant Garamond',serif;font-size:38px;line-height:1}
+.app-stat span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--doux)}
+.puces{display:flex;gap:6px;flex-wrap:wrap}
+.puce-o{font-size:11px;letter-spacing:.06em;border:1px solid var(--accent);color:var(--encre);padding:3px 9px}
+.puce-o.off{border-color:var(--filet);color:var(--doux)}
+.btn.petit{padding:8px 12px;font-size:11px}
+.app-table{width:100%;border-collapse:collapse;font-size:14px}
+.app-table th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux);border-bottom:1px solid var(--encre);padding:8px 6px}
+.app-table td{border-bottom:1px solid var(--filet);padding:10px 6px;vertical-align:top}
+.app-table .ok{color:#2E7D5B}.app-table .non{color:#B3261E}.app-table .attente{color:var(--doux)}
+.table-defile{overflow-x:auto}
+.form-ligne{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;align-items:end}
+.coches{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0}
+.coches label{display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:14px;color:var(--encre)}
+.ceremonie{border-bottom:1px solid var(--filet);padding:16px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.ceremonie h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px}
+.ceremonie p{color:var(--doux);font-size:14px}
+.choix-rep{display:flex;gap:6px}
+.choix-rep button{font:inherit;font-size:13px;border:1px solid var(--filet);background:#fff;padding:9px 14px;cursor:pointer}
+.choix-rep button.choisi{background:var(--encre);color:var(--ivoire);border-color:var(--encre)}
+.qr{display:grid;place-items:center;gap:10px;text-align:center}
+.qr img{width:220px;height:220px;image-rendering:pixelated}
+.video{position:relative;aspect-ratio:16/9;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.galerie figure{position:relative;margin:0}
+.galerie img{width:100%;aspect-ratio:1;object-fit:cover}
+.galerie figcaption{font-size:12px;color:var(--doux);margin-top:4px}
+.galerie figure.masquee img{opacity:.3}
+.mot{border-bottom:1px solid var(--filet);padding:12px 0}
+.mot p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px}
+.mot span{font-size:12px;color:var(--doux)}
+.ok-msg{color:#2E7D5B;font-size:14px;min-height:1em}
+@media (max-width:640px){.form-ligne{grid-template-columns:1fr}.ceremonie{grid-template-columns:1fr}}

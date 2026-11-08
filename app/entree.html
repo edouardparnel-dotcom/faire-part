@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maison Vivat · Contrôle d'entrée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=3">
+<link rel="stylesheet" href="app.css?v=1">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+  #lecteur{max-width:420px;margin:0 auto;background:#000}
+  .verdict{text-align:center;padding:26px}
+  .verdict.bon{background:#E7F3EC;border-color:#2E7D5B}
+  .verdict.deja{background:#FBF1E1;border-color:#B7791F}
+  .verdict.refus{background:#FBE9E7;border-color:#B3261E}
+  .verdict h2{font-size:34px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<main class="app" id="vue" style="max-width:640px"></main>
+<script type="module">
+// Contrôle d'entrée (option qr) : l'organisateur ou un proche connecté au compte scanne le pass de chaque invité.
+import { db, $, esc, heure, LOCAL, bandeau, exigerOrganisateur } from './commun.js';
+import { doc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
+if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
+const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');
+let evt, invites = [], lecteur, enCours = false;
+
+exigerOrganisateur(vue, async user => {
+  evt = (await getDoc(doc(db, 'events', E))).data();
+  if (!evt || evt.owner !== user.uid) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
+  if (!evt.options.includes('qr')) { vue.innerHTML = '<p class="app-note">L\'option « Contrôle d\'entrée » n\'est pas activée pour cet événement.</p>'; return; }
+  vue.innerHTML = `<a class="app-note" href="organisateur.html?e=${esc(E)}">← ${esc(evt.titre)}</a>
+    <h1 class="serif">Contrôle d'entrée</h1><p class="app-note" id="compteur"></p>
+    <div id="lecteur" style="margin-top:16px"></div>
+    <form class="form-ligne" id="f-code" style="margin-top:14px"><label>Ou saisir le code<input name="code" placeholder="LAKOU:…"></label><span></span><button class="btn clair">Vérifier</button></form>
+    <div id="verdict" style="margin-top:18px"></div>`;
+  onSnapshot(collection(db, `events/${E}/invites`), s => {
+    invites = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    const entres = invites.filter(i => i.entree), personnes = entres.reduce((n, i) => n + 1 + (i.accompagnants || 0), 0);
+    $('#compteur').textContent = `${entres.length} invitations validées sur ${invites.length} · ${personnes} personnes entrées`;
+  });
+  if (window.Html5Qrcode) {
+    lecteur = new Html5Qrcode('lecteur');
+    lecteur.start({ facingMode: 'environment' }, { fps: 10, qrbox: 240 }, verifier, () => {}).catch(() => $('#lecteur').outerHTML = '<p class="app-note">Caméra indisponible : saisissez le code à la main.</p>');
+  }
+  $('#f-code').addEventListener('submit', ev => { ev.preventDefault(); verifier(ev.target.code.value.trim()); });
+});
+
+async function verifier(code) {
+  if (enCours) return; enCours = true;
+  const [prefixe, e, t] = code.split(':'), zone = $('#verdict');
+  const i = prefixe === 'LAKOU' && e === E ? invites.find(x => x.id === t) : null;
+  if (!i) zone.innerHTML = `<div class="app-carte verdict refus"><h2 class="serif">Code inconnu</h2><p>Ce pass n'appartient pas à cet événement.</p></div>`;
+  else if (i.entree) zone.innerHTML = `<div class="app-carte verdict deja"><h2 class="serif">${esc(i.nom)}</h2><p>Déjà entré(e) à ${heure(i.entree.toDate())}.</p></div>`;
+  else {
+    await updateDoc(doc(db, `events/${E}/invites/${i.id}`), { entree: serverTimestamp() });
+    const noms = (evt.ceremonies || []).filter(c => i.ceremonies?.includes(c.cle)).map(c => c.nom).join(', ');
+    zone.innerHTML = `<div class="app-carte verdict bon"><h2 class="serif">Bienvenue, ${esc(i.nom)}</h2><p>${i.accompagnants ? `Avec ${i.accompagnants} accompagnant${i.accompagnants > 1 ? 's' : ''}` : 'Seul(e)'} · invité(e) à : ${esc(noms)}</p>${i.regime ? `<p class="app-note">Régime : ${esc(i.regime)}</p>` : ''}</div>`;
+  }
+  setTimeout(() => enCours = false, 2500);
+}
+</script>
+</body>
+</html>
