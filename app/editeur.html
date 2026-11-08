@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maison Vivat · Personnaliser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=6">
+<link rel="stylesheet" href="app.css?v=1">
+<style>
+  .ed{display:grid;grid-template-columns:minmax(340px,440px) 1fr;gap:28px;max-width:1280px;margin:0 auto;padding:22px 20px 40px;align-items:start}
+  .ed-panneau{display:grid;gap:12px}
+  details.boite{background:var(--papier);border:1px solid var(--filet)}
+  details.boite>summary{list-style:none;cursor:pointer;padding:16px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;display:flex;justify-content:space-between}
+  details.boite>summary::after{content:"+";color:var(--accent)} details.boite[open]>summary::after{content:"–"}
+  details.boite>div{padding:0 18px 18px;display:grid;gap:12px}
+  .familles{display:flex;gap:6px;flex-wrap:wrap}
+  .familles button,.mini{font:inherit;font-size:12px;border:1px solid var(--filet);background:#fff;padding:6px 10px;cursor:pointer}
+  .familles button.actif{background:var(--encre);color:var(--ivoire);border-color:var(--encre)}
+  .themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;max-height:430px;overflow:auto;padding:2px}
+  .th{font:inherit;text-align:left;border:1px solid var(--filet);background:#fff;padding:8px;cursor:pointer}
+  .th.choisi{outline:2px solid var(--accent);outline-offset:1px}
+  .th .nuances{display:flex;height:22px;margin-bottom:6px}.th .nuances i{flex:1}
+  .th b{display:block;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;line-height:1.1}
+  .th small{font-size:11px;color:var(--doux)}
+  .couleurs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .couleurs label{font-size:10.5px;letter-spacing:.06em;text-transform:none;text-align:center}
+  .couleurs input{height:42px;padding:2px;cursor:pointer}
+  .parties{list-style:none;display:grid;gap:6px}
+  .partie{border:1px solid var(--filet);background:#fff}
+  .partie-tete{display:flex;align-items:center;gap:6px;padding:8px 10px}
+  .partie-tete b{flex:1;font-weight:500;font-size:14px}
+  .partie.masquee .partie-tete b{opacity:.4;text-decoration:line-through}
+  .partie-corps{padding:0 10px 12px;display:grid;gap:8px}
+  .icone{font:inherit;border:1px solid var(--filet);background:#fff;width:30px;height:30px;cursor:pointer;font-size:13px;line-height:1}
+  .icone:disabled{opacity:.3;cursor:default}
+  .ajout{display:flex;gap:8px}
+  .ed-apercu{position:sticky;top:84px;display:grid;justify-items:center;gap:12px}
+  .telephone{width:390px;height:min(760px,calc(100vh - 170px));border:12px solid #1c1a18;border-radius:38px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+  .telephone iframe{width:100%;height:100%;border:0}
+  .barre-apercu{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .barre-apercu button.actif{background:var(--encre);color:var(--ivoire)}
+  .enregistrer{position:sticky;bottom:0;background:var(--ivoire);padding:12px 0;display:flex;gap:10px;align-items:center;border-top:1px solid var(--filet)}
+  .etat{font-size:13px;color:var(--doux)}
+  .photo-couv{display:flex;gap:10px;align-items:center}
+  .photo-couv img{width:64px;height:80px;object-fit:cover;border:1px solid var(--filet)}
+  @media (max-width:900px){.ed{grid-template-columns:1fr}.ed-apercu{position:static;order:-1}.telephone{width:100%;max-width:390px;height:620px}}
+</style>
+</head>
+<body>
+<header class="entete"><div class="conteneur">
+  <a class="marque" href="organisateur.html"><b>Maison Vivat</b><span>Personnaliser</span></a>
+  <nav class="nav" aria-label="Retour"><a href="#" id="retour">← Mon espace</a></nav>
+</div></header>
+<main id="vue" class="app"></main>
+<script type="module" src="editeur.js?v=1"></script>
+</body>
+</html>

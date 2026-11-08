@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Faire-part</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="moteur.css?v=1">
+</head>
+<body>
+<div id="fp"><p style="font-family:sans-serif;text-align:center;padding:40px;color:#888">Ouverture…</p></div>
+<script type="module">
+// Trois usages :
+//  fp.html?demo=<direction>[&f=std]        démonstration d'une direction artistique (sans serveur) ;
+//  fp.html?apercu=1[&f=std]                aperçu en direct dans l'éditeur (réglages reçus par message) ;
+//  fp.html?e=<événement>[&g=<jeton>][&f=std] la vraie invitation ; avec un jeton, elle est personnelle.
+import { rendre, designParDefaut } from './moteur.js?v=1';
+import { theme } from './themes.js?v=1';
+
+const q = new URLSearchParams(location.search), racine = document.getElementById('fp');
+const format = q.get('f') === 'std' ? 'std' : 'fp', sansOuverture = q.has('sans-ouverture');
+const DEMO = {
+  titre: 'Naïka & Jonathan', type: 'mariage', date: '2027-06-19T15:00', lieu: 'Domaine des Flamboyants',
+  ceremonies: [
+    { cle: 'mairie', nom: 'Mariage civil', date: '2027-06-18T11:00', lieu: 'Mairie de Pétion-Ville' },
+    { cle: 'eglise', nom: 'Cérémonie religieuse', date: '2027-06-19T15:00', lieu: 'Église Saint-Pierre' },
+    { cle: 'soiree', nom: 'Réception', date: '2027-06-19T19:00', lieu: 'Domaine des Flamboyants' },
+  ],
+};
+
+if (q.get('demo')) {
+  const t = theme(q.get('demo')), evt = { ...DEMO, ...(t.famille === 'festifs' ? { titre: { gala: 'Les 50 ans de Nadia', disco: 'Les 30 ans de Yanis', nuage: 'Le baptême de Léo', cierge: 'Le baptême de Gabriel', rosebleu: 'Fille ou garçon ?', secret: 'Top secret' }[t.id], type: 'fete' } : {}) };
+  document.title = `${t.nom} · Maison Vivat`;
+  // Photo de démonstration : celle d'une collection proche (le couple met la sienne dans l'éditeur).
+  const PHOTOS = { lakou: 'lakay/photo', kreyol: 'lakay/decor-ensemble', madras: 'madras/photo', kanaval: 'madras/decor-detail', kente: 'kente/photo', adinkra: 'kente/decor-ensemble',
+    owambe: 'owambe/photo', gele: 'owambe/decor-detail', toghu: 'toghu/photo', ndop: 'toghu/decor-ensemble', teranga: 'teranga/photo', bazin: 'teranga/decor-ensemble',
+    bogolan: 'bogolan/photo', kita: 'kita/photo', sape: 'sape/photo', liputa: 'sape/decor-detail', tibeb: 'tibeb/photo', imbali: 'kita/decor-detail',
+    ivoire: 'classique/photo', monogramme: 'classique/decor-detail', versailles: 'classique/decor-ensemble', faubourg: 'tibeb/decor-ensemble', chapelle: 'teranga/decor-detail',
+    marine: 'kente/decor-detail', bordeaux: 'owambe/decor-ensemble', emeraude: 'lakay/decor-detail', gatsby: 'anniversaire-gala/decor-detail', opera: 'toghu/decor-detail',
+    porcelaine: 'bogolan/decor-ensemble', soie: 'boheme/photo', champetre: 'champetre/photo', lavande: 'champetre/decor-detail', pampa: 'boheme/decor-ensemble',
+    terracotta: 'boheme/decor-detail', eucalyptus: 'champetre/decor-ensemble', oliveraie: 'bogolan/decor-detail', lagon: 'madras/decor-ensemble', flamboyant: 'kita/decor-ensemble',
+    galerie: 'sape/decor-ensemble', atelier: 'sape/decor-detail', neon: 'anniversaire-disco/decor-detail', kintsugi: 'teranga/decor-ensemble', aquarelle: 'bapteme-nuage/decor-detail',
+    riviera: 'anniversaire-tropical/photo', gala: 'anniversaire-gala/decor-detail', disco: 'anniversaire-disco/photo', nuage: 'bapteme-nuage/photo', cierge: 'bapteme-lumiere/photo',
+    rosebleu: 'gender-boite/decor-ensemble', secret: 'gender-secret/decor-detail' };
+  const design = designParDefaut(evt, t.id);
+  if (PHOTOS[t.id]) design.couverture.photo = `../${PHOTOS[t.id]}.jpg`;
+  rendre(racine, { evt, design, format, sansOuverture });
+} else if (q.has('apercu')) {
+  // L'éditeur envoie { evt, design } à chaque modification ; on garde l'ouverture seulement quand il la demande.
+  addEventListener('message', e => {
+    if (e.origin !== location.origin || !e.data?.design) return;
+    const y = scrollY;
+    rendre(racine, { evt: e.data.evt, design: e.data.design, format: e.data.format || format, sansOuverture: !e.data.rejouer });
+    if (!e.data.rejouer) scrollTo(0, y);
+  });
+  parent.postMessage({ pret: true }, location.origin);
+} else if (q.get('e')) {
+  const { db, auth, PRET } = await import('./commun.js?v=2');
+  const { doc, getDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
+  const { signInAnonymously, signOut, onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js');
+  if (!PRET) racine.textContent = 'Invitation indisponible.';
+  else {
+    const E = q.get('e'), T = q.get('g');
+    const evt = (await getDoc(doc(db, 'events', E))).data();
+    if (!evt) racine.textContent = 'Cette invitation est introuvable.';
+    else {
+      let invite = null;
+      if (T) {
+        // Même rattachement que la page invité : le téléphone est relié une fois pour toutes à ce jeton.
+        await new Promise(r => { const f = onAuthStateChanged(auth, () => { f(); r(); }); });
+        const relier = async () => {
+          const u = auth.currentUser || (await signInAnonymously(auth)).user, m = doc(db, `events/${E}/membres/${u.uid}`), s = await getDoc(m);
+          if (!s.exists()) return setDoc(m, { token: T });
+          if (s.data().token !== T) { await signOut(auth); await signInAnonymously(auth); return relier(); }
+        };
+        try { await relier(); invite = (await getDoc(doc(db, `events/${E}/invites/${T}`))).data() || null; } catch { invite = null; }
+      }
+      document.title = evt.titre;
+      const lienReponse = T ? `invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}` : '';
+      rendre(racine, { evt, design: evt.design || designParDefaut(evt, 'ivoire'), format, invite, lienReponse, sansOuverture });
+    }
+  }
+} else {
+  racine.textContent = 'Lien incomplet.';
+}
+</script>
+</body>
+</html>

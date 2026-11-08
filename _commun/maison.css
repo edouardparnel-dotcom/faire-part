@@ -217,3 +217,16 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .btn:disabled{opacity:.35;cursor:not-allowed}
 .btn:disabled:hover{background:var(--encre);color:var(--ivoire)}
 .legal ol{padding-left:22px}
+
+/* Catalogue des 50 directions */
+.filtres,.bascule{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.filtres button,.bascule button{font:inherit;font-size:13px;border:1px solid var(--filet);background:var(--papier);padding:8px 14px;cursor:pointer;color:var(--encre)}
+.filtres button.actif,.bascule button.actif{background:var(--encre);color:var(--ivoire);border-color:var(--encre)}
+.bascule{margin-bottom:34px}
+.catalogue{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:36px 24px}
+.vignette-cat{text-decoration:none;display:block}
+.vignette-cat img{width:100%;aspect-ratio:360/547;object-fit:cover;border:1px solid var(--filet);transition:transform .5s}
+.vignette-cat:hover img{transform:translateY(-4px)}
+.vignette-cat .etq{display:block;margin-top:12px}
+.vignette-cat b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px;line-height:1.1}
+.vignette-cat small{color:var(--doux);font-size:13px}

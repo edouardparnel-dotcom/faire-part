@@ -9,7 +9,8 @@ const vue = $('#vue');
 const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Baptême', gender: 'Gender reveal' };
 let user, E = null, evt = null, invites = [], photos = [], livre = [], onglet = 'invites', abonnements = [];
 
-const lienInvite = t => new URL(`invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
+// Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.
+const lienInvite = t => new URL(`fp.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
 const a = o => evt?.options?.includes(o);
 
 exigerOrganisateur(vue, u => {
@@ -60,7 +61,7 @@ function rendre() {
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))} · ${esc(evt.lieu)}</p></div>
-    <div class="puces">${a('qr') ? `<a class="btn petit" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
+    <div class="puces"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser le faire-part</a>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
     <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${Object.entries(NOMS_OPTIONS).map(([k, v]) => `<span class="puce-o ${a(k) ? '' : 'off'}">${esc(v)}</span>`).join('')}</div>
       ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Formule d'essai : les options s'activent après le paiement. <a class="lien-or" href="../creer/?evt=${evt.type}">Choisir ma formule</a></p>` : ''}</div>
     <div class="app-grille">

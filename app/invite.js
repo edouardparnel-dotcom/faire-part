@@ -42,7 +42,7 @@ function rendre() {
   const prenom = inv.nom.split(' ')[0];
   vue.innerHTML = `<div style="text-align:center;margin:20px 0 30px"><span class="etq">Votre invitation</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))}</p>
-      ${evt.modele ? `<a class="btn clair" style="margin-top:18px" href="../${esc(evt.modele)}/index.html">Ouvrir le faire-part</a>` : ''}</div>
+      <a class="btn clair" style="margin-top:18px" href="fp.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}">Ouvrir le faire-part</a></div>
     <form class="app-carte" id="f-reponse"><h2>Bonjour ${esc(prenom)}</h2><p class="app-note">${mesC.length > 1 ? 'Vous êtes invité(e) aux moments suivants. Merci de répondre pour chacun.' : 'Merci de nous dire si vous serez présent(e).'}</p>
       ${mesC.map(c => `<div class="ceremonie"><div><h3>${esc(c.nom)}</h3><p>${esc(majuscule(dateLongue(c.date)))} à ${heure(c.date)}<br>${esc(c.lieu)} · <a class="lien-or" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.lieu)}">plan</a></p></div>
         <div class="choix-rep" data-cer="${esc(c.cle)}"><button type="button" data-r="oui" class="${inv.reponses?.[c.cle] === 'oui' ? 'choisi' : ''}">Je serai là</button><button type="button" data-r="non" class="${inv.reponses?.[c.cle] === 'non' ? 'choisi' : ''}">Je ne pourrai pas</button></div></div>`).join('')}
