@@ -246,3 +246,5 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .avis blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;line-height:1.45;margin:0 0 16px}
 .avis figcaption{font-size:13px;color:var(--doux);letter-spacing:.04em}
 .avis figcaption b{color:var(--encre);font-weight:500}
+.realisations .avis h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px;line-height:1.15;margin:8px 0 10px}
+.realisations .avis p{color:var(--doux);font-size:15px}
