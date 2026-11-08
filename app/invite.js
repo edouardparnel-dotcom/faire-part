@@ -104,12 +104,20 @@ document.addEventListener('submit', async ev => {
 document.addEventListener('change', async ev => {
   if (ev.target.id !== 'i-photo') return;
   const fichiers = [...ev.target.files], msg = $('#m-photo'), uid = auth.currentUser.uid;
-  for (const [k, fi] of fichiers.entries()) {
-    msg.textContent = `Envoi ${k + 1} sur ${fichiers.length}…`;
-    const chemin = `events/${E}/photos/${uid}/${Date.now()}-${k}.jpg`, r = ref(storage, chemin);
-    await uploadBytes(r, await reduire(fi), { contentType: 'image/jpeg' });
-    await addDoc(collection(db, `events/${E}/photos`), { token: T, auteur: inv.nom.split(' ')[0], chemin, url: await getDownloadURL(r), creeLe: serverTimestamp(), visible: true });
+  msg.className = 'ok-msg';
+  try {
+    for (const [k, fi] of fichiers.entries()) {
+      msg.textContent = `Envoi ${k + 1} sur ${fichiers.length}…`;
+      const chemin = `events/${E}/photos/${uid}/${Date.now()}-${k}.jpg`, r = ref(storage, chemin);
+      await uploadBytes(r, await reduire(fi), { contentType: 'image/jpeg' });
+      await addDoc(collection(db, `events/${E}/photos`), { token: T, auteur: inv.nom.split(' ')[0], chemin, url: await getDownloadURL(r), creeLe: serverTimestamp(), visible: true });
+    }
+    msg.textContent = fichiers.length > 1 ? 'Photos partagées, merci !' : 'Photo partagée, merci !';
+  } catch (e) {
+    // Un échec ne doit jamais passer pour un envoi réussi.
+    console.error('Envoi de photo', e);
+    msg.className = 'app-erreur';
+    msg.textContent = 'La photo n\'a pas pu être envoyée. Réessayez dans un instant ; si cela continue, prévenez les mariés.';
   }
-  msg.textContent = fichiers.length > 1 ? 'Photos partagées, merci !' : 'Photo partagée, merci !';
   ev.target.value = '';
 });
