@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maison Vivat · Mentions légales</title>
+<meta name="description" content="Mentions légales de Maison Vivat.">
+<meta property="og:title" content="Maison Vivat · Mentions légales">
+<meta property="og:description" content="Mentions légales de Maison Vivat.">
+<meta property="og:image" content="https://maisonvivat.com/owambe/decor-detail.jpg">
+<meta name="theme-color" content="#F7F3EC">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=4">
+<style>:root{--accent:#A8834A}</style>
+</head>
+<body>
+<header class="entete"><div class="conteneur">
+  <a class="marque" href="../index.html"><b>Maison Vivat</b><span>Informations légales</span></a>
+  <nav class="nav" aria-label="Pages légales"><a href="../mentions-legales/index.html">Mentions légales</a><a href="../confidentialite/index.html">Confidentialité</a><a class="rdv" href="../index.html">Retour au site</a></nav>
+</div></header>
+<main class="conteneur legal">
+  <span class="etq">Informations légales</span>
+  <h1 class="serif">Mentions légales</h1>
+  <p class="maj">Dernière mise à jour : 8 novembre 2026</p>
+
+<h2>Éditeur du site</h2>
+<p>Le site <b>maisonvivat.com</b> est édité par <b>Parnel EDOUARD, entrepreneur individuel</b>, sous la marque Maison Vivat.<br>
+SIRET : 804 693 281 00011<br>
+Adresse : 1 square Edmond Barbanson, 92220 Bagneux, France<br>
+Contact : <a href="mailto:contact@maisonvivat.com">contact@maisonvivat.com</a></p>
+<p>Directeur de la publication : Parnel EDOUARD.</p>
+
+<h2>Hébergement</h2>
+<p><b>Pages du site</b> : GitHub, Inc. (GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.</p>
+<p><b>Comptes, invitations, réponses et photos</b> : Google Firebase (Google Cloud), fourni par Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis. Les données sont stockées sur des serveurs situés à Paris (région europe-west9).</p>
+<p><b>Nom de domaine et messagerie</b> : OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.</p>
+
+<h2>Propriété intellectuelle</h2>
+<p>La marque Maison Vivat, les textes, les mises en page et les directions artistiques des collections sont la propriété de l'éditeur. Toute reproduction, même partielle, est interdite sans son accord écrit.</p>
+<p>Les photographies des pages de démonstration proviennent de la banque d'images Pexels et sont utilisées selon sa licence. Les personnes, prénoms et lieux des démonstrations sont fictifs.</p>
+<p>Les photos et les messages déposés par les invités restent la propriété de leurs auteurs. En les publiant, ils autorisent leur affichage dans l'espace de l'événement concerné, pour la durée de conservation indiquée dans la <a href="../confidentialite/index.html">politique de confidentialité</a>.</p>
+
+<h2>Responsabilité</h2>
+<p>L'éditeur s'efforce d'assurer l'exactitude des informations et le bon fonctionnement du site, sans pouvoir garantir l'absence d'interruption. Les informations d'un événement (dates, lieux, programme) sont saisies par ses organisateurs, qui en sont responsables.</p>
+
+<h2>Données personnelles</h2>
+<p>Le traitement des données personnelles est décrit dans la <a href="../confidentialite/index.html">politique de confidentialité</a>.</p>
+
+<h2>Litiges et médiation</h2>
+<p>Le présent site est soumis au droit français. En cas de litige, une solution amiable sera recherchée en priorité. Conformément au Code de la consommation, le client consommateur peut recourir gratuitement à un médiateur de la consommation.</p>
+
+</main>
+<footer class="pied"><div class="conteneur">
+  <div><b>Maison Vivat</b><p>L'art de recevoir, dès l'invitation. Tout se fait en ligne ; nous répondons par écrit sous 24 heures.</p></div>
+  <div><h4>Nos maisons</h4><ul>
+        <li><a href="../index.html" aria-current="page">Mariage</a></li>
+        <li><a href="../anniversaires/index.html">Anniversaires</a></li>
+        <li><a href="../baptemes/index.html">Baptêmes</a></li>
+        <li><a href="../reveal/index.html">Gender reveal</a></li>
+  </ul></div>
+  <div><h4>Pour vous</h4><ul><li><a href="../creer/?evt=mariage">Créer mon espace</a></li><li><a href="../espace/#tableau">Essayer l'espace mariage</a></li><li><a href="../index.html#formules">Formules</a></li><li><a href="../index.html#assistance">Assistance</a></li></ul></div>
+  <p class="mention"><a href="../mentions-legales/index.html">Mentions légales</a> · <a href="../confidentialite/index.html">Confidentialité</a> · démonstrations : personnes et lieux fictifs, photos Pexels</p>
+</div></footer>
+<script>
+  // Apparitions au défilement, et boutons de démonstration.
+  const vu = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vu'); vu.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.revele').forEach(el => vu.observe(el));
+  document.querySelectorAll('[data-demo]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.demo).style.display = 'block'));
+</script>
+</body>
+</html>
