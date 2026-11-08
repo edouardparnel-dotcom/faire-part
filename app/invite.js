@@ -2,7 +2,7 @@
 // puis selon les options payées : pass d'entrée QR, infos de voyage, guide de la cérémonie, déroulé, direct, mur photo,
 // livre d'or écrit, vocal ou vidéo, album en haute définition, jeux, tenues coordonnées, carte de remerciement ;
 // sa table, si les organisateurs ont choisi de la montrer. Le tout dans la langue de l'invité (option langue).
-import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } from './commun.js?v=3';
+import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } from './commun.js?v=4';
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';

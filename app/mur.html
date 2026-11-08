@@ -29,7 +29,7 @@
 <script type="module">
 // Mur photo à projeter pendant la fête (option murphoto) : les photos visibles arrivent en direct, les plus récentes en haut.
 // Au survol, « Retirer » masque une photo tout de suite (elle reste récupérable dans l'espace, onglet Photos).
-import { db, $, esc, exigerOrganisateur, aLaMain } from './commun.js?v=3';
+import { db, $, esc, exigerOrganisateur, aLaMain } from './commun.js?v=4';
 import { doc, getDoc, updateDoc, onSnapshot, collection } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');

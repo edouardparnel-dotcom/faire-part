@@ -23,7 +23,7 @@
 <main class="app" id="vue" style="max-width:640px"></main>
 <script type="module">
 // Contrôle d'entrée (option qr) : l'organisateur ou un proche connecté au compte scanne le pass de chaque invité.
-import { db, $, esc, heure, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=3';
+import { db, $, esc, heure, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=4';
 import { doc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');

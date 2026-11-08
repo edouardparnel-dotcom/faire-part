@@ -1,0 +1,162 @@
+{
+ "devise": "eur",
+ "mariage": {
+  "formules": {
+   "essentiel": {
+    "nom": "Essentiel",
+    "prix": 390,
+    "inclus": []
+   },
+   "signature": {
+    "nom": "Signature",
+    "prix": 890,
+    "inclus": [
+     "savethedate",
+     "ceremonies",
+     "qr",
+     "murphoto",
+     "livredor",
+     "album",
+     "langue"
+    ]
+   },
+   "prestige": {
+    "nom": "Prestige",
+    "prix": 1690,
+    "inclus": [
+     "savethedate",
+     "ceremonies",
+     "qr",
+     "murphoto",
+     "livredor",
+     "album",
+     "langue",
+     "direct",
+     "etranger",
+     "guide",
+     "merci",
+     "deroule"
+    ]
+   }
+  },
+  "options": {
+   "savethedate": {
+    "nom": "Save-the-date animé",
+    "prix": 90
+   },
+   "ceremonies": {
+    "nom": "Invitations par cérémonie",
+    "prix": 120
+   },
+   "guide": {
+    "nom": "Guide de la cérémonie",
+    "prix": 90
+   },
+   "etranger": {
+    "nom": "Invités venus de l'étranger",
+    "prix": 120
+   },
+   "tenues": {
+    "nom": "Tenues coordonnées",
+    "prix": 120
+   },
+   "langue": {
+    "nom": "Langue supplémentaire",
+    "prix": 60
+   },
+   "qr": {
+    "nom": "Contrôle d'entrée par QR code",
+    "prix": 150
+   },
+   "direct": {
+    "nom": "Direct privé pour la famille au pays",
+    "prix": 190
+   },
+   "deroule": {
+    "nom": "Déroulé en direct",
+    "prix": 60
+   },
+   "murphoto": {
+    "nom": "Mur photo en direct",
+    "prix": 90
+   },
+   "livredor": {
+    "nom": "Livre d'or vidéo et audio",
+    "prix": 90
+   },
+   "jeux": {
+    "nom": "Jeux des invités",
+    "prix": 60
+   },
+   "album": {
+    "nom": "Album partagé",
+    "prix": 90
+   },
+   "merci": {
+    "nom": "Remerciements personnalisés",
+    "prix": 90
+   }
+  }
+ },
+ "evenement": {
+  "formules": {
+   "essentiel": {
+    "nom": "Essentiel",
+    "prix": 190,
+    "inclus": []
+   },
+   "signature": {
+    "nom": "Signature",
+    "prix": 390,
+    "inclus": [
+     "murphoto",
+     "livredor",
+     "langue"
+    ]
+   },
+   "prestige": {
+    "nom": "Prestige",
+    "prix": 790,
+    "inclus": [
+     "murphoto",
+     "livredor",
+     "langue",
+     "direct",
+     "album",
+     "merci",
+     "jeux"
+    ]
+   }
+  },
+  "options": {
+   "langue": {
+    "nom": "Langue supplémentaire",
+    "prix": 60
+   },
+   "direct": {
+    "nom": "Direct privé pour les proches",
+    "prix": 190
+   },
+   "murphoto": {
+    "nom": "Mur photo en direct",
+    "prix": 90
+   },
+   "livredor": {
+    "nom": "Livre d'or vidéo et audio",
+    "prix": 90
+   },
+   "jeux": {
+    "nom": "Jeux et pronostics",
+    "prix": 60
+   },
+   "album": {
+    "nom": "Album partagé",
+    "prix": 90
+   },
+   "merci": {
+    "nom": "Remerciements personnalisés",
+    "prix": 90
+   }
+  }
+ }
+}

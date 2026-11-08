@@ -2,18 +2,20 @@
 // le budget, les prestataires, le planning, le déroulé du jour J, l'équipe (co-organisateur, wedding planner),
 // les réponses en direct, les entrées, la modération des photos et du livre d'or, le lien du direct, les exports ;
 // et les options : jeux (quiz, pronostics, classement), tenues coordonnées, remerciements, album en haute définition.
-import { auth, db, storage, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=3';
+import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=4';
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
+import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), Q = new URLSearchParams(location.search);
 const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Baptême', gender: 'Gender reveal', naissance: 'Naissance' };
 const ROLES = { coorganisateur: 'Co-organisateur', planner: 'Wedding planner' };
-let user, E = null, evt = null, proprio = false, onglet = 'accueil', abonnements = [];
+let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'accueil', abonnements = [];
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
 let album = [], jeuxRep = [], partage = {}, photoPour = null, msgOption = '';
+let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '';
 let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
 // Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.
@@ -40,9 +42,9 @@ async function liste() {
   vue.innerHTML = `<div class="app-haut"><div><span class="etq">Bonjour</span><h1 class="serif">Vos événements</h1></div></div>
     ${miens.docs.map(d => carte(d.id, d.data())).join('')}${autres.docs.map(d => carte(d.id, d.data(), d.data().role)).join('')}
     ${miens.empty && autres.empty ? '<p class="app-note">Aucun événement pour l\'instant.</p>' : ''}
-    <form class="app-carte" id="f-evt"><h2>Créer un événement</h2>
+    <form class="app-carte" id="f-evt"><h2>Créer un événement</h2>${Q.get('nouveau') ? '<p class="app-note" style="margin-bottom:12px">Créez votre événement : vous arriverez ensuite au paiement, avec la formule et les options choisies.</p>' : ''}
       <div class="app-grille">
-        <label>Type<select name="type">${Object.entries(TYPES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+        <label>Type<select name="type">${Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${Q.get('nouveau') === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
         <label>Prénoms ou titre<input name="titre" required maxlength="120" placeholder="Awa et Thomas"></label>
         <label>Date et heure<input name="date" type="datetime-local" required></label>
         <label>Lieu<input name="lieu" required placeholder="Domaine des Tilleuls"></label>
@@ -51,7 +53,7 @@ async function liste() {
     ev.preventDefault(); const f = Object.fromEntries(new FormData(ev.target));
     const r = await addDoc(collection(db, 'events'), { owner: user.uid, type: f.type, titre: f.titre, date: f.date, lieu: f.lieu, modele: '',
       formule: 'essai', options: [], ceremonies: [{ cle: 'principale', nom: f.type === 'mariage' ? 'Cérémonie' : 'La fête', date: f.date, lieu: f.lieu }], creeLe: serverTimestamp() });
-    location.href = `?e=${r.id}`;
+    location.href = `?e=${r.id}` + (Q.get('nouveau') ? `&onglet=paiement&formule=${encodeURIComponent(Q.get('formule') || '')}&options=${encodeURIComponent(Q.get('options') || '')}` : '');
   });
 }
 
@@ -91,6 +93,8 @@ function ouvrir(id) {
       suivre('partage', l => partage = Object.fromEntries(l.map(d => [d.id, d])));
       suivre('outils', l => outils = Object.fromEntries(l.map(d => [d.id, d])));
       if (proprio) suivre('acces', l => acces = recents(l));
+      suivre('paiements', l => paiements = recents(l));
+      fetch('tarifs.json?v=1').then(r => r.json()).then(t => { tarifs = t; rendre(); }).catch(() => {});
     }
     rendre();
   }, () => { vue.innerHTML = '<p class="app-note">Événement introuvable, ou votre accès a été retiré.</p>'; }));
@@ -108,7 +112,7 @@ function rendre() {
   const onglets = { accueil: 'Vue d\'ensemble', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
     budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
     ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
-    equipe: 'Équipe', reglages: 'Réglages et exports' };
+    paiement: evt.formule === 'essai' ? 'Choisir ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
@@ -120,6 +124,7 @@ function rendre() {
       ${C.map(c => `<div class="app-stat"><b>${oui(c)}</b><span>${esc(c.nom)} : présents</span></div>`).join('')}
       ${a('qr') ? `<div class="app-stat"><b>${entrees}</b><span>Entrées validées</span></div>` : ''}
     </div>` : ''}
+    ${Q.get('paiement') === 'ok' ? `<div class="app-carte bandeau-paiement ok">${evt.formule === 'essai' ? 'Paiement reçu, merci. Vos options s\'activent dans quelques secondes ; la facture arrive par courriel.' : `Paiement reçu, merci : formule ${esc(evt.formule)} active. La facture arrive par courriel.`}</div>` : Q.get('paiement') === 'annule' ? '<div class="app-carte bandeau-paiement">Paiement annulé : rien n\'a été débité.</div>' : ''}
     <div class="app-onglets">${Object.entries(onglets).map(([k, v]) => `<button data-onglet="${k}" class="${k === onglet ? 'actif' : ''}">${v}</button>`).join('')}</div>
     <div id="contenu">${VUES[onglet]()}</div>`;
   appliquerRecherche(); scrollTo(0, y);
@@ -165,7 +170,7 @@ const VUES = {
       ${conseils.length ? `<div class="app-carte"><h2>Maintenant</h2>${conseils.map(([t, o, b]) => `<div class="ligne-conseil"><span>${esc(t)}</span><button class="btn petit clair" data-onglet="${o}">${esc(b)}</button></div>`).join('')}</div>` : ''}
       <div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 6).map(ligneTache).join('') || '<p class="app-note">Rien à faire pour l\'instant.</p>'}</div>
       <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${Object.entries(NOMS_OPTIONS).map(([k, v]) => `<span class="puce-o ${a(k) ? '' : 'off'}">${esc(v)}</span>`).join('')}</div>
-        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Formule d'essai : les outils d'organisation sont ouverts ; les options pour les invités s'activent après le paiement. <a class="lien-or" href="../creer/?evt=${evt.type}">Choisir ma formule</a></p>` : ''}</div>`;
+        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Formule d'essai : les outils d'organisation sont ouverts ; les options pour les invités s'activent après le paiement. <a class="lien-or" href="#" data-onglet="paiement">Choisir ma formule</a></p>` : ''}</div>`;
   },
 
   // ── Invités : ajout, import, liste ─────────────────────────────────────────
@@ -366,6 +371,27 @@ const VUES = {
         </tbody></table></div>`;
   },
 
+  // ── Formule et paiement : Stripe Checkout, le montant est recalculé par le serveur ──
+  paiement() {
+    if (!tarifs) return '<div class="app-carte"><p class="app-note">Chargement des tarifs…</p></div>';
+    const g = evt.type === 'mariage' ? tarifs.mariage : tarifs.evenement, actuelle = evt.formule !== 'essai' ? evt.formule : null;
+    const cible = choixFormule && g.formules[choixFormule] && (!actuelle || g.formules[choixFormule].prix >= g.formules[actuelle].prix) ? choixFormule : actuelle || 'signature';
+    const acquises = new Set([...(evt.options || []), ...g.formules[cible].inclus]);
+    const nouvelles = [...choixOptions].filter(o => g.options[o] && !acquises.has(o));
+    const total = (actuelle ? g.formules[cible].prix - g.formules[actuelle].prix : g.formules[cible].prix) + nouvelles.reduce((s, o) => s + g.options[o].prix, 0);
+    const payes = paiements.filter(p => p.etat === 'paye');
+    return `<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Choisissez votre formule'}</h2>
+        <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Les outils d\'organisation restent ouverts pendant l\'essai ; le paiement active la formule et les options pour vos invités.'}</p>
+        <div class="choix-formules">${Object.entries(g.formules).map(([k, f]) => { const bloquee = actuelle && f.prix < g.formules[actuelle].prix; return `<label class="formule-paie ${k === cible ? 'choisie' : ''} ${bloquee ? 'bloquee' : ''}"><input type="radio" name="formule" value="${k}" data-choix-formule="${k}" ${k === cible ? 'checked' : ''} ${bloquee ? 'disabled' : ''}><b>${esc(f.nom)}</b><span>${euros(f.prix)}</span><small>${k === actuelle ? 'Votre formule' : actuelle && !bloquee ? `+ ${euros(f.prix - g.formules[actuelle].prix)}` : `${f.inclus.length} option${f.inclus.length > 1 ? 's' : ''} incluse${f.inclus.length > 1 ? 's' : ''}`}</small></label>`; }).join('')}</div></div>
+      <div class="app-carte"><h2>Options à l'unité</h2><div class="options-paie">${Object.entries(g.options).map(([k, o]) => { const deja = acquises.has(k); return `<label class="coche ${deja ? 'deja' : ''}"><input type="checkbox" data-choix-option="${k}" ${deja || choixOptions.has(k) ? 'checked' : ''} ${deja ? 'disabled' : ''}><span>${esc(o.nom)}</span><em>${deja ? ((evt.options || []).includes(k) ? 'Active' : 'Incluse') : '+ ' + euros(o.prix)}</em></label>`; }).join('')}</div></div>
+      <div class="app-carte total-paie"><div class="ligne-conseil"><span>Total à payer</span><b>${euros(Math.max(0, total))}</b></div>
+        ${proprio ? `<label class="coche"><input type="checkbox" id="c-cgv-paie"> J'accepte les <a href="../cgv/index.html" target="_blank" rel="noopener">conditions générales de vente</a>.</label>
+        <label class="coche"><input type="checkbox" id="c-debut-paie"> Je demande que la réalisation commence tout de suite ; je sais que je perdrai mon droit de rétractation une fois l'invitation validée par moi et mise en ligne.</label>
+        <button class="btn" data-payer="1" ${total > 0 ? '' : 'disabled'} style="margin-top:12px">Payer ${euros(Math.max(0, total))} par carte</button><p class="app-note" style="margin-top:8px">Paiement sécurisé par Stripe : Maison Vivat ne voit jamais votre carte. Facture envoyée par courriel.</p>` : '<p class="app-note">Seul le propriétaire de l\'événement peut payer.</p>'}
+        <p class="app-erreur" id="m-paiement">${esc(msgPaiement)}</p></div>
+      ${payes.length ? `<div class="app-carte"><h2>Vos paiements</h2>${payes.map(p => `<div class="ligne-conseil"><span>${esc(p.payeLe?.toDate ? p.payeLe.toDate().toLocaleDateString('fr-FR') : '')} · ${esc((p.lignes || []).map(l => l.nom).join(', '))}</span><b>${euros((p.montantPaye ?? p.total) / 100)}</b></div>`).join('')}</div>` : ''}`;
+  },
+
   // ── Équipe : co-organisateur, wedding planner, famille qui aide ────────────
   equipe() {
     const membres = equipe.map(m => `<div class="ligne-conseil"><span><b>${esc(m.nom)}</b> · ${esc(ROLES[m.role])}${m.email ? ` · ${esc(m.email)}` : ''}</span>${proprio || m.id === user.uid ? `<button class="btn petit clair" data-retirer-membre="${m.id}">${m.id === user.uid ? 'Quitter' : 'Retirer l\'accès'}</button>` : ''}</div>`).join('');
@@ -525,6 +551,22 @@ document.addEventListener('click', async ev => {
   if (d.derouleType) return majDeroule(DEROULE_TYPE.map(([heure, titre, qui, pub]) => ({ heure, titre, lieu: '', qui, public: !!pub })));
   if (d.supprDeroule) { const L = [...(outils.deroule?.items || [])]; L.splice(+d.supprDeroule, 1); return majDeroule(L); }
   if (d.export) return exporter(d.export);
+  if (d.payer) {
+    if (!$('#c-cgv-paie')?.checked) { msgPaiement = 'Cochez l\'acceptation des conditions générales de vente.'; return rendre(); }
+    const g = evt.type === 'mariage' ? tarifs.mariage : tarifs.evenement, formule = document.querySelector('[data-choix-formule]:checked')?.value;
+    t.disabled = true; t.textContent = 'Ouverture du paiement sécurisé…'; msgPaiement = '';
+    try {
+      const r = await httpsCallable(fonctions, 'creerPaiement')({ eventId: E, formule, ajouts: [...choixOptions].filter(o => g.options[o]), debutImmediat: !!$('#c-debut-paie')?.checked });
+      location.href = r.data.url;
+    } catch (e) {
+      // Les refus du serveur (formule, options, propriétaire) sont déjà rédigés en français ; le reste reçoit un message clair.
+      console.error('Paiement', e);
+      msgPaiement = ['functions/failed-precondition', 'functions/permission-denied', 'functions/unauthenticated', 'functions/not-found'].includes(e.code) ? e.message
+        : 'Le paiement n\'a pas pu s\'ouvrir. Réessayez dans un instant ; si cela continue, écrivez à contact@maisonvivat.com.';
+      t.disabled = false; rendre();
+    }
+    return;
+  }
   if (d.jeux) {
     const brouillon = outils.quiz || {}, Q = lireQuestions(brouillon.quiz ?? MODELE_QUIZ), P = lireQuestions(brouillon.pronos ?? MODELE_PRONOS).map(({ q, choix }) => ({ q, choix }));
     const publiques = Q.map(({ q, choix }) => ({ q, choix }));
@@ -571,6 +613,8 @@ document.addEventListener('click', async ev => {
 document.addEventListener('change', async ev => {
   const t = ev.target; if (!E) return;
   if (t.dataset.maj) { const [col, id, champ] = t.dataset.maj.split('/'), v = t.type === 'number' ? (t.value === '' ? 0 : +t.value) : t.value; return setDoc(doc(db, `events/${E}/${col}/${id}`), { [champ]: v }, { merge: true }); }
+  if (t.dataset.choixFormule) { choixFormule = t.dataset.choixFormule; msgPaiement = ''; return rendre(); }
+  if (t.dataset.choixOption) { t.checked ? choixOptions.add(t.dataset.choixOption) : choixOptions.delete(t.dataset.choixOption); msgPaiement = ''; return rendre(); }
   if (t.dataset.paye) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.paye}`), { 'tenue.paye': t.checked });
   if (t.dataset.motMerci) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.motMerci}`), { 'merci.mot': t.value.slice(0, 300) });
   if (t.id === 'i-album-photographe' && t.files.length) return deposerAlbum([...t.files]);

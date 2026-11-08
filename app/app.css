@@ -125,3 +125,13 @@
 .choix-photos img{width:70px;height:70px;object-fit:cover;cursor:pointer;flex:none;border:2px solid transparent}
 .choix-photos img:hover{border-color:var(--accent)}
 .mot video{width:100%;max-width:420px;background:#000}.mot audio{width:100%;max-width:420px}
+.choix-formules{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.formule-paie{display:grid!important;gap:2px;border:1px solid var(--filet);background:#fff;padding:16px;cursor:pointer;text-transform:none!important;letter-spacing:0!important;color:var(--encre)!important}
+.formule-paie input{position:absolute;opacity:0;pointer-events:none}
+.formule-paie b{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px}.formule-paie span{font-size:18px}.formule-paie small{color:var(--doux)}
+.formule-paie.choisie{outline:2px solid var(--accent);outline-offset:-1px}.formule-paie.bloquee{opacity:.4;cursor:default}
+.options-paie{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 18px}
+.options-paie .coche{justify-content:space-between}.options-paie .coche span{flex:1}.options-paie em{font-style:normal;color:var(--doux);font-size:13px}
+.options-paie .deja em{color:#2E7D5B}
+.total-paie .ligne-conseil b{font-family:'Cormorant Garamond',serif;font-size:30px}
+.bandeau-paiement{border-left:3px solid var(--doux)}.bandeau-paiement.ok{border-left-color:#2E7D5B}

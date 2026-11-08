@@ -2,7 +2,7 @@
 // ajoute, retire, masque et réordonne les parties ; l'aperçu (fp.html?apercu=1) se met à jour en direct.
 // Langues : deux langues dans toute formule, trois avec l'option « Langue supplémentaire » ; chaque texte se saisit
 // dans la langue choisie en haut de l'éditeur (le français reste l'original).
-import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=3';
+import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=4';
 import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, OUVERTURES, MISES_EN_PAGE, theme } from './themes.js?v=2';
 import { SECTIONS, designParDefaut } from './moteur.js?v=6';
 import { LANGUES } from './langues.js?v=1';

@@ -5,6 +5,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/fireba
 import { getAuth, connectAuthEmulator, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { getFirestore, connectFirestoreEmulator, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { getStorage, connectStorageEmulator } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
+import { getFunctions, connectFunctionsEmulator } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 
 // Projet Firebase de production « maison-vivat » (identifiants publics d'application web, protégés par les règles).
 const CONFIG_PRODUCTION = {
@@ -18,17 +19,18 @@ const CONFIG_PRODUCTION = {
 export const LOCAL = ['127.0.0.1', 'localhost'].includes(location.hostname);
 export const PRET = LOCAL || !!CONFIG_PRODUCTION;
 
-let app, auth, db, storage;
+let app, auth, db, storage, fonctions;
 if (PRET) {
   app = initializeApp(LOCAL ? { apiKey: 'demo-key', projectId: 'demo-maison-lakou', storageBucket: 'demo-maison-lakou.appspot.com' } : CONFIG_PRODUCTION);
-  auth = getAuth(app); db = getFirestore(app); storage = getStorage(app);
+  auth = getAuth(app); db = getFirestore(app); storage = getStorage(app); fonctions = getFunctions(app, 'europe-west9');
   if (LOCAL) {
     connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
     connectFirestoreEmulator(db, '127.0.0.1', 8080);
     connectStorageEmulator(storage, '127.0.0.1', 9199);
+    connectFunctionsEmulator(fonctions, '127.0.0.1', 5001);
   }
 }
-export { auth, db, storage };
+export { auth, db, storage, fonctions };
 
 export const $ = s => document.querySelector(s);
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
