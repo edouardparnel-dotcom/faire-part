@@ -341,3 +341,16 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-tra
 .suite-couv:has(.volant-h){position:relative;padding-top:min(34vw,170px);padding-bottom:min(34vw,170px)}
 .suite-couv:has(.volant-h)>*:not(.volant-h):not(.volant-b){position:relative;z-index:1}
 .suite-titre:has(.volant-h){position:relative;padding-top:min(34vw,160px)}
+
+/* ───────── FACE-À-FACE : dragon et phénix brodés se font face sur les côtés, un nœud suspendu au centre ───────── */
+.face-g,.face-d{position:absolute;top:7%;height:86%;width:auto;max-width:27%;object-fit:contain;z-index:0;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(120,80,10,.22))}
+.face-g{left:1%;object-position:left center}
+.face-d{right:1%;object-position:right center}
+.suspendu{position:absolute;top:-6px;left:calc(50% - 32px);width:64px;height:auto;max-width:none;z-index:2;pointer-events:none;transform-origin:50% 0;filter:drop-shadow(0 8px 10px rgba(90,10,10,.25))}
+.suite-couv:has(.face-g){position:relative;justify-content:center;padding:min(40vw,190px) min(27%,128px) 40px}
+.suite-couv:has(.face-g) .date{font-size:clamp(17px,4.6vw,22px);letter-spacing:.08em;white-space:nowrap}
+.suite-couv:has(.face-g)>*:not(.face-g):not(.face-d):not(.suspendu){position:relative;z-index:1}
+.suite-couv:has(.face-g) .chapeau{margin-top:0;padding-top:0}
+.suite-couv:has(.face-g) .noms{font-size:clamp(30px,8.4vw,44px)}
+.suite-titre:has(.face-g){position:relative;padding-top:150px}
+.suite-titre .face-g,.suite-titre .face-d{height:96%;top:2%;opacity:.5}

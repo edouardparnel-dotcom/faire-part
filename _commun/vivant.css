@@ -60,3 +60,4 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.sui
 .bord-g{transform-origin:0 100%;--amp:.6deg;animation:souffle 9s ease-in-out infinite}
 .papier .c3{--amp:.35deg;animation:souffle 10s ease-in-out infinite}
 .volant-h{--amp:.5deg;animation:souffle 6s ease-in-out infinite}
+.suspendu{--amp:2.5deg;animation:souffle 5s ease-in-out infinite}
