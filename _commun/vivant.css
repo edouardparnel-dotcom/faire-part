@@ -57,3 +57,4 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .deco-ar
 .deco-balcon{transform-origin:50% 100%;--amp:.25deg;animation:souffle 10s ease-in-out infinite}
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.suite-couv,.inter-couple,.inter-table,.inter-matiere){overflow:clip}
 @media (prefers-reduced-motion:reduce){.deco-haut,.deco-arche,.coin-hg,.coin-bd,.cartouche,.deco-balcon{animation:none}}
+.bord-g{transform-origin:0 100%;--amp:.6deg;animation:souffle 9s ease-in-out infinite}
