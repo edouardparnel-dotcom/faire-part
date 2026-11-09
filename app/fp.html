@@ -97,7 +97,8 @@ if (q.get('demo')) {
     else {
       // Gratuit jusqu'à la publication : tant que l'événement est en essai, seuls les organisateurs voient la page.
       await auth.authStateReady();
-      const organisateur = auth.currentUser && !auth.currentUser.isAnonymous && auth.currentUser.uid === evt.owner;
+      const u0 = auth.currentUser, organisateur = !!u0 && !u0.isAnonymous
+        && (u0.uid === evt.owner || await getDoc(doc(db, `events/${E}/equipe/${u0.uid}`)).then(x => x.exists()).catch(() => false));
       if (evt.formule === 'essai' && !organisateur && !q.has('apercu')) {
         racine.innerHTML = '<div style="min-height:100svh;display:grid;place-items:center;text-align:center;padding:30px;font-family:Georgia,serif;color:#3b3226;background:#f7f2e8"><div><p style="letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:#8c6e36">Bientôt</p><h1 style="font-weight:400;font-size:34px;margin:10px 0">Cette invitation se prépare</h1><p style="max-width:30ch;margin:auto;color:#6e665b">Les hôtes mettent la dernière main à leur invitation. Revenez très vite.</p></div></div>';
       } else if (evt.codeAcces && !T && !organisateur && !q.has('apercu') && localStorage.getItem('mv-code-' + E) !== evt.codeAcces) {
