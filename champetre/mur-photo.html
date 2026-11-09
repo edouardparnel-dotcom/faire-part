@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clara &amp; Julien — Mur photo (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Homemade+Apple&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<style>
+:root{--fond:#F2EEE4;--carte:#FCFAF5;--encre:#2F3326;--doux:#6B6E5E;--or1:#8A7AA8;--or2:#C9BEDD;--or3:#5E6B3E;--accent:#5E6B3E;
+  --f-titre:'Playfair Display',serif;--f-script:'Homemade Apple',cursive;--f-texte:'Karla',system-ui,sans-serif;--decor:linear-gradient(rgba(252,250,245,.25),rgba(252,250,245,.25)),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#2F3326;}
+
+.noms i{font-size:.6em}
+</style>
+</head>
+<body>
+<nav class="suite-nav" aria-label="La collection Champêtre"><a class="suite-marque" href="index.html">✦ Champêtre</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html" aria-current=page>Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><img class="deco-haut" src="haut.webp" alt="" width="1400" height="630"><p class="chapeau">Clara &amp; Julien · en direct</p><h1>Le mur photo</h1>
+  <p class="intro">Vos invités ajoutent leurs photos depuis leur téléphone, sans application. Elles s'affichent ici, et sur grand écran pendant la fête.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : l’appareil photo s’ouvrirait ici'">Ajouter mes photos</a></header>
+<main class="suite-main large"><div class="mur"><figure class="photo apparait" style="--r:1deg"><img src="photo.jpg" alt="" loading="lazy"><figcaption>La famille au complet</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="decor-detail.jpg" alt="" loading="lazy"><figcaption>Premier regard</figcaption></figure><figure class="photo apparait" style="--r:3deg"><img src="decor-ensemble.jpg" alt="" loading="lazy"><figcaption>Les témoins</figcaption></figure><figure class="photo apparait" style="--r:-1deg"><img src="../boheme/photo.jpg" alt="" loading="lazy"><figcaption>Sur la piste</figcaption></figure><figure class="photo apparait" style="--r:2deg"><img src="../classique/decor-detail.jpg" alt="" loading="lazy"><figcaption>Le dîner</figcaption></figure><figure class="photo apparait" style="--r:-3deg"><img src="../boheme/decor-detail.jpg" alt="" loading="lazy"><figcaption>Les cousins</figcaption></figure><figure class="photo apparait" style="--r:1deg"><img src="../classique/photo.jpg" alt="" loading="lazy"><figcaption>Le gâteau</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="../boheme/decor-ensemble.jpg" alt="" loading="lazy"><figcaption>Fin de soirée</figcaption></figure></div></main>
+<footer class="suite-pied"><p class="script">Clara &amp; Julien</p><p>Merci de partager notre joie</p>
+<small>Démonstration de la collection Champêtre · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-06-12T15:30:00+02:00'; document.body.dataset.evenement = 'Mariage Clara & Julien'; document.body.dataset.ville = 'Bourgogne';
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>
