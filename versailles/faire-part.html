@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=1">
-<script src="../_commun/vivant.js?v=2" defer></script>
+<link rel="stylesheet" href="../_commun/trames.css?v=2">
+<script src="../_commun/vivant.js?v=3" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
 :root{--fond:#EEF3F8;--carte:#FCFDFE;--encre:#23324A;--doux:#5F6E84;--or1:#C2A15A;--or2:#E8D49E;--or3:#937537;--accent:#3E5A86;
@@ -44,21 +44,20 @@ body.ferme{overflow:hidden}
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-arche">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="682">
-  <div class="arche"><img src="lieu.webp" alt=""></div>
+  <div class="arche"><img src="couple.jpg" alt=""></div>
   <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Joséphine<i class="or">&amp;</i>Arthur</h1><div class="filet">✦</div><p class="date">03 · 07 · 2027</p>
   <p class="lieu">Château de Montclair<br>Yvelines</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p><img class="deco-bas" src="bas.webp" alt="" width="1400" height="548">
 </header>
 
 <main class="suite-main">
+  <blockquote class="inter inter-citation apparait fp-seul"><p>Ils se sont rencontrés lors d&#x27;un concert de musique baroque, dans une chapelle royale, assis côte à côte par hasard.</p><cite class="script">Joséphine &amp; Arthur</cite></blockquote>
   <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 3 juillet 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Vin d’honneur aux fontaines</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>18 h 00</b><span>Macarons et rafraîchissements</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Concert de harpe</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Dîner dans la galerie</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Pièce montée</span></div></li></ol></section>
-  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Château de Montclair<br>Yvelines</p>
-    <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Yvelines" target="_blank" rel="noopener">Voir le plan</a></section>
+  <div class="inter inter-galerie apparait fp-seul"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Château de Montclair<br>Yvelines</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Yvelines" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait fp-seul"><h2>Tenue</h2><p class="titre-tenue">Tenue de gala</p><p>Robe longue et habit pour la soirée. Le bleu poudré, l&#x27;ivoire et l&#x27;or sont les couleurs de la journée.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
-  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div>
-    <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
-  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er juin 2027.</p>
-    <a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a>
-    <p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="ouverture.webp" alt="" loading="lazy"><figcaption>Tenue de gala</figcaption></figure>
+  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er juin 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
 </main>
 <footer class="suite-pied"><p class="script">Joséphine &amp; Arthur</p><p>Merci d’honorer ce jour de votre présence</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>

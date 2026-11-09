@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=1">
-<script src="../_commun/vivant.js?v=2" defer></script>
+<link rel="stylesheet" href="../_commun/trames.css?v=2">
+<script src="../_commun/vivant.js?v=3" defer></script>
 <style>
 :root{--fond:#EFE4D2;--carte:#FBF6EC;--encre:#2D1D12;--doux:#6E5A48;--or1:#A86B32;--or2:#D9A86A;--or3:#6E4220;--accent:#7A3E1A;
   --f-titre:'Fraunces',serif;--f-script:'Fraunces',serif;--f-texte:'Karla',system-ui,sans-serif;--decor:linear-gradient(rgba(40,24,12,.35),rgba(40,24,12,.35)),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#FBF1E2;}
@@ -24,30 +24,21 @@
 <header class="suite-couv carte couv-carnet">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="583">
   <div class="feuille"><p class="chapeau">Bienvenue sur notre site de mariage</p><h1 class="noms">Fatoumata<i class="or">&amp;</i>Moussa</h1><p class="date">13 · 11 · 2027</p>
-  <figure class="polaroid"><img src="lieu.webp" alt=""><figcaption>Domaine du Niger</figcaption></figure><p class="lieu">Bamako</p></div><img class="deco-bas" src="bas.webp" alt="" width="1400" height="492">
+  <figure class="polaroid"><img src="couple.jpg" alt=""><figcaption>Fatoumata &amp; Moussa</figcaption></figure><p class="lieu">Bamako</p></div><img class="deco-bas" src="bas.webp" alt="" width="1400" height="492">
 </header>
 
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#reponse">Réponse</a></nav>
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés au festival sur le Niger, à Ségou, entre deux concerts de kora. Après la demande et la cola offerte aux familles, Bamako les réunit pour célébrer leur union.</p></section>
+  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 13 novembre 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>14 h 00</b><span>Accueil et cola des familles</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Griots et bénédictions</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>18 h 00</b><span>Tô, riz gras et grand repas</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Kora et danses</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>22 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
-  <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Domaine du Niger<br>Bamako</p>
-    <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Bamako" target="_blank" rel="noopener">Voir le plan</a></section>
-  <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel du Fleuve</b><span>À 10 minutes · tarif famille sur demande</span></div><div class="hotel"><b>Résidence ACI 2000</b><span>Navette vers le domaine à 13 h et à minuit</span></div></div></section>
+  <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Domaine du Niger<br>Bamako</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Bamako" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Bogolan et bazin</p><p>Bogolan, bazin et tons de terre. Les familles porteront le bogolan aux motifs choisis par les mariés.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
-  <section class="bloc apparait"><h2>Le compte à rebours</h2>
-    <div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div>
-    <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
-  <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p>
-    <a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
-  <section class="bloc apparait" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 15 octobre 2027.</p>
-    <form class="reponse" onsubmit="event.preventDefault();document.getElementById('demo').style.display='block'">
-      <label>Prénom et nom<input required placeholder="Votre nom"></label>
-      <div class="choix"><label><input type="radio" name="v" checked> Je serai présent·e</label><label><input type="radio" name="v"> Je ne pourrai pas venir</label></div>
-      <label>Un mot pour les mariés<textarea rows="3" placeholder="Facultatif"></textarea></label>
-      <button class="bouton plein">Envoyer ma réponse</button>
-      <p id="demo" style="display:none">Démonstration : votre réponse arrive directement dans l'espace des mariés.</p>
-    </form></section>
+  <blockquote class="inter inter-citation apparait"><p>Ils se sont rencontrés au festival sur le Niger, à Ségou, entre deux concerts de kora.</p><cite class="script">Fatoumata &amp; Moussa</cite></blockquote>
+  <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel du Fleuve</b><span>À 10 minutes · tarif famille sur demande</span></div><div class="hotel"><b>Résidence ACI 2000</b><span>Navette vers le domaine à 13 h et à minuit</span></div></div></section>
+  <section class="bloc apparait"><h2>Le compte à rebours</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p><a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
+  <section class="bloc apparait" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 15 octobre 2027.</p><form class="reponse" onsubmit="event.preventDefault();document.getElementById('demo').style.display='block'"><label>Prénom et nom<input required placeholder="Votre nom"></label><div class="choix"><label><input type="radio" name="v" checked> Je serai présent·e</label><label><input type="radio" name="v"> Je ne pourrai pas venir</label></div><label>Un mot pour les mariés<textarea rows="3" placeholder="Facultatif"></textarea></label><button class="bouton plein">Envoyer ma réponse</button><p id="demo" style="display:none">Démonstration : votre réponse arrive directement dans l'espace des mariés.</p></form></section>
 </main>
 <footer class="suite-pied"><p class="script">Fatoumata &amp; Moussa</p><p>I ni ce : merci d’être avec nous</p>
 <small>Démonstration de la collection Bogolan · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>

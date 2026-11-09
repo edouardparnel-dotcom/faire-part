@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,600;1,500&family=Parisienne&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=1">
-<script src="../_commun/vivant.js?v=2" defer></script>
+<link rel="stylesheet" href="../_commun/trames.css?v=2">
+<script src="../_commun/vivant.js?v=3" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
 :root{--fond:#F6E9EA;--carte:#FFFBFA;--encre:#3B2A3A;--doux:#7D6A78;--or1:#C9A15A;--or2:#EBD3A0;--or3:#9C7A3A;--accent:#B76E8A;
@@ -41,21 +41,20 @@ body.ferme{overflow:hidden}
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-arche">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="561">
-  <div class="arche"><img src="lieu.webp" alt=""></div>
+  <div class="arche"><img src="couple.jpg" alt=""></div>
   <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Grâce<i class="or">&amp;</i>Dieudonné</h1><div class="filet">✦</div><p class="date">18 · 09 · 2027</p>
   <p class="lieu">Salle Mont-Fleury<br>Gombe, Kinshasa</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p><img class="deco-bas" src="bas.webp" alt="" width="1400" height="577">
 </header>
 
 <main class="suite-main">
+  <blockquote class="inter inter-citation apparait fp-seul"><p>Ils se sont rencontrés à un défilé de sapeurs, boulevard du 30 Juin : lui en costume rose poudré, elle qui a ri de son chapeau.</p><cite class="script">Grâce &amp; Dieudonné</cite></blockquote>
   <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 18 septembre 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Accueil et défilé des familles</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Champagne et cocktail</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 00</b><span>Dîner : poisson braisé et liboke</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>21 h 00</b><span>Rumba et ndombolo</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 30</b><span>Gâteau des mariés</span></div></li></ol></section>
-  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Salle Mont-Fleury<br>Gombe, Kinshasa</p>
-    <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Gombe, Kinshasa" target="_blank" rel="noopener">Voir le plan</a></section>
+  <div class="inter inter-galerie apparait fp-seul"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Salle Mont-Fleury<br>Gombe, Kinshasa</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Gombe, Kinshasa" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait fp-seul"><h2>Tenue</h2><p class="titre-tenue">Sape pastel</p><p>Costumes et robes aux tons pastel : rose poudré, menthe, lilas. Nœuds papillon, chapeaux et cannes vivement encouragés.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
-  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div>
-    <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
-  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 15 août 2027.</p>
-    <a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a>
-    <p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="ouverture.webp" alt="" loading="lazy"><figcaption>Sape pastel</figcaption></figure>
+  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 15 août 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
 </main>
 <footer class="suite-pied"><p class="script">Grâce &amp; Dieudonné</p><p>Matondo mingi : merci d’être là</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>

@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Italiana&family=Pinyon+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=1">
-<script src="../_commun/vivant.js?v=2" defer></script>
+<link rel="stylesheet" href="../_commun/trames.css?v=2">
+<script src="../_commun/vivant.js?v=3" defer></script>
 <style>
 :root{--fond:#F3ECDF;--carte:#FBF7EF;--encre:#3A332B;--doux:#7A6F60;--or1:#B8924F;--or2:#E9D3A0;--or3:#8C6A33;--accent:#3A332B;
   --f-titre:'Italiana',serif;--f-script:'Pinyon Script',cursive;--f-texte:'Cormorant Garamond',Georgia,serif;--decor:linear-gradient(rgba(246,240,229,.5),rgba(246,240,229,.5)),url('papier.jpg') center/cover fixed;--couv:linear-gradient(rgba(250,246,238,.55),rgba(250,246,238,.55)),url('papier.jpg') center/cover;--sur-fond:#3A332B;}
@@ -36,24 +36,15 @@
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#reponse">Réponse</a></nav>
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Une première valse au bal d&#x27;une amie, une conversation qui ne s&#x27;est jamais vraiment arrêtée, et un oui murmuré sous le grand lustre de l&#x27;hôtel où tout a commencé.</p></section>
+  <figure class="inter inter-couple apparait"><img src="couple.jpg" alt="Éléonore et Gabriel" loading="lazy"><figcaption class="script">Éléonore &amp; Gabriel</figcaption></figure>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 12 juin 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Cérémonie dans les salons</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Cocktail sous le lustre</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Dîner de gala</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>22 h 30</b><span>Ouverture du bal</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 30</b><span>Pièce montée</span></div></li></ol></section>
-  <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Hôtel du Grand Salon<br>Paris</p>
-    <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Paris" target="_blank" rel="noopener">Voir le plan</a></section>
+  <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Hôtel du Grand Salon<br>Paris</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Paris" target="_blank" rel="noopener">Voir le plan</a></section>
+  <figure class="inter inter-matiere apparait"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="ouverture.webp" alt="" loading="lazy"><figcaption>Tenue de soirée</figcaption></figure>
   <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel Le Vendôme</b><span>À 5 minutes à pied · tarif invité sur demande</span></div><div class="hotel"><b>Maison Rivoli</b><span>À 10 minutes · navette prévue à 2 h</span></div></div></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Smoking pour ces messieurs, robe longue pour ces dames. Ivoire, champagne et sauge sont les bienvenus.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
-  <section class="bloc apparait"><h2>Le compte à rebours</h2>
-    <div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div>
-    <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
-  <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p>
-    <a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
-  <section class="bloc apparait" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er mai 2027.</p>
-    <form class="reponse" onsubmit="event.preventDefault();document.getElementById('demo').style.display='block'">
-      <label>Prénom et nom<input required placeholder="Votre nom"></label>
-      <div class="choix"><label><input type="radio" name="v" checked> Je serai présent·e</label><label><input type="radio" name="v"> Je ne pourrai pas venir</label></div>
-      <label>Un mot pour les mariés<textarea rows="3" placeholder="Facultatif"></textarea></label>
-      <button class="bouton plein">Envoyer ma réponse</button>
-      <p id="demo" style="display:none">Démonstration : votre réponse arrive directement dans l'espace des mariés.</p>
-    </form></section>
+  <section class="bloc apparait"><h2>Le compte à rebours</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p><a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
+  <section class="bloc apparait" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er mai 2027.</p><form class="reponse" onsubmit="event.preventDefault();document.getElementById('demo').style.display='block'"><label>Prénom et nom<input required placeholder="Votre nom"></label><div class="choix"><label><input type="radio" name="v" checked> Je serai présent·e</label><label><input type="radio" name="v"> Je ne pourrai pas venir</label></div><label>Un mot pour les mariés<textarea rows="3" placeholder="Facultatif"></textarea></label><button class="bouton plein">Envoyer ma réponse</button><p id="demo" style="display:none">Démonstration : votre réponse arrive directement dans l'espace des mariés.</p></form></section>
 </main>
 <footer class="suite-pied"><p class="script">Éléonore &amp; Gabriel</p><p>Nous avons hâte de célébrer ce jour avec vous</p>
 <small>Démonstration de la collection Grand Hôtel · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>

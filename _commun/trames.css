@@ -117,3 +117,93 @@
   [data-trame=edito] .couv-edito .noms span:last-child{padding-left:70px}
   [data-trame=plein] .couv-plein{min-height:min(calc(100vh - 64px),940px)}
 }
+
+/* ═════════ Intermèdes entre les blocs (photo du couple, matière, citation, galerie, table) ═════════ */
+.inter{position:relative;margin:46px -14px}
+.inter img{display:block}
+.inter-couple img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.inter-couple figcaption{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:#fff;font-size:44px;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,.55)}
+.inter-matiere{height:min(64vh,520px);overflow:hidden;display:grid;place-items:center}
+.matiere-fond{position:absolute;inset:-12%;background-size:cover;background-position:center;scale:1.5;filter:saturate(1.08) contrast(1.05)}
+.matiere-detail{position:relative;width:min(72%,340px);max-height:84%;object-fit:contain;rotate:-5deg;filter:drop-shadow(0 34px 40px rgba(0,0,0,.45))}
+.inter-matiere figcaption{position:absolute;left:18px;bottom:16px;padding:7px 12px;font-size:11px;letter-spacing:.38em;text-transform:uppercase;background:var(--carte);color:var(--encre)}
+.inter-citation{padding:34px 26px;text-align:center;color:var(--sur-fond)}
+.inter-citation p{font-family:var(--f-titre);font-size:clamp(23px,6.4vw,32px);line-height:1.28}
+.inter-citation p::before{content:"“";display:block;font-size:2.4em;line-height:.6;color:var(--or1)}
+.inter-citation cite{display:block;margin-top:14px;font-style:normal;font-size:30px;color:var(--or1)}
+.inter-galerie{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:440px;margin-inline:0}
+.inter-galerie img{width:100%;height:100%;object-fit:cover}
+.inter-galerie img:first-child{grid-row:span 2}
+.inter-galerie img:last-child{object-fit:contain;background:var(--carte);padding:10px}
+.inter-table img{width:124%;max-width:none;margin-left:-12%}
+
+/* Centrée : portrait en médaillon ovale */
+[data-trame=centree] .inter-couple img{width:76%;margin:auto;border-radius:50%/42%;border:6px solid var(--carte);outline:1px solid var(--or1);outline-offset:6px;box-shadow:0 30px 50px -26px rgba(0,0,0,.5)}
+[data-trame=centree] .inter-couple figcaption{position:static;color:var(--sur-fond);text-shadow:none;margin-top:16px}
+
+/* Arche : portrait et galerie en arcades, citation manuscrite */
+[data-trame=arche] .inter-couple img{width:82%;margin:auto;border-radius:999px 999px 0 0}
+[data-trame=arche] .inter-galerie{grid-template-columns:repeat(3,1fr);grid-template-rows:1fr;height:280px}
+[data-trame=arche] .inter-galerie img{border-radius:999px 999px 0 0;grid-row:auto}
+[data-trame=arche] .inter-galerie img:nth-child(2){margin-top:40px}
+[data-trame=arche] .inter-citation p{font-family:var(--f-script);font-size:clamp(30px,8vw,42px)}
+
+/* Édito : photo pleine largeur qui passe du noir et blanc à la couleur, citation géante */
+[data-trame=edito] .inter-couple img{aspect-ratio:3/4;filter:grayscale(1) contrast(1.1);transition:filter 1.6s ease}
+[data-trame=edito] .inter-couple.vu img{filter:none}
+[data-trame=edito] .inter-couple figcaption{text-align:left;left:20px;font-family:var(--f-titre);font-size:34px;text-transform:uppercase;letter-spacing:.04em}
+[data-trame=edito] .inter-citation{text-align:left;border-left:3px solid var(--accent);margin-inline:6px;padding:10px 0 10px 22px}
+[data-trame=edito] .inter-citation p{font-size:clamp(28px,8vw,42px);font-style:italic;line-height:1.1}
+[data-trame=edito] .inter-citation p::before{display:none}
+[data-trame=edito] .inter-matiere{height:min(52vh,420px)}
+
+/* Affiche : portrait encadré comme au foyer d'un théâtre */
+[data-trame=affiche] .inter-couple{margin-inline:18px;padding:12px;background:var(--carte);box-shadow:inset 0 0 0 1px var(--or1),0 0 0 6px var(--or3),0 0 0 7px var(--or2),0 30px 50px -24px rgba(0,0,0,.6)}
+[data-trame=affiche] .inter-couple figcaption{position:static;color:var(--accent);text-shadow:none;margin-top:10px;font-size:34px}
+[data-trame=affiche] .inter-citation p{font-style:italic}
+[data-trame=affiche] .inter-citation p::before{content:"✦ ✦ ✦";font-size:14px;letter-spacing:.6em;line-height:2}
+
+/* Carnet : polaroïds éparpillés, citation sur un papier jaune */
+[data-trame=carnet] .inter-couple{width:84%;margin:46px auto;padding:12px 12px 52px;background:#fff;rotate:2.5deg;box-shadow:0 20px 34px -16px rgba(0,0,0,.45)}
+[data-trame=carnet] .inter-couple figcaption{color:#333;text-shadow:none;bottom:10px;font-size:30px}
+[data-trame=carnet] .inter-galerie{display:block;height:auto;min-height:400px}
+[data-trame=carnet] .inter-galerie img{position:absolute;width:56%;height:auto;aspect-ratio:1;padding:9px 9px 34px;background:#fff;box-shadow:0 16px 26px -14px rgba(0,0,0,.45)}
+[data-trame=carnet] .inter-galerie img:nth-child(1){left:2%;top:0;rotate:-6deg;z-index:2}
+[data-trame=carnet] .inter-galerie img:nth-child(2){right:2%;top:40px;rotate:5deg}
+[data-trame=carnet] .inter-galerie img:nth-child(3){left:24%;top:170px;rotate:-2deg;z-index:3;object-fit:contain}
+[data-trame=carnet] .inter-citation{width:86%;margin:46px auto;background:#FFF6B8;rotate:-2deg;box-shadow:0 18px 26px -16px rgba(0,0,0,.4);color:#3A3426}
+[data-trame=carnet] .inter-citation p{font-family:var(--f-script);font-size:30px}
+
+/* Plein écran : chaque intermède devient une scène de la hauteur de l'écran */
+[data-trame=plein] .inter{margin:0 -14px}
+[data-trame=plein] .inter-couple img{height:100svh;aspect-ratio:auto}
+[data-trame=plein] .inter-matiere{height:100svh;max-height:none}
+[data-trame=plein] .inter-couple figcaption{font-size:56px;bottom:40px}
+
+/* ═════════ Boutons : une forme par trame ═════════ */
+[data-trame=arche] .bouton{border-radius:999px;padding:13px 32px}
+[data-trame=edito] .bouton:not(.plein){border:0;border-bottom:2px solid var(--encre);background:none;padding:6px 0;letter-spacing:.16em}
+[data-trame=edito] .bouton:not(.plein)::after{content:"  →"}
+[data-trame=edito] .bouton.plein{background:var(--encre);border-color:var(--encre);border-radius:0}
+[data-trame=affiche] .bouton{background:var(--accent);color:var(--carte);border:0;padding:14px 36px;
+  -webkit-mask:radial-gradient(circle 9px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 9px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 9px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 9px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat}
+[data-trame=carnet] .bouton{background:#fff;border:2px solid var(--encre);border-radius:255px 18px 225px 18px/18px 225px 18px 255px;rotate:-1.5deg;
+  font-family:var(--f-script);text-transform:none;letter-spacing:0;font-size:24px;padding:8px 26px}
+[data-trame=carnet] .bouton.plein{background:var(--accent);color:#fff;border-color:var(--accent)}
+[data-trame=plein] .bouton{background:color-mix(in srgb,var(--carte) 22%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.55);color:var(--sur-fond);border-radius:8px}
+[data-trame=plein] .bouton.plein{background:var(--or1);color:#111;border-color:var(--or1)}
+
+/* ═════════ Pas toujours des fleurs en haut ═════════ */
+[data-trame=arche] .deco-haut,[data-trame=edito] .deco-haut,[data-trame=carnet] .deco-haut,[data-trame=plein] .deco-haut{display:none}
+[data-trame=arche] .suite-titre,[data-trame=edito] .suite-titre,[data-trame=carnet] .suite-titre,[data-trame=plein] .suite-titre{padding-top:70px}
+[data-trame=arche] .couv-arche{padding-top:46px}
+[data-trame=edito] .couv-edito{padding-top:0}
+[data-trame=edito] .edito-une{position:relative;width:calc(100% + 44px);margin:0 -22px 22px;aspect-ratio:4/5;overflow:hidden}
+[data-trame=edito] .edito-une img{width:100%;height:100%;object-fit:cover}
+[data-trame=carnet] .couv-carnet{padding-top:60px}
+[data-trame=affiche] .affiche-portrait{width:130px;height:164px;object-fit:cover;border-radius:50%;margin:16px auto 6px;border:3px solid var(--carte);outline:1px solid var(--or1);outline-offset:3px}
+[data-trame=plein] .plein-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+[data-trame=plein] .couv-plein::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55))}
+[data-trame=plein] .bloc{min-height:auto;padding:70px 26px}
+[data-trame=plein] .bande{opacity:.18}

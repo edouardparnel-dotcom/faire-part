@@ -17,7 +17,7 @@
   const ajoute = (sel, k, relatif) => document.querySelectorAll(sel).forEach(el => couches.push({ el, k, relatif }));
   ajoute('.deco-haut', .38); ajoute('.deco-coin', .3); ajoute('.deco-objet', .22);
   ajoute('.suite-couv .noms', .14); ajoute('.suite-couv .sur', .2);
-  ajoute('.deco-bas', -.1, true); ajoute('.illus', -.07, true); ajoute('.table-visu', -.05, true);
+  ajoute('.deco-bas', -.1, true); ajoute('.illus', -.07, true); ajoute('.inter img', -.05, true); ajoute('.matiere-fond', .12, true); ajoute('.table-visu', -.05, true);
 
   let px = 0, py = 0, sy = -1;
   function rendu() {
