@@ -31,12 +31,24 @@
     document.querySelectorAll('.inter-table img, .inter-matiere .matiere-detail').forEach(el => recul.push(el));
   }
 
+  // Parallaxes de plusieurs genres dans le déroulé : dérive horizontale, zoom, inclinaison 3D (data-paral sur body).
+  const genre = b.dataset.paral, mobiles = [];
+  if (genre && genre !== 'vertical') document.querySelectorAll(genre === 'incline' ? '.bloc' : '.bloc .illus, .inter:not(.inter-couple) img, .lieu-visu, .bloc img.photo').forEach((el, i) => mobiles.push({ el, sens: i % 2 ? 1 : -1 }));
+
   let px = 0, py = 0, sy = -1;
   function rendu() {
     const y = scrollY;
     fond.style.transform = `translate3d(${px * -6}px,${-y * .07 + py * -6}px,0) scale(1.06)`;
     const t = Math.min(y / innerHeight, 1.3);
     if (y < innerHeight * 1.5) for (const d of profondeur) d.el.style.scale = (1 + t * d.z).toFixed(3);
+    for (const m of mobiles) {
+      const r = m.el.getBoundingClientRect();
+      if (r.bottom < -80 || r.top > innerHeight + 80) continue;
+      const k = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;   // -1 en haut, 1 en bas
+      if (genre === 'derive') m.el.style.translate = `${(k * 34 * m.sens).toFixed(1)}px 0`;
+      else if (genre === 'zoom') m.el.style.scale = (1.12 - Math.min(Math.abs(k), 1) * .12).toFixed(3);
+      else if (genre === 'incline') m.el.style.rotate = `x ${(k * 9).toFixed(2)}deg`;
+    }
     for (const el of recul) {
       const r = el.getBoundingClientRect();
       if (r.bottom < -50 || r.top > innerHeight + 50) continue;
