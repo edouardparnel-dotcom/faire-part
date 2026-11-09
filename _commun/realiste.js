@@ -15,7 +15,8 @@
   function ouvrir() {
     if (ouv.classList.contains('ouvert')) return;
     ouv.classList.add('ouvert');
-    musique(true);
+    // Musique coupée par défaut : l’invité la lance depuis le bouton.
+    if (bouton) bouton.classList.add('coupe');
     if (bouton) bouton.classList.add('visible');
     setTimeout(() => document.body.classList.remove('ferme'), 3200);
   }
