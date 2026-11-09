@@ -15,7 +15,7 @@
 
   const couches = [];
   const ajoute = (sel, k, relatif) => document.querySelectorAll(sel).forEach(el => couches.push({ el, k, relatif }));
-  ajoute('.deco-haut', .38); ajoute('.deco-arche', .16); ajoute('.deco-coin', .3); ajoute('.deco-objet', .22);
+  ajoute('.deco-haut', .38); ajoute('.couche.c1', .2); ajoute('.couche.c2', .08); ajoute('.deco-arche', .16); ajoute('.deco-coin', .3); ajoute('.deco-objet', .22);
   ajoute('.suite-couv .noms', .14); ajoute('.suite-couv .sur', .2);
   ajoute('.deco-bas', -.1, true); ajoute('.illus', -.07, true); ajoute('.inter img', -.05, true); ajoute('.matiere-fond', .12, true); ajoute('.table-visu', -.05, true);
 
@@ -26,7 +26,7 @@
   if (signe) {
     const p = (sel, z) => document.querySelectorAll('.suite-couv ' + sel).forEach(el => profondeur.push({ el, z }));
     p('.scene-fond', .2); p('.deco-balcon', .55); p('.deco-haut', .35); p('.deco-arche', .3); p('.coin-hg', .45); p('.coin-bd', .45);
-    p('.cartouche', .12); p('.bord-g', .25); p('.deco-bas', .28); p('.plein-photo', .18); p('.arche', .1); p('.noms', -.1); p('.chapeau', -.16); p('.date', -.08);
+    p('.cartouche', .12); p('.bord-g', .25); p('.couche.c1', .02); p('.couche.c2', .05); p('.couche.c3', .12); p('.deco-bas', .28); p('.plein-photo', .18); p('.arche', .1); p('.noms', -.1); p('.chapeau', -.16); p('.date', -.08);
     document.querySelectorAll('.inter-couple img, .inter-table img, .inter-matiere .matiere-detail').forEach(el => recul.push(el));
   }
 

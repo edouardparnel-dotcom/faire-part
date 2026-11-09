@@ -312,3 +312,24 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-tra
 .suite-couv:has(.bord-g) .chapeau{margin-top:0;padding-top:0}
 .suite-couv:has(.bord-g) .noms{font-size:clamp(34px,10vw,52px)}
 .suite-titre:has(.bord-g){position:relative;overflow:clip;padding-left:max(26%,100px)}
+
+/* ───────── PAPIER DÉCOUPÉ EN COUCHES : un diorama de trois feuilles superposées, monogramme doré dans le ciel ───────── */
+.papier{position:absolute;left:0;right:0;bottom:0;height:min(100svh,172vw);z-index:0;pointer-events:none;overflow:visible}
+.papier .couche{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 100%}
+.papier .c1{filter:drop-shadow(0 6px 10px rgba(80,60,40,.16))}
+.papier .c2{filter:drop-shadow(0 10px 14px rgba(80,60,40,.24))}
+.papier .c3{filter:drop-shadow(0 14px 20px rgba(60,40,25,.32));transform-origin:50% 100%}
+.papier .c3{-webkit-mask:radial-gradient(ellipse 30% 42% at 50% 78%,#0000 70%,#000 86%);mask:radial-gradient(ellipse 30% 42% at 50% 78%,#0000 70%,#000 86%)}
+.suite-couv:has(.papier){position:relative;min-height:165svh;justify-content:flex-start;padding-top:7svh}
+.suite-couv:has(.papier)>*:not(.papier){position:relative;z-index:1}
+.suite-couv:has(.papier) .objet{margin-top:0}
+.suite-couv:has(.papier) .chapeau{margin-top:0;padding-top:4px}
+/* Portail ajouré : la carte reste cachée derrière tant qu'il n'est pas poussé */
+.ouverture:not(.ouvert) .portail .derriere{visibility:hidden}
+.monogramme{position:relative;display:grid;place-items:center;width:150px;height:150px;margin:0 auto 6px;font-family:var(--f-script);font-size:64px;line-height:1;color:var(--or1)}
+.monogramme::before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--or1);box-shadow:inset 0 0 0 5px var(--carte),inset 0 0 0 6px var(--or2)}
+.monogramme span{background:linear-gradient(160deg,var(--or3),var(--or1) 45%,var(--or2) 60%,var(--or3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.monogramme i{font-style:normal;font-size:.5em;margin:0 2px;color:var(--or1)}
+.suite-titre:has(.papier){position:relative;min-height:480px}
+.m-papier{position:relative!important;display:inline-block;width:110px;height:196px;inset:auto!important}
+@media (min-width:720px){.suite-couv:has(.papier){min-height:1350px}.papier{height:820px}}
