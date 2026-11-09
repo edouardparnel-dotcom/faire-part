@@ -22,7 +22,7 @@
   let px = 0, py = 0, sy = -1;
   function rendu() {
     const y = scrollY;
-    fond.style.transform = `translate3d(${px * -6}px,${-y * .07 + py * -6}px,0) scale(1.14)`;
+    fond.style.transform = `translate3d(${px * -6}px,${-y * .07 + py * -6}px,0) scale(1.06)`;
     for (const c of couches) {
       if (c.relatif) {
         const r = c.el.getBoundingClientRect();

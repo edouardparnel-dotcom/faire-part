@@ -59,8 +59,8 @@
   }
   // Animations, profondeur et particules (chargées aussi sur les faire-part écrits à la main).
   if (!document.querySelector('script[src*="vivant.js"]')) {
-    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '../_commun/vivant.css?v=1'; document.head.appendChild(l);
-    const sc = document.createElement('script'); sc.src = '../_commun/vivant.js?v=1'; document.body.appendChild(sc);
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '../_commun/vivant.css?v=2'; document.head.appendChild(l);
+    const sc = document.createElement('script'); sc.src = '../_commun/vivant.js?v=2'; document.body.appendChild(sc);
   }
   if (q.has('sections')) document.querySelector('.carte').style.display = 'none';
   if (q.has('ouvert')) {
