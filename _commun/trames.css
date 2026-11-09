@@ -249,3 +249,11 @@ small.pour-invite{font-size:18px;margin:0}
 [data-trame=scene] .bouton{border-radius:0;border-width:1px;letter-spacing:.24em;padding:14px 34px;box-shadow:inset 0 0 0 4px var(--carte),inset 0 0 0 5px var(--or1)}
 [data-trame=scene] .bouton.plein{background:var(--encre);color:var(--carte);border-color:var(--encre)}
 @media (min-width:720px){[data-trame=scene] .couv-scene{min-height:min(calc(100vh - 64px),940px)}}
+
+/* ───────── COINS BRODÉS : une branche en relief dans deux coins opposés, comme une broderie qui encadre la carte ───────── */
+.coin-hg,.coin-bd{position:absolute;width:min(72%,340px);max-width:none;z-index:2;pointer-events:none;filter:drop-shadow(0 6px 8px rgba(90,70,40,.18))}
+.coin-hg{top:-4px;left:-6px}
+.coin-bd{bottom:-4px;right:-6px;rotate:180deg}
+.suite-couv:has(.coin-hg){position:relative;overflow:hidden;padding-bottom:min(46vw,230px)}
+.suite-couv:has(.coin-hg) .chapeau{padding-top:min(44vw,220px);max-width:16em;margin-inline:auto;white-space:normal}
+.suite-titre:has(.coin-hg){position:relative;overflow:hidden;padding-top:min(40vw,190px)}
