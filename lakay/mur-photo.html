@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naïka &amp; Jonathan — Mur photo (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=1">
+<style>
+:root{--fond:#5FC1BC;--carte:#FFF9EE;--encre:#21323A;--doux:#5E6B70;--or1:#E2725B;--or2:#FFC93C;--or3:#B8492F;--accent:#16707A;
+  --f-titre:'Playfair Display',serif;--f-script:'Great Vibes',cursive;--f-texte:'Lora',Georgia,serif;--decor:linear-gradient(rgba(255,255,255,.18),rgba(255,255,255,.18)),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#0D3A3E}
+
+</style>
+</head>
+<body>
+<nav class="suite-nav" aria-label="La collection Lakou"><a class="suite-marque" href="index.html">✦ Lakou</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html" aria-current=page>Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><img class="deco-haut" src="haut.webp" alt="" width="1400" height="624"><p class="chapeau">Naïka &amp; Jonathan · en direct</p><h1>Le mur photo</h1>
+  <p class="intro">Vos invités ajoutent leurs photos depuis leur téléphone, sans application. Elles s'affichent ici, et sur grand écran pendant la fête.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : l’appareil photo s’ouvrirait ici'">Ajouter mes photos</a></header>
+<main class="suite-main large"><div class="mur"><figure class="photo apparait" style="--r:1deg"><img src="photo.jpg" alt="" loading="lazy"><figcaption>La famille au complet</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="decor-detail.jpg" alt="" loading="lazy"><figcaption>Premier regard</figcaption></figure><figure class="photo apparait" style="--r:3deg"><img src="decor-ensemble.jpg" alt="" loading="lazy"><figcaption>Les témoins</figcaption></figure><figure class="photo apparait" style="--r:-1deg"><img src="../madras/photo.jpg" alt="" loading="lazy"><figcaption>Sur la piste</figcaption></figure><figure class="photo apparait" style="--r:2deg"><img src="../anniversaire-tropical/decor-detail.jpg" alt="" loading="lazy"><figcaption>Le dîner</figcaption></figure><figure class="photo apparait" style="--r:-3deg"><img src="../madras/decor-detail.jpg" alt="" loading="lazy"><figcaption>Les cousins</figcaption></figure><figure class="photo apparait" style="--r:1deg"><img src="../anniversaire-tropical/photo.jpg" alt="" loading="lazy"><figcaption>Le gâteau</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="../madras/decor-ensemble.jpg" alt="" loading="lazy"><figcaption>Fin de soirée</figcaption></figure></div></main>
+<footer class="suite-pied"><p class="script">Naïka &amp; Jonathan</p><p>Nou kontan pataje moman sa a avèk nou</p>
+<small>Démonstration de la collection Lakou · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-06-19T15:00:00-04:00'; document.body.dataset.evenement = 'Mariage Naïka & Jonathan'; document.body.dataset.ville = 'Pétion-Ville';
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>
