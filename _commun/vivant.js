@@ -19,10 +19,29 @@
   ajoute('.suite-couv .noms', .14); ajoute('.suite-couv .sur', .2);
   ajoute('.deco-bas', -.1, true); ajoute('.illus', -.07, true); ajoute('.inter img', -.05, true); ajoute('.matiere-fond', .12, true); ajoute('.table-visu', -.05, true);
 
+  // Travelling : les calques proches avancent vite, les lointains lentement, le texte recule ; les photos des
+  // intermèdes font un léger travelling arrière en traversant l'écran. Grand Hôtel et Héritage restent tels quels.
+  const profondeur = [], recul = [];
+  const signe = !/^(grand-hotel|heritage)$/.test(b.dataset.collection || '');
+  if (signe) {
+    const p = (sel, z) => document.querySelectorAll('.suite-couv ' + sel).forEach(el => profondeur.push({ el, z }));
+    p('.scene-fond', .2); p('.deco-balcon', .55); p('.deco-haut', .35); p('.deco-arche', .3); p('.coin-hg', .45); p('.coin-bd', .45);
+    p('.cartouche', .12); p('.deco-bas', .28); p('.plein-photo', .18); p('.arche', .1); p('.noms', -.1); p('.chapeau', -.16); p('.date', -.08);
+    document.querySelectorAll('.inter-couple img, .inter-table img, .inter-matiere .matiere-detail').forEach(el => recul.push(el));
+  }
+
   let px = 0, py = 0, sy = -1;
   function rendu() {
     const y = scrollY;
     fond.style.transform = `translate3d(${px * -6}px,${-y * .07 + py * -6}px,0) scale(1.06)`;
+    const t = Math.min(y / innerHeight, 1.3);
+    if (y < innerHeight * 1.5) for (const d of profondeur) d.el.style.scale = (1 + t * d.z).toFixed(3);
+    for (const el of recul) {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -50 || r.top > innerHeight + 50) continue;
+      const k = Math.max(0, Math.min(1, (r.top + r.height) / (innerHeight + r.height)));
+      el.style.scale = (1 + .14 * k).toFixed(3);
+    }
     for (const c of couches) {
       if (c.relatif) {
         const r = c.el.getBoundingClientRect();

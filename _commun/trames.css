@@ -234,7 +234,7 @@ small.pour-invite{font-size:18px;margin:0}
 /* ───────── SCÈNE : un tableau plein cadre est l'invitation, prénoms dans le ciel, premier plan qui encadre ───────── */
 [data-trame=scene] .couv-scene{position:relative;min-height:100svh;overflow:hidden;justify-content:flex-start;padding:11svh 22px 0;background:#2a1d14;color:#fff}
 [data-trame=scene] .scene-fond{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;animation:scene-zoom 18s ease-out both}
-@keyframes scene-zoom{from{scale:1.12}to{scale:1}}
+@keyframes scene-zoom{from{transform:scale(1.12)}to{transform:none}}
 [data-trame=scene] .couv-scene::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(rgba(20,12,6,.42),rgba(20,12,6,.08) 55%,rgba(20,12,6,.3));pointer-events:none}
 [data-trame=scene] .scene-texte{position:relative;z-index:2;text-align:center;text-shadow:0 2px 18px rgba(40,20,5,.45)}
 [data-trame=scene] .couv-scene .chapeau{color:#fff;opacity:.92;margin:0 auto 10px;padding-top:0;max-width:18em}
@@ -257,3 +257,49 @@ small.pour-invite{font-size:18px;margin:0}
 .suite-couv:has(.coin-hg){position:relative;overflow:hidden;padding-bottom:min(46vw,230px)}
 .suite-couv:has(.coin-hg) .chapeau{padding-top:min(44vw,220px);max-width:16em;margin-inline:auto;white-space:normal}
 .suite-titre:has(.coin-hg){position:relative;overflow:hidden;padding-top:min(40vw,190px)}
+
+/* ───────── CARTOUCHE : un cadre festonné centré, le texte à l'intérieur comme sur une assiette de porcelaine ───────── */
+.cartouche{position:absolute;top:50%;left:calc(50% - min(50%,240px));width:min(100%,480px);translate:0 -50%;z-index:0;pointer-events:none;filter:drop-shadow(0 14px 22px rgba(20,40,90,.16))}
+.suite-couv:has(.cartouche){position:relative;justify-content:center;padding:0 22px}
+.suite-couv:has(.cartouche)>*:not(.cartouche){position:relative;z-index:1}
+.suite-couv:has(.cartouche) .chapeau{margin:28px auto 2px;padding-top:0;max-width:16em;font-size:9px;line-height:1.6}
+.suite-couv:has(.cartouche) .noms{font-size:clamp(28px,8vw,40px);line-height:1}
+.suite-couv:has(.cartouche) .filet{width:min(40%,170px);margin:4px auto}
+.suite-couv:has(.cartouche) .date{margin:2px 0}
+.suite-couv:has(.cartouche) .lieu{max-width:20em;margin:4px auto 0;font-size:9px;line-height:1.6}
+.suite-titre .cartouche{position:static;translate:none;display:block;width:110px;margin:0 auto 12px;filter:none}
+
+/* ───────── BOUTONS DU DÉROULÉ : chaque étape a sa forme ───────── */
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #lieu .bouton{border-radius:999px;padding:12px 26px 12px 14px;display:inline-flex;align-items:center;gap:12px}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #lieu .bouton::before{content:"↗";display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--carte);font-size:14px;letter-spacing:0}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #agenda{border-radius:6px;padding:14px 34px;border-style:dashed;
+  -webkit-mask:radial-gradient(circle 9px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 9px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 9px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 9px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) a.bouton[href="plan-de-table.html"]{border:0;border-radius:0;background:none;padding:6px 0;border-bottom:1px solid currentColor;box-shadow:none;rotate:none}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) a.bouton[href="plan-de-table.html"]::after{content:"  ⟶"}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) [data-offrir]{border-radius:4px 18px 18px 4px;padding:8px 16px 8px 22px;position:relative}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) [data-offrir]::before{content:"";position:absolute;left:8px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;border:1px solid currentColor}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #reponse .bouton.plein{width:132px;height:132px;padding:18px;border-radius:50%;display:grid;place-items:center;text-align:center;line-height:1.35;white-space:normal;
+  box-shadow:inset 0 0 0 5px var(--accent),inset 0 0 0 6px color-mix(in srgb,var(--carte) 60%,transparent),0 14px 24px -12px rgba(0,0,0,.45);transition:scale .3s}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #reponse .bouton.plein:hover{scale:1.05}
+
+/* ───────── FORMES DU DÉROULÉ : blocs, séparateurs et boutons sans angles droits (sauf Grand Hôtel et Héritage) ───────── */
+:root{--sep-vague:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'><path d='M0 7Q7.5 0 15 7T30 7T45 7T60 7T75 7T90 7T105 7T120 7' fill='none' stroke='black' stroke-width='1.6'/></svg>");
+  --sep-feston:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'><path d='M0 12a10 10 0 0 1 20 0a10 10 0 0 1 20 0a10 10 0 0 1 20 0a10 10 0 0 1 20 0a10 10 0 0 1 20 0a10 10 0 0 1 20 0' fill='none' stroke='black' stroke-width='1.4'/></svg>");
+  --sep-perles:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'><g fill='black'><circle cx='14' cy='9' r='1.5'/><circle cx='30' cy='6' r='2'/><circle cx='47' cy='4' r='2.4'/><circle cx='60' cy='3.5' r='3.2'/><circle cx='73' cy='4' r='2.4'/><circle cx='90' cy='6' r='2'/><circle cx='106' cy='9' r='1.5'/></g></svg>");
+  --sep-losange:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'><path d='M4 7H48M72 7H116' stroke='black' stroke-width='1.2'/><path d='M60 1L67 7L60 13L53 7Z'/><circle cx='4' cy='7' r='2'/><circle cx='116' cy='7' r='2'/></svg>")}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):not([data-trame=edito]):not([data-trame=carnet]) .bloc h2::after{content:"";display:block;width:120px;height:14px;margin:12px auto 0;background:var(--or1);-webkit-mask:var(--sep,var(--sep-vague)) center/contain no-repeat;mask:var(--sep,var(--sep-vague)) center/contain no-repeat}
+.bloc:nth-of-type(4n+2){--sep:var(--sep-feston)}.bloc:nth-of-type(4n+3){--sep:var(--sep-perles)}.bloc:nth-of-type(4n){--sep:var(--sep-losange)}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-trame=centree] .suite-couv .filet::before,
+body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-trame=centree] .suite-couv .filet::after{height:10px;opacity:1;background:currentColor;-webkit-mask:var(--sep-vague) center/auto 100% repeat-x;mask:var(--sep-vague) center/auto 100% repeat-x}
+
+/* Blocs : la forme change d'une étape à l'autre (arrondi, arche, coins coupés, dôme, pilule, ticket) */
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):is([data-trame=centree],[data-trame=affiche],[data-trame=scene]) .bloc:nth-of-type(6n+1){border-radius:28px}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):is([data-trame=centree],[data-trame=affiche],[data-trame=scene]) .bloc:nth-of-type(6n+2){border-radius:220px 220px 22px 22px/120px 120px 22px 22px;padding-top:62px}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):is([data-trame=centree],[data-trame=affiche],[data-trame=scene]) .bloc:nth-of-type(6n+3){clip-path:polygon(22px 0,calc(100% - 22px) 0,100% 22px,100% calc(100% - 22px),calc(100% - 22px) 100%,22px 100%,0 calc(100% - 22px),0 22px)}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):is([data-trame=centree],[data-trame=affiche],[data-trame=scene]) .bloc:nth-of-type(6n+4){border-radius:22px 22px 220px 220px/22px 22px 110px 110px;padding-bottom:64px}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):is([data-trame=centree],[data-trame=affiche],[data-trame=scene]) .bloc:nth-of-type(6n+5){border-radius:60px}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]):is([data-trame=centree],[data-trame=affiche],[data-trame=scene]) .bloc:nth-of-type(6n){border-radius:14px;
+  -webkit-mask:radial-gradient(circle 16px at 0 0,#0000 98%,#000) top left/51% 51% no-repeat,radial-gradient(circle 16px at 100% 0,#0000 98%,#000) top right/51% 51% no-repeat,radial-gradient(circle 16px at 0 100%,#0000 98%,#000) bottom left/51% 51% no-repeat,radial-gradient(circle 16px at 100% 100%,#0000 98%,#000) bottom right/51% 51% no-repeat;
+  mask:radial-gradient(circle 16px at 0 0,#0000 98%,#000) top left/51% 51% no-repeat,radial-gradient(circle 16px at 100% 0,#0000 98%,#000) top right/51% 51% no-repeat,radial-gradient(circle 16px at 0 100%,#0000 98%,#000) bottom left/51% 51% no-repeat,radial-gradient(circle 16px at 100% 100%,#0000 98%,#000) bottom right/51% 51% no-repeat}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-trame=centree] .bouton:not(.plein){border-radius:22px 4px 22px 4px}

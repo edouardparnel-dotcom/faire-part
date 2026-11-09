@@ -45,3 +45,15 @@ body.vivant{background:var(--fond)!important}
 .choix-musique label input{display:none}
 .choix-musique p{margin:8px 4px 2px;font-size:12px;color:#7A6E60}
 @media (prefers-reduced-motion:reduce){.enveloppe,.portail,.enveloppe::after,.portail::after,.bouton.plein::after{animation:none}}
+
+/* Décors qui ondulent doucement (rotate seul : translate sert au parallaxe, scale au travelling).
+   Grand Hôtel et Héritage restent tels qu'ils ont été validés. */
+@keyframes souffle{0%,100%{rotate:calc(var(--r0,0deg) - var(--amp,.9deg))}50%{rotate:calc(var(--r0,0deg) + var(--amp,.9deg))}}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .deco-haut{transform-origin:50% 0;animation:souffle 8s ease-in-out infinite}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .deco-arche{transform-origin:50% 100%;--amp:.6deg;animation:souffle 9s ease-in-out infinite}
+.coin-hg{transform-origin:0 0;--amp:1.4deg;animation:souffle 7s ease-in-out infinite}
+.coin-bd{transform-origin:100% 100%;--r0:180deg;--amp:1.4deg;animation:souffle 7s ease-in-out -3.5s infinite}
+.cartouche{--amp:.35deg;animation:souffle 11s ease-in-out infinite}
+.deco-balcon{transform-origin:50% 100%;--amp:.25deg;animation:souffle 10s ease-in-out infinite}
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.suite-couv,.inter-couple,.inter-table,.inter-matiere){overflow:clip}
+@media (prefers-reduced-motion:reduce){.deco-haut,.deco-arche,.coin-hg,.coin-bd,.cartouche,.deco-balcon{animation:none}}
