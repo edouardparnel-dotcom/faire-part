@@ -409,3 +409,6 @@ body[data-revele=flou] .apparait{transform:translateY(10px);filter:blur(10px);tr
 body[data-revele] .apparait.vu{transform:none;filter:none}
 /* Parallaxe inclinée : profondeur pour la rotation 3D */
 body[data-paral=incline] .suite-main{perspective:1300px}
+
+/* Page de collection : le texte émotionnel en premier, la description des matières en petit dessous */
+.accroche-mood{max-width:34em;margin:10px auto 0;font-size:12px;letter-spacing:.06em;color:var(--doux);opacity:.8}
