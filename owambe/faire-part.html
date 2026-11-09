@@ -10,13 +10,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Great+Vibes&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=3">
+<link rel="stylesheet" href="../_commun/trames.css?v=6">
 <script src="../_commun/vivant.js?v=3" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
 :root{--fond:#0F3D33;--carte:#FAF6EC;--encre:#14211D;--doux:#5E6B64;--or1:#C9A13E;--or2:#F0D58F;--or3:#8C6A1F;--accent:#0F5A47;
   --f-titre:'Playfair Display',serif;--f-script:'Great Vibes',cursive;--f-texte:'DM Sans',system-ui,sans-serif;--decor:radial-gradient(ellipse at 50% 35%,rgba(0,0,0,0) 30%,rgba(0,0,0,.45) 100%),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#F4E9CF;}
 .env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
+.ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
 .ouverture .consigne{color:var(--sur-fond)}
 .mini{background:var(--carte);outline:1px solid var(--or1);outline-offset:-6px}
@@ -30,13 +32,19 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-12-04T16:00:00+01:00" data-evenement="Mariage Tolu &amp; Femi" data-ville="Lekki, Lagos" data-titre-std="Tolu &amp; Femi — Save the date (démonstration)" data-particules="or" data-trame="edito">
-<div class="ouverture" id="ouverture" style="--ratio:1000/1741;">
+<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
+<div class="ouverture attente" id="ouverture" style="--ratio:1000/1741;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><small>Mariage</small><b>Tolu</b><i>&amp;</i><b>Femi</b><small>04 · 12 · 2027</small></div>
     <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
   </div>
   <p class="consigne">Poussez les portes, la fête commence</p>
 </div>
+<script>(() => {
+  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
+  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
+  setTimeout(pret, 5000);
+})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-edito">

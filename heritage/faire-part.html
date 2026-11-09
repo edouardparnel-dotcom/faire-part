@@ -39,6 +39,9 @@ img{display:block;max-width:100%;height:auto}
 @keyframes lueur{0%,100%{opacity:.15}50%{opacity:.9}}
 
 .env-dos,.env-devant,.env-face{background-image:url('enveloppe.webp')}
+.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
+.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
+
 /* ── Carte ivoire bordée d'or, posée sur le wax ── */
 .carte{position:relative;margin:max(14px,env(safe-area-inset-top)) 12px 0;min-height:calc(100svh - 14px);background:var(--carte);overflow:hidden;
   display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px;
@@ -87,7 +90,8 @@ body.std .fp-seul{display:none} body.std .std-seul{display:block}
 </head>
 <body class="ferme" data-date="2027-08-21T11:00:00+02:00" data-evenement="Mariage Efua &amp; Kojo" data-ville="Lyon" data-titre-std="Efua &amp; Kojo — Save the date (démonstration)">
 
-<div class="ouverture" id="ouverture" style="--ratio:1000/586;
+<link rel="preload" as="image" href="enveloppe.webp" fetchpriority="high">
+<div class="ouverture attente" id="ouverture" style="--ratio:1000/586;
   --rabat:polygon(0 0,100% 0,100% 10%,59% 60%,59% 70%,41% 70%,41% 60%,0 10%);--devant:polygon(0 10%,41% 60%,41% 70%,59% 70%,59% 60%,100% 10%,100% 100%,0 100%);
   --verso:polygon(0 100%,100% 100%,100% 90%,59% 40%,59% 30%,41% 30%,41% 40%,0 90%);--doublure:linear-gradient(0deg,#9C7428,#E2C27A 55%,#B88E3E)">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
@@ -98,6 +102,11 @@ body.std .fp-seul{display:none} body.std .std-seul{display:block}
   </div>
   <p class="consigne">Ouvrez le fermoir</p>
 </div>
+<script>(() => {
+  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
+  im.src = 'enveloppe.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
+  setTimeout(pret, 5000);
+})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 
