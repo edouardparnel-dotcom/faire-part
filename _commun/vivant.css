@@ -1,0 +1,47 @@
+/* Couche « vivante » : fond en profondeur, particules, apparitions en cascade (voir vivant.js). */
+body.vivant{background:var(--fond)!important}
+.vivant-fond{position:fixed;inset:-9%;z-index:-1;background:var(--decor),var(--fond);background-attachment:scroll!important;will-change:transform;pointer-events:none}
+.vivant-particules{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none}
+.deco-haut,.deco-coin,.deco-objet,.deco-bas,.illus,.noms{will-change:translate}
+
+.vivant .frise li.de-gauche:not(.vu){transform:translateX(-34px)}
+.vivant .frise li.de-droite:not(.vu){transform:translateX(34px)}
+.vivant .frise li img{transition:transform 1.1s cubic-bezier(.3,1.4,.5,1) .2s}
+.vivant .frise li:not(.vu) img{transform:scale(.6) rotate(-8deg)}
+
+.titre-vivant{transition:opacity 1s ease,filter 1.1s ease,transform 1s ease}
+.titre-vivant:not(.vu){opacity:0;filter:blur(6px);transform:translateY(10px)}
+
+.vivant .illus{transition:clip-path 1.4s cubic-bezier(.6,0,.2,1),transform 1.6s ease,opacity 1s ease}
+.vivant .illus:not(.vu){clip-path:inset(14% 10% 14% 10% round 8px);transform:scale(1.07);opacity:.2}
+.vivant .illus.vu{clip-path:inset(0)}
+
+/* L'enveloppe ou les portes flottent doucement en attendant le geste, avec un reflet qui passe. */
+.enveloppe,.portail{animation:flotte 5.5s ease-in-out infinite}
+.ouvert .enveloppe,.ouvert .portail{animation:none}
+@keyframes flotte{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-9px) rotate(.4deg)}}
+.enveloppe::after,.portail::after{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.28) 48%,transparent 60%);background-size:260% 100%;animation:reflet 4.8s ease-in-out infinite;mix-blend-mode:soft-light}
+.ouvert .enveloppe::after,.ouvert .portail::after{display:none}
+@keyframes reflet{0%,55%{background-position:120% 0}100%{background-position:-60% 0}}
+
+/* Boutons : un éclat parcourt le bouton principal. */
+.bouton.plein{position:relative;overflow:hidden}
+.bouton.plein::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);animation:eclat 3.8s ease-in-out infinite}
+@keyframes eclat{0%,60%{left:-60%}100%{left:130%}}
+
+/* Choix de la musique */
+.choix-musique{position:fixed;z-index:61;right:calc(14px + env(safe-area-inset-right));bottom:calc(70px + env(safe-area-inset-bottom));width:min(300px,calc(100vw - 28px));
+  max-height:min(70vh,520px);overflow:auto;background:rgba(255,252,246,.97);backdrop-filter:blur(8px);border:1px solid rgba(185,138,62,.45);border-radius:14px;
+  box-shadow:0 18px 40px rgba(0,0,0,.25);padding:14px 14px 10px;font:15px/1.4 system-ui,sans-serif;color:#2B2620;transform:translateY(12px) scale(.98);opacity:0;pointer-events:none;transition:.25s}
+.choix-musique.ouvert{transform:none;opacity:1;pointer-events:auto}
+.choix-musique h3{font:600 12px/1 system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8C6E36;margin:0 0 10px}
+.choix-musique button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:none;padding:9px 8px;border-radius:9px;cursor:pointer;font:inherit;color:inherit}
+.choix-musique button:hover{background:rgba(185,138,62,.1)}
+.choix-musique button[aria-pressed=true]{background:rgba(185,138,62,.18);font-weight:600}
+.choix-musique button::before{content:"♪";width:18px;color:#B8975A}
+.choix-musique button[data-piste=""]::before{content:"✕"}
+.choix-musique label{display:block;margin-top:6px;padding:9px 8px;border:1px dashed rgba(185,138,62,.6);border-radius:9px;cursor:pointer;color:#6E5A3A}
+.choix-musique label input{display:none}
+.choix-musique p{margin:8px 4px 2px;font-size:12px;color:#7A6E60}
+@media (prefers-reduced-motion:reduce){.enveloppe,.portail,.enveloppe::after,.portail::after,.bouton.plein::after{animation:none}}

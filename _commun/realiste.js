@@ -7,11 +7,11 @@
   const bouton = document.getElementById('musique');
   if (q.get('f') === 'std') { document.body.classList.add('std'); if (document.body.dataset.titreStd) document.title = document.body.dataset.titreStd; }
 
-  function musique(jouer) {
+  let musique = function (jouer) {
     if (!audio) return;
     if (jouer) { audio.volume = 0.6; audio.play().then(() => bouton.classList.remove('coupe')).catch(() => bouton.classList.add('coupe')); }
     else { audio.pause(); bouton.classList.add('coupe'); }
-  }
+  };
   function ouvrir() {
     if (ouv.classList.contains('ouvert')) return;
     ouv.classList.add('ouvert');
@@ -21,7 +21,47 @@
   }
   ouv.addEventListener('click', ouvrir);
   if (q.has('auto')) setTimeout(ouvrir, 300);
-  if (bouton) bouton.addEventListener('click', () => musique(audio.paused));
+  // Choix de la musique : celle de la collection, une autre de la bibliothèque, la sienne (fichier MP3) ou aucune.
+  const PISTES = [['Grand Hôtel', 'grand-hotel'], ['Héritage', 'heritage'], ['Lakou', 'lakay'], ['Madras', 'madras'], ['Kente', 'kente'], ['Owambe', 'owambe'],
+    ['Toghu', 'toghu'], ['Teranga', 'teranga'], ['Bogolan', 'bogolan'], ['Kita', 'kita'], ['Sape', 'sape'], ['Tibeb', 'tibeb'], ['Classique', 'classique'],
+    ['Bohème', 'boheme'], ['Champêtre', 'champetre'], ['Gatsby', 'gatsby'], ['Versailles', 'versailles'], ['Opéra', 'opera']];
+  const cle = 'mv-musique-' + location.pathname.split('/').slice(-2, -1)[0];
+  let choix = null;
+  try { choix = localStorage.getItem(cle); } catch (e) {}
+  if (audio && choix !== null) { if (choix) audio.src = choix; else audio.removeAttribute('src'); }
+  const sansMusique = () => audio && !audio.getAttribute('src');
+  const _musique = musique;
+  musique = j => { if (j && sansMusique()) { bouton.classList.add('coupe'); return; } _musique(j); };
+  if (bouton && audio) {
+    const panneau = document.createElement('div');
+    panneau.className = 'choix-musique';
+    const ici = location.pathname.split('/').slice(-2, -1)[0];
+    const items = [['Sans musique', '']].concat(PISTES.map(([n, d]) => [n + (d === ici ? ' · la musique de la collection' : ''), '../' + d + '/musique.mp3']));
+    items.sort((a, b) => (b[0].includes('collection') - a[0].includes('collection')) || (a[1] === '' ? -1 : 0));
+    panneau.innerHTML = '<h3>Musique</h3>' + items.map(([n, src]) => `<button type="button" data-piste="${src}">${n}</button>`).join('')
+      + '<label>＋ Votre musique (fichier MP3)<input type="file" accept="audio/*"></label><p>Les mariés choisissent la musique de leur invitation, ou n’en mettent aucune.</p>';
+    document.body.appendChild(panneau);
+    const marque = () => panneau.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String((x.dataset.piste || '') === (audio.getAttribute('src') || ''))));
+    marque();
+    bouton.addEventListener('click', e => { e.stopPropagation(); panneau.classList.toggle('ouvert'); });
+    document.addEventListener('click', e => { if (!panneau.contains(e.target)) panneau.classList.remove('ouvert'); });
+    panneau.addEventListener('click', e => {
+      const x = e.target.closest('button'); if (!x) return;
+      const src = x.dataset.piste;
+      try { localStorage.setItem(cle, src); } catch (er) {}
+      if (src) { audio.src = src; _musique(true); } else { audio.pause(); audio.removeAttribute('src'); bouton.classList.add('coupe'); }
+      marque();
+    });
+    panneau.querySelector('input').addEventListener('change', e => {
+      const f = e.target.files[0]; if (!f) return;
+      audio.src = URL.createObjectURL(f); _musique(true); marque();
+    });
+  }
+  // Animations, profondeur et particules (chargées aussi sur les faire-part écrits à la main).
+  if (!document.querySelector('script[src*="vivant.js"]')) {
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '../_commun/vivant.css?v=1'; document.head.appendChild(l);
+    const sc = document.createElement('script'); sc.src = '../_commun/vivant.js?v=1'; document.body.appendChild(sc);
+  }
   if (q.has('sections')) document.querySelector('.carte').style.display = 'none';
   if (q.has('ouvert')) {
     ouv.style.transition = 'none'; ouv.classList.add('ouvert'); document.body.classList.remove('ferme');
