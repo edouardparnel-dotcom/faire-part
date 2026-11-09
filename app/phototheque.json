@@ -455,6 +455,21 @@
 "nom": "Hanbok"
 },
 {
+"src": "../lanternes/lieu.webp",
+"cat": "Lieux",
+"nom": "Lanternes"
+},
+{
+"src": "../lanternes/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Lanternes"
+},
+{
+"src": "../lanternes/photo.jpg",
+"cat": "Ambiances",
+"nom": "Lanternes"
+},
+{
 "src": "../opera/lieu.webp",
 "cat": "Lieux",
 "nom": "Opéra"
