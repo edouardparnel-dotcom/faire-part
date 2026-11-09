@@ -356,3 +356,13 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-tra
 .suite-couv:has(.face-g) .noms{font-size:clamp(30px,8.4vw,44px)}
 .suite-titre:has(.face-g){position:relative;padding-top:150px}
 .suite-titre .face-g,.suite-titre .face-d{height:96%;top:2%;opacity:.5}
+
+/* ───────── DIAGONALE : une branche fleurie traverse la carte du coin haut droit vers le bas, une autre répond en bas à gauche ───────── */
+.diag-h{position:absolute;top:-4%;right:-24%;width:108%;max-width:none;z-index:0;pointer-events:none;transform-origin:100% 0}
+.diag-b{position:absolute;bottom:-3%;left:-16%;width:54%;max-width:none;z-index:0;pointer-events:none;transform:scale(-1,-1);transform-origin:50% 50%}
+.suite-couv:has(.diag-h){position:relative;padding-top:min(76vw,350px);padding-bottom:min(46vw,220px)}
+.suite-couv:has(.diag-h)>*:not(.diag-h):not(.diag-b){position:relative;z-index:1}
+.suite-couv:has(.diag-h) .chapeau{padding-top:0;margin-top:0}
+.suite-titre:has(.diag-h){position:relative;overflow:clip;padding-top:min(56vw,250px)}
+
+.suite-couv:has(.face-g) .deco-bas{width:min(108vw,500px);max-width:none;margin:14px 0 -18px calc(50% - min(54vw,250px))}
