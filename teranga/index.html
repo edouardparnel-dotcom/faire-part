@@ -2,110 +2,32 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Awa & Ousmane — Mariage (démonstration)</title>
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Awa & Ousmane — Teranga">
-<meta property="og:description" content="Samedi 22 mai 2027 · 16h00 · Les Almadies, Dakar (Sénégal).">
-<meta property="og:image" content="https://maisonvivat.com/teranga/apercu-whatsapp.jpg">
-<meta name="theme-color" content="#F8F4EC">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teranga — Collection réaliste Maison Vivat</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Pinyon+Script&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
 <style>
-/* Direction artistique « Teranga » : bazin blanc brodé d'or. Un voile se lève, beaucoup de blanc,
-   filets et arabesques dorés, typographie fine. Le luxe par la retenue. */
-:root{--bazin:#FBF8F2;--blanc:#fff;--or:#B8954A;--or2:#D9BC7A;--indigo:#1E2A4A;--texte:#2B2B2B;--doux:#8C8578}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Montserrat',sans-serif;font-weight:300;color:var(--texte);background:var(--bazin);line-height:1.7;-webkit-font-smoothing:antialiased}
-body.ferme{overflow:hidden}
-.voile{position:fixed;inset:0;z-index:50;cursor:pointer;background:var(--blanc);transition:transform 1.5s cubic-bezier(.7,0,.2,1);
-  background-image:repeating-linear-gradient(115deg,rgba(184,149,74,.05) 0 2px,transparent 2px 9px);
-  display:grid;place-items:center;text-align:center}
-.voile::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;
-  background:radial-gradient(circle at 50% 0,transparent 10px,var(--or2) 11px 12px,transparent 13px) 0 0/34px 46px,linear-gradient(var(--or2),var(--or2)) 0 8px/100% 1px no-repeat}
-.voile.ouvert{transform:translateY(-104%)}
-.voile .orn{width:120px;margin:0 auto 18px}
-.voile h1{font-family:'Italiana',serif;font-weight:400;font-size:44px;letter-spacing:.06em;color:var(--indigo)}
-.voile p{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--or);margin-top:10px}
-.couv{position:relative;min-height:100svh;display:grid;align-content:center;justify-items:center;padding:60px 24px;text-align:center;gap:22px}
-.arche{width:min(300px,74vw);aspect-ratio:3/4.2;border-radius:150px 150px 0 0;background:#E9E2D4 url('photo.jpg') center/cover;
-  box-shadow:0 0 0 1px var(--or2),0 0 0 10px var(--bazin),0 0 0 11px rgba(184,149,74,.5)}
-.sur{font-size:11px;letter-spacing:.5em;text-transform:uppercase;color:var(--or)}
-.noms{font-family:'Italiana',serif;font-weight:400;font-size:clamp(46px,13vw,74px);line-height:1.05;color:var(--indigo)}
-.noms em{display:block;font-style:normal;font-size:.4em;color:var(--or);margin:6px 0}
-.date{font-size:13px;letter-spacing:.32em;text-transform:uppercase}
-main{position:relative;max-width:520px;margin:0 auto;padding:0 26px 80px;text-align:center}
-.filet{width:1px;height:70px;margin:40px auto;background:linear-gradient(transparent,var(--or2),transparent)}
-h2{font-family:'Italiana',serif;font-weight:400;font-size:34px;color:var(--indigo);margin-bottom:10px}
-.sous{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--or);margin-bottom:16px}
-.citation{font-family:'Italiana',serif;font-size:28px;line-height:1.4;color:var(--indigo)}
-.lien{display:inline-block;margin-top:18px;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--indigo);text-decoration:none;border:1px solid var(--or2);padding:13px 24px;background:none;font-family:inherit;cursor:pointer}
-.lien.plein{background:var(--indigo);color:var(--bazin);border-color:var(--indigo)}
-.prog{list-style:none}
-.prog li{padding:14px 0;border-bottom:1px solid rgba(184,149,74,.25)}
-.prog b{display:block;font-family:'Italiana',serif;font-weight:400;font-size:24px;color:var(--or)}
-.teintes{display:flex;justify-content:center;gap:34px}
-.teintes i{display:block;width:44px;height:44px;margin:0 auto 10px;border-radius:50%;box-shadow:0 0 0 1px var(--or2),0 0 0 6px var(--bazin),0 0 0 7px rgba(184,149,74,.4)}
-.rebours{display:flex;justify-content:center;gap:24px}
-.rebours div{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux)}
-.rebours b{display:block;font-family:'Italiana',serif;font-weight:400;font-size:42px;color:var(--indigo);letter-spacing:0}
-.demo{display:none;margin-top:14px;color:var(--or)}
-.pied{margin-top:50px;font-size:12px;color:var(--doux)}
-.pied b{display:block;font-family:'Italiana',serif;font-weight:400;font-size:28px;color:var(--indigo)}
+:root{--fond:#F6F1E7;--carte:#FFFDF8;--encre:#1B2550;--doux:#5F6684;--or1:#C9A54A;--or2:#EBD48E;--or3:#9A7A26;--accent:#24337A;
+  --f-titre:'Italiana',serif;--f-script:'Pinyon Script',cursive;--f-texte:'Montserrat',system-ui,sans-serif;--decor:linear-gradient(rgba(255,253,248,.2),rgba(255,253,248,.2)),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#1B2550;}
+
+
 </style>
 </head>
-<body class="ferme">
-<div class="voile" data-ouverture role="button" aria-label="Ouvrir l'invitation">
-  <div>
-    <svg class="orn" viewBox="0 0 120 40" aria-hidden="true"><path d="M2 20h40M78 20h40M60 4c-8 8-8 24 0 32 8-8 8-24 0-32ZM44 20c6-10 26-10 32 0-6 10-26 10-32 0Z" fill="none" stroke="#B8954A" stroke-width="1.2"/><circle cx="60" cy="20" r="2.5" fill="#B8954A"/></svg>
-    <h1>Awa &amp; Ousmane</h1>
-    <p>Touchez le voile</p>
-  </div>
-</div>
+<body>
+<nav class="suite-nav" aria-label="La collection Teranga"><a class="suite-marque" href="index.html">✦ Teranga</a><div><a href="index.html" aria-current=page>La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
 
-<header class="couv">
-  <p class="sur">Teranga</p>
-  <div class="arche" role="img" aria-label="Photo du couple" data-fond-parallaxe="0.12" data-base="30" data-zoom="150% auto"></div>
-  <h1 class="noms">Awa<em>et</em>Ousmane</h1>
-  <p class="date">22 · 05 · 2027 — Dakar</p>
+<header class="mood-tete">
+  <p class="chapeau">Maison Vivat · Collection réaliste</p>
+  <h1>Teranga</h1>
+  <p class="intro">Bazin indigo brodé d&#x27;or, lanternes et fleurs blanches : l&#x27;hospitalité sénégalaise face à l&#x27;océan.</p>
+  <div class="mood-matieres"><img class="m" src="haut.webp" alt="" width="1400" height="597"><span class="nuancier"><i style="background:#F6F1E7"></i><i style="background:#FFFDF8"></i><i style="background:#C9A54A"></i><i style="background:#24337A"></i><i style="background:#1B2550"></i></span></div>
+  <p class="consigne-mood">Touchez un visuel pour l'ouvrir</p>
 </header>
-
-<main>
-  <div class="filet"></div>
-  <section class="apparait"><p class="citation">« Le bonheur se partage comme le thé : en trois services, avec ceux qu'on aime. »</p></section>
-  <div class="filet"></div>
-  <div class="bande-photo apparait" data-effet="fondu"><div class="bp-fond" data-parallaxe="0.22" style="background-image:url('photo.jpg')"></div><div class="bp-voile" style="background:linear-gradient(rgba(251,248,242,.25),rgba(30,42,74,.55))"></div><div class="bp-texte" style="color:#fff"><p style="font-family:'Italiana',serif;font-size:40px;line-height:1.1">Bienvenue chez nous</p><p style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;margin-top:10px">Teranga</p></div></div>
-  <div class="filet"></div>
-  <section class="apparait" data-effet="zoom"><p class="sous">Le lieu</p><h2>Les Almadies</h2><p>Résidence des Filaos · Dakar, Sénégal<br>Samedi 22 mai 2027 · 16h00</p>
-    <a class="lien" href="https://www.google.com/maps/search/?api=1&query=Almadies+Dakar" target="_blank" rel="noopener">Voir la carte</a></section>
-  <div class="filet"></div>
-  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
-<section class="apparait"><p class="sous">Le programme</p>
-    <ul class="prog"><li><b>16h00</b>Cérémonie et bénédiction</li><li><b>18h00</b>Cocktail, bissap et thiakry</li><li><b>20h00</b>Dîner : thiéboudiène royal</li><li><b>22h00</b>Soirée mbalax</li></ul></section>
-  <div class="filet"></div>
-  <section class="apparait" data-effet="zoom"><p class="sous">La tenue</p><h2>Blanc et or</h2><p style="margin-bottom:20px">Le bazin à l'honneur</p>
-    <div class="teintes"><span><i style="background:#fff"></i>Bazin blanc</span><span><i style="background:#B8954A"></i>Or</span></div></section>
-  <div class="filet"></div>
-  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
-  <section class="apparait"><p class="sous">Plus que</p>
-    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
-    <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a></section>
-  <div class="filet"></div>
-  <section class="apparait"><p class="sous">Votre réponse</p><h2>Serez-vous des nôtres ?</h2>
-    <button class="lien plein reponse">Je serai présent(e)</button> <button class="lien reponse">Je ne pourrai pas venir</button>
-    <p class="demo" id="demo">Démonstration : sur votre faire-part, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
-  <p class="pied"><b>Jërëjëf</b>Faire-part de démonstration · couple fictif · photo Pexels</p>
-</main>
-<script>window.FAIREPART = { debut: '2027-05-22T16:00:00', fin: '20270522T235900', titre: 'Mariage d\'Awa & Ousmane', lieu: 'Les Almadies, Dakar, Sénégal', fichier: 'mariage-awa-ousmane', jour: 'C\'est le grand jour' };</script>
-<script src="../_commun/noyau.js?v=3"></script>
-<script src="../_commun/animations.js?v=4"></script>
-<!-- maison:debut -->
-<nav aria-label="Maison Vivat" style="position:relative;z-index:40;background:#1E1B18;color:#BDB4A7;text-align:center;padding:26px 16px 30px;font:300 13px/1.9 Inter,system-ui,sans-serif;letter-spacing:.04em">
-  <a href="../index.html#collections" style="color:#F7F3EC;text-decoration:none;font:italic 500 21px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:0">← Maison Vivat · Mariage</a><br>
-  <a href="../creer/?evt=mariage&amp;modele=teranga" style="display:inline-block;margin:10px 0 14px;color:#1E1B18;background:#F7F3EC;text-decoration:none;padding:9px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Créer mon espace avec cette collection</a><br>
-  <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8B8378">Nos maisons</span><br><a href="../index.html" style="color:#BDB4A7;text-decoration:none">Mariage</a> · <a href="../anniversaires/index.html" style="color:#BDB4A7;text-decoration:none">Anniversaires</a> · <a href="../baptemes/index.html" style="color:#BDB4A7;text-decoration:none">Baptêmes</a> · <a href="../reveal/index.html" style="color:#BDB4A7;text-decoration:none">Gender reveal</a> · <a href="../naissances/index.html" style="color:#BDB4A7;text-decoration:none">Naissances</a>
-</nav>
-<!-- maison:fin -->
-</body>
-</html>
+<main class="mood"><a class="tuile grand" href="faire-part.html"><span class="tel"><img src="apercus/faire-part.webp" alt="Aperçu : Faire-part" loading="lazy"></span><b>Faire-part</b><small>L&#x27;enveloppe s&#x27;ouvre, la carte apparaît</small></a><a class="tuile " href="faire-part.html?f=std"><span class="tel"><img src="apercus/save-the-date.webp" alt="Aperçu : Save-the-date" loading="lazy"></span><b>Save-the-date</b><small>Pour réserver la date</small></a><a class="tuile grand" href="site.html"><span class="tel"><img src="apercus/site.webp" alt="Aperçu : Site du mariage" loading="lazy"></span><b>Site du mariage</b><small>Programme, lieu, hébergement, réponse</small></a><a class="tuile " href="plan-de-table.html"><span class="tel"><img src="apercus/plan-de-table.webp" alt="Aperçu : Plan de table" loading="lazy"></span><b>Plan de table</b><small>Chacun trouve sa place</small></a><a class="tuile " href="mur-photo.html"><span class="tel"><img src="apercus/mur-photo.webp" alt="Aperçu : Mur photo" loading="lazy"></span><b>Mur photo</b><small>Les photos des invités, en direct</small></a><a class="tuile " href="livre-or.html"><span class="tel"><img src="apercus/livre-or.webp" alt="Aperçu : Livre d&#x27;or" loading="lazy"></span><b>Livre d&#x27;or</b><small>Mots, voix et vidéos</small></a></main>
+<section class="mood-cta"><a class="bouton plein" href="/creer/?evt=mariage">Créer mon espace avec Teranga</a></section>
+<footer class="suite-pied"><p class="script">Awa &amp; Ousmane</p><p>Jërëjëf : merci de partager notre joie</p>
+<small>Démonstration de la collection Teranga · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+</body></html>

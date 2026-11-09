@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aya &amp; Koffi — Livre d&#x27;or (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&family=Great+Vibes&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<style>
+:root{--fond:#F7EBD8;--carte:#FFFAF1;--encre:#1E140C;--doux:#6D5848;--or1:#D98A1E;--or2:#F3C46A;--or3:#9C5C10;--accent:#C2560F;
+  --f-titre:'Syne',sans-serif;--f-script:'Great Vibes',cursive;--f-texte:'Manrope',system-ui,sans-serif;--decor:linear-gradient(rgba(255,250,241,.15),rgba(255,250,241,.15)),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#3A1E08;}
+
+
+</style>
+</head>
+<body>
+<nav class="suite-nav" aria-label="La collection Kita"><a class="suite-marque" href="index.html">✦ Kita</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html" aria-current=page>Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><img class="deco-haut" src="haut.webp" alt="" width="1400" height="561"><p class="chapeau">Aya &amp; Koffi</p><h1>Le livre d'or</h1>
+  <p class="intro">Un mot, un message vocal ou une vidéo : vos souvenirs, à réécouter des années plus tard.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : votre message s’enregistrerait ici'">Laisser un message</a></header>
+<main class="suite-main"><div class="mots"><article class="mot apparait"><p>« Que votre maison soit toujours pleine de rires, comme ce soir. Je vous aime fort. »</p><span class="script">Tante Odile</span></article><article class="mot apparait"><p>« Quelle fête ! On n&#x27;oubliera jamais l&#x27;entrée des mariés. Longue vie à vous deux ! »</p><span class="script">Les cousins de Bordeaux</span><em class=media>▶ Message vocal · 0:42</em></article><article class="mot apparait"><p>« J&#x27;ai dansé comme à vingt ans. Merci de m&#x27;avoir donné cette joie. »</p><span class="script">Mamie Jeanne</span></article><article class="mot apparait"><p>« Votre histoire nous émeut depuis le premier jour. Que le meilleur reste à venir. »</p><span class="script">Karim et Sarah</span></article><article class="mot apparait"><p>« On vous a vus tomber amoureux, on vous voit vous marier : la boucle est bouclée. »</p><span class="script">Les témoins</span><em class=media>▶ Vidéo · 0:31</em></article><article class="mot apparait"><p>« Merci pour ce moment hors du temps. Le dîner était une merveille. »</p><span class="script">Paul, le collègue</span></article></div></main>
+<footer class="suite-pied"><p class="script">Aya &amp; Koffi</p><p>Akwaba : merci de faire la fête avec nous</p>
+<small>Démonstration de la collection Kita · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-10-09T16:00:00+00:00'; document.body.dataset.evenement = 'Mariage Aya & Koffi'; document.body.dataset.ville = 'Cocody, Abidjan';
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>
