@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Great+Vibes&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
@@ -28,7 +29,7 @@ body.ferme{overflow:hidden}
 
 </style>
 </head>
-<body class="ferme" data-date="2027-12-04T16:00:00+01:00" data-evenement="Mariage Tolu &amp; Femi" data-ville="Lekki, Lagos" data-titre-std="Tolu &amp; Femi — Save the date (démonstration)" data-particules="or">
+<body class="ferme" data-date="2027-12-04T16:00:00+01:00" data-evenement="Mariage Tolu &amp; Femi" data-ville="Lekki, Lagos" data-titre-std="Tolu &amp; Femi — Save the date (démonstration)" data-particules="or" data-trame="edito">
 <div class="ouverture" id="ouverture" style="--ratio:1000/1741;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><small>Mariage</small><b>Tolu</b><i>&amp;</i><b>Femi</b><small>04 · 12 · 2027</small></div>
@@ -38,16 +39,12 @@ body.ferme{overflow:hidden}
 </div>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
-<header class="suite-couv carte">
+<header class="suite-couv carte couv-edito">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="688">
-  
   <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
-  <h1 class="noms">Tolu<i class="or">&amp;</i>Femi</h1>
-  <div class="filet">✦</div>
-  <p class="date">04 · 12 · 2027</p>
-  <p class="lieu">Royal Coral Hall<br>Lekki, Lagos</p>
-  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
-  <img class="deco-bas" src="bas.webp" alt="" width="1400" height="700">
+  <h1 class="noms"><span>Tolu</span><i class="or">&amp;</i><span>Femi</span></h1>
+  <div class="edito-bande"><p class="date">Samedi 4 décembre 2027</p><p class="lieu">Royal Coral Hall · Lekki, Lagos</p></div>
+  <figure class="edito-image"><img src="lieu.webp" alt=""></figure><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
 </header>
 
 <main class="suite-main">

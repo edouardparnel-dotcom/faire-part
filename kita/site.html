@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&family=Great+Vibes&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <style>
 :root{--fond:#F7EBD8;--carte:#FFFAF1;--encre:#1E140C;--doux:#6D5848;--or1:#D98A1E;--or2:#F3C46A;--or3:#9C5C10;--accent:#C2560F;
@@ -18,28 +19,24 @@
 
 </style>
 </head>
-<body data-particules="petales">
+<body data-particules="petales" data-trame="edito">
 <nav class="suite-nav" aria-label="La collection Kita"><a class="suite-marque" href="index.html">✦ Kita</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html" aria-current=page>Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
-<header class="suite-couv carte">
+<header class="suite-couv carte couv-edito">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="561">
-  
   <p class="chapeau">Bienvenue sur notre site de mariage</p>
-  <h1 class="noms">Aya<i class="or">&amp;</i>Koffi</h1>
-  <div class="filet">✦</div>
-  <p class="date">09 · 10 · 2027</p>
-  <p class="lieu">Jardins de la Riviera<br>Cocody, Abidjan</p>
-  
-  <img class="deco-bas" src="bas.webp" alt="" width="1400" height="623">
+  <h1 class="noms"><span>Aya</span><i class="or">&amp;</i><span>Koffi</span></h1>
+  <div class="edito-bande"><p class="date">Samedi 9 octobre 2027</p><p class="lieu">Jardins de la Riviera · Cocody, Abidjan</p></div>
+  <figure class="edito-image"><img src="lieu.webp" alt=""></figure>
 </header>
 
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#reponse">Réponse</a></nav>
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés à un maquis de Marcory, un soir de coupé-décalé, et ont dansé jusqu&#x27;au matin. Après la dot à Bouaké, tout Abidjan se met sur son trente-et-un pour les célébrer.</p></section>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 9 octobre 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>14 h 00</b><span>Accueil des familles</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Bandji et cocktail</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>18 h 00</b><span>Attiéké, poisson braisé et grand dîner</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Tambours et danses</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
-  <section class="bloc apparait" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Jardins de la Riviera<br>Cocody, Abidjan</p>
+  <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Jardins de la Riviera<br>Cocody, Abidjan</p>
     <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Cocody, Abidjan" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel de la Riviera</b><span>À 5 minutes · tarif invité sur demande</span></div><div class="hotel"><b>Résidence du Plateau</b><span>Navette vers les jardins à 13 h et à 1 h</span></div></div></section>
-  <section class="bloc apparait" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Kita et or</p><p>Pagne kita, tons orange et or. Les familles porteront le kita tissé choisi par les mariés.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
+  <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Kita et or</p><p>Pagne kita, tons orange et or. Les familles porteront le kita tissé choisi par les mariés.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
   <section class="bloc apparait"><h2>Le compte à rebours</h2>
     <div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div>
     <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>

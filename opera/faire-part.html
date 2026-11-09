@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Italianno&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
@@ -28,7 +29,7 @@ body.ferme{overflow:hidden}
 .noms i{font-size:1em}.ouverture{padding:0;justify-content:center}.portail{width:100vw;height:100svh;aspect-ratio:auto;animation:none}.portail::after{display:none}.battant{background-size:200% 100%;filter:none;transition:transform 2.2s cubic-bezier(.7,0,.2,1) .3s}.ouvert .battant.g{transform:translateX(-92%) scaleX(.35)}.ouvert .battant.d{transform:translateX(92%) scaleX(.35)}.battant.g{transform-origin:left center}.battant.d{transform-origin:right center}.portail .derriere{inset:0}.ouverture .consigne{z-index:9}
 </style>
 </head>
-<body class="ferme" data-date="2027-12-11T18:00:00+01:00" data-evenement="Mariage Victoria &amp; Samuel" data-ville="Lyon" data-titre-std="Victoria &amp; Samuel — Save the date (démonstration)" data-particules="petales">
+<body class="ferme" data-date="2027-12-11T18:00:00+01:00" data-evenement="Mariage Victoria &amp; Samuel" data-ville="Lyon" data-titre-std="Victoria &amp; Samuel — Save the date (démonstration)" data-particules="petales" data-trame="affiche">
 <div class="ouverture" id="ouverture" style="--ratio:1000/1780;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><small>Mariage</small><b>Victoria</b><i>&amp;</i><b>Samuel</b><small>11 · 12 · 2027</small></div>
@@ -38,16 +39,10 @@ body.ferme{overflow:hidden}
 </div>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
-<header class="suite-couv carte">
+<header class="suite-couv carte couv-affiche">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="646">
-  
-  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
-  <h1 class="noms">Victoria<i class="or">&amp;</i>Samuel</h1>
-  <div class="filet">✦</div>
-  <p class="date">11 · 12 · 2027</p>
-  <p class="lieu">Théâtre des Lumières<br>Lyon</p>
-  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
-  <img class="deco-bas" src="bas.webp" alt="" width="1400" height="696">
+  <div class="affiche"><p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><p class="affiche-pre">Le mariage de</p><h1 class="noms">Victoria<i class="or">&amp;</i>Samuel</h1>
+  <div class="affiche-bande"><span>11 · 12 · 2027</span></div><p class="lieu">Théâtre des Lumières<br>Lyon</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p></div><img class="deco-bas" src="bas.webp" alt="" width="1400" height="696">
 </header>
 
 <main class="suite-main">

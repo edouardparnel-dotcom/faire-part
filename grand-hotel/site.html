@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Italiana&family=Pinyon+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <style>
 :root{--fond:#F3ECDF;--carte:#FBF7EF;--encre:#3A332B;--doux:#7A6F60;--or1:#B8924F;--or2:#E9D3A0;--or3:#8C6A33;--accent:#3A332B;
@@ -18,7 +19,7 @@
 
 </style>
 </head>
-<body data-particules="or">
+<body data-particules="or" data-trame="centree">
 <nav class="suite-nav" aria-label="La collection Grand Hôtel"><a class="suite-marque" href="index.html">✦ Grand Hôtel</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html" aria-current=page>Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
 <header class="suite-couv carte">
   <img class="deco-haut" src="guirlande.webp" alt="" width="1400" height="591">
@@ -36,10 +37,10 @@
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Une première valse au bal d&#x27;une amie, une conversation qui ne s&#x27;est jamais vraiment arrêtée, et un oui murmuré sous le grand lustre de l&#x27;hôtel où tout a commencé.</p></section>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 12 juin 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Cérémonie dans les salons</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Cocktail sous le lustre</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Dîner de gala</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>22 h 30</b><span>Ouverture du bal</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 30</b><span>Pièce montée</span></div></li></ol></section>
-  <section class="bloc apparait" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Hôtel du Grand Salon<br>Paris</p>
+  <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Hôtel du Grand Salon<br>Paris</p>
     <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Paris" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel Le Vendôme</b><span>À 5 minutes à pied · tarif invité sur demande</span></div><div class="hotel"><b>Maison Rivoli</b><span>À 10 minutes · navette prévue à 2 h</span></div></div></section>
-  <section class="bloc apparait" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Smoking pour ces messieurs, robe longue pour ces dames. Ivoire, champagne et sauge sont les bienvenus.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
+  <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Smoking pour ces messieurs, robe longue pour ces dames. Ivoire, champagne et sauge sont les bienvenus.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
   <section class="bloc apparait"><h2>Le compte à rebours</h2>
     <div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div>
     <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>

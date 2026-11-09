@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
@@ -28,7 +29,7 @@ body.ferme{overflow:hidden}
 
 </style>
 </head>
-<body class="ferme" data-date="2027-06-26T15:00:00+02:00" data-evenement="Mariage Sarah &amp; Thomas" data-ville="Val de Loire" data-titre-std="Sarah &amp; Thomas — Save the date (démonstration)" data-particules="petales">
+<body class="ferme" data-date="2027-06-26T15:00:00+02:00" data-evenement="Mariage Sarah &amp; Thomas" data-ville="Val de Loire" data-titre-std="Sarah &amp; Thomas — Save the date (démonstration)" data-particules="petales" data-trame="arche">
 <div class="ouverture" id="ouverture" style="--ratio:1000/711;--rabat:polygon(0 0,100% 0,100% 9%,50% 77%,0 10%);--devant:polygon(0 10%,50% 77%,100% 9%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 91%,50% 23%,0 90%);--doublure:linear-gradient(0deg,#8C6E36,#E2CD9C 55%,#B8975A);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
     <div class="env-dos"></div>
@@ -41,16 +42,11 @@ body.ferme{overflow:hidden}
 </div>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
-<header class="suite-couv carte">
+<header class="suite-couv carte couv-arche">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="702">
-  
-  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
-  <h1 class="noms">Sarah<i class="or">&amp;</i>Thomas</h1>
-  <div class="filet">✦</div>
-  <p class="date">26 · 06 · 2027</p>
-  <p class="lieu">Château de Valmont<br>Val de Loire</p>
-  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
-  <img class="deco-bas" src="bas.webp" alt="" width="1400" height="605">
+  <div class="arche"><img src="lieu.webp" alt=""></div>
+  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Sarah<i class="or">&amp;</i>Thomas</h1><div class="filet">✦</div><p class="date">26 · 06 · 2027</p>
+  <p class="lieu">Château de Valmont<br>Val de Loire</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p><img class="deco-bas" src="bas.webp" alt="" width="1400" height="605">
 </header>
 
 <main class="suite-main">

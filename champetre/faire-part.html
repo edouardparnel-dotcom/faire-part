@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Homemade+Apple&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
@@ -28,7 +29,7 @@ body.ferme{overflow:hidden}
 .noms i{font-size:.6em}
 </style>
 </head>
-<body class="ferme" data-date="2027-06-12T15:30:00+02:00" data-evenement="Mariage Clara &amp; Julien" data-ville="Bourgogne" data-titre-std="Clara &amp; Julien — Save the date (démonstration)" data-particules="petales">
+<body class="ferme" data-date="2027-06-12T15:30:00+02:00" data-evenement="Mariage Clara &amp; Julien" data-ville="Bourgogne" data-titre-std="Clara &amp; Julien — Save the date (démonstration)" data-particules="petales" data-trame="carnet">
 <div class="ouverture" id="ouverture" style="--ratio:1000/728;--rabat:polygon(0 0,100% 0,100% 8%,64% 54%,70% 90%,30% 90%,36% 54%,0 8%);--devant:polygon(0 8%,36% 54%,30% 90%,70% 90%,64% 54%,100% 8%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 92%,64% 46%,70% 10%,30% 10%,36% 46%,0 92%);--doublure:linear-gradient(0deg,#8A7AA8,#C9BEDD 55%,#A99BC4);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
     <div class="env-dos"></div>
@@ -41,16 +42,10 @@ body.ferme{overflow:hidden}
 </div>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
-<header class="suite-couv carte">
+<header class="suite-couv carte couv-carnet">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="630">
-  
-  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
-  <h1 class="noms">Clara<i class="or">&amp;</i>Julien</h1>
-  <div class="filet">✦</div>
-  <p class="date">12 · 06 · 2027</p>
-  <p class="lieu">Domaine du Moulin<br>Bourgogne</p>
-  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
-  <img class="deco-bas" src="bas.webp" alt="" width="1400" height="574">
+  <div class="feuille"><p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Clara<i class="or">&amp;</i>Julien</h1><p class="date">12 · 06 · 2027</p>
+  <figure class="polaroid"><img src="lieu.webp" alt=""><figcaption>Domaine du Moulin</figcaption></figure><p class="lieu">Bourgogne</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p></div><img class="deco-bas" src="bas.webp" alt="" width="1400" height="574">
 </header>
 
 <main class="suite-main">

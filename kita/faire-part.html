@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&family=Great+Vibes&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=1">
+<link rel="stylesheet" href="../_commun/trames.css?v=1">
 <script src="../_commun/vivant.js?v=1" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
@@ -28,7 +29,7 @@ body.ferme{overflow:hidden}
 
 </style>
 </head>
-<body class="ferme" data-date="2027-10-09T16:00:00+00:00" data-evenement="Mariage Aya &amp; Koffi" data-ville="Cocody, Abidjan" data-titre-std="Aya &amp; Koffi — Save the date (démonstration)" data-particules="petales">
+<body class="ferme" data-date="2027-10-09T16:00:00+00:00" data-evenement="Mariage Aya &amp; Koffi" data-ville="Cocody, Abidjan" data-titre-std="Aya &amp; Koffi — Save the date (démonstration)" data-particules="petales" data-trame="edito">
 <div class="ouverture" id="ouverture" style="--ratio:1000/680;--rabat:polygon(0 0,100% 0,100% 8%,54% 69%,54% 98%,46% 98%,46% 69%,0 7%);--devant:polygon(0 7%,46% 69%,46% 98%,54% 98%,54% 69%,100% 8%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 92%,54% 31%,54% 2%,46% 2%,46% 31%,0 93%);--doublure:linear-gradient(0deg,#9C5C10,#F3C46A 55%,#D98A1E);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
     <div class="env-dos"></div>
@@ -41,16 +42,12 @@ body.ferme{overflow:hidden}
 </div>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
-<header class="suite-couv carte">
+<header class="suite-couv carte couv-edito">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="561">
-  
   <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
-  <h1 class="noms">Aya<i class="or">&amp;</i>Koffi</h1>
-  <div class="filet">✦</div>
-  <p class="date">09 · 10 · 2027</p>
-  <p class="lieu">Jardins de la Riviera<br>Cocody, Abidjan</p>
-  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
-  <img class="deco-bas" src="bas.webp" alt="" width="1400" height="623">
+  <h1 class="noms"><span>Aya</span><i class="or">&amp;</i><span>Koffi</span></h1>
+  <div class="edito-bande"><p class="date">Samedi 9 octobre 2027</p><p class="lieu">Jardins de la Riviera · Cocody, Abidjan</p></div>
+  <figure class="edito-image"><img src="lieu.webp" alt=""></figure><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
 </header>
 
 <main class="suite-main">

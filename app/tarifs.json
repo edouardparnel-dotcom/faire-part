@@ -35,7 +35,8 @@
      "etranger",
      "guide",
      "merci",
-     "deroule"
+     "deroule",
+     "musique"
     ]
    }
   },
@@ -43,6 +44,10 @@
    "savethedate": {
     "nom": "Save-the-date animé",
     "prix": 90
+   },
+   "musique": {
+    "nom": "Musique au choix",
+    "prix": 40
    },
    "ceremonies": {
     "nom": "Invitations par cérémonie",
@@ -129,6 +134,10 @@
    }
   },
   "options": {
+   "musique": {
+    "nom": "Musique au choix",
+    "prix": 40
+   },
    "langue": {
     "nom": "Langue supplémentaire",
     "prix": 60

@@ -1,0 +1,119 @@
+/* Trames de mise en page : chaque collection a sa structure, pas seulement ses images.
+   centree (défaut) · arche · edito · affiche · carnet · plein. Choisie par data-trame sur <body>. */
+.bande{display:none}
+
+/* ───────── ARCHE : fenêtre en arc, blocs à sommet arrondi, programme en frise alternée ───────── */
+[data-trame=arche] .couv-arche{justify-content:flex-start;padding-top:min(30vw,150px)}
+[data-trame=arche] .arche{position:relative;z-index:1;width:min(64vw,300px);aspect-ratio:3/4;border-radius:999px 999px 0 0;overflow:hidden;margin:0 auto 22px;
+  box-shadow:0 0 0 1px var(--or1),0 0 0 7px var(--carte),0 0 0 8px var(--or1),0 30px 50px -24px rgba(0,0,0,.45)}
+[data-trame=arche] .arche img{width:100%;height:100%;object-fit:cover;object-position:50% 70%;scale:1.25;animation:arche-zoom 18s ease-in-out infinite alternate}
+@keyframes arche-zoom{to{scale:1.05}}
+[data-trame=arche] .couv-arche .chapeau{margin-top:0;padding-top:0}
+[data-trame=arche] .couv-arche .deco-haut{opacity:.95}
+[data-trame=arche] .bloc{border-radius:240px 240px 6px 6px/150px 150px 6px 6px;padding-top:70px;box-shadow:0 0 0 1px rgba(185,138,62,.5),0 24px 40px -22px rgba(0,0,0,.4)}
+[data-trame=arche] .bloc h2{letter-spacing:.3em}
+[data-trame=arche] .frise::before{left:50%;border-left:1px solid var(--or1)}
+[data-trame=arche] .frise li{grid-template-columns:1fr 1fr;gap:34px}
+[data-trame=arche] .frise li img{justify-self:end;width:76px;height:76px}
+[data-trame=arche] .frise li:nth-child(even) img{order:2;justify-self:start}
+[data-trame=arche] .frise li:nth-child(even) div{text-align:right}
+[data-trame=arche] .medaillons div{border-radius:999px 999px 8px 8px;height:110px}
+
+/* ───────── ÉDITO : mise en page de magazine, grands caractères, sections numérotées ───────── */
+[data-trame=edito] .couv-edito{align-items:flex-start;text-align:left;padding:min(34vw,170px) 22px 0;justify-content:flex-start}
+[data-trame=edito] .couv-edito .deco-haut{left:auto;right:-30%;width:95%;top:-4vw}
+[data-trame=edito] .couv-edito .chapeau{margin:0;padding:0;font-size:11px}
+[data-trame=edito] .couv-edito .noms{font-size:clamp(54px,17vw,96px);letter-spacing:-.01em;line-height:.88;margin-top:14px;text-transform:uppercase}
+[data-trame=edito] .couv-edito .noms span{display:block}
+[data-trame=edito] .couv-edito .noms span:last-child{padding-left:16vw;font-style:italic;text-transform:none}
+[data-trame=edito] .couv-edito .noms i{display:inline-block;font-size:.55em;margin:4px 0 4px 2px}
+[data-trame=edito] .edito-bande{position:relative;width:100%;display:flex;justify-content:space-between;gap:12px;border-block:1px solid var(--encre);padding:10px 0;margin-top:22px}
+[data-trame=edito] .edito-bande .date{font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+[data-trame=edito] .edito-bande .lieu{margin:0;font-size:11px;text-align:right}
+[data-trame=edito] .edito-image{position:relative;width:calc(100% + 44px);margin:22px -22px 0;aspect-ratio:4/3;overflow:hidden}
+[data-trame=edito] .edito-image img{width:100%;height:100%;object-fit:cover;scale:1.12}
+[data-trame=edito] .suite-main{counter-reset:sec}
+[data-trame=edito] .bloc{counter-increment:sec;text-align:left;background:color-mix(in srgb,var(--carte) 94%,transparent);box-shadow:none;border-top:2px solid var(--encre);padding:30px 22px 34px;margin:40px 0}
+[data-trame=edito] .bloc h2{display:flex;align-items:baseline;gap:14px;font-size:15px;letter-spacing:.2em}
+[data-trame=edito] .bloc h2::before{content:counter(sec,decimal-leading-zero);font-family:var(--f-titre);font-size:54px;line-height:.8;letter-spacing:0;color:transparent;-webkit-text-stroke:1px var(--accent)}
+[data-trame=edito] .bloc>p:first-of-type::first-letter{float:left;font-family:var(--f-titre);font-size:3.6em;line-height:.8;padding:6px 8px 0 0;color:var(--accent)}
+[data-trame=edito] .bande{display:block;height:220px;margin:-30px -22px 24px;background-size:cover;background-position:center}
+[data-trame=edito] .frise{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin:0 -22px;padding-inline:22px;scrollbar-width:none}
+[data-trame=edito] .frise::before{display:none}
+[data-trame=edito] .frise li{flex:0 0 62%;scroll-snap-align:start;display:block;padding:16px;background:var(--fond);color:var(--sur-fond);border-radius:2px}
+[data-trame=edito] .frise li img{width:100%;height:120px;object-fit:contain;margin-bottom:10px;background:var(--carte);border-radius:2px}
+[data-trame=edito] .frise li b{color:var(--or2)}
+[data-trame=edito] .hotels{grid-template-columns:1fr 1fr}
+[data-trame=edito] .medaillons div{border-radius:0;background:none;box-shadow:none;border-left:1px solid var(--encre);width:auto;padding:0 16px;place-content:start}
+[data-trame=edito] .medaillons b{font-size:44px}
+
+/* ───────── AFFICHE : programme de spectacle, billets à encoches, liste à points de conduite ───────── */
+[data-trame=affiche] .couv-affiche{justify-content:center;padding-top:min(40vw,190px)}
+[data-trame=affiche] .affiche{position:relative;z-index:1;width:100%;max-width:420px;padding:30px 20px 26px;border:1px solid var(--or1);outline:1px solid var(--or1);outline-offset:6px;background:color-mix(in srgb,var(--carte) 90%,transparent)}
+[data-trame=affiche] .affiche::before,[data-trame=affiche] .affiche::after{content:"✦";position:absolute;left:50%;translate:-50% -50%;top:0;padding:0 10px;background:var(--carte);color:var(--or1)}
+[data-trame=affiche] .affiche::after{top:100%}
+[data-trame=affiche] .affiche .chapeau{margin:0;padding:0}
+[data-trame=affiche] .affiche-pre{font-family:var(--f-script);font-size:30px;color:var(--or3);margin-top:6px}
+[data-trame=affiche] .affiche .noms{text-transform:uppercase;letter-spacing:.06em}
+[data-trame=affiche] .affiche-bande{margin:16px -20px 12px;padding:10px;background:var(--accent);color:var(--carte);font-family:var(--f-titre);letter-spacing:.4em;font-size:18px}
+[data-trame=affiche] .bloc{--encoche:14px;-webkit-mask:radial-gradient(circle var(--encoche) at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--encoche) at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle var(--encoche) at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--encoche) at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+  box-shadow:inset 0 0 0 1px rgba(185,138,62,.55),inset 0 0 0 6px var(--carte),inset 0 0 0 7px rgba(185,138,62,.35)}
+[data-trame=affiche] .bloc h2{padding-bottom:12px;border-bottom:1px dashed var(--or1)}
+[data-trame=affiche] .frise::before{display:none}
+[data-trame=affiche] .frise{gap:12px}
+[data-trame=affiche] .frise li{display:flex;align-items:baseline;gap:10px}
+[data-trame=affiche] .frise li img{display:none}
+[data-trame=affiche] .frise li div{display:flex;align-items:baseline;gap:10px;width:100%}
+[data-trame=affiche] .frise li b{order:3;flex:none;font-size:17px}
+[data-trame=affiche] .frise li span{order:1;flex:none;font-family:var(--f-titre);text-transform:none;letter-spacing:.04em;font-size:18px}
+[data-trame=affiche] .frise li div::after{content:"";order:2;flex:1;border-bottom:2px dotted var(--or1);translate:0 -5px}
+[data-trame=affiche] .medaillons div{border-radius:4px;background:var(--accent);color:var(--carte)}
+[data-trame=affiche] .medaillons b{color:var(--carte)}
+
+/* ───────── CARNET : feuilles posées, ruban adhésif, polaroïd, écriture à la main ───────── */
+[data-trame=carnet] .couv-carnet{justify-content:center;padding-top:min(40vw,190px)}
+[data-trame=carnet] .feuille{position:relative;z-index:1;width:100%;max-width:400px;padding:30px 22px 24px;background:#FFFDF7;rotate:-1.2deg;
+  box-shadow:0 2px 0 #EFE9DA,0 4px 0 #FFFDF7,0 6px 0 #E8E1CF,0 26px 40px -20px rgba(0,0,0,.45);
+  background-image:repeating-linear-gradient(transparent 0 31px,rgba(120,140,170,.18) 31px 32px)}
+[data-trame=carnet] .feuille::before,[data-trame=carnet] .bloc::before{content:"";position:absolute;top:-12px;left:50%;width:120px;height:28px;translate:-50% 0;rotate:-3deg;
+  background:color-mix(in srgb,var(--or2) 55%,rgba(255,255,255,.4));opacity:.85;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+[data-trame=carnet] .feuille .chapeau{margin:0;padding:0}
+[data-trame=carnet] .feuille .noms{font-family:var(--f-script);text-transform:none;letter-spacing:0;font-size:clamp(46px,14vw,74px)}
+[data-trame=carnet] .polaroid{margin:18px auto 6px;width:78%;padding:10px 10px 34px;background:#fff;rotate:3deg;box-shadow:0 14px 24px -12px rgba(0,0,0,.4);position:relative}
+[data-trame=carnet] .polaroid img{aspect-ratio:1;object-fit:cover;width:100%}
+[data-trame=carnet] .polaroid figcaption{position:absolute;left:0;right:0;bottom:6px;font-family:var(--f-script);font-size:22px;color:#333}
+[data-trame=carnet] .bloc{background:#FFFDF7;rotate:-.8deg;text-align:left;box-shadow:0 22px 34px -20px rgba(0,0,0,.45);
+  background-image:repeating-linear-gradient(transparent 0 31px,rgba(120,140,170,.16) 31px 32px)}
+[data-trame=carnet] .bloc:nth-of-type(even){rotate:.9deg}
+[data-trame=carnet] .bloc h2{font-family:var(--f-script);text-transform:none;letter-spacing:0;font-size:38px}
+[data-trame=carnet] .frise::before{display:none}
+[data-trame=carnet] .frise li{grid-template-columns:64px 1fr;gap:16px}
+[data-trame=carnet] .frise li img{width:64px;height:64px;rotate:-6deg}
+[data-trame=carnet] .frise li b{font-family:var(--f-script);font-size:28px;letter-spacing:0}
+[data-trame=carnet] .frise li span{text-transform:none;letter-spacing:.02em;font-size:17px}
+[data-trame=carnet] .medaillons div{background:#fff;border-radius:50% 45% 52% 48%;border:2px dashed var(--or1);box-shadow:none}
+
+/* ───────── PLEIN ÉCRAN : grandes scènes, texte sur verre, images qui défilent derrière ───────── */
+[data-trame=plein] .couv-plein{min-height:100svh;justify-content:flex-end;align-items:flex-start;text-align:left;padding:0 22px 90px;background:transparent}
+[data-trame=plein] .plein-texte{position:relative;z-index:3;padding:22px;background:color-mix(in srgb,var(--carte) 70%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-left:3px solid var(--or1)}
+[data-trame=plein] .couv-plein .chapeau{margin:0;padding:0}
+[data-trame=plein] .couv-plein .noms{font-size:clamp(46px,14vw,82px);line-height:.95}
+[data-trame=plein] .couv-plein .filet{margin:14px 0;width:120px}
+[data-trame=plein] .defile{position:absolute;bottom:26px;left:50%;translate:-50% 0;z-index:3;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--sur-fond);animation:defile 2s ease-in-out infinite}
+[data-trame=plein] .defile::after{content:"";display:block;width:1px;height:34px;margin:8px auto 0;background:currentColor}
+@keyframes defile{50%{translate:-50% 8px;opacity:.5}}
+[data-trame=plein] .bloc{min-height:82svh;display:flex;flex-direction:column;justify-content:center;margin:0 -14px;padding:60px 26px;background:transparent;box-shadow:none;color:var(--sur-fond)}
+[data-trame=plein] .bloc>*:not(.bande){position:relative;z-index:1}
+[data-trame=plein] .bloc h2{color:var(--sur-fond);font-size:28px}
+[data-trame=plein] .bloc p,[data-trame=plein] .bloc .sous,[data-trame=plein] .titre-tenue{text-shadow:0 1px 12px rgba(0,0,0,.35)}
+[data-trame=plein] .bloc .frise,[data-trame=plein] .bloc .hotels,[data-trame=plein] .bloc .reponse,[data-trame=plein] .bloc .medaillons{padding:18px;background:color-mix(in srgb,var(--carte) 85%,transparent);backdrop-filter:blur(8px);color:var(--encre);text-shadow:none}
+[data-trame=plein] .bande{display:block;position:absolute;inset:0;z-index:0;background-size:contain;background-repeat:no-repeat;background-position:center 70%;opacity:.28}
+[data-trame=plein] .bloc .illus{display:none}
+[data-trame=plein] .suite-main{max-width:640px}
+
+/* Ordinateur : les trames gardent la colonne de téléphone */
+@media (min-width:720px){
+  [data-trame=edito] .couv-edito .noms span:last-child{padding-left:70px}
+  [data-trame=plein] .couv-plein{min-height:min(calc(100vh - 64px),940px)}
+}
