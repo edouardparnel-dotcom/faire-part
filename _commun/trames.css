@@ -230,3 +230,22 @@ small.pour-invite{font-size:18px;margin:0}
 .suite-couv:has(.deco-arche) .chapeau{margin-top:0;padding-top:min(38vw,190px)}
 .suite-couv:has(.deco-arche) .noms{font-size:clamp(34px,10vw,54px)}
 .suite-titre:has(.deco-arche){padding-top:min(70vw,330px)}
+
+/* ───────── SCÈNE : un tableau plein cadre est l'invitation, prénoms dans le ciel, premier plan qui encadre ───────── */
+[data-trame=scene] .couv-scene{position:relative;min-height:100svh;overflow:hidden;justify-content:flex-start;padding:11svh 22px 0;background:#2a1d14;color:#fff}
+[data-trame=scene] .scene-fond{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;animation:scene-zoom 18s ease-out both}
+@keyframes scene-zoom{from{scale:1.12}to{scale:1}}
+[data-trame=scene] .couv-scene::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(rgba(20,12,6,.42),rgba(20,12,6,.08) 55%,rgba(20,12,6,.3));pointer-events:none}
+[data-trame=scene] .scene-texte{position:relative;z-index:2;text-align:center;text-shadow:0 2px 18px rgba(40,20,5,.45)}
+[data-trame=scene] .couv-scene .chapeau{color:#fff;opacity:.92;margin:0 auto 10px;padding-top:0;max-width:18em}
+[data-trame=scene] .couv-scene .noms{color:#fff;font-size:clamp(40px,12vw,72px);line-height:.95}
+[data-trame=scene] .couv-scene .noms .or{color:#fff;opacity:.9}
+[data-trame=scene] .couv-scene .filet{color:var(--or2);margin:14px auto}
+[data-trame=scene] .couv-scene .date,[data-trame=scene] .couv-scene .lieu{color:#fff}
+[data-trame=scene] .couv-scene .deco-balcon{position:absolute;bottom:-2px;left:calc(50% - min(66%,330px));width:min(132%,660px);max-width:none;z-index:2;pointer-events:none;filter:drop-shadow(0 -6px 18px rgba(0,0,0,.35))}
+[data-trame=scene] .couv-scene .defile{display:none;position:absolute;bottom:18%;left:0;right:0;margin:auto;width:max-content;z-index:3;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#fff;animation:defile 2s ease-in-out infinite}
+[data-trame=scene] .couv-scene .defile::after{content:"";display:block;width:1px;height:34px;margin:8px auto 0;background:currentColor}
+.suite-titre .deco-balcon{display:block;width:100%;margin:0 auto 10px}
+[data-trame=scene] .bouton{border-radius:0;border-width:1px;letter-spacing:.24em;padding:14px 34px;box-shadow:inset 0 0 0 4px var(--carte),inset 0 0 0 5px var(--or1)}
+[data-trame=scene] .bouton.plein{background:var(--encre);color:var(--carte);border-color:var(--encre)}
+@media (min-width:720px){[data-trame=scene] .couv-scene{min-height:min(calc(100vh - 64px),940px)}}
