@@ -21,7 +21,9 @@
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
 .ouverture .consigne{color:var(--sur-fond)}
-.mini{background:var(--carte);outline:1px solid var(--or1);outline-offset:-6px}
+.mini{background:linear-gradient(color-mix(in srgb,var(--carte) 82%,transparent),color-mix(in srgb,var(--carte) 82%,transparent)),url('fond.jpg') center/cover,var(--carte);
+  outline:1px solid var(--or1);outline-offset:-7px;box-shadow:inset 0 0 0 11px var(--carte),inset 0 0 0 12px var(--or2);overflow:hidden}
+.mini .mini-deco{width:78%;max-height:30%;object-fit:contain;margin:0 auto 6px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
 .mini b{font-family:var(--f-titre);font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--accent)}
 .mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:clamp(17px,5vw,24px);line-height:1}
 .mini small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
@@ -36,7 +38,7 @@ body.ferme{overflow:hidden}
 <div class="ouverture attente" id="ouverture" style="--ratio:1000/736;--rabat:polygon(0 0,100% 0,100% 15%,50% 80%,0 15%);--devant:polygon(0 15%,50% 80%,100% 15%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 85%,50% 20%,0 85%);--doublure:linear-gradient(0deg,#937537,#E8D49E 55%,#C2A15A);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
     <div class="env-dos"></div>
-    <div class="env-carte mini"><small>Mariage</small><b>Joséphine</b><i>&amp;</i><b>Arthur</b><small>03 · 07 · 2027</small></div>
+    <div class="env-carte mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Joséphine</b><i>&amp;</i><b>Arthur</b><small>03 · 07 · 2027</small></div>
     <div class="env-devant"></div>
     <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
     <img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:77%;width:21%;transform:translate(-50%,-50%)">

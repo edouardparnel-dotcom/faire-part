@@ -21,7 +21,9 @@
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
 .ouverture .consigne{color:var(--sur-fond)}
-.mini{background:var(--carte);outline:1px solid var(--or1);outline-offset:-6px}
+.mini{background:linear-gradient(color-mix(in srgb,var(--carte) 82%,transparent),color-mix(in srgb,var(--carte) 82%,transparent)),url('fond.jpg') center/cover,var(--carte);
+  outline:1px solid var(--or1);outline-offset:-7px;box-shadow:inset 0 0 0 11px var(--carte),inset 0 0 0 12px var(--or2);overflow:hidden}
+.mini .mini-deco{width:78%;max-height:30%;object-fit:contain;margin:0 auto 6px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
 .mini b{font-family:var(--f-titre);font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--accent)}
 .mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:clamp(17px,5vw,24px);line-height:1}
 .mini small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
@@ -35,7 +37,7 @@ body.ferme{overflow:hidden}
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
 <div class="ouverture attente" id="ouverture" style="--ratio:1000/1852;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
-    <div class="derriere mini"><small>Mariage</small><b>Chloé</b><i>&amp;</i><b>Adrien</b><small>15 · 04 · 2028</small></div>
+    <div class="derriere mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Chloé</b><i>&amp;</i><b>Adrien</b><small>15 · 04 · 2028</small></div>
     <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
   </div>
   <p class="consigne">Poussez les portes, l’orchestre attend</p>

@@ -13,6 +13,9 @@ import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/fireba
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');
 let evt, design, famille = 'tous', format = 'fp', ouverte = null, modifie = false, minuteur, saisie = 'fr', ceremonies = [];
+// Photothèque : les photos de l'organisateur (design.mesPhotos) et la bibliothèque Maison Vivat (phototheque.json).
+let biblio = [], cible = null, onglet = 'miennes', categorie = 'Toutes';
+fetch('phototheque.json').then(r => r.json()).then(l => { biblio = l; }).catch(() => {});
 const maxLangues = () => (evt.options || []).includes('langue') ? 3 : 2;
 const cle = ch => saisie === 'fr' ? ch : `${ch}@${saisie}`;   // champ de la langue en cours de saisie
 $('#retour').href = `organisateur.html?e=${encodeURIComponent(E || '')}`;
@@ -38,6 +41,7 @@ exigerOrganisateur(vue, async user => {
         <label>Sous-titre (facultatif)<input id="c-soustitre" maxlength="120"></label>
         <div class="photo-couv" id="photo-couv"></div>
         <p class="app-note" id="m-photo"></p></div></details>
+      <details class="boite"><summary>Photothèque</summary><div><p class="app-note">Vos photos restent ici pour être réutilisées ; la bibliothèque Maison Vivat propose les lieux, matières et ambiances des collections.</p><button class="mini" data-phototheque="">Ouvrir la photothèque</button></div></details>
       <div class="saisie" id="saisie"></div>
       <details class="boite" open><summary>Parties</summary><div><ul class="parties" id="parties"></ul>
         <div class="ajout"><select id="nouvelle"></select><button class="btn petit" id="b-ajouter">Ajouter</button></div></div></details>
@@ -51,6 +55,9 @@ exigerOrganisateur(vue, async user => {
       <div class="telephone"><iframe id="apercu" src="fp.html?apercu=1" title="Aperçu du faire-part"></iframe></div>
       <p class="app-note"><a class="lien-or" target="_blank" rel="noopener" href="fp.html?e=${encodeURIComponent(E)}">Voir la page publiée</a></p>
     </div>`;
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="phototheque" id="phototheque"><div class="pt-tete"><b class="serif" style="font-size:24px">Photothèque</b><span id="pt-cible" class="app-note"></span><button class="icone" id="pt-fermer" title="Fermer">✕</button></div>
+    <div class="pt-onglets"><button class="mini" data-pt-onglet="miennes">Mes photos</button><button class="mini" data-pt-onglet="biblio">Bibliothèque Maison Vivat</button></div>
+    <div id="pt-filtres" class="pt-filtres"></div><div id="pt-grille" class="pt-grille"></div><p class="app-note" id="pt-m"></p></dialog>`);
   addEventListener('message', e => { if (e.origin === location.origin && e.data?.pret) envoyer(true); });
   addEventListener('beforeunload', e => { if (modifie) { e.preventDefault(); e.returnValue = ''; } });
   remplir();
@@ -78,8 +85,9 @@ function remplir() {
     ${design.langues.includes('ht') ? '<p class="app-note">Les textes fixes en créole haïtien sont fournis par Maison Vivat ; faites relire les vôtres par un proche.</p>' : ''}`;
   $('#saisie').innerHTML = design.langues.length > 1 ? `<span>Langue de saisie des textes :</span>${design.langues.map(l => `<button class="mini ${l === saisie ? 'actif' : ''}" data-saisie="${l}">${esc(LANGUES[l])}</button>`).join('')}` : '';
   $('#c-surtitre').value = c[cle('surtitre')] || ''; $('#c-titre').value = c.titre || ''; $('#c-soustitre').value = c[cle('soustitre')] || '';
-  $('#photo-couv').innerHTML = c.photo ? `<img src="${esc(c.photo)}" alt=""><button class="mini" id="b-sans-photo">Retirer la photo</button><label class="mini" style="cursor:pointer">Changer<input type="file" accept="image/*" id="i-photo" hidden></label>`
-    : `<label class="btn petit clair" style="cursor:pointer">Ajouter une photo<input type="file" accept="image/*" id="i-photo" hidden></label>`;
+  $('#photo-couv').innerHTML = (c.photo ? `<img src="${esc(c.photo)}" alt=""><button class="mini" id="b-sans-photo">Retirer la photo</button><label class="mini" style="cursor:pointer">Changer<input type="file" accept="image/*" id="i-photo" hidden></label>`
+    : `<label class="btn petit clair" style="cursor:pointer">Ajouter une photo<input type="file" accept="image/*" id="i-photo" hidden></label>`)
+    + `<button class="mini" data-phototheque="couverture">Choisir dans la photothèque</button>`;
   $('#s-surtitre').value = design.std?.[cle('surtitre')] || ''; $('#s-texte').value = design.std?.[cle('texte')] || '';
   parties();
 }
@@ -96,7 +104,7 @@ function parties() {
       ${ouverte === k ? `<div class="partie-corps">${SECTIONS[s.type]?.auto ? `<p class="app-note">${esc(SECTIONS[s.type].auto)}.</p>` : ''}
         ${optionManquante(s.type) ? `<p class="app-note">Partie liée à l'option « ${esc(SECTIONS[s.type].nom)} » : vos invités la verront une fois l'option activée.</p>` : ''}
         ${s.type === 'galerie' ? `<div class="photos-galerie">${(s.photos || []).map((u, i) => `<span><img src="${esc(u)}" alt=""><button class="icone" data-retirer-galerie="${k}:${i}" title="Retirer">✕</button></span>`).join('')}</div>
-          <label class="btn petit clair" style="cursor:pointer;justify-self:start">Ajouter des photos<input type="file" accept="image/*" multiple data-galerie="${k}" hidden></label><p class="app-note" id="m-galerie"></p>` : ''}
+          <label class="btn petit clair" style="cursor:pointer;justify-self:start">Ajouter des photos<input type="file" accept="image/*" multiple data-galerie="${k}" hidden></label><button class="mini" data-phototheque="galerie:${k}" style="justify-self:start">Choisir dans la photothèque</button><p class="app-note" id="m-galerie"></p>` : ''}
         ${s.type === 'guide' && saisie === 'fr' ? `<label>Partir d'un modèle<select data-guide="${k}"><option value="">Choisir un modèle…</option>${Object.entries(GUIDES).map(([g, x]) => `<option value="${g}">${esc(x.nom)}</option>`).join('')}</select></label>` : ''}
         ${saisie !== 'fr' ? `<p class="app-note">Saisie en ${esc(LANGUES[saisie])} ; laissé vide, le texte français s'affiche.</p>` : ''}
         ${Object.entries(SECTIONS[s.type]?.champs || {}).filter(([ch]) => saisie === 'fr' || !['prenom', 'heure', 'poids', 'taille', 'parrain', 'marraine', 'couleurs', 'lien'].includes(ch)).map(([ch, lib]) => ch === 'texte'
@@ -104,6 +112,36 @@ function parties() {
           : `<label>${esc(lib)}<input data-champ="${k}:${cle(ch)}" value="${esc(s[cle(ch)] || '')}" maxlength="300" placeholder="${esc(saisie === 'fr' ? '' : s[ch] || '')}"></label>`).join('')}</div>` : ''}
     </li>`).join('');
   $('#nouvelle').innerHTML = Object.entries(SECTIONS).map(([k, v]) => `<option value="${k}">${esc(v.nom)}${optionManquante(k) ? ' (option)' : ''}</option>`).join('');
+}
+
+function phototheque() {
+  const d = $('#phototheque'); if (!d) return;
+  design.mesPhotos ??= [];
+  $('#pt-cible').textContent = !cible ? 'Ajoutez vos photos ; elles restent disponibles pour la couverture et la galerie.'
+    : cible === 'couverture' ? 'Touchez une image pour la mettre en couverture.' : 'Touchez les images à ajouter à la galerie.';
+  d.querySelectorAll('[data-pt-onglet]').forEach(b => b.classList.toggle('actif', b.dataset.ptOnglet === onglet));
+  const cats = ['Toutes', ...new Set(biblio.map(x => x.cat))];
+  $('#pt-filtres').innerHTML = onglet === 'biblio' ? cats.map(c => `<button class="mini ${c === categorie ? 'actif' : ''}" data-pt-cat="${esc(c)}">${esc(c)}</button>`).join('') : '';
+  const liste = onglet === 'miennes' ? design.mesPhotos.map(src => ({ src, nom: '' })) : biblio.filter(x => categorie === 'Toutes' || x.cat === categorie);
+  $('#pt-grille').innerHTML = (onglet === 'miennes' ? `<label class="pt-ajout">+ Ajouter mes photos<input type="file" accept="image/*" multiple id="pt-fichiers" hidden></label>` : '')
+    + liste.map(x => `<button class="pt-img" data-pt-choisir="${esc(x.src)}" title="${esc(x.nom)}"><img src="${esc(x.src)}" alt="" loading="lazy">${x.nom ? `<small>${esc(x.nom)}</small>` : ''}</button>`).join('')
+    + (onglet === 'miennes' && !liste.length ? '<p class="app-note">Aucune photo pour l\'instant.</p>' : '');
+}
+
+async function envoyerPhotos(fichiers, prefixe, message) {
+  const urls = [];
+  for (const [n, fi] of [...fichiers].entries()) {
+    message(`Envoi ${n + 1} sur ${fichiers.length}…`);
+    const img = await createImageBitmap(fi), k = Math.min(1, 1800 / Math.max(img.width, img.height));
+    const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    const r = ref(storage, `events/${E}/design/${prefixe}-${Date.now()}-${n}.jpg`);
+    await uploadBytes(r, await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.86)), { contentType: 'image/jpeg' });
+    urls.push(await getDownloadURL(r));
+  }
+  message('');
+  design.mesPhotos = [...new Set([...(design.mesPhotos || []), ...urls])];
+  return urls;
 }
 
 const optionManquante = type => SECTIONS[type]?.option && !(evt.options || []).includes(SECTIONS[type].option);
@@ -122,6 +160,16 @@ function changer(refaire = false) {
 document.addEventListener('click', async ev => {
   const b = ev.target.closest('button'); if (!b || !design) return;
   const S = design.sections, d = b.dataset;
+  if ('phototheque' in d) { cible = d.phototheque || null; onglet = biblio.length && cible ? onglet : 'miennes'; phototheque(); return $('#phototheque').showModal(); }
+  if (b.id === 'pt-fermer') return $('#phototheque').close();
+  if (d.ptOnglet) { onglet = d.ptOnglet; return phototheque(); }
+  if (d.ptCat) { categorie = d.ptCat; return phototheque(); }
+  if (d.ptChoisir) {
+    const src = d.ptChoisir;
+    if (cible === 'couverture') { design.couverture.photo = src; $('#phototheque').close(); return changer(true); }
+    if (cible?.startsWith('galerie:')) { const S = design.sections[+cible.split(':')[1]]; S.photos ??= []; if (!S.photos.includes(src)) S.photos.push(src); b.classList.add('choisie'); parties(); return changer(); }
+    return;
+  }
   if (d.famille) { famille = d.famille; return remplir(); }
   if (d.saisie) { saisie = d.saisie; ouverte = null; remplir(); return envoyer(false); }
   if (d.theme) { design.theme = d.theme; design.palette = null; design.polices = null; design.structure = null; return changer(true); }
@@ -159,20 +207,14 @@ document.addEventListener('change', async ev => {
   const t = ev.target; if (!design) return;
   if (t.id === 'polices') { design.polices = t.value; return changer(); }
   if (t.dataset.structure) { const k = t.dataset.structure, base = theme(design.theme)[k]; design.structure = { ...(design.structure || {}), [k]: t.value === base ? '' : t.value }; return changer(true); }
+  if (t.id === 'pt-fichiers' && t.files.length) {
+    try { await envoyerPhotos(t.files, 'photo', m => { $('#pt-m').textContent = m; }); onglet = 'miennes'; phototheque(); return changer(); }
+    catch (e) { console.error(e); $('#pt-m').textContent = 'Une photo n\'a pas pu être envoyée.'; }
+  }
   if (t.dataset.galerie && t.files.length) {
     const S = design.sections[+t.dataset.galerie]; S.photos ??= [];
-    try {
-      for (const [n, fi] of [...t.files].entries()) {
-        $('#m-galerie').textContent = `Envoi ${n + 1} sur ${t.files.length}…`;
-        const img = await createImageBitmap(fi), k = Math.min(1, 1800 / Math.max(img.width, img.height));
-        const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
-        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-        const r = ref(storage, `events/${E}/design/galerie-${Date.now()}-${n}.jpg`);
-        await uploadBytes(r, await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.86)), { contentType: 'image/jpeg' });
-        S.photos.push(await getDownloadURL(r));
-      }
-      parties(); return changer();
-    } catch (e) { console.error(e); $('#m-galerie').textContent = 'Une photo n\'a pas pu être envoyée.'; }
+    try { S.photos.push(...await envoyerPhotos(t.files, 'galerie', m => { $('#m-galerie').textContent = m; })); parties(); return changer(); }
+    catch (e) { console.error(e); $('#m-galerie').textContent = 'Une photo n\'a pas pu être envoyée.'; }
   }
   if (t.dataset.langue) { const l = t.dataset.langue; design.langues = t.checked ? [...new Set([...design.langues, l])].slice(0, maxLangues()) : design.langues.filter(x => x !== l); return changer(true); }
   if (t.dataset.guide && t.value) { const g = GUIDES[t.value], S = design.sections[+t.dataset.guide]; Object.assign(S, { intro: g.intro, texte: g.texte }); parties(); return changer(); }
@@ -186,6 +228,7 @@ document.addEventListener('change', async ev => {
       const r = ref(storage, `events/${E}/design/couverture-${Date.now()}.jpg`);
       await uploadBytes(r, blob, { contentType: 'image/jpeg' });
       design.couverture.photo = await getDownloadURL(r);
+      design.mesPhotos = [...new Set([...(design.mesPhotos || []), design.couverture.photo])];
       $('#m-photo').textContent = '';
       changer(true);
     } catch (e) { console.error(e); $('#m-photo').textContent = 'La photo n\'a pas pu être envoyée.'; }

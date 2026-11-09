@@ -135,3 +135,15 @@
 .options-paie .deja em{color:#2E7D5B}
 .total-paie .ligne-conseil b{font-family:'Cormorant Garamond',serif;font-size:30px}
 .bandeau-paiement{border-left:3px solid var(--doux)}.bandeau-paiement.ok{border-left-color:#2E7D5B}
+
+/* Photothèque de l'éditeur */
+.phototheque{width:min(920px,94vw);max-height:88vh;border:0;padding:22px;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.phototheque::backdrop{background:rgba(20,16,12,.5)}
+.pt-tete{display:flex;align-items:center;gap:14px;margin-bottom:12px}.pt-tete .icone{margin-left:auto}
+.pt-onglets,.pt-filtres{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pt-grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;overflow:auto;max-height:60vh}
+.pt-img{position:relative;padding:0;border:1px solid #e3dccf;background:#faf7f2;cursor:pointer;aspect-ratio:4/5;overflow:hidden}
+.pt-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pt-img small{position:absolute;left:0;right:0;bottom:0;padding:4px 6px;background:rgba(255,255,255,.85);font-size:11px}
+.pt-img:hover{outline:2px solid #b08d57}.pt-img.choisie{outline:3px solid #b08d57}
+.pt-ajout{display:grid;place-items:center;aspect-ratio:4/5;border:1px dashed #b08d57;cursor:pointer;font-size:13px;text-align:center;padding:10px}
