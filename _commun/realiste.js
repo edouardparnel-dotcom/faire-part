@@ -41,7 +41,7 @@
     panneau.innerHTML = '<h3>Musique</h3>' + items.map(([n, src]) => `<button type="button" data-piste="${src}">${n}</button>`).join('')
       + '<label>＋ Votre musique (fichier MP3)<input type="file" accept="audio/*"></label><p>Les mariés choisissent la musique de leur invitation, ou n’en mettent aucune.</p>';
     document.body.appendChild(panneau);
-    const marque = () => panneau.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String((x.dataset.piste || '') === (audio.getAttribute('src') || ''))));
+    const marque = () => panneau.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.piste ? new URL(x.dataset.piste, location.href).href === audio.src : !audio.getAttribute('src'))));
     marque();
     bouton.addEventListener('click', e => { e.stopPropagation(); panneau.classList.toggle('ouvert'); });
     document.addEventListener('click', e => { if (!panneau.contains(e.target)) panneau.classList.remove('ouvert'); });
