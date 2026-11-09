@@ -17,7 +17,7 @@
 <style>
 /* Direction « Grand Hôtel » (collection réaliste) : papier de coton, cachet de cire, lustre de cristal,
    feuillages à l'aquarelle et table dressée. Les éléments sont des photos détourées posées en couches. */
-:root{--papier:#F3ECDF;--encre:#3A332B;--doux:#7A6F60;--or1:#B8924F;--or2:#E9D3A0;--or3:#8C6A33;--bordeaux:#7C1E2A}
+:root{--fond-carte:linear-gradient(rgba(246,240,229,.55),rgba(246,240,229,.55)),url('papier.jpg') center/cover;--papier:#F3ECDF;--encre:#3A332B;--doux:#7A6F60;--or1:#B8924F;--or2:#E9D3A0;--or3:#8C6A33;--bordeaux:#7C1E2A}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--papier);color:var(--encre);font-family:'Cormorant Garamond',Georgia,serif;-webkit-font-smoothing:antialiased}
 body{background:linear-gradient(rgba(246,240,229,.5),rgba(246,240,229,.5)),url('papier.jpg') center/cover fixed,var(--papier)}
@@ -27,21 +27,14 @@ img{display:block;max-width:100%;height:auto}
   -webkit-background-clip:text;background-clip:text;color:transparent;animation:reflet 6s ease-in-out infinite}
 @keyframes reflet{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 
-/* ── Ouverture : l'enveloppe et son cachet ── */
-.ouverture{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:linear-gradient(rgba(246,240,229,.35),rgba(246,240,229,.35)),url('papier.jpg') center/cover,var(--papier);
-  transition:opacity .9s ease .9s}
-.enveloppe{position:relative;width:min(88vw,460px);cursor:pointer;transition:transform 1.2s cubic-bezier(.6,0,.3,1);filter:drop-shadow(0 18px 24px rgba(60,45,25,.28))}
-.enveloppe .cachet{position:absolute;left:50%;top:57%;width:23%;transform:translate(-50%,-50%);transition:transform .7s cubic-bezier(.3,1.6,.5,1),opacity .6s;
-  filter:drop-shadow(0 4px 5px rgba(60,10,15,.45))}
-.enveloppe:hover .cachet{transform:translate(-50%,-50%) scale(1.04)}
-.consigne{position:absolute;bottom:calc(14vh + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-style:italic;font-size:18px;color:var(--doux);
-  letter-spacing:.04em;animation:respire 2.6s ease-in-out infinite}
-@keyframes respire{50%{opacity:.45}}
-.ouvert .cachet{transform:translate(-50%,-50%) scale(1.5) rotate(-12deg);opacity:0}
-.ouvert .enveloppe{transform:translateY(120vh) rotate(4deg)}
-.ouvert .consigne{opacity:0}
-.ouvert{opacity:0;pointer-events:none}
+.mini-gh{background:linear-gradient(rgba(250,246,238,.75),rgba(250,246,238,.75)),url('papier.jpg') center/cover;outline:1px solid rgba(184,146,79,.5);outline-offset:-6px}
+.mini-gh b{font-family:'Italiana',serif;font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.12em;color:var(--encre)}
+.mini-gh i{font-family:'Pinyon Script',cursive;font-style:normal;color:var(--or1);font-size:clamp(16px,4.6vw,22px);line-height:1}
+.mini-gh small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
+.ouverture{background:linear-gradient(rgba(246,240,229,.35),rgba(246,240,229,.35)),url('papier.jpg') center/cover,var(--papier)}
+.ouverture .consigne{color:var(--doux)}
 
+.env-dos,.env-devant,.env-face{background-image:url('enveloppe.webp')}
 /* ── Carte : couverture ── */
 .carte{position:relative;min-height:100svh;overflow:hidden;text-align:center;padding:0 22px;display:flex;flex-direction:column;align-items:center}
 .guirlande{position:absolute;top:-2vw;left:-6%;width:112%;max-width:none;transform-origin:50% 0;animation:brise 9s ease-in-out infinite;z-index:2;pointer-events:none}
@@ -87,16 +80,24 @@ main{max-width:520px;margin:0 auto;padding:10px 22px 70px}
 body.std .fp-seul{display:none} body.std .std-seul{display:block}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="../_commun/realiste.css?v=1">
 </head>
-<body class="ferme">
+<body class="ferme" data-date="2027-06-12T15:00:00+02:00" data-evenement="Mariage Éléonore &amp; Gabriel" data-ville="Paris" data-titre-std="Éléonore &amp; Gabriel — Save the date (démonstration)">
 
-<div class="ouverture" id="ouverture">
-  <div class="enveloppe" id="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <img src="enveloppe.webp" alt="" width="1000" height="696">
-    <img class="cachet" src="cachet.webp" alt="" width="420" height="429">
+<div class="ouverture" id="ouverture" style="--ratio:1000/696;
+  --rabat:polygon(0 0,100% 0,100% 5%,50% 79%,0 4%);--devant:polygon(0 4%,50% 79%,100% 5%,100% 100%,0 100%);
+  --verso:polygon(0 100%,100% 100%,100% 95%,50% 21%,0 96%);--doublure:linear-gradient(0deg,#E9DFCC,#F6EFE2 70%)">
+  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
+    <div class="env-dos"></div>
+    <div class="env-carte mini-gh"><small>Mariage</small><b>Éléonore</b><i>&amp;</i><b>Gabriel</b><small>12 · 06 · 2027</small></div>
+    <div class="env-devant"></div>
+    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
+    <img class="env-sceau" src="cachet.webp" alt="" width="420" height="429" style="left:50%;top:60%;width:22%;transform:translate(-50%,-50%)">
   </div>
   <p class="consigne">Brisez le cachet</p>
 </div>
+<button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
+<audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 
 <header class="carte">
   <img class="guirlande" src="guirlande.webp" alt="" width="1400" height="591">
@@ -152,22 +153,6 @@ body.std .fp-seul{display:none} body.std .std-seul{display:block}
   <p class="pied">Nous avons hâte de célébrer ce jour avec vous<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small></p>
 </main>
 
-<script>
-const q = new URLSearchParams(location.search);
-if (q.get('f') === 'std') { document.body.classList.add('std'); document.title = 'Éléonore & Gabriel — Save the date (démonstration)'; }
-const ouv = document.getElementById('ouverture');
-function ouvrir(){ if (ouv.classList.contains('ouvert')) return; ouv.classList.add('ouvert'); setTimeout(() => document.body.classList.remove('ferme'), 1300); }
-ouv.addEventListener('click', ouvrir);
-if (q.has('sections')) document.querySelector('.carte').style.display = 'none';
-if (q.has('ouvert')) { ouv.style.transition = 'none'; ouv.classList.add('ouvert'); document.body.classList.remove('ferme'); }
-const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
-document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
-const cible = new Date('2027-06-12T15:00:00+02:00');
-function tic(){ const d = Math.max(0, cible - Date.now()); j.textContent = Math.floor(d / 864e5); h.textContent = Math.floor(d / 36e5) % 24; m.textContent = Math.floor(d / 6e4) % 60; }
-tic(); setInterval(tic, 30000);
-agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Mariage Éléonore & Gabriel') + '&dates=20270612T130000Z/20270612T235900Z&location=' + encodeURIComponent('Paris');
-agenda.target = '_blank';
-document.querySelectorAll('[data-demo]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); demo.style.display = 'block'; }));
-</script>
+<script src="../_commun/realiste.js?v=1"></script>
 </body>
 </html>

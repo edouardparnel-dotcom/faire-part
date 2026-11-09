@@ -17,7 +17,7 @@
 <style>
 /* Direction « Héritage » (collection réaliste) : enveloppe en kente tissé à fermoir doré, fond de wax,
    carte ivoire bordée d'or, fleurs tropicales et table de réception. Photos détourées posées en couches. */
-:root{--wax:#0F3B2E;--carte:#FBF6EC;--encre:#2B2A22;--doux:#6F6656;--or1:#B98A3E;--or2:#F0D58F;--or3:#7E5A1F;--emeraude:#0F4D3A}
+:root{--fond-carte:#FBF6EC;--wax:#0F3B2E;--carte:#FBF6EC;--encre:#2B2A22;--doux:#6F6656;--or1:#B98A3E;--or2:#F0D58F;--or3:#7E5A1F;--emeraude:#0F4D3A}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--wax);color:var(--encre);font-family:'Cormorant Garamond',Georgia,serif;-webkit-font-smoothing:antialiased}
 body{background:radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),url('wax.jpg') center/cover fixed,var(--wax)}
@@ -27,21 +27,18 @@ img{display:block;max-width:100%;height:auto}
   -webkit-background-clip:text;background-clip:text;color:transparent;animation:reflet 6s ease-in-out infinite}
 @keyframes reflet{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 
-/* ── Ouverture : l'enveloppe de kente et son fermoir ── */
-.ouverture{position:fixed;inset:0;z-index:50;display:grid;place-items:center;
-  background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),url('wax.jpg') center/cover,var(--wax);transition:opacity .9s ease .9s}
-.enveloppe{position:relative;width:min(90vw,470px);cursor:pointer;transition:transform 1.2s cubic-bezier(.6,0,.3,1);filter:drop-shadow(0 22px 26px rgba(0,0,0,.55))}
-.fermoir{position:absolute;left:49%;top:64%;width:16%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:30%;
+.mini-he{background:var(--carte);outline:1px solid rgba(185,138,62,.7);outline-offset:-6px}
+.mini-he b{font-family:'Cinzel',serif;font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--emeraude)}
+.mini-he i{font-family:'Pinyon Script',cursive;font-style:normal;color:var(--or1);font-size:clamp(16px,4.6vw,22px);line-height:1}
+.mini-he small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
+.ouverture{background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),url('wax.jpg') center/cover,var(--wax)}
+.ouverture .consigne{color:#F3E6C4;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.enveloppe{filter:drop-shadow(0 22px 26px rgba(0,0,0,.5))}
+.fermoir{position:absolute;left:50%;top:64%;width:15%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:30%;backface-visibility:hidden;
   background:radial-gradient(circle,rgba(255,244,200,.9) 0,rgba(255,230,150,.35) 30%,rgba(255,230,150,0) 65%);mix-blend-mode:screen;animation:lueur 2.4s ease-in-out infinite}
-@keyframes lueur{0%,100%{opacity:.15;transform:translate(-50%,-50%) scale(.8)}50%{opacity:.9;transform:translate(-50%,-50%) scale(1.15)}}
-.consigne{position:absolute;bottom:calc(14vh + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-style:italic;font-size:19px;color:#F3E6C4;
-  letter-spacing:.04em;text-shadow:0 2px 8px rgba(0,0,0,.6);animation:respire 2.6s ease-in-out infinite}
-@keyframes respire{50%{opacity:.5}}
-.ouvert .fermoir{animation:none;opacity:1;transform:translate(-50%,-50%) scale(3);transition:transform .5s,opacity .6s .3s;opacity:0}
-.ouvert .enveloppe{transform:translateY(120vh) rotate(-4deg);transition-delay:.25s}
-.ouvert .consigne{opacity:0}
-.ouvert{opacity:0;pointer-events:none}
+@keyframes lueur{0%,100%{opacity:.15}50%{opacity:.9}}
 
+.env-dos,.env-devant,.env-face{background-image:url('enveloppe.webp')}
 /* ── Carte ivoire bordée d'or, posée sur le wax ── */
 .carte{position:relative;margin:max(14px,env(safe-area-inset-top)) 12px 0;min-height:calc(100svh - 14px);background:var(--carte);overflow:hidden;
   display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px;
@@ -86,16 +83,23 @@ main{max-width:520px;margin:0 auto;padding:16px 12px 70px}
 body.std .fp-seul{display:none} body.std .std-seul{display:block}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="../_commun/realiste.css?v=1">
 </head>
-<body class="ferme">
+<body class="ferme" data-date="2027-08-21T11:00:00+02:00" data-evenement="Mariage Efua &amp; Kojo" data-ville="Lyon" data-titre-std="Efua &amp; Kojo — Save the date (démonstration)">
 
-<div class="ouverture" id="ouverture">
+<div class="ouverture" id="ouverture" style="--ratio:1000/586;
+  --rabat:polygon(0 0,100% 0,100% 10%,59% 60%,59% 70%,41% 70%,41% 60%,0 10%);--devant:polygon(0 10%,41% 60%,41% 70%,59% 70%,59% 60%,100% 10%,100% 100%,0 100%);
+  --verso:polygon(0 100%,100% 100%,100% 90%,59% 40%,59% 30%,41% 30%,41% 40%,0 90%);--doublure:linear-gradient(0deg,#9C7428,#E2C27A 55%,#B88E3E)">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <img src="enveloppe.webp" alt="" width="1000" height="586">
-    <span class="fermoir"></span>
+    <div class="env-dos"></div>
+    <div class="env-carte mini-he"><small>Mariage</small><b>Efua</b><i>&amp;</i><b>Kojo</b><small>21 · 08 · 2027</small></div>
+    <div class="env-devant"></div>
+    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><span class="fermoir"></span></div>
   </div>
   <p class="consigne">Ouvrez le fermoir</p>
 </div>
+<button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
+<audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 
 <header class="carte">
   <img class="fleurs haut" src="fleurs.webp" alt="" width="1100" height="792">
@@ -145,22 +149,6 @@ body.std .fp-seul{display:none} body.std .std-seul{display:block}
   <p class="pied">Akwaaba : soyez les bienvenus<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small></p>
 </main>
 
-<script>
-const q = new URLSearchParams(location.search);
-if (q.get('f') === 'std') { document.body.classList.add('std'); document.title = 'Efua & Kojo — Save the date (démonstration)'; }
-const ouv = document.getElementById('ouverture');
-function ouvrir(){ if (ouv.classList.contains('ouvert')) return; ouv.classList.add('ouvert'); setTimeout(() => document.body.classList.remove('ferme'), 1400); }
-ouv.addEventListener('click', ouvrir);
-if (q.has('sections')) document.querySelector('.carte').style.display = 'none';
-if (q.has('ouvert')) { ouv.style.transition = 'none'; ouv.classList.add('ouvert'); document.body.classList.remove('ferme'); }
-const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
-document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
-const cible = new Date('2027-08-21T11:00:00+02:00');
-function tic(){ const d = Math.max(0, cible - Date.now()); j.textContent = Math.floor(d / 864e5); h.textContent = Math.floor(d / 36e5) % 24; m.textContent = Math.floor(d / 6e4) % 60; }
-tic(); setInterval(tic, 30000);
-agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Mariage Efua & Kojo') + '&dates=20270821T090000Z/20270821T235900Z&location=' + encodeURIComponent('Lyon');
-agenda.target = '_blank';
-document.querySelectorAll('[data-demo]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); demo.style.display = 'block'; }));
-</script>
+<script src="../_commun/realiste.js?v=1"></script>
 </body>
 </html>
