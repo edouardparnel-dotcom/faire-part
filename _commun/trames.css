@@ -333,3 +333,11 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-tra
 .suite-titre:has(.papier){position:relative;min-height:480px}
 .m-papier{position:relative!important;display:inline-block;width:110px;height:196px;inset:auto!important}
 @media (min-width:720px){.suite-couv:has(.papier){min-height:1350px}.papier{height:820px}}
+
+/* ───────── VOLANTS : la carte bordée en haut et en bas d'un volant de broderie anglaise, comme l'ourlet d'une robe ───────── */
+.volant-h,.volant-b{position:absolute;left:-2%;width:104%;max-width:none;z-index:2;pointer-events:none;filter:drop-shadow(0 6px 8px rgba(30,50,90,.18))}
+.volant-h{top:-2px;transform-origin:50% 0}
+.volant-b{bottom:-2px;transform:scaleY(-1);transform-origin:50% 50%}
+.suite-couv:has(.volant-h){position:relative;padding-top:min(34vw,170px);padding-bottom:min(34vw,170px)}
+.suite-couv:has(.volant-h)>*:not(.volant-h):not(.volant-b){position:relative;z-index:1}
+.suite-titre:has(.volant-h){position:relative;padding-top:min(34vw,160px)}

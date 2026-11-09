@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fabienne &amp; Stanley — Mariage (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Dancing+Script:wght@500&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/vivant.css?v=6">
+<link rel="stylesheet" href="../_commun/trames.css?v=12">
+<script src="../_commun/vivant.js?v=8" defer></script>
+<link rel="stylesheet" href="../_commun/realiste.css?v=4">
+<style>
+:root{--fond:#E9F0F8;--carte:#FFFFFF;--encre:#1C2F55;--doux:#5A6B86;--or1:#C9372C;--or2:#F2C230;--or3:#1F4FA0;--accent:#1F4FA0;
+  --f-titre:'Playfair Display',serif;--f-script:'Dancing Script',cursive;--f-texte:'Nunito Sans',system-ui,sans-serif;--decor:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.35)),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#1C2F55;}
+.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
+.ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
+.ouverture{background:var(--decor),var(--fond)}
+.ouverture .consigne{color:var(--sur-fond)}
+.mini{background:var(--carte);outline:1px solid var(--or1);outline-offset:-6px}
+.mini b{font-family:var(--f-titre);font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--accent)}
+.mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:clamp(17px,5vw,24px);line-height:1}
+.mini small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
+body.ferme{overflow:hidden}
+.std-seul{display:none} body.std .fp-seul{display:none} body.std .std-seul{display:block}
+.suite-couv{min-height:100svh}
+
+</style>
+</head>
+<body class="ferme" data-date="2027-08-14T16:00:00-04:00" data-evenement="Mariage Fabienne &amp; Stanley" data-ville="Jacmel" data-titre-std="Fabienne &amp; Stanley — Save the date (démonstration)" data-collection="karabela" data-particules="petales" data-trame="arche">
+<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/837;--rabat:polygon(0 0,100% 0,100% 8%,50% 96%,0 8%);--devant:polygon(0 8%,50% 96%,100% 8%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 92%,50% 4%,0 92%);--doublure:linear-gradient(0deg,#FFFFFF,#F4F7FB);">
+  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
+    <div class="env-dos"></div>
+    <div class="env-carte mini"><small>Mariage</small><b>Fabienne</b><i>&amp;</i><b>Stanley</b><small>14 · 08 · 2027</small></div>
+    <div class="env-devant"></div>
+    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
+    <img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:80%;width:20%;transform:translate(-50%,-50%)">
+  </div>
+  <p class="consigne">Dénouez la fleur d’hibiscus</p>
+</div>
+<script>(() => {
+  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
+  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
+  setTimeout(pret, 5000);
+})();</script>
+<button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
+<audio id="audio" src="musique.mp3" loop preload="auto"></audio>
+<header class="suite-couv carte couv-arche">
+  <img class="volant-h" src="haut.webp" alt="" width="1800" height="523">
+  <div class="arche"><img src="couple.jpg" alt=""></div>
+  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Fabienne<i class="or">&amp;</i>Stanley</h1><div class="filet">✦</div><p class="date">14 · 08 · 2027</p>
+  <p class="lieu">Maison des Galeries<br>Jacmel</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p><img class="volant-b" src="haut.webp" alt="" width="1800" height="523">
+</header>
+
+<main class="suite-main">
+  <blockquote class="inter inter-citation apparait fp-seul"><p>Ils se sont rencontrés à une fête de quartier où l&#x27;on dansait encore le quadrille, elle en robe karabela empruntée à sa tante, lui dans la chemise brodée de son père.</p><cite class="script">Fabienne &amp; Stanley</cite></blockquote>
+  <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 14 août 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Cérémonie dans la cour</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Kremas de bienvenue</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>18 h 30</b><span>Quadrille des mariés</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Dîner sous les galeries</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>21 h 30</b><span>Bal au son du tanbou</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 30</b><span>Gâteau des mariés</span></div></li></ol></section>
+  <div class="inter inter-galerie apparait fp-seul"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Maison des Galeries<br>Jacmel</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Jacmel" target="_blank" rel="noopener">Voir le plan</a></section>
+  <section class="bloc apparait fp-seul"><h2>Tenue</h2><p class="titre-tenue">Karabela</p><p>Robes karabela pour celles qui le souhaitent, chemises en chambray brodé pour ceux qui le souhaitent ; sinon du blanc, du bleu et une touche de rouge. Chapeau de paille bienvenu.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="ouverture.webp" alt="" loading="lazy"><figcaption>Karabela</figcaption></figure>
+  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er juillet 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
+</main>
+<footer class="suite-pied"><p class="script">Fabienne &amp; Stanley</p><p>Mèsi anpil, merci d’avoir dansé avec nous</p>
+<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
+<script src="../_commun/realiste.js?v=9"></script>
+</body>
+</html>

@@ -59,3 +59,4 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.sui
 @media (prefers-reduced-motion:reduce){.deco-haut,.deco-arche,.coin-hg,.coin-bd,.cartouche,.deco-balcon{animation:none}}
 .bord-g{transform-origin:0 100%;--amp:.6deg;animation:souffle 9s ease-in-out infinite}
 .papier .c3{--amp:.35deg;animation:souffle 10s ease-in-out infinite}
+.volant-h{--amp:.5deg;animation:souffle 6s ease-in-out infinite}
