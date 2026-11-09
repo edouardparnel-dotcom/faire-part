@@ -52,7 +52,7 @@ body.vivant{background:var(--fond)!important}
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .deco-haut{transform-origin:50% 0;animation:souffle 8s ease-in-out infinite}
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .deco-arche{transform-origin:50% 100%;--amp:.6deg;animation:souffle 9s ease-in-out infinite}
 .coin-hg{transform-origin:0 0;--amp:1.4deg;animation:souffle 7s ease-in-out infinite}
-.coin-bd{transform-origin:100% 100%;--r0:180deg;--amp:1.4deg;animation:souffle 7s ease-in-out -3.5s infinite}
+.coin-bd{transform-origin:50% 50%;--r0:180deg;--amp:1.4deg;animation:souffle 7s ease-in-out -3.5s infinite}
 .cartouche{--amp:.35deg;animation:souffle 11s ease-in-out infinite}
 .deco-balcon{transform-origin:50% 100%;--amp:.25deg;animation:souffle 10s ease-in-out infinite}
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.suite-couv,.inter-couple,.inter-table,.inter-matiere){overflow:clip}

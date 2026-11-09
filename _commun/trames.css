@@ -339,7 +339,9 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-tra
 .volant-h{top:-2px;transform-origin:50% 0}
 .volant-b{bottom:-2px;transform:scaleY(-1);transform-origin:50% 50%}
 .suite-couv:has(.volant-h){position:relative;padding-top:min(34vw,170px);padding-bottom:min(34vw,170px)}
-.suite-couv:has(.volant-h)>*:not(.volant-h):not(.volant-b){position:relative;z-index:1}
+.suite-couv:has(.volant-h)>*:not(.volant-h):not(.volant-b):not(.coin-hg):not(.coin-bd){position:relative;z-index:1}
+.suite-couv:has(.volant-h) .coin-hg,.suite-couv:has(.volant-h) .coin-bd{width:min(52%,250px);z-index:3}
+.suite-couv:has(.volant-h):has(.coin-hg) .chapeau{padding-top:0}
 .suite-titre:has(.volant-h){position:relative;padding-top:min(34vw,160px)}
 
 /* ───────── FACE-À-FACE : dragon et phénix brodés se font face sur les côtés, un nœud suspendu au centre ───────── */
