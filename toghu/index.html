@@ -4,174 +4,30 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Laure & Brice — Mariage (démonstration)</title>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Laure & Brice — Deux familles, un même chemin">
-<meta property="og:description" content="Samedi 14 août 2027 · 11h00 · Salle des Collines, Douala (Cameroun).">
-<meta property="og:image" content="https://maisonvivat.com/toghu/apercu-whatsapp.jpg">
-<meta name="theme-color" content="#070707">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<title>Toghu — Collection réaliste Maison Vivat</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Pinyon+Script&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
 <style>
-/* Direction artistique « Toghu » : nuit royale des Grassfields. Ouverture par deux pans de toghu
-   brodé qui glissent, médaillon central, colonne unique, étoiles brodées en séparateurs. */
-:root{--noir:#070707;--velours:#121010;--rouge:#E63946;--jaune:#F4C430;--bleu:#2F5BEA;--blanc:#F6F0E6;--or:#D8B25A;--doux:#A59C8E}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'EB Garamond',Georgia,serif;font-size:18px;color:var(--blanc);background:var(--noir);line-height:1.6;-webkit-font-smoothing:antialiased}
-body.ferme{overflow:hidden}
-.toghu{background-color:var(--velours);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><g transform='translate(60 60)'><path d='M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z' fill='%23E63946'/><path d='M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z' fill='%23F4C430'/><path d='M0-16 16 0 0 16-16 0Z' fill='%232F5BEA'/><circle r='5' fill='%23F6F0E6'/></g><g fill='%23F4C430'><circle cx='0' cy='0' r='3'/><circle cx='120' cy='0' r='3'/><circle cx='0' cy='120' r='3'/><circle cx='120' cy='120' r='3'/></g></svg>")}
+:root{--fond:#070707;--carte:#121010;--encre:#F6F0E6;--doux:#BDB3A4;--or1:#F4C430;--or2:#FFE08A;--or3:#C89A12;--accent:#F4C430;
+  --f-titre:'Cinzel',serif;--f-script:'Pinyon Script',cursive;--f-texte:'EB Garamond',Georgia,serif;--decor:radial-gradient(ellipse at 50% 30%,rgba(0,0,0,0) 35%,rgba(0,0,0,.55) 100%),url('fond.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#F6F0E6;--bouton-fond:rgba(244,196,48,.08)}
 
-/* ── Ouverture : deux pans de toghu brodé glissent vers le haut et le bas ── */
-.pans{position:fixed;inset:0;z-index:50;cursor:pointer}
-.pan{position:absolute;left:0;right:0;height:50.5%;transition:transform 1.4s cubic-bezier(.75,0,.25,1)}
-.pan.h{top:0;box-shadow:0 1px 0 var(--or)} .pan.b{bottom:0;box-shadow:0 -1px 0 var(--or)}
-.pans.ouvert .pan.h{transform:translateY(-110%)} .pans.ouvert .pan.b{transform:translateY(110%)}
-.pans.ouvert{pointer-events:none}
-.sceau-royal{position:absolute;left:50%;top:50%;z-index:2;width:170px;height:170px;margin:-85px 0 0 -85px;border-radius:50%;
-  display:grid;place-items:center;text-align:center;background:radial-gradient(circle,#1c1714 0 60%,#0b0908 61%);
-  box-shadow:0 0 0 1px var(--or),0 0 0 8px var(--noir),0 0 0 9px rgba(216,178,90,.5),0 20px 60px rgba(0,0,0,.7);transition:transform .8s ease,opacity .5s}
-.pans.ouvert .sceau-royal{transform:scale(1.6);opacity:0}
-.sceau-royal b{font-family:'Cinzel Decorative',serif;font-size:34px;color:var(--or);line-height:1}
-.sceau-royal small{display:block;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.24em;color:var(--doux);margin-top:8px}
-
-/* ── Couverture : médaillon photo cerclé de broderie ── */
-.couv{min-height:100svh;display:grid;justify-items:center;align-content:center;gap:20px;padding:44px 20px;text-align:center;
-  background:radial-gradient(circle at 50% 38%,#1f1913 0,var(--noir) 62%)}
-.medaillon{position:relative;width:min(280px,70vw);aspect-ratio:1;border-radius:50%;padding:10px;border:1px solid var(--or);
-  box-shadow:0 0 0 7px var(--noir),0 0 0 8px rgba(216,178,90,.45),0 30px 60px -20px rgba(0,0,0,.9)}
-.medaillon div{width:100%;height:100%;border-radius:50%;background:url('photo.jpg') center 25%/cover}
-.medaillon::after{content:"";position:absolute;left:50%;bottom:-16px;width:26px;height:26px;margin-left:-13px;
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'><path d='M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z' fill='%23D8B25A'/><circle r='7' fill='%23E63946'/></svg>") center/contain no-repeat}
-.devise{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.38em;color:var(--or)}
-.noms{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(40px,12vw,64px);letter-spacing:.06em;line-height:1.05}
-.noms span{display:block;font-family:'EB Garamond',serif;font-style:italic;font-weight:400;font-size:.45em;letter-spacing:0;color:var(--jaune)}
-.date{font-family:'Cinzel',serif;font-size:16px;letter-spacing:.3em;color:var(--doux)}
-
-/* ── Colonne royale, séparateurs en étoile brodée ── */
-main{position:relative;max-width:520px;margin:0 auto;padding:0 22px 60px;text-align:center}
-.etoile{width:64px;height:64px;margin:44px auto 26px}
-h2{font-family:'Cinzel',serif;font-weight:700;font-size:22px;letter-spacing:.2em;color:var(--or);margin-bottom:12px}
-.citation{font-style:italic;font-size:26px;line-height:1.35}
-.doux{color:var(--doux)}
-.lieu{font-family:'Cinzel',serif;font-size:24px;letter-spacing:.06em}
-.lien{display:inline-block;margin-top:14px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;color:var(--noir);background:var(--or);padding:12px 22px;text-decoration:none;cursor:pointer;border:0}
-.lien.vide{background:transparent;color:var(--or);box-shadow:inset 0 0 0 1.5px var(--or)}
-.prog{list-style:none;display:grid;gap:14px}
-.prog li{display:grid;gap:2px}
-.prog b{font-family:'Cinzel',serif;font-size:20px;color:var(--jaune);letter-spacing:.1em}
-.teintes{display:flex;justify-content:center;gap:26px}
-.teintes i{display:block;width:46px;height:46px;margin:0 auto 12px;border-radius:50%;box-shadow:0 0 0 1px var(--noir),0 0 0 2px var(--or)}
-.rebours{display:flex;justify-content:center;gap:16px}
-.rebours div{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;color:var(--doux)}
-.rebours b{display:block;font-size:40px;color:var(--blanc);letter-spacing:.02em}
-.demo{display:none;margin-top:12px;color:var(--jaune)}
-.pied{margin-top:40px;font-size:14px;color:var(--doux)}
-.pied b{display:block;font-family:'Cinzel',serif;font-size:18px;letter-spacing:.14em;color:var(--or);margin-bottom:6px}
-.apparait{opacity:0;transform:translateY(22px);transition:opacity .9s,transform .9s}
-.apparait.vu{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.suite-titre:has(.deco-haut){padding-top:min(52vw,260px)}
 </style>
 </head>
-<body class="ferme">
+<body>
+<nav class="suite-nav" aria-label="La collection Toghu"><a class="suite-marque" href="index.html">✦ Toghu</a><div><a href="index.html" aria-current=page>La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
 
-<div class="pans" id="pans" role="button" aria-label="Ouvrir l'invitation">
-  <div class="pan h toghu"></div>
-  <div class="pan b toghu"></div>
-  <div class="sceau-royal"><div><b>L · B</b><small>Touchez pour ouvrir</small></div></div>
-</div>
-
-<header class="couv">
-  <p class="devise">Deux familles · un même chemin</p>
-  <div class="medaillon"><div role="img" aria-label="Photo du couple" data-fond-parallaxe="0.12" data-base="25" data-zoom="150% auto"></div></div>
-  <h1 class="noms">Laure<span>et</span>Brice</h1>
-  <p class="date">14 · VIII · 2027 — Douala</p>
+<header class="mood-tete">
+  <p class="chapeau">Maison Vivat · Collection réaliste</p>
+  <h1>Toghu</h1>
+  <p class="intro">Velours noir brodé de rouge, de jaune et de bleu : la noblesse des Grassfields du Cameroun.</p>
+  <div class="mood-matieres"><img class="m" src="haut.webp" alt="" width="1400" height="685"><span class="nuancier"><i style="background:#070707"></i><i style="background:#121010"></i><i style="background:#F4C430"></i><i style="background:#F4C430"></i><i style="background:#F6F0E6"></i></span></div>
+  <p class="consigne-mood">Touchez un visuel pour l'ouvrir</p>
 </header>
-
-<main>
-  <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-  <section class="apparait"><p class="citation">« Deux familles, un même chemin, une seule grande fête. »</p></section>
-
-  <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-  <div class="bande-photo apparait" data-effet="fondu"><div class="bp-fond" data-parallaxe="0.25" style="background-image:url('photo.jpg')"></div><div class="bp-voile" style="background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.75))"></div><div class="bp-texte" style="color:#D8B25A"><p style="font-family:'Cinzel',serif;font-size:30px;letter-spacing:.12em;line-height:1.2">Deux familles<br>un même chemin</p></div></div>
-  <div class="motif" style="left:-10px;top:18%;width:46px;height:46px" data-parallaxe="0.3" data-rotation="0.12" aria-hidden="true"><svg viewBox='-50 -50 100 100'><path d='M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z' fill='none' stroke='#D8B25A' stroke-width='2'/><circle r='5' fill='#E63946'/></svg></div><div class="motif" style="right:-6px;top:46%;width:34px;height:34px" data-parallaxe="-0.25" data-rotation="-0.1" aria-hidden="true"><svg viewBox='-50 -50 100 100'><path d='M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z' fill='none' stroke='#D8B25A' stroke-width='2'/><circle r='5' fill='#E63946'/></svg></div><div class="motif" style="left:4px;top:76%;width:28px;height:28px" data-parallaxe="0.2" data-rotation="0.15" aria-hidden="true"><svg viewBox='-50 -50 100 100'><path d='M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z' fill='none' stroke='#D8B25A' stroke-width='2'/><circle r='5' fill='#E63946'/></svg></div>
-  <section class="apparait" data-effet="zoom">
-    <h2>Le lieu</h2>
-    <p class="lieu">Salle des Collines</p>
-    <p class="doux">Quartier Bonapriso · Douala, Cameroun</p>
-    <a class="lien" href="https://www.google.com/maps/search/?api=1&query=Douala+Cameroun" target="_blank" rel="noopener">Voir sur la carte</a>
-  </section>
-
-  <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-<div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
-  <section class="apparait">
-    <h2>Le programme</h2>
-    <ul class="prog">
-      <li><b>11h00</b>Dot et cérémonie coutumière</li>
-      <li><b>15h00</b>Bénédiction nuptiale</li>
-      <li><b>19h00</b>Réception et dîner</li>
-      <li><b>21h00</b>Makossa, bikutsi et danse</li>
-      <li><b>00h30</b>Fin de la fête</li>
-    </ul>
-  </section>
-
-  <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-  <section class="apparait">
-    <h2>La tenue</h2>
-    <p class="doux" style="margin-bottom:18px">Le toghu à l'honneur, ou une tenue noire relevée de rouge</p>
-    <div class="teintes"><span><i class="toghu"></i>Toghu</span><span><i style="background:#E63946"></i>Rouge</span></div>
-  </section>
-
-  <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
-  <section class="apparait">
-    <h2>Le compte à rebours</h2>
-    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
-    <button class="lien vide" id="agenda">Ajouter à mon agenda</button>
-  </section>
-
-  <svg class="etoile apparait" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-46 11-11 46 0 11 11 0 46-11 11-46 0-11-11Z" fill="#E63946"/><path d="M0-30 7-7 30 0 7 7 0 30-7 7-30 0-7-7Z" fill="#F4C430"/><path d="M0-16 16 0 0 16-16 0Z" fill="#2F5BEA"/><circle r="5" fill="#F6F0E6"/></svg>
-  <section class="apparait">
-    <h2>Votre réponse</h2>
-    <button class="lien reponse">Je serai présent(e)</button> <button class="lien vide reponse">Je ne pourrai pas venir</button>
-    <p class="demo" id="demo">Démonstration : sur votre faire-part, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p>
-  </section>
-
-  <p class="pied"><b>Merci</b>Faire-part de démonstration · couple fictif · photo Pexels</p>
-</main>
-
-<script>
-const pans = document.getElementById('pans'), $ = id => document.getElementById(id);
-pans.addEventListener('click', () => {
-  pans.classList.add('ouvert');
-  setTimeout(() => { document.body.classList.remove('ferme'); pans.remove(); }, 1500);
-});
-const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
-document.querySelectorAll('.apparait').forEach(el => io.observe(el));
-const cible = new Date('2027-08-14T11:00:00').getTime(), d2 = n => String(n).padStart(2, '0');
-function tic() {
-  let t = cible - Date.now();
-  if (t < 0) { $('rebours').innerHTML = '<div><b>Aujourd\'hui</b>C\'est le grand jour</div>'; return; }
-  const j = Math.floor(t / 864e5); t -= j * 864e5; const h = Math.floor(t / 36e5); t -= h * 36e5; const m = Math.floor(t / 6e4); t -= m * 6e4;
-  $('j').textContent = j; $('h').textContent = d2(h); $('m').textContent = d2(m); $('s').textContent = d2(Math.floor(t / 1e3));
-}
-tic(); setInterval(tic, 1000);
-$('agenda').addEventListener('click', () => {
-  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Demo//Toghu//FR', 'BEGIN:VEVENT', 'UID:toghu-demo@faire-part', 'DTSTAMP:20270101T000000Z',
-    'DTSTART:20270814T110000', 'DTEND:20270814T235900', 'SUMMARY:Mariage de Laure & Brice', 'LOCATION:Salle des Collines\\, Douala\\, Cameroun',
-    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
-  Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })), download: 'mariage-laure-brice.ics' }).click();
-});
-document.querySelectorAll('.reponse').forEach(b => b.addEventListener('click', () => { $('demo').style.display = 'block'; }));
-</script>
-<script src="../_commun/animations.js?v=4"></script>
-<!-- maison:debut -->
-<nav aria-label="Maison Vivat" style="position:relative;z-index:40;background:#1E1B18;color:#BDB4A7;text-align:center;padding:26px 16px 30px;font:300 13px/1.9 Inter,system-ui,sans-serif;letter-spacing:.04em">
-  <a href="../index.html#collections" style="color:#F7F3EC;text-decoration:none;font:italic 500 21px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:0">← Maison Vivat · Mariage</a><br>
-  <a href="../creer/?evt=mariage&amp;modele=toghu" style="display:inline-block;margin:10px 0 14px;color:#1E1B18;background:#F7F3EC;text-decoration:none;padding:9px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Créer mon espace avec cette collection</a><br>
-  <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8B8378">Nos maisons</span><br><a href="../index.html" style="color:#BDB4A7;text-decoration:none">Mariage</a> · <a href="../anniversaires/index.html" style="color:#BDB4A7;text-decoration:none">Anniversaires</a> · <a href="../baptemes/index.html" style="color:#BDB4A7;text-decoration:none">Baptêmes</a> · <a href="../reveal/index.html" style="color:#BDB4A7;text-decoration:none">Gender reveal</a> · <a href="../naissances/index.html" style="color:#BDB4A7;text-decoration:none">Naissances</a>
-</nav>
-<!-- maison:fin -->
-</body>
-</html>
+<main class="mood"><a class="tuile grand" href="faire-part.html"><span class="tel"><img src="apercus/faire-part.webp" alt="Aperçu : Faire-part" loading="lazy"></span><b>Faire-part</b><small>L&#x27;enveloppe s&#x27;ouvre, la carte apparaît</small></a><a class="tuile " href="faire-part.html?f=std"><span class="tel"><img src="apercus/save-the-date.webp" alt="Aperçu : Save-the-date" loading="lazy"></span><b>Save-the-date</b><small>Pour réserver la date</small></a><a class="tuile grand" href="site.html"><span class="tel"><img src="apercus/site.webp" alt="Aperçu : Site du mariage" loading="lazy"></span><b>Site du mariage</b><small>Programme, lieu, hébergement, réponse</small></a><a class="tuile " href="plan-de-table.html"><span class="tel"><img src="apercus/plan-de-table.webp" alt="Aperçu : Plan de table" loading="lazy"></span><b>Plan de table</b><small>Chacun trouve sa place</small></a><a class="tuile " href="mur-photo.html"><span class="tel"><img src="apercus/mur-photo.webp" alt="Aperçu : Mur photo" loading="lazy"></span><b>Mur photo</b><small>Les photos des invités, en direct</small></a><a class="tuile " href="livre-or.html"><span class="tel"><img src="apercus/livre-or.webp" alt="Aperçu : Livre d&#x27;or" loading="lazy"></span><b>Livre d&#x27;or</b><small>Mots, voix et vidéos</small></a></main>
+<section class="mood-cta"><a class="bouton plein" href="/creer/?evt=mariage">Créer mon espace avec Toghu</a></section>
+<footer class="suite-pied"><p class="script">Laure &amp; Brice</p><p>Merci de faire la fête avec nous</p>
+<small>Démonstration de la collection Toghu · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+</body></html>
