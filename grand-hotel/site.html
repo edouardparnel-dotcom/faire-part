@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Italiana&family=Pinyon+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=2">
+<link rel="stylesheet" href="../_commun/trames.css?v=3">
 <script src="../_commun/vivant.js?v=3" defer></script>
 <style>
 :root{--fond:#F3ECDF;--carte:#FBF7EF;--encre:#3A332B;--doux:#7A6F60;--or1:#B8924F;--or2:#E9D3A0;--or3:#8C6A33;--accent:#3A332B;
@@ -33,7 +33,7 @@
   <img class="deco-bas" src="table.webp" alt="" width="1400" height="310">
 </header>
 
-<nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#reponse">Réponse</a></nav>
+<nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#cadeaux">Cadeaux</a><a href="#reponse">Réponse</a></nav>
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Une première valse au bal d&#x27;une amie, une conversation qui ne s&#x27;est jamais vraiment arrêtée, et un oui murmuré sous le grand lustre de l&#x27;hôtel où tout a commencé.</p></section>
   <figure class="inter inter-couple apparait"><img src="couple.jpg" alt="Éléonore et Gabriel" loading="lazy"><figcaption class="script">Éléonore &amp; Gabriel</figcaption></figure>
@@ -44,12 +44,15 @@
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Smoking pour ces messieurs, robe longue pour ces dames. Ivoire, champagne et sauge sont les bienvenus.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
   <section class="bloc apparait"><h2>Le compte à rebours</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
   <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p><a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
+  <section class="bloc apparait" id="cadeaux"><h2>Liste et cagnotte</h2><p>Votre présence est notre plus beau cadeau. Pour ceux qui le souhaitent :</p><a class="bouton plein" href="#" data-demo-cagnotte>Participer à la cagnotte</a><ul class="cadeaux-demo"><li><span>Service à thé</span><b>80 €</b><button class="bouton" data-offrir>Je l'offre</button></li><li><span>Linge de maison</span><b>120 €</b><button class="bouton" data-offrir>Je l'offre</button></li><li class="pris"><span>Week-end en amoureux</span><b>250 €</b><em>Déjà offert</em></li></ul><p class="note-cadeaux">Réservez le cadeau que vous offrez : les autres invités le voient pris. La cagnotte et les boutiques sont celles des mariés ; Maison Vivat ne touche jamais l'argent.</p></section>
   <section class="bloc apparait" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er mai 2027.</p><form class="reponse" onsubmit="event.preventDefault();document.getElementById('demo').style.display='block'"><label>Prénom et nom<input required placeholder="Votre nom"></label><div class="choix"><label><input type="radio" name="v" checked> Je serai présent·e</label><label><input type="radio" name="v"> Je ne pourrai pas venir</label></div><label>Un mot pour les mariés<textarea rows="3" placeholder="Facultatif"></textarea></label><button class="bouton plein">Envoyer ma réponse</button><p id="demo" style="display:none">Démonstration : votre réponse arrive directement dans l'espace des mariés.</p></form></section>
 </main>
 <footer class="suite-pied"><p class="script">Éléonore &amp; Gabriel</p><p>Nous avons hâte de célébrer ce jour avec vous</p>
 <small>Démonstration de la collection Grand Hôtel · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
 <script>
 document.body.dataset.date = '2027-06-12T15:00:00+02:00'; document.body.dataset.evenement = 'Mariage Éléonore & Gabriel'; document.body.dataset.ville = 'Paris';
+document.querySelectorAll('[data-offrir]').forEach(b => b.addEventListener('click', () => { b.outerHTML = '<em class="a-vous">Réservé par vous ✓</em>'; }));
+document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); b.textContent = 'Démonstration : ouvre la cagnotte des mariés'; }));
 if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
 const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
 document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });

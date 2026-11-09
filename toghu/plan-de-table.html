@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Pinyon+Script&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=2">
-<link rel="stylesheet" href="../_commun/trames.css?v=2">
+<link rel="stylesheet" href="../_commun/trames.css?v=3">
 <script src="../_commun/vivant.js?v=3" defer></script>
 <style>
 :root{--fond:#070707;--carte:#121010;--encre:#F6F0E6;--doux:#BDB3A4;--or1:#F4C430;--or2:#FFE08A;--or3:#C89A12;--accent:#F4C430;
@@ -35,6 +35,8 @@
 <small>Démonstration de la collection Toghu · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
 <script>
 document.body.dataset.date = '2027-08-14T11:00:00+01:00'; document.body.dataset.evenement = 'Mariage Laure & Brice'; document.body.dataset.ville = 'Douala';
+document.querySelectorAll('[data-offrir]').forEach(b => b.addEventListener('click', () => { b.outerHTML = '<em class="a-vous">Réservé par vous ✓</em>'; }));
+document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); b.textContent = 'Démonstration : ouvre la cagnotte des mariés'; }));
 if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
 const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
 document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });

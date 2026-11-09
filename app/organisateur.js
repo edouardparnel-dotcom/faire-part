@@ -14,8 +14,8 @@ const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Bapt
 const ROLES = { coorganisateur: 'Co-organisateur', planner: 'Wedding planner' };
 let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'accueil', abonnements = [];
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
-let album = [], jeuxRep = [], partage = {}, photoPour = null, msgOption = '';
-let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '';
+let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '';
+let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
 let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
 // Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.
@@ -89,6 +89,7 @@ function ouvrir(id) {
       suivre('prestataires', l => prestataires = l.sort((x, y) => METIERS.indexOf(x.metier) - METIERS.indexOf(y.metier)));
       suivre('taches', l => taches = l.sort((x, y) => (x.echeance || '').localeCompare(y.echeance || '') || (x.ordre ?? 0) - (y.ordre ?? 0)));
       suivre('equipe', l => equipe = l);
+      suivre('cadeaux', l => cadeaux = recents(l).reverse());
       suivre('album', l => album = recents(l)); suivre('jeuxReponses', l => jeuxRep = l);
       suivre('partage', l => partage = Object.fromEntries(l.map(d => [d.id, d])));
       suivre('outils', l => outils = Object.fromEntries(l.map(d => [d.id, d])));
@@ -110,9 +111,9 @@ function rendre() {
   const C = evt.ceremonies || [], oui = c => invites.filter(i => i.reponses?.[c.cle] === 'oui').reduce((s, i) => s + 1 + (i.accompagnants || 0), 0);
   const entrees = invites.filter(i => i.entree).length, repondu = invites.filter(i => i.reponduLe).length;
   const onglets = { accueil: 'Vue d\'ensemble', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
-    budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
+    budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', cadeaux: 'Liste et cagnotte', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
     ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
-    paiement: evt.formule === 'essai' ? 'Choisir ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
+    paiement: evt.formule === 'essai' ? 'Publier' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
@@ -170,7 +171,7 @@ const VUES = {
       ${conseils.length ? `<div class="app-carte"><h2>Maintenant</h2>${conseils.map(([t, o, b]) => `<div class="ligne-conseil"><span>${esc(t)}</span><button class="btn petit clair" data-onglet="${o}">${esc(b)}</button></div>`).join('')}</div>` : ''}
       <div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 6).map(ligneTache).join('') || '<p class="app-note">Rien à faire pour l\'instant.</p>'}</div>
       <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${Object.entries(NOMS_OPTIONS).map(([k, v]) => `<span class="puce-o ${a(k) ? '' : 'off'}">${esc(v)}</span>`).join('')}</div>
-        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Formule d'essai : les outils d'organisation sont ouverts ; les options pour les invités s'activent après le paiement. <a class="lien-or" href="#" data-onglet="paiement">Choisir ma formule</a></p>` : ''}</div>`;
+        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit jusqu'à la publication : préparez tout, l'envoi à vos invités se débloque quand vous publiez. <a class="lien-or" href="#" data-onglet="paiement">Publier mon invitation</a></p>` : ''}</div>`;
   },
 
   // ── Invités : ajout, import, liste ─────────────────────────────────────────
@@ -380,8 +381,8 @@ const VUES = {
     const nouvelles = [...choixOptions].filter(o => g.options[o] && !acquises.has(o));
     const total = (actuelle ? g.formules[cible].prix - g.formules[actuelle].prix : g.formules[cible].prix) + nouvelles.reduce((s, o) => s + g.options[o].prix, 0);
     const payes = paiements.filter(p => p.etat === 'paye');
-    return `<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Choisissez votre formule'}</h2>
-        <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Les outils d\'organisation restent ouverts pendant l\'essai ; le paiement active la formule et les options pour vos invités.'}</p>
+    return `${msgPublier && !actuelle ? `<div class="app-carte bandeau-paiement ok">${esc(msgPublier)}</div>` : ''}<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Publiez votre invitation'}</h2>
+        <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Tout est gratuit tant que vous préparez : invitation, site, invités, plan de table, budget. Vous payez au moment de publier, pour envoyer le lien à vos invités.'}</p>
         <div class="choix-formules">${Object.entries(g.formules).map(([k, f]) => { const bloquee = actuelle && f.prix < g.formules[actuelle].prix; return `<label class="formule-paie ${k === cible ? 'choisie' : ''} ${bloquee ? 'bloquee' : ''}"><input type="radio" name="formule" value="${k}" data-choix-formule="${k}" ${k === cible ? 'checked' : ''} ${bloquee ? 'disabled' : ''}><b>${esc(f.nom)}</b><span>${euros(f.prix)}</span><small>${k === actuelle ? 'Votre formule' : actuelle && !bloquee ? `+ ${euros(f.prix - g.formules[actuelle].prix)}` : `${f.inclus.length} option${f.inclus.length > 1 ? 's' : ''} incluse${f.inclus.length > 1 ? 's' : ''}`}</small></label>`; }).join('')}</div></div>
       <div class="app-carte"><h2>Options à l'unité</h2><div class="options-paie">${Object.entries(g.options).map(([k, o]) => { const deja = acquises.has(k); return `<label class="coche ${deja ? 'deja' : ''}"><input type="checkbox" data-choix-option="${k}" ${deja || choixOptions.has(k) ? 'checked' : ''} ${deja ? 'disabled' : ''}><span>${esc(o.nom)}</span><em>${deja ? ((evt.options || []).includes(k) ? 'Active' : 'Incluse') : '+ ' + euros(o.prix)}</em></label>`; }).join('')}</div></div>
       <div class="app-carte total-paie"><div class="ligne-conseil"><span>Total à payer</span><b>${euros(Math.max(0, total))}</b></div>
@@ -404,6 +405,26 @@ const VUES = {
       ${acces.length ? `<div class="app-carte"><h2>Liens d'accès actifs</h2>${acces.map(c => `<div class="ligne-conseil"><span><b>${esc(c.nom)}</b> · ${esc(ROLES[c.role])}${equipe.some(m => m.code === c.id) ? ' · utilisé' : ''}</span><span class="puces"><button class="btn petit clair" data-copier-acces="${c.id}">Copier le lien</button><button class="btn petit clair" data-suppr="acces/${c.id}">Retirer</button></span></div>`).join('')}<p class="ok-msg" id="m-copie"></p></div>` : ''}`;
   },
 
+  // ── Liste de cadeaux et cagnotte : Maison Vivat ne touche jamais l'argent ──
+  cadeaux() {
+    const cg = evt.cagnotte || {}, sur = u => /^https:\/\//.test(u || '');
+    return `<form class="app-carte" id="f-cagnotte"><h2>La cagnotte</h2>
+        <p class="app-note" style="margin-bottom:12px">Collez le lien de votre cagnotte (Lydia, Leetchi, PayPal…). Vos invités y participent directement : Maison Vivat ne prélève rien et ne touche jamais l'argent.</p>
+        <div class="app-grille"><label>Lien de la cagnotte<input name="lien" type="url" value="${esc(cg.lien || '')}" placeholder="https://…"></label>
+        <label>Texte du bouton<input name="libelle" maxlength="60" value="${esc(cg.libelle || 'Participer à la cagnotte')}"></label></div>
+        <label style="margin-top:10px">Un mot pour vos invités<textarea name="texte" rows="2" maxlength="300">${esc(cg.texte || 'Votre présence est notre plus beau cadeau. Pour ceux qui le souhaitent :')}</textarea></label>
+        <button class="btn" style="margin-top:12px">Enregistrer</button><p class="ok-msg" id="m-cagnotte"></p></form>
+      <div class="app-carte"><h2>La liste de cadeaux</h2>
+        <p class="app-note">Ajoutez les cadeaux qui vous feraient plaisir. Un invité réserve celui qu'il offre : les autres le voient pris, il n'y a pas de doublon. Il l'achète où il veut, ou dans la boutique que vous indiquez.</p>
+        <form id="f-cadeau" class="app-grille" style="margin-top:12px"><label>Cadeau<input name="nom" required maxlength="80" placeholder="Service à thé"></label>
+          <label>Prix indicatif (€)<input name="prix" type="number" min="0" step="1"></label>
+          <label>Lien vers la boutique (facultatif)<input name="lien" type="url" placeholder="https://…"></label><button class="btn" style="align-self:end">Ajouter</button></form>
+        ${cadeaux.length ? `<table class="app-table" style="margin-top:14px"><thead><tr><th>Cadeau</th><th>Prix</th><th>Offert par</th><th></th></tr></thead><tbody>${cadeaux.map(c => `<tr>
+          <td>${sur(c.lien) ? `<a class="lien-or" href="${esc(c.lien)}" target="_blank" rel="noopener">${esc(c.nom)}</a>` : esc(c.nom)}</td><td>${c.prix ? euros(c.prix) : ''}</td>
+          <td>${c.reservePar ? esc(c.reserveNom || 'Un invité') : '<span class="app-note">Disponible</span>'}</td><td><button class="icone" data-suppr="cadeaux/${c.id}" title="Supprimer">✕</button></td></tr>`).join('')}</tbody></table>`
+          : '<p class="app-note" style="margin-top:12px">Aucun cadeau pour l\'instant.</p>'}</div>`;
+  },
+
   reglages() {
     return `<form class="app-carte" id="f-reglages"><h2>Informations</h2><div class="app-grille">
         <label>Prénoms ou titre<input name="titre" value="${esc(evt.titre)}" required maxlength="120"></label>
@@ -411,6 +432,8 @@ const VUES = {
         <label>Lieu<input name="lieu" value="${esc(evt.lieu)}" required></label>
         <label>Collection du faire-part<input name="modele" value="${esc(evt.modele || '')}" placeholder="lakay"></label>
         <label>Date limite de réponse<input name="dateLimiteReponse" type="date" value="${esc(evt.dateLimiteReponse || '')}"></label></div>
+        <label style="margin-top:6px">Code d'accès du site (facultatif)<input name="code" maxlength="20" autocomplete="off" placeholder="${evt.codeAcces ? 'Un code est en place : tapez-en un nouveau, ou « aucun » pour le retirer' : 'Par exemple : NAIKA2027'}"></label>
+        <p class="app-note">Avec un code, la page générale de l'invitation n'est visible qu'aux personnes qui le connaissent. Les liens personnels envoyés à vos invités s'ouvrent toujours directement.</p>
         <label class="coche" style="margin-top:6px"><input type="checkbox" name="notifReponses" ${evt.notifReponses === false ? '' : 'checked'}> Recevoir un courriel à chaque réponse d'invité</label>
         <p class="app-note">Les invités dont vous avez l'adresse e-mail reçoivent un rappel 7 jours puis 1 jour avant la date limite s'ils n'ont pas répondu, et la veille de l'événement s'ils viennent.</p>
         ${a('direct') ? `<label style="margin-top:12px">Lien du direct (YouTube non répertorié, par exemple)<input name="live" id="i-live" placeholder="https://www.youtube.com/watch?v=…"></label>` : ''}
@@ -422,6 +445,12 @@ const VUES = {
 
 const ligneTache = t => `<div class="tache ${t.fait ? 'faite' : ''} ${!t.fait && t.echeance && t.echeance < aujourdhui() ? 'retard' : ''}"><label class="coche"><input type="checkbox" data-fait="${t.id}" ${t.fait ? 'checked' : ''}><span>${esc(t.titre)}</span></label>
   <input type="date" data-maj="taches/${t.id}/echeance" value="${esc(t.echeance || '')}" aria-label="Échéance"><button class="icone" data-suppr="taches/${t.id}" title="Supprimer">✕</button></div>`;
+
+// Empreinte du code d'accès : le code lui-même n'est jamais enregistré.
+async function empreinte(e, code) {
+  const o = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(e + ':' + code.trim().toUpperCase()));
+  return [...new Uint8Array(o)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
 
 function lienEnvoi(i, canal, relance) {
   const m = { ...MESSAGES, ...outils.messages }, texte = remplir(relance ? m.relance : m.invitation, { prenom: prenom(i.nom), titre: evt.titre, date: dateLongue(evt.date), lien: lienInvite(i.id) });
@@ -522,6 +551,11 @@ document.addEventListener('click', async ev => {
   const d = t.dataset, C = evt.ceremonies || [];
   if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; msgOption = ''; avantPlacement = null; photoPour = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
+  if ((d.copier || d.copierMessage || d.envoi) && evt.formule === 'essai') {   // gratuit jusqu'à la publication : l'envoi aux invités se débloque au paiement
+    ev.preventDefault(); onglet = 'paiement';
+    msgPublier = 'Votre invitation est prête à partir. Publiez-la pour l\'envoyer à vos invités : tout ce que vous avez préparé reste en place, rien n\'est à refaire.';
+    rendre(); scrollTo(0, 0); return;
+  }
   if (d.copier) { await navigator.clipboard?.writeText(lienInvite(d.copier)).catch(() => {}); $('#m-copie').textContent = 'Lien copié : ' + lienInvite(d.copier); return; }
   if (d.copierMessage) { const i = invites.find(x => x.id === d.copierMessage), m = { ...MESSAGES, ...outils.messages };
     await navigator.clipboard?.writeText(remplir(filtreEnvoi === 'relance' ? m.relance : m.invitation, { prenom: prenom(i.nom), titre: evt.titre, date: dateLongue(evt.date), lien: lienInvite(i.id) })).catch(() => {});
@@ -657,6 +691,12 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-table') { ev.target.reset(); await addDoc(collection(db, `events/${E}/tables`), { nom: f.nom.trim(), places: Math.max(1, +f.places || 10), ordre: tables.length + 1 }); }
   if (id === 'f-budget') { ev.target.reset(); await addDoc(collection(db, `events/${E}/budget`), { poste: f.poste, libelle: f.libelle.trim(), prevu: +f.prevu || 0, paye: 0 }); }
   if (id === 'f-presta') { ev.target.reset(); await addDoc(collection(db, `events/${E}/prestataires`), { metier: f.metier, nom: f.nom.trim(), tel: f.tel.trim(), email: f.email.trim(), montant: +f.montant || 0, verse: 0, statut: f.montant ? 'devis' : 'piste', notes: '' }); }
+  if (id === 'f-cagnotte') {
+    const lien = f.lien.trim();
+    await updateDoc(doc(db, 'events', E), { cagnotte: { lien: /^https:\/\//.test(lien) ? lien : '', libelle: f.libelle.trim() || 'Participer à la cagnotte', texte: f.texte.trim() } });
+    if ($('#m-cagnotte')) $('#m-cagnotte').textContent = lien && !/^https:\/\//.test(lien) ? 'Le lien doit commencer par https://' : 'Enregistré.';
+  }
+  if (id === 'f-cadeau') { ev.target.reset(); await addDoc(collection(db, `events/${E}/cadeaux`), { nom: f.nom.trim(), prix: +f.prix || 0, lien: /^https:\/\//.test(f.lien.trim()) ? f.lien.trim() : '', reservePar: null, creeLe: serverTimestamp() }); }
   if (id === 'f-tache') { ev.target.reset(); await addDoc(collection(db, `events/${E}/taches`), { titre: f.titre.trim(), echeance: f.echeance || '', fait: false, ordre: taches.length }); }
   if (id === 'f-deroule') { ev.target.reset(); await majDeroule([...(outils.deroule?.items || []), { heure: f.heure, titre: f.titre.trim(), lieu: f.lieu.trim(), qui: f.qui.trim(), public: true }]); }
   if (id === 'f-jeux') {
@@ -681,6 +721,8 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-reglages') {
     await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f });
     if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim() }, { merge: true });
+    const code = (f.code || '').trim();
+    if (code) await updateDoc(doc(db, 'events', E), { codeAcces: code.toLowerCase() === 'aucun' ? '' : await empreinte(E, code) });
     if ($('#m-reglages')) $('#m-reglages').textContent = 'Enregistré.';
   }
 });

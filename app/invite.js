@@ -11,7 +11,7 @@ import { theme } from './themes.js?v=2';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'), T = p.get('g');
-let msgMot = '', evt, inv, live = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
+let cadeaux = [], msgMot = '', evt, inv, live = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
 const a = o => evt?.options?.includes(o);
 const t = x => traduire(L, x);
 const dateLongue = d => { if (!d) return ''; try { return new Date(d).toLocaleDateString(LOCALES[L] || 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch { return new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } };
@@ -34,7 +34,9 @@ async function demarrer() {
   await auth.authStateReady();   // attendre l'état de connexion (l'ancienne attente pouvait rester bloquée quand il était déjà connu)
   await rattacher();
   evt = (await getDoc(doc(db, 'events', E))).data();
+  if (evt?.formule === 'essai') { vue.innerHTML = '<div class="app-carte" style="text-align:center"><h2 class="serif">Cette invitation se prépare</h2><p class="app-note">Les hôtes mettent la dernière main à leur invitation. Revenez très vite.</p></div>'; return; }
   onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
+  onSnapshot(collection(db, `events/${E}/cadeaux`), s => { cadeaux = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.creeLe?.seconds || 0) - (y.creeLe?.seconds || 0)); rendre(); }, () => {});
   if (a('direct')) live = (await getDoc(doc(db, `events/${E}/prive/config`))).data()?.live || '';
   if (a('murphoto')) onSnapshot(query(collection(db, `events/${E}/photos`), where('visible', '==', true)), s => { photos = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreGalerie(); });
   if (a('livredor')) onSnapshot(query(collection(db, `events/${E}/livre`), where('visible', '==', true)), s => { mots = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreMots(); });
@@ -84,6 +86,12 @@ function rendre() {
       ${(champ(guide, 'texte', L) || '').split(/\n{2,}/).map(b => b.split('\n').filter(x => x.trim())).filter(b => b.length).map(([titre, ...l], k) => `<div class="etape-guide"><span class="etq">${t('Étape')} ${k + 1}</span><h3>${esc(titre)}</h3>${l.map(x => /^\s*(conseil|tip|consejo|dica|konsèy)\s*:/i.test(x) ? `<p class="conseil"><b>${t('Bon à savoir')}</b> ${esc(x.replace(/^[^:]*:\s*/, ''))}</p>` : `<p>${esc(x)}</p>`).join('')}</div>`).join('')}</div>` : ''}
     ${a('deroule') && evt.deroulePublic?.length ? `<div class="app-carte"><h2>${t('Le déroulé')}</h2>${evt.deroulePublic.map(d => `<div class="ceremonie"><div><h3>${esc(d.heure)} · ${esc(d.titre)}</h3>${d.lieu ? `<p>${esc(d.lieu)}</p>` : ''}</div></div>`).join('')}</div>` : ''}
     ${a('tenues') && tenues?.tissus?.length ? formTenue() : ''}
+    ${evt.cagnotte?.lien || cadeaux.length ? `<div class="app-carte" id="cadeaux"><h2>${t('Liste et cagnotte')}</h2><p class="app-note" style="margin-bottom:12px">${esc(evt.cagnotte?.texte || t('Votre présence est notre plus beau cadeau. Pour ceux qui le souhaitent :'))}</p>
+      ${/^https:\/\//.test(evt.cagnotte?.lien || '') ? `<a class="btn" href="${esc(evt.cagnotte.lien)}" target="_blank" rel="noopener">${esc(evt.cagnotte.libelle || t('Participer à la cagnotte'))}</a>` : ''}
+      ${cadeaux.length ? `<ul class="liste-cadeaux" style="list-style:none;margin-top:14px;display:grid;gap:10px">${cadeaux.map(c => `<li style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;border:1px solid rgba(0,0,0,.08);border-radius:10px;${c.reservePar && c.reservePar !== T ? 'opacity:.5' : ''}">
+        <span><b>${/^https:\/\//.test(c.lien || '') ? `<a href="${esc(c.lien)}" target="_blank" rel="noopener">${esc(c.nom)}</a>` : esc(c.nom)}</b>${c.prix ? ` · ${euros(c.prix)}` : ''}</span>
+        ${!c.reservePar ? `<button class="btn petit" data-reserver="${c.id}">${t("Je l'offre")}</button>` : c.reservePar === T ? `<button class="btn petit clair" data-liberer="${c.id}">${t('Annuler')}</button>` : `<span class="app-note">${t('Déjà offert')}</span>`}</li>`).join('')}</ul>
+        <p class="app-note" style="margin-top:10px">${t("Réservez le cadeau que vous offrez : les autres invités le verront pris. Vous l'achetez où vous voulez.")}</p>` : ''}</div>` : ''}
     ${a('jeux') ? `<div class="app-carte" id="jeux"></div>` : ''}
     ${a('direct') && live ? `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.')}</p><div class="video"><iframe src="${esc(embed(live))}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Direct"></iframe></div></div>` : ''}
     ${a('murphoto') ? `<div class="app-carte"><h2>${t('Le mur photo')}</h2><p class="app-note" style="margin-bottom:12px">${t("Partagez vos photos de la fête : elles s'affichent sur le mur.")}</p>
@@ -192,6 +200,8 @@ async function telecharger(x) {
 document.addEventListener('click', async ev => {
   const c = ev.target.closest('button, a, label'); if (!c) return;
   const d = c.dataset;
+  if (d.reserver) { try { await updateDoc(doc(db, `events/${E}/cadeaux/${d.reserver}`), { reservePar: T, reserveNom: inv.nom, reserveLe: serverTimestamp() }); } catch { alert(t('Ce cadeau vient d\'être réservé par un autre invité.')); } return; }
+  if (d.liberer) { await updateDoc(doc(db, `events/${E}/cadeaux/${d.liberer}`), { reservePar: null, reserveNom: null, reserveLe: null }).catch(() => {}); return; }
   if (d.langue) { L = d.langue; memoriserLangue(L); rendre(); updateDoc(doc(db, `events/${E}/invites/${T}`), { langue: L }).catch(() => {}); return; }
   if (d.retirerPhoto) {
     const ph = photos.find(x => x.id === d.retirerPhoto); if (!ph) return;

@@ -207,3 +207,19 @@
 [data-trame=plein] .couv-plein::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55))}
 [data-trame=plein] .bloc{min-height:auto;padding:70px 26px}
 [data-trame=plein] .bande{opacity:.18}
+
+/* Liste et cagnotte, invitation au prénom */
+.cadeaux-demo{list-style:none;display:grid;gap:10px;margin:18px 0 10px;text-align:left}
+.cadeaux-demo li{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(185,138,62,.35);background:color-mix(in srgb,var(--carte) 90%,transparent)}
+.cadeaux-demo li span{flex:1}
+.cadeaux-demo li b{font-family:var(--f-titre);font-weight:400;color:var(--or3)}
+.cadeaux-demo .bouton{margin:0;padding:8px 14px;font-size:11px}
+.cadeaux-demo li.pris{opacity:.5}
+.cadeaux-demo em,.cadeaux-demo .a-vous{font-size:13px;color:var(--doux)}
+.note-cadeaux{font-size:14px;color:var(--doux);font-style:italic}
+.pour-invite{font-family:var(--f-script);font-size:30px;color:var(--or1);text-transform:none;letter-spacing:0;margin:0 0 4px;position:relative}
+small.pour-invite{font-size:18px;margin:0}
+.mood-pour{text-align:center;margin:6px 0 0}
+.mood-pour a{color:var(--sur-fond);font-size:14px;letter-spacing:.06em}
+
+.tel video{display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:22px}

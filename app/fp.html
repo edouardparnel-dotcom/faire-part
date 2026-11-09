@@ -95,6 +95,21 @@ if (q.get('demo')) {
     const evt = (await getDoc(doc(db, 'events', E))).data();
     if (!evt) racine.textContent = 'Cette invitation est introuvable.';
     else {
+      // Gratuit jusqu'à la publication : tant que l'événement est en essai, seuls les organisateurs voient la page.
+      await auth.authStateReady();
+      const organisateur = auth.currentUser && !auth.currentUser.isAnonymous && auth.currentUser.uid === evt.owner;
+      if (evt.formule === 'essai' && !organisateur && !q.has('apercu')) {
+        racine.innerHTML = '<div style="min-height:100svh;display:grid;place-items:center;text-align:center;padding:30px;font-family:Georgia,serif;color:#3b3226;background:#f7f2e8"><div><p style="letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:#8c6e36">Bientôt</p><h1 style="font-weight:400;font-size:34px;margin:10px 0">Cette invitation se prépare</h1><p style="max-width:30ch;margin:auto;color:#6e665b">Les hôtes mettent la dernière main à leur invitation. Revenez très vite.</p></div></div>';
+      } else if (evt.codeAcces && !T && !organisateur && !q.has('apercu') && localStorage.getItem('mv-code-' + E) !== evt.codeAcces) {
+        racine.innerHTML = '<form id="f-code" style="min-height:100svh;display:grid;place-items:center;text-align:center;padding:30px;font-family:Georgia,serif;color:#3b3226;background:#f7f2e8"><div><p style="letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:#8c6e36">Accès privé</p><h1 style="font-weight:400;font-size:32px;margin:10px 0 18px">' + (evt.titre || '').replace(/[<>&]/g, '') + '</h1><input name="c" autocomplete="off" placeholder="Code d\u2019accès" style="font:18px Georgia;padding:12px 16px;border:1px solid #b8975a;text-align:center;width:min(80vw,280px)"><br><button style="margin-top:14px;padding:12px 26px;border:0;background:#2b2620;color:#f5efe2;font:14px system-ui;letter-spacing:.2em;text-transform:uppercase">Entrer</button><p id="m-code" style="color:#a33;min-height:1.4em"></p></div></form>';
+        document.getElementById('f-code').addEventListener('submit', async ev => {
+          ev.preventDefault();
+          const o = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(E + ':' + ev.target.c.value.trim().toUpperCase()));
+          const h = [...new Uint8Array(o)].map(x => x.toString(16).padStart(2, '0')).join('');
+          if (h === evt.codeAcces) { try { localStorage.setItem('mv-code-' + E, h); } catch {} location.reload(); }
+          else document.getElementById('m-code').textContent = 'Ce code ne correspond pas.';
+        });
+      } else {
       let invite = null;
       if (T) {
         // Même rattachement que la page invité : le téléphone est relié une fois pour toutes à ce jeton.
@@ -110,6 +125,8 @@ if (q.get('demo')) {
       const lienReponse = T ? `invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}` : '';
       const design = evt.design || designParDefaut(evt, evt.type === 'mariage' ? 'ivoire' : { anniversaire: 'champagne', bapteme: 'nuage', gender: 'rosebleu', naissance: 'lune' }[evt.type], format);
       rendre(racine, { evt, design, format, invite, lienReponse, sansOuverture, langue: langueChoisie(design.langues || ['fr'], invite?.langue) });
+      if (evt.formule === 'essai') { const bd = document.createElement('div'); bd.textContent = 'Aperçu réservé aux organisateurs · invitation non publiée'; bd.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99;background:#2b2620;color:#f5efe2;font:13px system-ui;text-align:center;padding:6px'; document.body.appendChild(bd); }
+      }
     }
   }
 } else {

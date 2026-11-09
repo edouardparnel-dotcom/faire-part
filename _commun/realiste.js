@@ -5,6 +5,15 @@
   const ouv = document.getElementById('ouverture');
   const audio = document.getElementById('audio');
   const bouton = document.getElementById('musique');
+  // Invitation au prénom de l'invité (?pour=Prénom ; dans l'espace, le lien personnel le fait tout seul).
+  const pour = (q.get('pour') || '').trim().slice(0, 30);
+  if (pour) {
+    const propre = pour.replace(/[<>&"]/g, '');
+    document.querySelectorAll('.suite-couv .chapeau, .env-carte small:first-child, .derriere small:first-child').forEach((el, i) => {
+      const p = document.createElement(i ? 'small' : 'p'); p.className = 'pour-invite'; p.textContent = i ? propre : 'Chère ' + propre + ',';
+      el.parentNode.insertBefore(p, el);
+    });
+  }
   if (q.get('f') === 'std') { document.body.classList.add('std'); if (document.body.dataset.titreStd) document.title = document.body.dataset.titreStd; }
 
   let musique = function (jouer) {
@@ -67,6 +76,29 @@
   if (q.has('ouvert')) {
     ouv.style.transition = 'none'; ouv.classList.add('ouvert'); document.body.classList.remove('ferme');
     if (bouton) { bouton.style.transition = 'none'; bouton.classList.add('visible', 'coupe'); }
+  }
+
+  // Save-the-date : la date se découvre en grattant une couche dorée.
+  if (q.get('f') === 'std' && !q.has('ouvert')) {
+    const cible = document.querySelector('.suite-couv .date');
+    if (cible) setTimeout(() => {
+      const r = cible.getBoundingClientRect(), cv = document.createElement('canvas'), dpr = devicePixelRatio || 1;
+      cible.style.position = 'relative'; cv.className = 'grattage';
+      cv.width = (r.width + 24) * dpr; cv.height = (r.height + 16) * dpr;
+      cv.style.cssText = `position:absolute;left:-12px;top:-8px;width:${r.width + 24}px;height:${r.height + 16}px;touch-action:none;cursor:grab;z-index:5;border-radius:8px`;
+      const x = cv.getContext('2d'), g = x.createLinearGradient(0, 0, cv.width, cv.height);
+      g.addColorStop(0, '#9c7a33'); g.addColorStop(.35, '#f2dc8c'); g.addColorStop(.6, '#c9a13e'); g.addColorStop(1, '#8c6a1f');
+      x.fillStyle = g; x.fillRect(0, 0, cv.width, cv.height);
+      x.fillStyle = 'rgba(60,40,10,.75)'; x.font = `${13 * dpr}px system-ui`; x.textAlign = 'center'; x.textBaseline = 'middle';
+      x.fillText('Grattez pour découvrir la date', cv.width / 2, cv.height / 2);
+      cible.appendChild(cv); x.globalCompositeOperation = 'destination-out';
+      let actif = false, n = 0;
+      const gratte = e => { if (!actif) return; const b = cv.getBoundingClientRect(); x.beginPath(); x.arc((e.clientX - b.left) * dpr, (e.clientY - b.top) * dpr, 18 * dpr, 0, 7); x.fill();
+        if (++n % 12 === 0) { const d = x.getImageData(0, 0, cv.width, cv.height).data; let v = 0; for (let i = 3; i < d.length; i += 16) if (!d[i]) v++; if (v / (d.length / 16) > .5) { cv.style.transition = 'opacity .6s'; cv.style.opacity = 0; setTimeout(() => cv.remove(), 700); } } };
+      cv.addEventListener('pointerdown', e => { actif = true; cv.setPointerCapture(e.pointerId); gratte(e); });
+      cv.addEventListener('pointermove', gratte);
+      cv.addEventListener('pointerup', () => actif = false);
+    }, 3400);
   }
 
   const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
