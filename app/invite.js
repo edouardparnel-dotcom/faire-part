@@ -7,7 +7,7 @@ import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gsta
 import { doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { traduire, champ, LANGUES, LOCALES, langueChoisie, memoriserLangue } from './langues.js?v=2';
-import { theme } from './themes.js?v=2';
+import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'), T = p.get('g');

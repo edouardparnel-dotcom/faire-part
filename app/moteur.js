@@ -3,7 +3,7 @@
 // couverture plein écran et toutes les parties). La structure vient de la direction : couverture, programme, rythme.
 // Langues (option « Langue supplémentaire ») : textes fixes traduits dans langues.js, textes des organisateurs
 // traduits dans l'éditeur (« titre@en »…). Une partie liée à une option payante ne s'affiche que si l'option est active.
-import { theme as themeDe, POLICES } from './themes.js?v=2';
+import { theme as themeDe, POLICES } from './themes.js?v=3';
 import { traduire, champ as enLangue, LOCALES, memoriserLangue, LANGUES } from './langues.js?v=2';
 import { GUIDES } from './guides.js?v=1';
 

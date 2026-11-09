@@ -39,34 +39,34 @@
     <div class="catalogue">
       <a class="vignette-cat main" href="../lakay/index.html">
         <img src="../lakay/photo.jpg" alt="Collection Lakay" loading="lazy">
-        <span class="etq">Haïti</span><b>Lakay</b><small>Portes de maison gingerbread qui s&#x27;ouvrent, lettrage peint des tap-taps</small></a>
+        <span class="etq">Lakou · maisons gingerbread</span><b>Lakay</b><small>Portes de maison gingerbread qui s&#x27;ouvrent, lettrage peint des tap-taps</small></a>
       <a class="vignette-cat main" href="../madras/index.html">
         <img src="../madras/photo.jpg" alt="Collection Madras" loading="lazy">
-        <span class="etq">Martinique · Guadeloupe</span><b>Madras</b><small>Coiffe tèt maré qui se dénoue, photo dans une fenêtre de case créole</small></a>
+        <span class="etq">Madras · tèt maré</span><b>Madras</b><small>Coiffe tèt maré qui se dénoue, photo dans une fenêtre de case créole</small></a>
       <a class="vignette-cat main" href="../kente/index.html">
         <img src="../kente/photo.jpg" alt="Collection Kente" loading="lazy">
-        <span class="etq">Ghana</span><b>Kente</b><small>Bandes tissées qui s&#x27;ouvrent comme un métier, noir et or, symbole adinkra</small></a>
+        <span class="etq">Kente · symboles adinkra</span><b>Kente</b><small>Bandes tissées qui s&#x27;ouvrent comme un métier, noir et or, symbole adinkra</small></a>
       <a class="vignette-cat main" href="../owambe/index.html">
         <img src="../owambe/photo.jpg" alt="Collection Owambe" loading="lazy">
-        <span class="etq">Nigeria (yoruba)</span><b>Owambe</b><small>Éventail doré qui s&#x27;ouvre, couverture de magazine de mode</small></a>
+        <span class="etq">Aso-ebi · gele</span><b>Owambe</b><small>Éventail doré qui s&#x27;ouvre, couverture de magazine de mode</small></a>
       <a class="vignette-cat main" href="../toghu/index.html">
         <img src="../toghu/photo.jpg" alt="Collection Toghu" loading="lazy">
-        <span class="etq">Cameroun</span><b>Toghu</b><small>Pans de toghu brodé qui glissent, médaillon royal, nuit et étoiles</small></a>
+        <span class="etq">Toghu · Grassfields</span><b>Toghu</b><small>Pans de toghu brodé qui glissent, médaillon royal, nuit et étoiles</small></a>
       <a class="vignette-cat main" href="../teranga/index.html">
         <img src="../teranga/photo.jpg" alt="Collection Teranga" loading="lazy">
-        <span class="etq">Sénégal</span><b>Teranga</b><small>Voile de bazin blanc qui se lève, arabesques et filets dorés</small></a>
+        <span class="etq">Grand boubou · bazin</span><b>Teranga</b><small>Voile de bazin blanc qui se lève, arabesques et filets dorés</small></a>
       <a class="vignette-cat main" href="../sape/index.html">
         <img src="../sape/photo.jpg" alt="Collection Sape" loading="lazy">
-        <span class="etq">Congo (RDC, Brazzaville)</span><b>Sape</b><small>Étiquette de couture qui se retourne, catalogue de mode aux couleurs franches</small></a>
+        <span class="etq">La Sape · élégance</span><b>Sape</b><small>Étiquette de couture qui se retourne, catalogue de mode aux couleurs franches</small></a>
       <a class="vignette-cat main" href="../kita/index.html">
         <img src="../kita/photo.jpg" alt="Collection Kita" loading="lazy">
-        <span class="etq">Côte d&#x27;Ivoire</span><b>Kita</b><small>Mosaïque de carreaux de pagne qui se retournent, grille de tuiles orange et noir</small></a>
+        <span class="etq">Pagne kita · tissage baoulé</span><b>Kita</b><small>Mosaïque de carreaux de pagne qui se retournent, grille de tuiles orange et noir</small></a>
       <a class="vignette-cat main" href="../bogolan/index.html">
         <img src="../bogolan/photo.jpg" alt="Collection Bogolan" loading="lazy">
-        <span class="etq">Mali</span><b>Bogolan</b><small>Rouleau de tissu de boue qui se relève, parchemin et frises géométriques</small></a>
+        <span class="etq">Bogolanfini · terre et teintures</span><b>Bogolan</b><small>Rouleau de tissu de boue qui se relève, parchemin et frises géométriques</small></a>
       <a class="vignette-cat main" href="../tibeb/index.html">
         <img src="../tibeb/photo.jpg" alt="Collection Tibeb" loading="lazy">
-        <span class="etq">Éthiopie</span><b>Tibeb</b><small>Pans de coton blanc à bordures tissées qui s&#x27;écartent, croix en ornement</small></a>
+        <span class="etq">Habesha kemis · tibeb</span><b>Tibeb</b><small>Pans de coton blanc à bordures tissées qui s&#x27;écartent, croix en ornement</small></a>
     </div>
     <h3 class="banque-groupe">Intemporels</h3>
     <div class="catalogue">
@@ -160,7 +160,7 @@
   <div class="catalogue" id="catalogue"></div>
 </main>
 <script type="module">
-  import { THEMES, FAMILLES, FAMILLES_DE, COUVERTURES, PROGRAMMES } from '../app/themes.js?v=2';
+  import { THEMES, FAMILLES, FAMILLES_DE, COUVERTURES, PROGRAMMES } from '../app/themes.js?v=3';
   const q = new URLSearchParams(location.search);
   let famille = FAMILLES_DE[q.get('evt')]?.length === 1 ? FAMILLES_DE[q.get('evt')][0] : 'tous', format = 'fp';
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
