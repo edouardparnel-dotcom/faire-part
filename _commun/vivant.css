@@ -62,3 +62,5 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.sui
 .volant-h{--amp:.5deg;animation:souffle 6s ease-in-out infinite}
 .suspendu{--amp:2.5deg;animation:souffle 5s ease-in-out infinite}
 .diag-h{--amp:.8deg;animation:souffle 9s ease-in-out infinite}
+.etang .nenuphars{--amp:.45deg;animation:souffle 10s ease-in-out infinite}
+.etang .brume{--amp:.3deg;animation:souffle 13s ease-in-out -4s infinite}
