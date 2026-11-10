@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../shiromuku/lieu.webp",
+"cat": "Lieux",
+"nom": "Shiromuku"
+},
+{
+"src": "../shiromuku/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Shiromuku"
+},
+{
+"src": "../shiromuku/photo.jpg",
+"cat": "Ambiances",
+"nom": "Shiromuku"
+},
+{
 "src": "../aodai/lieu.webp",
 "cat": "Lieux",
 "nom": "Áo dài"

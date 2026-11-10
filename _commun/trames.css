@@ -441,4 +441,16 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i{font-size:.9em;margin:0 0 -4px}
+
+/* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
+.hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
+.hublot::before{content:'';position:absolute;inset:-13px;border-radius:50%;border:1px solid var(--or1);box-shadow:inset 0 0 0 6px var(--carte),inset 0 0 0 7px var(--or2),0 18px 40px rgba(60,40,30,.12)}
+.hublot-fenetre{position:absolute;inset:0;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 22px rgba(0,0,0,.18)}
+.hublot-vue{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 60%}
+.hublot-branche{position:absolute;width:158%;max-width:none;right:-34%;top:-14%;z-index:2;transform-origin:100% 40%;filter:drop-shadow(0 8px 10px rgba(80,40,50,.14))}
+.suite-couv:has(.hublot) .chapeau{margin-top:0;padding-top:min(7vw,30px)}
+.suite-couv:has(.hublot){justify-content:flex-start}
+.suite-titre .hublot{width:min(42vw,190px);margin:8px auto 22px}
+.mood-matieres .m-hublot{width:120px;margin:0 10px;display:inline-block;vertical-align:middle}
+.mood-matieres .m-hublot::before{inset:-6px}
