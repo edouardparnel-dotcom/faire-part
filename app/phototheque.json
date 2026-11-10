@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../liputa/lieu.webp",
+"cat": "Lieux",
+"nom": "Liputa"
+},
+{
+"src": "../liputa/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Liputa"
+},
+{
+"src": "../liputa/photo.jpg",
+"cat": "Ambiances",
+"nom": "Liputa"
+},
+{
 "src": "../imbali/lieu.webp",
 "cat": "Lieux",
 "nom": "Imbali"

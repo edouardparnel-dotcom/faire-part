@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Merveille &amp; Olivier — Mariage (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Satisfy&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/vivant.css?v=14">
+<link rel="stylesheet" href="../_commun/trames.css?v=28">
+<script src="../_commun/vivant.js?v=20" defer></script>
+<link rel="stylesheet" href="../_commun/realiste.css?v=4">
+<style>
+:root{--fond:#F3EEE3;--carte:#FFFCF6;--encre:#1D2A1F;--doux:#5E6B5F;--or1:#D9A23A;--or2:#F2D58F;--or3:#8A6417;--accent:#1F6B45;
+  --f-titre:'DM Serif Display',serif;--f-script:'Satisfy',cursive;--f-texte:'Jost',system-ui,sans-serif;--decor:linear-gradient(rgba(255,252,246,.2),rgba(255,252,246,.2)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#1D2A1F;}
+.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
+.ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
+.ouverture{background:var(--decor),var(--fond)}
+.ouverture .consigne{color:var(--sur-fond)}
+.mini{background:linear-gradient(color-mix(in srgb,var(--carte) 82%,transparent),color-mix(in srgb,var(--carte) 82%,transparent)),url('fond.jpg') center/cover,var(--carte);
+  outline:1px solid var(--or1);outline-offset:-7px;box-shadow:inset 0 0 0 11px var(--carte),inset 0 0 0 12px var(--or2);overflow:hidden}
+.mini .mini-deco{width:78%;max-height:30%;object-fit:contain;margin:0 auto 6px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.mini b{font-family:var(--f-titre);font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--accent)}
+.mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:clamp(17px,5vw,24px);line-height:1}
+.mini small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
+body.ferme{overflow:hidden}
+.std-seul{display:none} body.std .fp-seul{display:none} body.std .std-seul{display:block}
+.suite-couv{min-height:100svh}
+
+</style>
+</head>
+<body class="ferme" data-date="2027-07-10T15:00:00+01:00" data-evenement="Mariage Merveille &amp; Olivier" data-ville="Kinshasa" data-titre-std="Merveille &amp; Olivier — Save the date (démonstration)" data-blocs="grappe" data-titres="capitales" data-images="deborde" data-revele="zoom" data-paral="derive" data-collection="liputa" data-particules="petales" data-trame="centree">
+<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/819;--rabat:polygon(0 0,100% 0,100% 2%,49% 91%,0 3%);--devant:polygon(0 3%,49% 91%,100% 2%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 98%,49% 9%,0 97%);--doublure:linear-gradient(0deg,#8A6417,#F2D58F 55%,#D9A23A);">
+  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
+    <div class="env-dos"></div>
+    <div class="env-carte mini"><img class="mini-deco" src="pagne-1.webp" alt=""><small>Mariage</small><b>Merveille</b><i>&amp;</i><b>Olivier</b><small>10 · 07 · 2027</small></div>
+    <div class="env-devant"></div>
+    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
+    <img class="env-sceau" src="sceau.webp" alt="" style="left:49%;top:83%;width:16%;transform:translate(-50%,-50%)">
+  </div>
+  <p class="consigne">Ouvrez l’enveloppe de pagne</p>
+</div>
+<script>(() => {
+  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
+  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
+  setTimeout(pret, 5000);
+})();</script>
+<button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
+<audio id="audio" src="musique.mp3" loop preload="auto"></audio>
+<header class="suite-couv carte">
+  <div class="pagnes"><img src="pagne-1.webp" alt="" style="--x:-9%;--y:3%;--t:34%;--r:-12deg;--d:7s;--dl:0s"><img src="pagne-2.webp" alt="" style="--x:75%;--y:-1%;--t:32%;--r:9deg;--d:8s;--dl:-3s"><img src="pagne-3.webp" alt="" style="--x:-13%;--y:36%;--t:26%;--r:8deg;--d:6.5s;--dl:-1.5s"><img src="pagne-4.webp" alt="" style="--x:89%;--y:31%;--t:26%;--r:-10deg;--d:7.5s;--dl:-4s"><img src="pagne-5.webp" alt="" style="--x:-7%;--y:74%;--t:28%;--r:11deg;--d:8.5s;--dl:-2s"><img src="pagne-6.webp" alt="" style="--x:82%;--y:70%;--t:27%;--r:-8deg;--d:6.8s;--dl:-5s"></div>
+  
+  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
+  <h1 class="noms">Merveille<i class="or">&amp;</i>Olivier</h1>
+  <div class="filet">✦</div>
+  <p class="date">10 · 07 · 2027</p>
+  <p class="lieu">Terrasse du Fleuve<br>Kinshasa</p>
+  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
+  <img class="fleurs-bas" src="fleurs.webp" alt="" width="1400" height="643">
+</header>
+
+<main class="suite-main">
+  <figure class="inter inter-couple apparait"><img src="couple.jpg" alt="Merveille et Olivier" loading="lazy"><figcaption class="script">Merveille &amp; Olivier</figcaption></figure>
+  <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 10 juillet 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Libala : échange des consentements</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Photos des deux familles en pagne</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Cocktail au bord du fleuve</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 00</b><span>Dîner parmi les fleurs</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>21 h 00</b><span>Première danse sur une rumba</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
+  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Terrasse du Fleuve<br>Kinshasa</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Kinshasa" target="_blank" rel="noopener">Voir le plan</a></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="ouverture.webp" alt="" loading="lazy"><figcaption>Couleurs du pagne</figcaption></figure>
+  <section class="bloc apparait fp-seul"><h2>Tenue</h2><p class="titre-tenue">Couleurs du pagne</p><p>Émeraude, safran, indigo, corail. Chaque famille portera son pagne ; un tissu wax est le bienvenu pour les invités qui le souhaitent, sans aucune obligation.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
+  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er juin 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
+</main>
+<footer class="suite-pied"><p class="script">Merveille &amp; Olivier</p><p>Matondo, merci d’avoir dansé la rumba avec nous</p>
+<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
+<script src="../_commun/realiste.js?v=9"></script>
+</body>
+</html>

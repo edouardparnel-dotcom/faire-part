@@ -441,7 +441,7 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i{font-size:.9em;margin:0 0 -4px}
 
 /* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
 .hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
@@ -511,3 +511,20 @@ html,body{overflow-x:clip}
 .suite-titre .collier .proteas{width:58%;right:-18%;bottom:-6%}
 .mood-matieres .m-collier{display:inline-block;width:130px;vertical-align:middle;margin:0 8px}
 @media (prefers-reduced-motion:reduce){.collier .perles{animation:none}}
+
+/* ───────── PAGNES (Liputa) : six échantillons de wax posés de biais autour de la carte, qui flottent chacun à son rythme ───────── */
+.pagnes{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pagnes img{position:absolute;left:var(--x);top:var(--y);width:var(--t);max-width:none;transform:rotate(var(--r));filter:drop-shadow(0 12px 14px rgba(20,30,20,.25));animation:flotte var(--d) ease-in-out var(--dl) infinite}
+@keyframes flotte{0%,100%{translate:0 0}50%{translate:0 -9px}}
+.suite-couv:has(.pagnes){position:relative;justify-content:flex-start}
+.suite-couv:has(.pagnes)>*:not(.pagnes){position:relative;z-index:1}
+.suite-couv:has(.pagnes) .chapeau{margin-top:0;padding-top:min(46vw,200px);max-width:min(60vw,280px);margin-inline:auto}
+.fleurs-bas{width:116%;max-width:none;margin:20px -8% -14px;filter:drop-shadow(0 10px 14px rgba(60,20,20,.2))}
+.suite-titre:has(.pagnes){position:relative;overflow:clip;padding-top:min(30vw,130px)}
+.suite-titre:has(.pagnes)>*:not(.pagnes){position:relative;z-index:1}
+.suite-titre .pagnes img{width:calc(var(--t) * .62)}
+.suite-titre .pagnes img:nth-child(n+3){display:none}
+.mood-matieres .pagnes{position:static;display:inline-flex;gap:8px;overflow:visible;vertical-align:middle}
+.mood-matieres .pagnes img{position:static;width:58px;animation:none}
+.mood-matieres .pagnes img:nth-child(n+4){display:none}
+@media (prefers-reduced-motion:reduce){.pagnes img{animation:none}}

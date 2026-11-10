@@ -45,7 +45,7 @@
   if (signe) {
     const p = (sel, z) => document.querySelectorAll('.suite-couv ' + sel).forEach(el => profondeur.push({ el, z }));
     p('.scene-fond', .2); p('.deco-balcon', .55); p('.deco-haut', .35); p('.deco-arche', .3); p('.coin-hg', .45); p('.coin-bd', .45);
-    p('.cartouche', .12); p('.bord-g', .25); p('.couche.c1', .02); p('.couche.c2', .05); p('.couche.c3', .12); p('.volant-h', .18); p('.volant-b', .18); p('.face-g', .14); p('.face-d', .14); p('.suspendu', .25); p('.diag-h', .3); p('.etang .brume', .06); p('.etang .nenuphars', .2); p('.hublot-vue', .35); p('.hublot-branche', .15); p('.toran .guirlande', .12); p('.collier .proteas', .22); p('.diag-b', .2); p('.deco-bas', .28); p('.plein-photo', .18); p('.arche', .1); p('.noms', -.1); p('.chapeau', -.16); p('.date', -.08);
+    p('.cartouche', .12); p('.bord-g', .25); p('.couche.c1', .02); p('.couche.c2', .05); p('.couche.c3', .12); p('.volant-h', .18); p('.volant-b', .18); p('.face-g', .14); p('.face-d', .14); p('.suspendu', .25); p('.diag-h', .3); p('.etang .brume', .06); p('.etang .nenuphars', .2); p('.hublot-vue', .35); p('.hublot-branche', .15); p('.toran .guirlande', .12); p('.collier .proteas', .22); p('.pagnes', .1); p('.fleurs-bas', .14); p('.diag-b', .2); p('.deco-bas', .28); p('.plein-photo', .18); p('.arche', .1); p('.noms', -.1); p('.chapeau', -.16); p('.date', -.08);
     document.querySelectorAll('.inter-table img, .inter-matiere .matiere-detail').forEach(el => recul.push(el));
   }
 
