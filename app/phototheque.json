@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../imbali/lieu.webp",
+"cat": "Lieux",
+"nom": "Imbali"
+},
+{
+"src": "../imbali/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Imbali"
+},
+{
+"src": "../imbali/photo.jpg",
+"cat": "Ambiances",
+"nom": "Imbali"
+},
+{
 "src": "../lehenga/lieu.webp",
 "cat": "Lieux",
 "nom": "Lehenga"

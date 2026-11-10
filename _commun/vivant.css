@@ -66,3 +66,4 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.sui
 .etang .brume{--amp:.3deg;animation:souffle 13s ease-in-out -4s infinite}
 .hublot-branche{--amp:.7deg;animation:souffle 8s ease-in-out infinite}
 .toran .guirlande{--amp:.35deg;animation:souffle 9s ease-in-out infinite}
+.collier .proteas{--amp:.9deg;animation:souffle 7s ease-in-out infinite}
