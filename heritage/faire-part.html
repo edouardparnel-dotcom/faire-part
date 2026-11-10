@@ -20,7 +20,7 @@
 :root{--fond-carte:#FBF6EC;--wax:#0F3B2E;--carte:#FBF6EC;--encre:#2B2A22;--doux:#6F6656;--or1:#B98A3E;--or2:#F0D58F;--or3:#7E5A1F;--emeraude:#0F4D3A}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--wax);color:var(--encre);font-family:'Cormorant Garamond',Georgia,serif;-webkit-font-smoothing:antialiased}
-body{background:radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),url('wax.jpg') center/cover fixed,var(--wax)}
+body{background:radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),url('wax-tuile.jpg') center top/520px auto repeat fixed,var(--wax)}
 body.ferme{overflow:hidden}
 img{display:block;max-width:100%;height:auto}
 .or{background:linear-gradient(100deg,var(--or3) 0%,var(--or1) 30%,var(--or2) 48%,var(--or1) 66%,var(--or3) 100%);background-size:250% 100%;
@@ -31,7 +31,7 @@ img{display:block;max-width:100%;height:auto}
 .mini-he b{font-family:'Cinzel',serif;font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--emeraude)}
 .mini-he i{font-family:'Pinyon Script',cursive;font-style:normal;color:var(--or1);font-size:clamp(16px,4.6vw,22px);line-height:1}
 .mini-he small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
-.ouverture{background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),url('wax.jpg') center/cover,var(--wax)}
+.ouverture{background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),url('wax-tuile.jpg') center/520px auto repeat,var(--wax)}
 .ouverture .consigne{color:#F3E6C4;text-shadow:0 2px 8px rgba(0,0,0,.6)}
 .enveloppe{filter:drop-shadow(0 22px 26px rgba(0,0,0,.5))}
 .fermoir{position:absolute;left:50%;top:64%;width:15%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:30%;backface-visibility:hidden;
@@ -85,6 +85,7 @@ main{max-width:520px;margin:0 auto;padding:16px 12px 70px}
 .std-seul{display:none}
 body.std .fp-seul{display:none} body.std .std-seul{display:block}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* voile grand écran */@media (min-width:900px){body{background:linear-gradient(rgba(18,12,6,.42),rgba(18,12,6,.42)),radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),url('wax-tuile.jpg') center top/520px auto repeat fixed,var(--wax)!important}.ouverture{background:linear-gradient(rgba(18,12,6,.45),rgba(18,12,6,.45)),radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),url('wax-tuile.jpg') center/520px auto repeat,var(--wax)!important}}
 </style>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 </head>

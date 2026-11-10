@@ -24,6 +24,13 @@
     addEventListener('scroll', maj, { passive: true }); maj();
   }
 
+  // cale-deborde : l'image « pleine largeur » va pile d'un bord à l'autre de sa carte, quelle que soit sa marge.
+  const cale = () => document.querySelectorAll('[data-images=deborde] .bloc > .illus').forEach(im => {
+    const s = getComputedStyle(im.parentElement), g = s.paddingLeft, d = s.paddingRight;
+    im.style.marginLeft = '-' + g; im.style.marginRight = '-' + d; im.style.width = `calc(100% + ${g} + ${d})`; im.style.maxWidth = 'none';
+  });
+  cale(); addEventListener('resize', cale);
+
   const couches = [];
   const ajoute = (sel, k, relatif) => document.querySelectorAll(sel).forEach(el => couches.push({ el, k, relatif }));
   ajoute('.deco-haut', .38); ajoute('.couche.c1', .2); ajoute('.couche.c2', .08); ajoute('.deco-arche', .16); ajoute('.deco-coin', .3); ajoute('.deco-objet', .22); ajoute('.etang .brume', -.08); ajoute('.etang .libellule', .1); ajoute('.hublot-branche', .12);
