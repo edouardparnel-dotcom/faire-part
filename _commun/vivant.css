@@ -68,3 +68,4 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) :is(.sui
 .toran .guirlande{--amp:.35deg;animation:souffle 9s ease-in-out infinite}
 .collier .proteas{--amp:.9deg;animation:souffle 7s ease-in-out infinite}
 .fleurs-bas{transform-origin:50% 100%;--amp:.5deg;animation:souffle 8s ease-in-out infinite}
+.drape{--amp:.35deg;animation:souffle 9s ease-in-out infinite}

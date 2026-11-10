@@ -441,7 +441,7 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i{font-size:.9em;margin:0 0 -4px}
 
 /* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
 .hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
@@ -566,3 +566,18 @@ body.ferme .popup img,body.ferme .krik span{animation-play-state:paused}
 .suite-titre .popup{height:min(54vw,260px)}
 .mood-matieres .m-popup{position:relative!important;display:inline-block;width:min(46vw,220px);height:120px;inset:auto!important;vertical-align:middle}
 @media (prefers-reduced-motion:reduce){.popup img,.krik span{animation:none;opacity:1}}
+
+/* ───────── DRAPÉ LUSTRÉ (Bazin) : un drapé de bazin en haut de la carte, traversé par un reflet de lumière ───────── */
+.drape{position:absolute;left:-5%;right:-5%;top:-10px;pointer-events:none;z-index:0;transform-origin:50% 0}
+.drape .tissu{display:block;width:100%;max-width:none;filter:drop-shadow(0 12px 14px rgba(19,40,44,.25))}
+.drape .lustre{position:absolute;inset:0;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.65) 46%,rgba(255,250,225,.9) 50%,rgba(255,255,255,.65) 54%,transparent 70%);background-size:280% 100%;
+  mix-blend-mode:soft-light;animation:lustre 5.5s ease-in-out infinite}
+@keyframes lustre{0%{background-position:130% 0}60%,100%{background-position:-30% 0}}
+.suite-couv:has(.drape){position:relative;justify-content:flex-start}
+.suite-couv:has(.drape)>*:not(.drape){position:relative;z-index:1}
+.suite-couv:has(.drape) .chapeau{margin-top:0;padding-top:min(44vw,195px)}
+.suite-titre:has(.drape){position:relative;overflow:clip;padding-top:min(36vw,160px)}
+.suite-titre:has(.drape)>*:not(.drape){position:relative;z-index:1}
+.mood-matieres .m-drape{position:relative!important;display:inline-block;width:min(46vw,220px);inset:auto!important;vertical-align:middle}
+@media (prefers-reduced-motion:reduce){.drape .lustre{animation:none;opacity:0}}
