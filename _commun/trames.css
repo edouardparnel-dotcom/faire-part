@@ -473,3 +473,17 @@ body[data-blocs=bandes][data-images=deborde] .bloc .illus{--px:28px}
 @media (prefers-reduced-motion:reduce){.indice-defile svg{animation:none}}
 /* Rien ne doit élargir la page sur téléphone (éléments qui arrivent de côté, décors qui débordent) : sinon tout l'écran se décale. */
 html,body{overflow-x:clip}
+
+/* ───────── TORAN (Lehenga) : guirlande d'œillets en haut de la carte, fils de fleurs qui pendent et se balancent ───────── */
+.toran{position:absolute;left:0;right:0;top:0;height:min(100vw,460px);pointer-events:none;z-index:0;overflow:hidden}
+.toran .guirlande{position:absolute;top:-6px;left:-4%;width:108%;max-width:none;z-index:2;filter:drop-shadow(0 6px 8px rgba(90,40,10,.18));transform-origin:50% 0}
+.toran .fil{position:absolute;top:var(--h);left:var(--x);width:var(--w);max-width:none;z-index:1;transform-origin:50% 0;filter:drop-shadow(0 4px 5px rgba(90,40,10,.16));animation:souffle var(--d) ease-in-out var(--r) infinite}
+.suite-couv:has(.toran){position:relative;justify-content:flex-start}
+.suite-couv:has(.toran)>*:not(.toran){position:relative;z-index:1}
+.suite-couv:has(.toran) .chapeau{margin-top:0;padding-top:min(50vw,215px);max-width:min(52vw,250px);margin-inline:auto}
+.suite-titre:has(.toran){position:relative;overflow:clip;padding-top:min(26vw,120px)}
+.suite-titre:has(.toran)>*:not(.toran){position:relative;z-index:1}
+.suite-titre .toran .fil{display:none}
+.mood-matieres .m-toran{position:relative!important;display:inline-block;width:min(46vw,220px);height:70px;inset:auto!important;vertical-align:middle}
+.mood-matieres .m-toran .fil{display:none}
+@media (prefers-reduced-motion:reduce){.toran .fil{animation:none}}

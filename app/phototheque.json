@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../lehenga/lieu.webp",
+"cat": "Lieux",
+"nom": "Lehenga"
+},
+{
+"src": "../lehenga/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Lehenga"
+},
+{
+"src": "../lehenga/photo.jpg",
+"cat": "Ambiances",
+"nom": "Lehenga"
+},
+{
 "src": "../shiromuku/lieu.webp",
 "cat": "Lieux",
 "nom": "Shiromuku"
