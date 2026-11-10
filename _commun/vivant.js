@@ -13,6 +13,17 @@
   b.prepend(fond);
   b.classList.add('vivant');
 
+  // Repère « Découvrir » en bas de l'écran : visible après l'ouverture, disparaît dès qu'on défile (sauf Grand Hôtel et Héritage, validés tels quels).
+  if (document.querySelector('.suite-couv') && !/^(grand-hotel|heritage)$/.test(b.dataset.collection || '')) {
+    const ind = document.createElement('a');
+    ind.className = 'indice-defile'; ind.href = '#'; ind.setAttribute('aria-label', 'Faire défiler vers la suite');
+    ind.innerHTML = 'Découvrir<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>';
+    ind.addEventListener('click', ev => { ev.preventDefault(); scrollBy({ top: innerHeight * .8, behavior: 'smooth' }); });
+    b.appendChild(ind);
+    const maj = () => ind.classList.toggle('cache', scrollY > 60);
+    addEventListener('scroll', maj, { passive: true }); maj();
+  }
+
   const couches = [];
   const ajoute = (sel, k, relatif) => document.querySelectorAll(sel).forEach(el => couches.push({ el, k, relatif }));
   ajoute('.deco-haut', .38); ajoute('.couche.c1', .2); ajoute('.couche.c2', .08); ajoute('.deco-arche', .16); ajoute('.deco-coin', .3); ajoute('.deco-objet', .22); ajoute('.etang .brume', -.08); ajoute('.etang .libellule', .1); ajoute('.hublot-branche', .12);

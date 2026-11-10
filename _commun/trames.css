@@ -454,3 +454,22 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .suite-titre .hublot{width:min(42vw,190px);margin:8px auto 22px}
 .mood-matieres .m-hublot{width:120px;margin:0 10px;display:inline-block;vertical-align:middle}
 .mood-matieres .m-hublot::before{inset:-6px}
+
+/* Image « débordante » : elle va d'un bord à l'autre de la carte, coupée net sur son cadre (jamais au-delà). */
+[data-images=deborde] .bloc .illus{--px:24px;width:calc(100% + 2*var(--px));margin-left:calc(-1*var(--px));margin-right:calc(-1*var(--px));border-radius:0}
+[data-trame=edito][data-images=deborde] .bloc .illus{--px:22px}
+[data-trame=plein][data-images=deborde] .bloc .illus{--px:26px}
+body[data-blocs=bandes][data-images=deborde] .bloc .illus{--px:28px}
+
+/* Repère de défilement : après l'ouverture, on voit qu'il y a une suite plus bas. */
+.indice-defile{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));translate:-50% 0;z-index:40;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:9px 18px 7px;border-radius:999px;background:color-mix(in srgb,var(--carte) 86%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  box-shadow:0 6px 20px rgba(0,0,0,.14);border:1px solid color-mix(in srgb,var(--or1) 55%,transparent);color:var(--encre);
+  font:500 10px/1 var(--f-texte);letter-spacing:.32em;text-transform:uppercase;text-decoration:none;transition:opacity .5s ease,translate .5s ease;cursor:pointer}
+.indice-defile svg{width:16px;height:16px;stroke:var(--or1);fill:none;stroke-width:1.6;animation:indice 1.8s ease-in-out infinite}
+@keyframes indice{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(4px);opacity:1}}
+.indice-defile.cache,body.ferme .indice-defile{opacity:0;translate:-50% 14px;pointer-events:none}
+[data-trame=plein] .suite-couv .defile,[data-trame=scene] .couv-scene .defile{display:none!important}
+@media (prefers-reduced-motion:reduce){.indice-defile svg{animation:none}}
+/* Rien ne doit élargir la page sur téléphone (éléments qui arrivent de côté, décors qui débordent) : sinon tout l'écran se décale. */
+html,body{overflow-x:clip}
