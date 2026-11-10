@@ -441,7 +441,7 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i{font-size:.9em;margin:0 0 -4px}
 
 /* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
 .hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
@@ -528,3 +528,19 @@ html,body{overflow-x:clip}
 .mood-matieres .pagnes img{position:static;width:58px;animation:none}
 .mood-matieres .pagnes img:nth-child(n+4){display:none}
 @media (prefers-reduced-motion:reduce){.pagnes img{animation:none}}
+
+/* ───────── TENTURES (Ndop) : deux bannières d'indigo suspendues de part et d'autre de la carte, qui se balancent ───────── */
+.tentures{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.tenture{position:absolute;top:-8px;width:min(34vw,150px);max-width:none;transform-origin:50% 0;filter:drop-shadow(0 14px 16px rgba(20,26,51,.28))}
+.tenture.g{left:max(-9vw,-40px);--amp:1deg;animation:souffle 7s ease-in-out infinite}
+.tenture.d{right:max(-9vw,-40px);--amp:1.2deg;animation:souffle 8.5s ease-in-out -3s infinite}
+.suite-couv:has(.tentures){position:relative;justify-content:flex-start}
+.suite-couv:has(.tentures)>*:not(.tentures){position:relative;z-index:1}
+.suite-couv:has(.tentures) .chapeau{margin-top:0;padding-top:min(16vw,70px);max-width:min(56vw,260px);margin-inline:auto}
+.suite-couv:has(.tentures) .noms{max-width:min(62vw,300px);margin-inline:auto}
+.suite-titre:has(.tentures){position:relative;overflow:clip}
+.suite-titre:has(.tentures)>*:not(.tentures){position:relative;z-index:1}
+.suite-titre .tenture{width:min(18vw,80px)}
+.mood-matieres .m-tentures{position:static;display:inline-flex;gap:10px;overflow:visible;vertical-align:middle}
+.mood-matieres .m-tentures .tenture{position:static;width:44px;animation:none}
+@media (prefers-reduced-motion:reduce){.tenture{animation:none}}

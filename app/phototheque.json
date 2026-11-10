@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../ndop/lieu.webp",
+"cat": "Lieux",
+"nom": "Ndop"
+},
+{
+"src": "../ndop/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Ndop"
+},
+{
+"src": "../ndop/photo.jpg",
+"cat": "Ambiances",
+"nom": "Ndop"
+},
+{
 "src": "../liputa/lieu.webp",
 "cat": "Lieux",
 "nom": "Liputa"
