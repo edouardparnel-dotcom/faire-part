@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../kreyol/lieu.webp",
+"cat": "Lieux",
+"nom": "Kreyòl"
+},
+{
+"src": "../kreyol/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Kreyòl"
+},
+{
+"src": "../kreyol/photo.jpg",
+"cat": "Ambiances",
+"nom": "Kreyòl"
+},
+{
 "src": "../ndop/lieu.webp",
 "cat": "Lieux",
 "nom": "Ndop"
