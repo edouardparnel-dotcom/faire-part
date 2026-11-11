@@ -636,7 +636,7 @@ def page_collections(modeles=()):
         m = par_slug[slug]
         badge = '<span class="badge-une">À la une</span>' if une else ''
         return f"""      <a class="vignette-cat main" href="../{slug}/index.html">{badge}
-        <img src="../{slug}/photo.jpg" alt="Collection {e(m['modele'])}" loading="lazy">
+        <img src="../{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}" alt="Collection {e(m['modele'])}" loading="lazy">
         <span class="etq">{e(m['culture'])}</span><b>{e(m['modele'])}</b><small>{e(m['da'])}</small></a>"""
 
     vus, blocs = set(), []
