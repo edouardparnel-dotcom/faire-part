@@ -16,51 +16,54 @@ ORN = '<svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50
 # Options : clé, moment, nom, description, prix (None = inclus, 'devis' = sur devis), pensé pour la diaspora
 OPTIONS_MARIAGE = [
   ('fairepart', 'Avant', "L'invitation", "Quarante et une collections réalistes, chacune avec son ouverture, sa mise en page et sa musique : invitation, save-the-date et site, à vos couleurs.", None, False),
-  ('savethedate', 'Avant', 'Save-the-date animé', "L'annonce envoyée des mois avant, pour que chacun bloque la date.", 90, False),
-  ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 40, False),
-  ('ceremonies', 'Avant', 'Invitations par cérémonie', "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", 120, True),
-  ('guide', 'Avant', 'Guide de la cérémonie', "La dot, le coutumier, les rites expliqués aux invités d'une autre culture.", 90, True),
-  ('covoiturage', 'Avant', 'Covoiturage entre invités', "Qui a de la place, qui en cherche : chaque invité indique son point de départ et voit d'abord les trajets qui partent près de chez lui.", 40, False),
-  ('etranger', 'Avant', "Invités venus de l'étranger", "Dates d'arrivée, hébergement, navettes et lettre d'invitation pour le visa.", 120, True),
-  ('tenues', 'Avant', 'Tenues coordonnées', "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", 120, True),
-  ('langue', 'Avant', 'Langue supplémentaire', "Quatorze langues, de l'anglais à l'arabe, au chinois ou au swahili : le site et l'invitation dans la langue de chacun.", 60, False),
-  ('qr', 'Le jour J', "Contrôle d'entrée par QR code", "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", 150, True),
-  ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "La cérémonie en direct, sur un lien réservé à vos invités.", 120, True),
-  ('deroule', 'Le jour J', 'Déroulé en direct', "Le programme de la journée sur le téléphone de chacun, avec des rappels.", 60, False),
-  ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application, elles s'affichent pendant la fête.", 90, False),
-  ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête, à réécouter des années plus tard.", 90, False),
-  ('jeux', 'Le jour J', 'Jeux des invités', "Quiz sur les mariés et pronostics, depuis le téléphone de chacun, puis révélation et classement.", 60, False),
-  ('album', 'Après', 'Album partagé', "Les photos des invités et du photographe, réunies en haute définition.", 90, False),
-  ('merci', 'Après', 'Remerciements personnalisés', "Une carte pour chaque invité, avec une photo où il apparaît.", 90, False),
+  ('savethedate', 'Avant', 'Save-the-date animé', "L'annonce envoyée des mois avant, pour que chacun bloque la date.", 30, False),
+  ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 15, False),
+  ('ceremonies', 'Avant', 'Invitations par cérémonie', "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", 40, True),
+  ('guide', 'Avant', 'Guide de la cérémonie', "La dot, le coutumier, les rites expliqués aux invités d'une autre culture.", 30, True),
+  ('covoiturage', 'Avant', 'Covoiturage entre invités', "Qui a de la place, qui en cherche : chaque invité indique son point de départ et voit d'abord les trajets qui partent près de chez lui.", 15, False),
+  ('etranger', 'Avant', "Invités venus de l'étranger", "Dates d'arrivée, hébergement, navettes et lettre d'invitation pour le visa.", 40, True),
+  ('tenues', 'Avant', 'Tenues coordonnées', "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", 40, True),
+  ('langue', 'Avant', 'Langue supplémentaire', "Quatorze langues, de l'anglais à l'arabe, au chinois ou au swahili : le site et l'invitation dans la langue de chacun.", 20, False),
+  ('qr', 'Le jour J', "Contrôle d'entrée par QR code", "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", 50, True),
+  ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "La cérémonie en direct, sur un lien réservé à vos invités.", 40, True),
+  ('deroule', 'Le jour J', 'Déroulé en direct', "Le programme de la journée sur le téléphone de chacun, avec des rappels.", 20, False),
+  ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application, elles s'affichent pendant la fête.", 30, False),
+  ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête, à réécouter des années plus tard.", 30, False),
+  ('jeux', 'Le jour J', 'Jeux des invités', "Quiz sur les mariés et pronostics, depuis le téléphone de chacun, puis révélation et classement.", 20, False),
+  ('album', 'Après', 'Album partagé', "Les photos des invités et du photographe, réunies en haute définition.", 30, False),
+  ('merci', 'Après', 'Remerciements personnalisés', "Une carte pour chaque invité, avec une photo où il apparaît.", 30, False),
   ('livre', 'Après', 'Livre souvenir imprimé', "Les photos et les mots de vos invités, imprimés et reliés.", 'devis', False),
 ]
 OPTIONS_EVENEMENT = [
   ('fairepart', 'Avant', "L'invitation", "Au moins dix directions artistiques, chacune avec sa propre ouverture et sa propre mise en page, reprise à vos couleurs.", None, False),
-  ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 40, False),
-  ('langue', 'Avant', 'Langue supplémentaire', "L'invitation et la page dans la langue de chacun.", 60, False),
-  ('direct', 'Le jour J', 'Direct privé pour les proches', "Le moment en direct, sur un lien réservé à vos invités.", 120, True),
-  ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application.", 90, False),
-  ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête.", 90, False),
-  ('jeux', 'Le jour J', 'Jeux et pronostics', "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", 60, False),
-  ('album', 'Après', 'Album partagé', "Toutes les photos réunies en haute définition.", 90, False),
-  ('merci', 'Après', 'Remerciements personnalisés', "Une carte pour chaque invité, avec une photo où il apparaît.", 90, False),
+  ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 15, False),
+  ('langue', 'Avant', 'Langue supplémentaire', "L'invitation et la page dans la langue de chacun.", 20, False),
+  ('direct', 'Le jour J', 'Direct privé pour les proches', "Le moment en direct, sur un lien réservé à vos invités.", 40, True),
+  ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application.", 30, False),
+  ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête.", 30, False),
+  ('jeux', 'Le jour J', 'Jeux et pronostics', "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", 20, False),
+  ('album', 'Après', 'Album partagé', "Toutes les photos réunies en haute définition.", 30, False),
+  ('merci', 'Après', 'Remerciements personnalisés', "Une carte pour chaque invité, avec une photo où il apparaît.", 30, False),
 ]
 
 # Formules : nom, prix, options incluses, lignes affichées
 # Prix de lancement de la formule Faire-part : 39 € pour les 50 premiers couples, jusqu'au 30 novembre 2026 inclus, puis 79 €.
 # On annonce le prix à venir (« puis 79 € »), jamais un faux prix barré : la formule n'a encore jamais été vendue 79 €.
-LANCEMENT = dict(prix=39, jusqu='2026-12-01T00:00:00+01:00', places=50, texte='39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €')
+# Lancement : moitié prix sur les trois formules mariage pour les 50 premiers couples, jusqu'au 30 novembre 2026 inclus.
+# On annonce le prix qui suivra (« puis 190 € »), jamais un faux prix barré : ces prix n'ont encore jamais été pratiqués.
+LANCEMENT = dict(jusqu='2026-12-01T00:00:00+01:00', places=50, prix={'Faire-part': 39, 'Signature': 95, 'Prestige': 195})
+def lancement(n, p):
+    return dict(prix=LANCEMENT['prix'][n], jusqu=LANCEMENT['jusqu'], places=LANCEMENT['places'],
+                texte=f"{LANCEMENT['prix'][n]} € pour les 50 premiers couples, jusqu’au 30 novembre, puis {p} €") if n in LANCEMENT['prix'] else None
 FORMULES_MARIAGE = [
-  ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à l'espace complet à tout moment, en payant la différence"]),
-  ('Faire-part et site', 190, [], ["Tout le Faire-part", "Le site du mariage : programme, lieu, hébergement, accès", "Liste de cadeaux et cagnotte", "Deux langues"]),
-  ('Essentiel', 390, ['ceremonies'], ["Tout le Faire-part et site, plus :", "Invitations par cérémonie : dot, mairie, église, soirée, chacun ne reçoit que la sienne", "Programme et déroulé de chaque cérémonie", "En prime : plan de table, budget, planning et prestataires"]),
-  ('Signature', 890, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue'], ["Tout l'Essentiel", "Save-the-date et invitations par cérémonie", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Trois langues"]),
-  ('Prestige', 1390, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique', 'covoiturage'], ["Tout le Signature", "Direct privé pour les proches qui ne peuvent pas venir", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
+  ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à une formule supérieure à tout moment, en payant la différence"]),
+  ('Signature', 190, ['ceremonies', 'savethedate'], ["Tout le Faire-part", "Le site du mariage, liste de cadeaux et cagnotte", "Save-the-date et invitations par cérémonie", "Plan de table, budget, planning et prestataires", "Deux langues"]),
+  ('Prestige', 390, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Direct privé pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
 ]
 FORMULES_EVENEMENT = [
-  ('Essentiel', 190, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),
-  ('Signature', 390, ['murphoto', 'livredor', 'langue'], ["Tout l'Essentiel", "Mur photo et livre d'or", "Trois langues"]),
-  ('Prestige', 690, ['murphoto', 'livredor', 'langue', 'direct', 'album', 'merci', 'jeux'], ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]),
+  ('Essentiel', 49, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),
+  ('Signature', 99, ['murphoto', 'livredor', 'langue'], ["Tout l'Essentiel", "Mur photo et livre d'or", "Trois langues"]),
+  ('Prestige', 190, ['murphoto', 'livredor', 'langue', 'direct', 'album', 'merci', 'jeux'], ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]),
 ]
 
 SITES = [
@@ -324,12 +327,13 @@ def page(site, modeles):
         val = sum(prix_opt.get(o, 0) for o in inc)
         valeur = f'<p class="valeur-formule">{len(inc)} option{"s" if len(inc) > 1 else ""} incluse{"s" if len(inc) > 1 else ""}, {prix(val)} si prise{"s" if len(inc) > 1 else ""} à l\'unité</p>' if inc else ''
         badge = '<span class="badge-formule">Notre recommandation</span>' if n == 'Signature' else ''
-        prix_aff = prix(LANCEMENT['prix']) if n == 'Faire-part' else prix(p)
-        lance = f'<p class="lancement">Prix de lancement : {e(LANCEMENT["texte"])}</p>' if n == 'Faire-part' else ''
+        lc = lancement(n, p) if site['cle'] == 'mariage' else None
+        prix_aff = prix(lc['prix']) if lc else prix(p)
+        lance = f'<p class="lancement">Prix de lancement : {e(lc["texte"])}</p>' if lc else ''
         return f"""      <div class="formule{' phare' if n == 'Signature' else ''}{' secondaire' if petite else ''} revele">{badge}<h3>{e(n)}</h3><p class="prix">{prix_aff}</p>{lance}{valeur}
         <ul>{''.join(f'<li>{e(x)}</li>' for x in lst)}</ul><a class="btn{'' if n == 'Signature' else ' clair'}" href="{creer}&amp;formule={k}" style="margin-top:auto">Choisir {e(n)}</a></div>"""
     tout = list(enumerate(site['formules']))
-    if site['cle'] == 'mariage':
+    if site['cle'] == 'mariage' and any(n not in PRINCIPALES for n, *_ in site['formules']):
         formules = '\n'.join(carte(k, n, p, lst) for k, (n, p, inc, lst) in tout if n in PRINCIPALES) + \
             '\n    </div>\n    <p class="aussi-formules revele">Aussi, pour aller pas à pas :</p>\n    <div class="formules formules-secondaires">\n' + \
             '\n'.join(carte(k, n, p, lst, True) for k, (n, p, inc, lst) in tout if n not in PRINCIPALES)
@@ -352,7 +356,7 @@ def page(site, modeles):
       <p>{e(site['sous'])}</p>
       <div class="actions"><a class="btn" href="{creer}">{e(site['cta'])}</a>{essai}</div>
       <p class="rassure">Gratuit jusqu'à la publication : vous préparez tout, vous ne payez qu'au moment d'envoyer le lien à vos invités.</p>
-      {f'<p class="lancement-accueil"><a href="#formules">Lancement : le faire-part animé seul, {e(LANCEMENT["texte"])}.</a></p>' if site['cle'] == 'mariage' else ''}
+      {f'<p class="lancement-accueil"><a href="#formules">Lancement : -50 % sur toutes les formules pour les 50 premiers couples, jusqu’au 30 novembre.</a></p>' if site['cle'] == 'mariage' else ''}
     </div>
     <div class="arche revele">{f'<video src="{pre}{site["video"]}" poster="{pre}{site["image"]}" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>' if site.get('video') else f'<img src="{pre}{site["image"]}" alt="" fetchpriority="high">'}</div>
   </div>
@@ -440,7 +444,7 @@ def page_creer(modeles):
                     + [dict(slug=t['id'], nom=t['nom'], culture=t['culture'], a='', b='', titre='', img=f"../collections/apercus/{t['id']}-fp.jpg", voir=f"../app/fp.html?demo={t['id']}", moteur=True)
                        for t in THEMES if t['evt'] == s['cle']],
             exemple={'mariage': 'Awa et Thomas', 'anniversaire': 'Les 40 ans de Nadia', 'bapteme': 'Gabriel', 'gender': 'Fille ou garçon ?', 'naissance': 'Léo'}[s['cle']],
-            formules=[dict(nom=n, prix=p, inclus=inc, lignes=l, **({'lancement': LANCEMENT} if n == 'Faire-part' else {})) for n, p, inc, l in s['formules']],
+            formules=[dict(nom=n, prix=p, inclus=inc, lignes=l, **({'lancement': lancement(n, p)} if s['cle'] == 'mariage' and lancement(n, p) else {})) for n, p, inc, l in s['formules']],
             options=[dict(cle=k, moment=mo, nom=n, texte=t, prix=p if isinstance(p, int) else 0, devis=p == 'devis') for k, mo, n, t, p, d in s['options'] if p is not None])
     js = json.dumps(donnees, ensure_ascii=False)
     return tete(site, '../', f'{MARQUE} · Créer', "Composez votre espace : collection, formule, options, et l'aperçu de votre invitation.") + """
@@ -694,7 +698,7 @@ def tarifs():
     def site(cle):
         s = next(x for x in SITES if x['cle'] == cle)
         return dict(
-            formules={n.lower(): dict(nom=n, prix=p, inclus=inc, **({'lancement': LANCEMENT} if n == 'Faire-part' else {})) for n, p, inc, _ in s['formules']},
+            formules={n.lower(): dict(nom=n, prix=p, inclus=inc, **({'lancement': lancement(n, p)} if cle == 'mariage' and lancement(n, p) else {})) for n, p, inc, _ in s['formules']},
             options={k: dict(nom=n, prix=p) for k, mo, n, t, p, d in s['options'] if isinstance(p, int)})
     return dict(devise='eur', mariage=site('mariage'), evenement=site('anniversaire'))
 

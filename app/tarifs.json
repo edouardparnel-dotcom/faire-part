@@ -13,116 +13,107 @@
      "texte": "39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €"
     }
    },
-   "faire-part et site": {
-    "nom": "Faire-part et site",
-    "prix": 190,
-    "inclus": []
-   },
-   "essentiel": {
-    "nom": "Essentiel",
-    "prix": 390,
-    "inclus": [
-     "ceremonies"
-    ]
-   },
    "signature": {
     "nom": "Signature",
-    "prix": 890,
+    "prix": 190,
     "inclus": [
-     "savethedate",
      "ceremonies",
-     "qr",
-     "murphoto",
-     "livredor",
-     "album",
-     "langue"
-    ]
+     "savethedate"
+    ],
+    "lancement": {
+     "prix": 95,
+     "jusqu": "2026-12-01T00:00:00+01:00",
+     "places": 50,
+     "texte": "95 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 190 €"
+    }
    },
    "prestige": {
     "nom": "Prestige",
-    "prix": 1390,
+    "prix": 390,
     "inclus": [
-     "savethedate",
      "ceremonies",
+     "savethedate",
      "qr",
      "murphoto",
      "livredor",
      "album",
      "langue",
      "direct",
-     "etranger",
-     "guide",
-     "merci",
-     "deroule",
-     "musique",
-     "covoiturage"
-    ]
+     "covoiturage",
+     "musique"
+    ],
+    "lancement": {
+     "prix": 195,
+     "jusqu": "2026-12-01T00:00:00+01:00",
+     "places": 50,
+     "texte": "195 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 390 €"
+    }
    }
   },
   "options": {
    "savethedate": {
     "nom": "Save-the-date animé",
-    "prix": 90
+    "prix": 30
    },
    "musique": {
     "nom": "Musique au choix",
-    "prix": 40
+    "prix": 15
    },
    "ceremonies": {
     "nom": "Invitations par cérémonie",
-    "prix": 120
+    "prix": 40
    },
    "guide": {
     "nom": "Guide de la cérémonie",
-    "prix": 90
+    "prix": 30
    },
    "covoiturage": {
     "nom": "Covoiturage entre invités",
-    "prix": 40
+    "prix": 15
    },
    "etranger": {
     "nom": "Invités venus de l'étranger",
-    "prix": 120
+    "prix": 40
    },
    "tenues": {
     "nom": "Tenues coordonnées",
-    "prix": 120
+    "prix": 40
    },
    "langue": {
     "nom": "Langue supplémentaire",
-    "prix": 60
+    "prix": 20
    },
    "qr": {
     "nom": "Contrôle d'entrée par QR code",
-    "prix": 150
+    "prix": 50
    },
    "direct": {
     "nom": "Direct privé pour les proches qui ne peuvent pas venir",
-    "prix": 120
+    "prix": 40
    },
    "deroule": {
     "nom": "Déroulé en direct",
-    "prix": 60
+    "prix": 20
    },
    "murphoto": {
     "nom": "Mur photo en direct",
-    "prix": 90
+    "prix": 30
    },
    "livredor": {
     "nom": "Livre d'or vidéo et audio",
-    "prix": 90
+    "prix": 30
    },
    "jeux": {
     "nom": "Jeux des invités",
-    "prix": 60
+    "prix": 20
    },
    "album": {
     "nom": "Album partagé",
-    "prix": 90
+    "prix": 30
    },
    "merci": {
     "nom": "Remerciements personnalisés",
-    "prix": 90
+    "prix": 30
    }
   }
  },
@@ -130,12 +121,12 @@
   "formules": {
    "essentiel": {
     "nom": "Essentiel",
-    "prix": 190,
+    "prix": 49,
     "inclus": []
    },
    "signature": {
     "nom": "Signature",
-    "prix": 390,
+    "prix": 99,
     "inclus": [
      "murphoto",
      "livredor",
@@ -144,7 +135,7 @@
    },
    "prestige": {
     "nom": "Prestige",
-    "prix": 690,
+    "prix": 190,
     "inclus": [
      "murphoto",
      "livredor",
@@ -159,35 +150,35 @@
   "options": {
    "musique": {
     "nom": "Musique au choix",
-    "prix": 40
+    "prix": 15
    },
    "langue": {
     "nom": "Langue supplémentaire",
-    "prix": 60
+    "prix": 20
    },
    "direct": {
     "nom": "Direct privé pour les proches",
-    "prix": 120
+    "prix": 40
    },
    "murphoto": {
     "nom": "Mur photo en direct",
-    "prix": 90
+    "prix": 30
    },
    "livredor": {
     "nom": "Livre d'or vidéo et audio",
-    "prix": 90
+    "prix": 30
    },
    "jeux": {
     "nom": "Jeux et pronostics",
-    "prix": 60
+    "prix": 20
    },
    "album": {
     "nom": "Album partagé",
-    "prix": 90
+    "prix": 30
    },
    "merci": {
     "nom": "Remerciements personnalisés",
-    "prix": 90
+    "prix": 30
    }
   }
  }
