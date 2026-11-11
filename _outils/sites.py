@@ -68,7 +68,7 @@ FORMULES_EVENEMENT = [
 
 SITES = [
   dict(cle='mariage', dossier='', nom='Mariage', accent='#A8834A', evenements=('mariage',),
-    image='lanternes/photo.jpg', video='lanternes/ouverture.mp4', image2='heritage/photo.jpg',
+    image='lanternes/photo.jpg', video='lanternes/ouverture.mp4', image2='orangerie/photo.jpg',
     titre_page="L'espace de votre mariage",
     h1="Plusieurs cérémonies, des invités venus de partout : <em>un seul lien</em>",
     sous="Une invitation qui s'ouvre comme une vraie enveloppe, en musique. Chaque invité ne reçoit que les cérémonies auxquelles il est convié, dans sa langue, et répond en un geste. Sans publicité.",
