@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#EFE6D8;--carte:#FBF7F0;--encre:#3A2A20;--doux:#7A6656;--or1:#B8693E;--or2:#E2B48E;--or3:#8A4A2A;--accent:#A0522D;
   --f-titre:'Cormorant',serif;--f-script:'Mrs Saint Delafield',cursive;--f-texte:'Work Sans',system-ui,sans-serif;--decor:linear-gradient(rgba(251,247,240,.2),rgba(251,247,240,.2)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#3A2A20;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-09-04T17:00:00+02:00" data-evenement="Mariage Inès &amp; Mathis" data-ville="Provence" data-titre-std="Inès &amp; Mathis — Save the date (démonstration)" data-blocs="bandes" data-titres="grand" data-images="pleine" data-revele="monte" data-paral="vertical" data-cadre="arche" data-prog="cartes" data-lieu="rond" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="souligne" data-teinte="accent" data-collection="boheme" data-particules="or" data-trame="edito">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/1780;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1000/1780;--masque:url('ouverture.webp');--dos:#a78667;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Inès</b><i>&amp;</i><b>Mathis</b><small>04 · 09 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Écartez les herbes folles</p>
 </div>

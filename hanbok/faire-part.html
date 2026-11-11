@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#F5F1EA;--carte:#FFFCF8;--encre:#2E2A33;--doux:#6E6A72;--or1:#C08A8F;--or2:#EAD6D4;--or3:#8C5F64;--accent:#5E8C7A;
   --f-titre:'Gowun Batang',serif;--f-script:'Allura',cursive;--f-texte:'Nunito Sans',system-ui,sans-serif;--decor:linear-gradient(rgba(255,252,248,.3),rgba(255,252,248,.3)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#2E2A33;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-04-10T15:00:00+09:00" data-evenement="Mariage Ji-woo &amp; Julien" data-ville="Jeonju" data-titre-std="Ji-woo &amp; Julien — Save the date (démonstration)" data-blocs="bandes" data-titres="capitales" data-images="deborde" data-revele="monte" data-paral="derive" data-cadre="polaroid" data-prog="zigzag" data-lieu="plein" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="plein" data-teinte="accent" data-collection="hanbok" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/2338;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/2338;--masque:url('ouverture.webp');--dos:#dcb189;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="branche.webp" alt=""><small>Mariage</small><b>Ji-woo</b><i>&amp;</i><b>Julien</b><small>10 · 04 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Faites glisser les portes</p>
 </div>

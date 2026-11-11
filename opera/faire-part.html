@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#2A0A0E;--carte:#FFF8F0;--encre:#2A1416;--doux:#6E5254;--or1:#C9A04A;--or2:#EBCF8A;--or3:#9A7428;--accent:#8E1622;
   --f-titre:'Playfair Display SC',serif;--f-script:'Italianno',cursive;--f-texte:'Cormorant Garamond',Georgia,serif;--decor:radial-gradient(ellipse at 50% 30%,rgba(0,0,0,0) 30%,rgba(0,0,0,.5) 100%),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#F6E7D2;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-12-11T18:00:00+01:00" data-evenement="Mariage Victoria &amp; Samuel" data-ville="Lyon" data-titre-std="Victoria &amp; Samuel — Save the date (démonstration)" data-blocs="bandes" data-titres="capitales" data-images="deborde" data-revele="monte" data-paral="derive" data-cadre="polaroid" data-prog="numeros" data-lieu="postale" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="pilule" data-teinte="accent" data-collection="opera" data-particules="petales" data-trame="affiche">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/1780;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1000/1780;--masque:url('ouverture.webp');--dos:#600101;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Victoria</b><i>&amp;</i><b>Samuel</b><small>11 · 12 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Levez le rideau</p>
 </div>

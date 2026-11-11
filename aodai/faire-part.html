@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#F4EAE4;--carte:#FFFBF7;--encre:#2F2A2A;--doux:#76696A;--or1:#B8924A;--or2:#E6D3A3;--or3:#7F6128;--accent:#B4436C;
   --f-titre:'Noto Serif Display',serif;--f-script:'Petit Formal Script',cursive;--f-texte:'Be Vietnam Pro',system-ui,sans-serif;--decor:linear-gradient(rgba(255,251,247,.25),rgba(255,251,247,.25)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#2F2A2A;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-03-20T15:00:00+07:00" data-evenement="Mariage Linh &amp; Thomas" data-ville="Hội An" data-titre-std="Linh &amp; Thomas — Save the date (démonstration)" data-blocs="grappe" data-titres="grand" data-images="pleine" data-revele="zoom" data-paral="vertical" data-cadre="arche" data-prog="frise" data-lieu="classique" data-tenue="classique" data-compte="tuiles" data-rep="ticket" data-btn="fleche" data-teinte="papier" data-collection="aodai" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/2850;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/2850;--masque:url('ouverture.webp');--dos:#230a05;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="etang.webp" alt=""><small>Mariage</small><b>Linh</b><i>&amp;</i><b>Thomas</b><small>20 · 03 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Ouvrez les portes laquées</p>
 </div>

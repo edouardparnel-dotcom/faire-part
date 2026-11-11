@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#F6E9EA;--carte:#FFFBFA;--encre:#3B2A3A;--doux:#7D6A78;--or1:#C9A15A;--or2:#EBD3A0;--or3:#9C7A3A;--accent:#B76E8A;
   --f-titre:'Bodoni Moda',serif;--f-script:'Parisienne',cursive;--f-texte:'Jost',system-ui,sans-serif;--decor:linear-gradient(rgba(255,251,250,.15),rgba(255,251,250,.15)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#3B2A3A;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-09-18T15:00:00+01:00" data-evenement="Mariage Grâce &amp; Dieudonné" data-ville="Gombe, Kinshasa" data-titre-std="Grâce &amp; Dieudonné — Save the date (démonstration)" data-blocs="decale" data-titres="grand" data-images="pleine" data-revele="flou" data-paral="vertical" data-cadre="plein" data-prog="ligne" data-lieu="cote" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="carre" data-teinte="clair" data-collection="sape" data-particules="petales" data-trame="arche">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/2119;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1000/2119;--masque:url('ouverture.webp');--dos:#d1d0c0;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Grâce</b><i>&amp;</i><b>Dieudonné</b><small>18 · 09 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Ouvrez la garde-robe, la fête commence</p>
 </div>

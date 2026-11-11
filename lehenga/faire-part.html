@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#F6EDE0;--carte:#FFFAF2;--encre:#3B1424;--doux:#7E5A64;--or1:#C99A2E;--or2:#F0D58C;--or3:#8A6418;--accent:#C2185B;
   --f-titre:'Gloock',serif;--f-script:'Mrs Saint Delafield',cursive;--f-texte:'Mukta',system-ui,sans-serif;--decor:linear-gradient(rgba(255,250,242,.2),rgba(255,250,242,.2)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#3B1424;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-11-20T16:00:00+05:30" data-evenement="Mariage Priya &amp; Arjun" data-ville="Udaipur" data-titre-std="Priya &amp; Arjun — Save the date (démonstration)" data-blocs="bandes" data-titres="script" data-images="flotte" data-revele="monte" data-paral="incline" data-cadre="decale" data-prog="cartes" data-lieu="rond" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="souligne" data-teinte="accent" data-collection="lehenga" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/2788;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/2788;--masque:url('ouverture.webp');--dos:#b3476a;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="toran.webp" alt=""><small>Mariage</small><b>Priya</b><i>&amp;</i><b>Arjun</b><small>20 · 11 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Poussez les portes de la haveli</p>
 </div>

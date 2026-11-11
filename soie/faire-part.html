@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#F1E2E8;--carte:#FFFBFC;--encre:#3A1C33;--doux:#7A5A6E;--or1:#B4557F;--or2:#E7B6CB;--or3:#7A2E5C;--accent:#7A2E5C;
   --f-titre:'Bodoni Moda',serif;--f-script:'Monsieur La Doulaise',cursive;--f-texte:'Jost',system-ui,sans-serif;--decor:linear-gradient(rgba(214,160,190,.28),rgba(170,140,200,.22)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#3A1C33;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-09-11T16:00:00+02:00" data-evenement="Mariage Adèle &amp; Kwame" data-ville="Lyon, Croix-Rousse" data-titre-std="Adèle &amp; Kwame — Save the date (démonstration)" data-blocs="bandes" data-titres="grand" data-images="pleine" data-revele="monte" data-paral="vertical" data-cadre="arche" data-prog="ligne" data-lieu="cote" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="carre" data-teinte="accent" data-collection="soie" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/2860;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/2860;--masque:url('ouverture.webp');--dos:#d5cfc3;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="bord.webp" alt=""><small>Mariage</small><b>Adèle</b><i>&amp;</i><b>Kwame</b><small>11 · 09 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Dépliez le paravent de soie</p>
 </div>

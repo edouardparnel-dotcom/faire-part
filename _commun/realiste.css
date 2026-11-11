@@ -85,3 +85,31 @@
 .env-face::after{transition:opacity .7s ease-in .45s}
 .env-verso::after{transition:opacity .7s ease-out 1.2s}
 .env-carte{transition:transform 1.3s cubic-bezier(.4,0,.2,1) 1.6s}
+/* Épaisseur (12/11) : deux couches du rabat, plus sombres, derrière la face = la tranche du papier,
+   visible sous la pointe quand il est fermé et en entier quand il passe de profil. */
+.env-rabat::before,.env-rabat::after{content:"";position:absolute;inset:0;pointer-events:none;clip-path:var(--rabat);
+  background:center/100% 100% no-repeat;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.env-rabat::before{transform:translate3d(0,2px,-2px);filter:brightness(.6) saturate(.8)}
+.env-rabat::after{transform:translate3d(0,4px,-4px);filter:brightness(.38) saturate(.7) blur(.5px)}
+.env-face{transform:translateZ(.5px)}
+/* Le sceau : une galette de cire bombée, avec sa tranche et son ombre */
+.env-rabat .env-sceau{translate:0 0 5px;filter:drop-shadow(0 1px 0 rgba(0,0,0,.28)) drop-shadow(0 1px 0 rgba(0,0,0,.24)) drop-shadow(0 1.5px 0 rgba(0,0,0,.2)) drop-shadow(0 5px 6px rgba(0,0,0,.38))}
+/* Portes en volume (12/11) : chaque battant a une épaisseur (tranche sur le bord libre) et un dos,
+   s'ombre en tournant et pose une ombre au sol. */
+.portail{perspective:1100px}
+.portail::before{content:"";position:absolute;left:2%;right:2%;bottom:-6%;height:12%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(0,0,0,.45),rgba(0,0,0,.18) 55%,transparent);filter:blur(6px)}
+.battant{--ep:8px;transform-style:preserve-3d;filter:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.battant>i{position:absolute;top:0;bottom:0;background:inherit;pointer-events:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.battant .tranche{width:var(--ep);filter:brightness(.45) saturate(.8)}
+.battant.g .tranche{right:0;transform-origin:right center;transform:rotateY(-90deg)}
+.battant.d .tranche{left:0;transform-origin:left center;transform:rotateY(90deg)}
+.battant .dos{left:0;right:0;transform:translateZ(calc(-1 * var(--ep))) rotateY(180deg);filter:brightness(.5) saturate(.75) blur(.6px)}
+.battant::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.6s ease .35s}
+.battant.g::after{background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.5))}
+.battant.d::after{background:linear-gradient(270deg,rgba(0,0,0,0),rgba(0,0,0,.5))}
+.ouvert .battant::after{opacity:1}
+/* Fermés, les deux battants se touchent : un léger creux d'ombre au milieu */
+.battant.g{box-shadow:inset -2px 0 3px rgba(0,0,0,.28)}.battant.d{box-shadow:inset 2px 0 3px rgba(0,0,0,.28)}
+.battant .dos{background:var(--dos,#d8cfc0)!important;filter:brightness(.82);box-shadow:inset 0 0 18px rgba(0,0,0,.22)}
+.battant .tranche{background:var(--dos,#d8cfc0)!important;filter:brightness(.62)}

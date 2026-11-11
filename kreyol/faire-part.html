@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
 <script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=5">
+<link rel="stylesheet" href="../_commun/realiste.css?v=9">
 <style>
 :root{--fond:#F6EFE2;--carte:#FFFBF3;--encre:#2E211A;--doux:#7A6A5C;--or1:#C9973F;--or2:#EDD29A;--or3:#8A6422;--accent:#C2442E;
   --f-titre:'Young Serif',serif;--f-script:'Caveat',cursive;--f-texte:'Figtree',system-ui,sans-serif;--decor:linear-gradient(rgba(255,251,243,.2),rgba(255,251,243,.2)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#2E211A;}
-.env-dos,.env-devant,.env-face{background-image:url('ouverture.webp')}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
 .ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
 .ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
 .ouverture{background:var(--decor),var(--fond)}
@@ -44,10 +44,10 @@ body.ferme{overflow:hidden}
 </head>
 <body class="ferme" data-date="2027-05-22T16:00:00-04:00" data-evenement="Mariage Maëlle &amp; Jordan" data-ville="Sainte-Luce" data-titre-std="Maëlle &amp; Jordan — Save the date (démonstration)" data-blocs="bandes" data-titres="grand" data-images="pleine" data-revele="monte" data-paral="vertical" data-cadre="arche" data-prog="numeros" data-lieu="postale" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="pilule" data-teinte="accent" data-collection="kreyol" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/2220;--masque:url('ouverture.webp');">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/2220;--masque:url('ouverture.webp');--dos:#304249;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
     <div class="derriere mini"><img class="mini-deco" src="mer.webp" alt=""><small>Mariage</small><b>Maëlle</b><i>&amp;</i><b>Jordan</b><small>22 · 05 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"></div><div class="battant d" style="background-image:url('ouverture.webp')"></div>
+    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
   </div>
   <p class="consigne">Ouvrez le livre de contes</p>
 </div>
