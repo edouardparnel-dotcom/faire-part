@@ -84,9 +84,9 @@ SITES = [
     titre_collections='Quarante et une collections, autant de façons de recevoir',
     groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, des lanternes qui s'envolent au-dessus d'un lac, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'lanternes', 'marine']),
              ('Héritages', "Les codes des cultures d'Afrique et des Antilles, travaillés avec finesse.",
-              ['kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'adinkra', 'kanaval']),
-             ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'shiromuku', 'lehenga', 'hanbok', 'aodai']),
-             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['versailles', 'gatsby', 'opera', 'orangerie', 'classique', 'emeraude', 'bordeaux', 'chapelle', 'faubourg', 'ivoire', 'porcelaine', 'soie', 'monogramme', 'boheme', 'champetre'])]),
+              ['kreyol', 'kanaval', 'ndop', 'kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'adinkra']),
+             ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'aodai', 'lehenga', 'hanbok', 'shiromuku']),
+             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['gatsby', 'chapelle', 'porcelaine', 'versailles', 'opera', 'orangerie', 'classique', 'emeraude', 'bordeaux', 'faubourg', 'ivoire', 'soie', 'monogramme', 'boheme', 'champetre'])]),
   dict(cle='anniversaire', dossier='anniversaires', nom='Anniversaires', accent='#8E4A52', evenements=('anniversaire',),
     image='anniversaire-gala/decor-detail.jpg', image2='anniversaire-disco/decor-detail.jpg',
     titre_page="Invitations d'anniversaire",
@@ -363,7 +363,7 @@ def page(site, modeles):
     <blockquote>« {e(site['manifeste'])} »</blockquote>
   </div></section>
 
-{bloc_realisations(site)}{bloc_avis(site)}  <section id="collections"><div class="conteneur">
+{bloc_avis(site)}  <section id="collections"><div class="conteneur">
     <div class="titre-section revele"><span class="etq">Collections</span><h2>{e(site['titre_collections'])}</h2><p>{e(site['intro_collections'])}</p></div>
 {chr(10).join(groupes)}
 {'<p class="note revele voir-plus"><button class="btn clair" type="button" onclick="document.getElementById(\'collections\').classList.add(\'tout\');this.parentNode.remove()">Voir plus de collections</button></p>' if site['cle'] == 'mariage' else ''}
