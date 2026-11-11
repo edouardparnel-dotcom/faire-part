@@ -27,6 +27,7 @@ const a = o => evt?.options?.includes(o);
 const prixF = f => f.lancement && Date.now() < Date.parse(f.lancement.jusqu) ? f.lancement.prix : f.prix;
 // Formule Faire-part : l'invitation, les invités, les envois et les réponses ; le reste de l'espace s'ouvre en passant à une formule complète.
 const FAIRE_PART = ['accueil', 'invites', 'envois', 'paiement', 'equipe', 'reglages'];
+const FAIRE_PART_SITE = [...FAIRE_PART, 'cadeaux', 'ceremonies'];
 const jours = d => Math.ceil((new Date(d) - Date.now()) / 864e5);
 const aujourdhui = () => new Date().toISOString().slice(0, 10);
 
@@ -118,7 +119,7 @@ function rendre() {
     budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', cadeaux: 'Liste et cagnotte', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
     ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
     paiement: evt.formule === 'essai' ? 'Publier' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
-  if (evt.formule === 'faire-part') { for (const k of Object.keys(onglets)) if (!FAIRE_PART.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à l\'espace complet'; if (!onglets[onglet]) onglet = 'accueil'; }
+  if (['faire-part', 'faire-part et site'].includes(evt.formule)) { const garder = evt.formule === 'faire-part' ? FAIRE_PART : FAIRE_PART_SITE; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à l\'espace complet'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>

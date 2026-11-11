@@ -52,7 +52,8 @@ OPTIONS_EVENEMENT = [
 LANCEMENT = dict(prix=39, jusqu='2026-12-01T00:00:00+01:00', places=50, texte='39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €')
 FORMULES_MARIAGE = [
   ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à l'espace complet à tout moment, en payant la différence"]),
-  ('Essentiel', 390, [], ["Votre espace complet : site du mariage, réponses, invités, plan de table, budget, planning", "Une invitation de la collection, à vos couleurs", "Deux langues"]),
+  ('Faire-part et site', 190, [], ["Tout le Faire-part", "Le site du mariage : programme, lieu, hébergement, accès", "Liste de cadeaux et cagnotte", "Deux langues"]),
+  ('Essentiel', 390, [], ["Tout le Faire-part et site, plus l'organisation complète :", "Plan de table, budget, planning et prestataires", "Programme et déroulé de vos cérémonies", "Une invitation de la collection, à vos couleurs"]),
   ('Signature', 890, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue'], ["Tout l'Essentiel", "Save-the-date et invitations par cérémonie", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Trois langues"]),
   ('Prestige', 1690, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique', 'covoiturage'], ["Tout le Signature", "Direct privé pour les proches qui ne peuvent pas venir", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
 ]
@@ -363,7 +364,7 @@ def page(site, modeles):
   </div></section>
 
   <section class="tarifs" id="formules"><div class="conteneur">
-    <div class="titre-section revele"><span class="etq">Formules</span><h2>{'Quatre' if len(site['formules']) == 4 else 'Trois'} formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
+    <div class="titre-section revele"><span class="etq">Formules</span><h2>{['Trois', 'Quatre', 'Cinq'][len(site['formules']) - 3]} formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
     <div class="formules">
 {formules}
     </div>
