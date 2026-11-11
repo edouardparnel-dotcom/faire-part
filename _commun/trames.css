@@ -6,7 +6,7 @@
 [data-trame=arche] .couv-arche{justify-content:flex-start;padding-top:min(30vw,150px)}
 [data-trame=arche] .arche{position:relative;z-index:1;width:min(64vw,300px);aspect-ratio:3/4;border-radius:999px 999px 0 0;overflow:hidden;margin:0 auto 22px;
   box-shadow:0 0 0 1px var(--or1),0 0 0 7px var(--carte),0 0 0 8px var(--or1),0 30px 50px -24px rgba(0,0,0,.45)}
-[data-trame=arche] .arche img{width:100%;height:100%;object-fit:cover;object-position:50% 70%;scale:1.25;animation:arche-zoom 18s ease-in-out infinite alternate}
+[data-trame=arche] .arche img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;scale:1.25;transform-origin:50% 22%;animation:arche-zoom 18s ease-in-out infinite alternate}
 @keyframes arche-zoom{to{scale:1.05}}
 [data-trame=arche] .couv-arche .chapeau{margin-top:0;padding-top:0}
 [data-trame=arche] .couv-arche .deco-haut{opacity:.95}
@@ -701,3 +701,10 @@ body[data-btn]:not([data-btn=pilule]) #reponse .bouton.plein{width:auto!importan
 body[data-cadre] .inter-couple img{object-position:50% 12%!important}
 body[data-cadre=losange] .inter-couple img{object-position:50% 0!important}
 body[data-cadre=rond] .inter-couple img{object-position:50% 8%!important}
+
+/* Photos de couple : les visages sont en haut, le cadrage part toujours du haut (couverture, polaroid, galerie). */
+img[src$="couple.jpg"]{object-position:50% 15%}
+[data-trame] .arche img[src$="couple.jpg"]{object-position:50% 18%}
+/* Repère de défilement compact : une petite flèche ronde qui ne cache plus le texte de la couverture. */
+.indice-defile{width:38px;height:38px;padding:0!important;gap:0;justify-content:center;bottom:calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--carte) 70%,transparent)}
+.indice-defile svg{width:18px;height:18px}

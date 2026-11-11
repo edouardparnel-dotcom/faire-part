@@ -17,7 +17,7 @@
   if (document.querySelector('.suite-couv') && !/^(grand-hotel|heritage)$/.test(b.dataset.collection || '')) {
     const ind = document.createElement('a');
     ind.className = 'indice-defile'; ind.href = '#'; ind.setAttribute('aria-label', 'Faire défiler vers la suite');
-    ind.innerHTML = 'Découvrir<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>';
+    ind.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>';
     ind.addEventListener('click', ev => { ev.preventDefault(); scrollBy({ top: innerHeight * .8, behavior: 'smooth' }); });
     b.appendChild(ind);
     const maj = () => ind.classList.toggle('cache', scrollY > 60);
