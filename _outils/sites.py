@@ -2,6 +2,8 @@
 Offre 100 % en ligne : le client compose son espace (formule + options), voit l'aperçu, paie, valide ;
 contact écrit seulement en cas de besoin. Le faire-part est une option de l'espace, pas le produit.
 Chaque site tient seul et le pied de page les relie. Appelé par construire.py après les aperçus."""
+import os
+RACINE_MINI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import json
 from html import escape
 from emotions import EMOTIONS
@@ -276,7 +278,7 @@ def page(site, modeles):
         site_m = SITE_DU_MODELE.get(slug)
         lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site" target="_blank" rel="noopener">Voir le site de cette collection</a>' if site_m else ''
         return f"""        <div class="revele"><a class="oeuvre" href="{pre}{slug}/index.html">
-          <div class="cadre"><img src="{pre}{slug}/photo.jpg" alt="Collection {e(m['modele'])}" loading="lazy"></div>
+          <div class="cadre"><img src="{pre}{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}" alt="Collection {e(m['modele'])}" loading="lazy"></div>
           <span class="etq">{e(m['culture'])}</span>
           <h4>{e(m['modele'])}</h4>
           <span class="ouvrir">Ouvrir l'invitation</span>
