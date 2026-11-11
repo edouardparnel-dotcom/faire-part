@@ -57,3 +57,31 @@
 .ouvert .battant.g{transform:rotateY(-108deg)}
 .ouvert .battant.d{transform:rotateY(108deg)}
 .ouvert .derriere{transform:scale(1.04)}
+
+/* ───────── Volume (12/11) : le sceau est collé au rabat et part avec lui, le rabat s'ombre en basculant,
+   l'enveloppe pose une ombre sur le sol et la perspective est plus marquée. ───────── */
+.enveloppe{perspective:950px}
+.enveloppe::before{content:"";position:absolute;left:6%;right:6%;bottom:-7%;height:16%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(0,0,0,.42),rgba(0,0,0,.18) 55%,transparent);filter:blur(6px);transition:transform 1.2s ease .5s,opacity 1.2s ease .5s}
+.ouvert .enveloppe::before{transform:scaleX(.92);opacity:.75}
+.env-dos{box-shadow:0 1px 2px rgba(0,0,0,.25)}
+/* Intérieur de la poche : une ombre en haut, visible dès que le rabat se lève */
+.env-dos::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.38),rgba(0,0,0,0) 38%);opacity:0;transition:opacity .6s ease .8s}
+.ouvert .env-dos::after{opacity:1}
+/* Le rabat : la face s'assombrit en montant, l'intérieur s'éclaire en se posant */
+.env-face::after,.env-verso::after{content:"";position:absolute;inset:0;pointer-events:none}
+.env-face::after{background:linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.45));opacity:0;transition:opacity .5s ease-in .5s}
+.ouvert .env-face::after{opacity:1}
+.env-verso::after{background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.15));opacity:1;transition:opacity .55s ease-out 1.02s}
+.ouvert .env-verso::after{opacity:0}
+/* Le sceau suit le rabat : un léger « clac » au toucher, puis il monte avec lui */
+.env-rabat .env-sceau{translate:0 0 2px;transition:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+.ouvert .env-rabat .env-sceau{transform:translate(-50%,-50%)!important;opacity:1;animation:clac .5s ease-out}
+@keyframes clac{0%{scale:1}30%{scale:.9}65%{scale:1.05}100%{scale:1}}
+@media (prefers-reduced-motion:reduce){.ouvert .env-rabat .env-sceau{animation:none}}
+/* Le rabat se soulève vers soi (comme une vraie enveloppe qu'on tient), plus lentement */
+.env-rabat{transition:transform 1.45s cubic-bezier(.45,0,.25,1) .45s,z-index 0s 1.2s}
+.ouvert .env-rabat{transform:rotateX(-180deg)}
+.env-face::after{transition:opacity .7s ease-in .45s}
+.env-verso::after{transition:opacity .7s ease-out 1.2s}
+.env-carte{transition:transform 1.3s cubic-bezier(.4,0,.2,1) 1.6s}
