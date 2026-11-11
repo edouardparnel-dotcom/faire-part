@@ -694,3 +694,6 @@ body[data-teinte=sombre] .suite-main>section.bloc:nth-of-type(4n+3):not(#reponse
 body[data-teinte=papier] .suite-main>section.bloc:nth-of-type(odd){background:linear-gradient(color-mix(in srgb,var(--carte) 70%,transparent),color-mix(in srgb,var(--carte) 70%,transparent)),url('fond.jpg') center/cover!important}
 :is(body[data-teinte=accent],body[data-teinte=sombre]) .suite-main>section.bloc .bouton:not(.plein){color:inherit!important;border-color:currentColor!important}
 .suite-couv:has(.collier){align-content:center!important;padding-bottom:90px!important}
+/* Réponse : le grand rond seulement avec les boutons « pilule » ; sinon un bouton normal ; toujours centré. */
+body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #reponse .bouton.plein{margin:16px auto 0}
+body[data-btn]:not([data-btn=pilule]) #reponse .bouton.plein{width:auto!important;height:auto!important;padding:14px 26px!important;display:inline-block!important;line-height:1.4!important;box-shadow:none!important}
