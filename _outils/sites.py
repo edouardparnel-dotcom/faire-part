@@ -244,6 +244,7 @@ def tete(site, pre, titre, desc):
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:image" content="https://maisonvivat.com/{site['image']}">
 <meta name="theme-color" content="#F7F3EC">
+<meta name="p:domain_verify" content="e429689e0f4edbe6245b75c5ab73d5c7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{pre}_commun/maison.css?v={CSS_V}">
