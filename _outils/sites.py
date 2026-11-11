@@ -15,7 +15,7 @@ ORN = '<svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50
 
 # Options : clé, moment, nom, description, prix (None = inclus, 'devis' = sur devis), pensé pour la diaspora
 OPTIONS_MARIAGE = [
-  ('fairepart', 'Avant', "L'invitation", "Trente-neuf collections réalistes, chacune avec son ouverture, sa mise en page et sa musique : invitation, save-the-date et site, à vos couleurs.", None, False),
+  ('fairepart', 'Avant', "L'invitation", "Quarante collections réalistes, chacune avec son ouverture, sa mise en page et sa musique : invitation, save-the-date et site, à vos couleurs.", None, False),
   ('savethedate', 'Avant', 'Save-the-date animé', "L'annonce envoyée des mois avant, pour que chacun bloque la date.", 90, False),
   ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 40, False),
   ('ceremonies', 'Avant', 'Invitations par cérémonie', "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", 120, True),
@@ -75,10 +75,10 @@ SITES = [
             ('Liste et cagnotte', "Vos invités réservent le cadeau qu'ils offrent, sans doublon, ou participent à votre cagnotte. Maison Vivat ne touche jamais l'argent.")],
     options=OPTIONS_MARIAGE, formules=FORMULES_MARIAGE,
     intro_collections="L'invitation donne le ton de votre réception. Chaque collection a sa direction artistique ; nous la reprenons à vos couleurs, à vos prénoms, à votre langue.",
-    titre_collections='Trente-neuf collections, trente-neuf façons de recevoir',
+    titre_collections='Quarante collections, quarante façons de recevoir',
     groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, des lanternes qui s'envolent au-dessus d'un lac, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'lanternes', 'marine']),
              ('Héritages', "Les codes des cultures d'Afrique et des Antilles, travaillés avec finesse.",
-              ['kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'adinkra']),  # 'kanaval' à remettre quand le couple sera prêt
+              ['kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'adinkra', 'kanaval']),
              ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'shiromuku', 'lehenga', 'hanbok', 'aodai']),
              ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['versailles', 'gatsby', 'opera', 'classique', 'emeraude', 'bordeaux', 'chapelle', 'faubourg', 'ivoire', 'porcelaine', 'soie', 'monogramme', 'boheme', 'champetre'])]),
   dict(cle='anniversaire', dossier='anniversaires', nom='Anniversaires', accent='#8E4A52', evenements=('anniversaire',),

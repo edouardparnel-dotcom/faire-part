@@ -425,6 +425,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../kanaval/lieu.webp",
+"cat": "Lieux",
+"nom": "Kanaval"
+},
+{
+"src": "../kanaval/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Kanaval"
+},
+{
+"src": "../kanaval/photo.jpg",
+"cat": "Ambiances",
+"nom": "Kanaval"
+},
+{
 "src": "../adinkra/lieu.webp",
 "cat": "Lieux",
 "nom": "Adinkra"

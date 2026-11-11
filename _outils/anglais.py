@@ -100,7 +100,7 @@ def page():
   </div>
 
   <section id="collections"><div class="conteneur">
-    <div class="titre-section revele"><span class="etq">Collections</span><h2>Thirty-nine collections, thirty-nine ways to host</h2>
+    <div class="titre-section revele"><span class="etq">Collections</span><h2>Forty collections, forty ways to host</h2>
       <p>Each one has its own opening (envelope, doors, curtain), its own layout, its own music and the couple's photo. Your guests read it in their language: English, French, Creole, Wolof, Lingala, Twi and more.</p></div>
     {''.join(blocs)}
   </div></section>

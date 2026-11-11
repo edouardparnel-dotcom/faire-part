@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Darline &amp; Stanley — Mur photo (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/vivant.css?v=16">
+<link rel="stylesheet" href="../_commun/trames.css?v=43">
+<script src="../_commun/vivant.js?v=24" defer></script>
+<style>
+:root{--fond:#121D42;--carte:#FBF7F1;--encre:#17204A;--doux:#5D6386;--or1:#C9A24A;--or2:#EBD49A;--or3:#8C6A22;--accent:#C2185B;
+  --f-titre:'Marcellus',serif;--f-script:'Pinyon Script',cursive;--f-texte:'Jost',system-ui,sans-serif;--decor:linear-gradient(rgba(14,22,52,.18),rgba(14,22,52,.18)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#F4EEE2;}
+
+
+</style>
+</head>
+<body data-blocs="cartes" data-titres="grand" data-images="pleine" data-revele="glisse" data-paral="vertical" data-cadre="plein" data-prog="ligne" data-lieu="cote" data-tenue="nuancier" data-compte="chiffres" data-rep="sombre" data-btn="carre" data-teinte="sombre" data-collection="kanaval" data-particules="petales" data-trame="centree">
+<nav class="suite-nav" aria-label="La collection Kanaval"><a class="suite-marque" href="index.html">✦ Kanaval</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html" aria-current=page>Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><div class="envol"><img class="papillon" src="papillon.webp" alt="" style="--x:8%;--y:18%;--r:-14deg;--d:0.0s;--t:1.0"><img class="papillon" src="papillon.webp" alt="" style="--x:72%;--y:6%;--r:12deg;--d:1.6s;--t:0.8"><img class="papillon" src="papillon.webp" alt="" style="--x:40%;--y:30%;--r:-6deg;--d:3.1s;--t:0.62"><img class="papillon" src="papillon.webp" alt="" style="--x:84%;--y:44%;--r:18deg;--d:0.8s;--t:0.5"><img class="papillon" src="papillon.webp" alt="" style="--x:18%;--y:52%;--r:8deg;--d:2.4s;--t:0.45"></div><p class="chapeau">Darline &amp; Stanley · en direct</p><h1>Le mur photo</h1>
+  <p class="intro">Vos invités ajoutent leurs photos depuis leur téléphone, sans application. Elles s'affichent ici, et sur grand écran pendant la fête.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : l’appareil photo s’ouvrirait ici'">Ajouter mes photos</a></header>
+<main class="suite-main large"><div class="mur"><figure class="photo apparait" style="--r:1deg"><img src="couple.jpg" alt="" loading="lazy"><figcaption>La famille au complet</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="lieu.webp" alt="" loading="lazy"><figcaption>Premier regard</figcaption></figure><figure class="photo apparait" style="--r:3deg"><img src="../lakay/couple.jpg" alt="" loading="lazy"><figcaption>Les témoins</figcaption></figure><figure class="photo apparait" style="--r:-1deg"><img src="../kreyol/couple.jpg" alt="" loading="lazy"><figcaption>Sur la piste</figcaption></figure><figure class="photo apparait" style="--r:2deg"><img src="../madras/couple.jpg" alt="" loading="lazy"><figcaption>Le dîner</figcaption></figure><figure class="photo apparait" style="--r:-3deg"><img src="../karabela/couple.jpg" alt="" loading="lazy"><figcaption>Les cousins</figcaption></figure><figure class="photo apparait" style="--r:1deg"><img src="../lanternes/couple.jpg" alt="" loading="lazy"><figcaption>Le gâteau</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="../ivoire/couple.jpg" alt="" loading="lazy"><figcaption>Fin de soirée</figcaption></figure></div></main>
+<footer class="suite-pied"><p class="script">Darline &amp; Stanley</p><p>Mèsi anpil, merci d’avoir dansé avec nous</p>
+<small>Démonstration de la collection Kanaval · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-02-06T15:00:00-05:00'; document.body.dataset.evenement = 'Mariage Darline & Stanley'; document.body.dataset.ville = 'Jacmel';
+document.querySelectorAll('[data-offrir]').forEach(b => b.addEventListener('click', () => { b.outerHTML = '<em class="a-vous">Réservé par vous ✓</em>'; }));
+document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); b.textContent = 'Démonstration : ouvre la cagnotte des mariés'; }));
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>
