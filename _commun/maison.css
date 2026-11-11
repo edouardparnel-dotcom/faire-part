@@ -260,3 +260,9 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .toutes-opt summary::-webkit-details-marker{display:none}
 .toutes-opt[open] summary{margin-bottom:30px}
 .toutes-opt .moments{text-align:left}
+
+/* Haut de page en vidéo (Lanternes) ; trois collections par famille, le reste derrière « Voir plus ». */
+.arche video{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:220px 220px 0 0;background:#0E1A33}
+#collections:not(.tout) .en-plus{display:none}
+.voir-plus{text-align:center}
+@media (max-width:860px){.ouverture .arche{order:-1}}

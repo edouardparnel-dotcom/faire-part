@@ -722,3 +722,5 @@ img[src$="couple.jpg"]{object-position:50% 15%}
 .portail .derriere.mini small{font-size:min(4cqh,7.4cqw,15px)!important;letter-spacing:.2em;margin:2.4cqh 0!important}
 /* Consigne d'ouverture lisible sur tous les fonds (Grand Hôtel et Héritage gardent la leur). */
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .ouverture .consigne{display:inline-block;padding:7px 16px;border-radius:999px;background:color-mix(in srgb,var(--carte) 84%,transparent);color:var(--encre)!important;text-shadow:none!important;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 4px 14px rgba(0,0,0,.18)}
+/* Cadre rond : les prénoms passent sous le cercle, ils ne chevauchent plus la bordure claire. */
+body[data-cadre=rond] .inter-couple figcaption{position:static!important;margin-top:18px!important;color:var(--sur-fond)!important;text-shadow:none!important}

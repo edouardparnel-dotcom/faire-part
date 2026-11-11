@@ -59,12 +59,12 @@ FORMULES_EVENEMENT = [
 
 SITES = [
   dict(cle='mariage', dossier='', nom='Mariage', accent='#A8834A', evenements=('mariage',),
-    image='grand-hotel/photo.jpg', image2='heritage/photo.jpg',
+    image='lanternes/photo.jpg', video='lanternes/ouverture.mp4', image2='heritage/photo.jpg',
     titre_page="L'espace de votre mariage",
     h1="Tout votre mariage, <em>dans un seul espace</em>",
     sous="Invitations, site du mariage, réponses, plan de table, entrée des invités, photos : chacun de vos invités est reçu, de la première annonce au dernier souvenir.",
     cta='Créer mon espace', essai=('espace/#tableau', "Essayer l'espace"),
-    manifeste="Recevoir, c'est penser à chacun : celui qui vient de la rue d'à côté, celle qui traverse l'océan, la grand-mère qui suivra la cérémonie de loin. Votre espace s'occupe d'eux, pour que vous profitiez de votre journée.",
+    manifeste="Recevoir, c'est penser à chacun, ici comme au pays. Votre espace s'occupe d'eux ; vous profitez de votre journée.",
     titre_espace="Votre espace, inclus dans chaque formule",
     espace=[('Le site du mariage', "Programme, lieux, hébergement, tenue, questions fréquentes, dans la langue de vos invités."),
             ('Les réponses', "Accompagnants, enfants, régimes, choix du plat : tout arrive au même endroit."),
@@ -76,11 +76,11 @@ SITES = [
     options=OPTIONS_MARIAGE, formules=FORMULES_MARIAGE,
     intro_collections="L'invitation donne le ton de votre réception. Chaque collection a sa direction artistique ; nous la reprenons à vos couleurs, à vos prénoms, à votre langue.",
     titre_collections='Trente-neuf collections, trente-neuf façons de recevoir',
-    groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, la noblesse des cérémonies d'Afrique de l'Ouest, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'heritage', 'marine']),
+    groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, des lanternes qui s'envolent au-dessus d'un lac, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'lanternes', 'marine']),
              ('Héritages', "Les codes des cultures d'Afrique et des Antilles, travaillés avec finesse.",
-              ['lakay', 'karabela', 'madras', 'kente', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'bazin', 'adinkra']),
-             ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'hanbok', 'aodai', 'shiromuku', 'lehenga']),
-             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['classique', 'versailles', 'gatsby', 'opera', 'emeraude', 'bordeaux', 'chapelle', 'faubourg', 'ivoire', 'porcelaine', 'soie', 'monogramme', 'lanternes', 'boheme', 'champetre'])]),
+              ['kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'adinkra']),
+             ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'shiromuku', 'lehenga', 'hanbok', 'aodai']),
+             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['versailles', 'gatsby', 'opera', 'classique', 'emeraude', 'bordeaux', 'chapelle', 'faubourg', 'ivoire', 'porcelaine', 'soie', 'monogramme', 'boheme', 'champetre'])]),
   dict(cle='anniversaire', dossier='anniversaires', nom='Anniversaires', accent='#8E4A52', evenements=('anniversaire',),
     image='anniversaire-gala/decor-detail.jpg', image2='anniversaire-disco/decor-detail.jpg',
     titre_page="Invitations d'anniversaire",
@@ -273,11 +273,11 @@ def page(site, modeles):
     e = escape
     creer = f"{pre}creer/?evt={site['cle']}"
 
-    def oeuvre(slug):
+    def oeuvre(slug, rang=0):
         m = par_slug[slug]
         site_m = SITE_DU_MODELE.get(slug)
         lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site" target="_blank" rel="noopener">Voir le site de cette collection</a>' if site_m else ''
-        return f"""        <div class="revele"><a class="oeuvre" href="{pre}{slug}/index.html">
+        return f"""        <div class="revele{' en-plus' if rang >= 3 and site['cle'] == 'mariage' else ''}"><a class="oeuvre" href="{pre}{slug}/index.html">
           <div class="cadre"><img src="{pre}{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}" alt="Collection {e(m['modele'])}" loading="lazy"></div>
           <span class="etq">{e(m['culture'])}</span>
           <h4>{e(m['modele'])}</h4>
@@ -288,7 +288,7 @@ def page(site, modeles):
     for titre, texte, slugs in site['groupes']:
         slugs = [s for s in slugs if s in par_slug]
         tg = f'<div class="groupe-tete"><h3>{e(titre)}</h3><p>{e(texte)}</p></div>' if titre else ''
-        groupes.append(f'      <div class="groupe">{tg}\n      <div class="oeuvres">\n' + '\n'.join(oeuvre(s) for s in slugs) + '\n      </div></div>')
+        groupes.append(f'      <div class="groupe">{tg}\n      <div class="oeuvres">\n' + '\n'.join(oeuvre(s, k) for k, s in enumerate(slugs)) + '\n      </div></div>')
 
     espace = '\n'.join(f'      <article class="revele"><h3>{e(t)}</h3><p>{e(p)}</p></article>' for t, p in site['espace'])
     # Directions du moteur pour cet événement (le mariage renvoie au catalogue complet, trop long pour cette page).
@@ -318,7 +318,7 @@ def page(site, modeles):
     return tete(site, pre, f"{MARQUE} · {site['nom']}", site['sous']) + f"""
 <header class="entete"><div class="conteneur">
   <a class="marque" href="#haut"><b>{e(MARQUE)}</b><span>{e(site['nom'])}</span></a>
-  <nav class="nav" aria-label="Sections"><a href="#espace">L'espace</a><a href="#options">Options</a><a href="#collections">Collections</a><a href="#formules">Formules</a>{nav_essai}<a href="{pre}app/organisateur.html">Mon espace</a>{'<a href="en/" lang="en">EN</a>' if site['cle'] == 'mariage' else ''}<a class="rdv" href="{creer}">{e(site['cta'])}</a></nav>
+  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a><a href="#espace">L'espace</a><a href="#formules">Formules</a><a href="#options">Options</a>{nav_essai}<a href="{pre}app/organisateur.html">Mon espace</a>{'<a href="en/" lang="en">EN</a>' if site['cle'] == 'mariage' else ''}<a class="rdv" href="{creer}">{e(site['cta'])}</a></nav>
 </div></header>
 
 <main id="haut">
@@ -330,7 +330,7 @@ def page(site, modeles):
       <div class="actions"><a class="btn" href="{creer}">{e(site['cta'])}</a>{essai}</div>
       <p class="rassure">Gratuit jusqu'à la publication : vous préparez tout, vous ne payez qu'au moment d'envoyer le lien à vos invités.</p>
     </div>
-    <div class="arche revele"><img src="{pre}{site['image']}" alt="" fetchpriority="high"></div>
+    <div class="arche revele">{f'<video src="{pre}{site["video"]}" poster="{pre}{site["image"]}" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>' if site.get('video') else f'<img src="{pre}{site["image"]}" alt="" fetchpriority="high">'}</div>
   </div>
 
   <section class="manifeste"><div class="conteneur revele">
@@ -339,12 +339,28 @@ def page(site, modeles):
     <blockquote>« {e(site['manifeste'])} »</blockquote>
   </div></section>
 
+{bloc_realisations(site)}{bloc_avis(site)}  <section id="collections"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">Collections</span><h2>{e(site['titre_collections'])}</h2><p>{e(site['intro_collections'])}</p></div>
+{chr(10).join(groupes)}
+{'<p class="note revele voir-plus"><button class="btn clair" type="button" onclick="document.getElementById(\'collections\').classList.add(\'tout\');this.parentNode.remove()">Voir plus de collections</button></p>' if site['cle'] == 'mariage' else ''}
+{catalogue}
+    <p class="note revele"><a class="btn" href="{pre}collections/index.html{'' if site['cle'] == 'mariage' else '?evt=' + site['cle']}">{f"Voir les {sum(t['evt'] == 'mariage' for t in THEMES)} directions du mariage, en faire-part, save-the-date et site" if site['cle'] == 'mariage' else 'Toutes les directions de la maison'}</a></p>
+  </div></section>
+
   <section id="espace"><div class="conteneur">
     <div class="titre-section revele"><span class="etq">L'espace</span><h2>{e(site['titre_espace'])}</h2></div>
     <div class="fonctions">
 {espace}
     </div>
     {f'<p class="note revele"><a href="{pre}espace/#tableau" class="lien-or">Essayer l’espace de démonstration →</a></p>' if site['essai'] else ''}
+  </div></section>
+
+  <section class="tarifs" id="formules"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">Formules</span><h2>Trois formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
+    <div class="formules">
+{formules}
+    </div>
+    <p class="note">Paiement en ligne sécurisé. Toutes les options s'ajoutent aussi à l'unité. TVA non applicable, art. 293 B du CGI.</p>
   </div></section>
 
   <section class="tarifs" id="options"><div class="conteneur">
@@ -360,13 +376,6 @@ def page(site, modeles):
     </details>
   </div></section>
 
-  <section id="collections"><div class="conteneur">
-    <div class="titre-section revele"><span class="etq">Collections</span><h2>{e(site['titre_collections'])}</h2><p>{e(site['intro_collections'])}</p></div>
-{chr(10).join(groupes)}
-{catalogue}
-    <p class="note revele"><a class="btn" href="{pre}collections/index.html{'' if site['cle'] == 'mariage' else '?evt=' + site['cle']}">{f"Voir les {sum(t['evt'] == 'mariage' for t in THEMES)} directions du mariage, en faire-part, save-the-date et site" if site['cle'] == 'mariage' else 'Toutes les directions de la maison'}</a></p>
-  </div></section>
-
   <section><div class="conteneur mesure">
     <img class="revele" src="{pre}{site['image2']}" alt="" loading="lazy">
     <div class="revele">
@@ -379,14 +388,6 @@ def page(site, modeles):
         <li><div><h3>Publiez et partagez</h3><p>Vous payez une seule fois, au moment de publier, puis envoyez le lien et suivez tout depuis votre espace jusqu'au dernier souvenir.</p></div></li>
       </ol>
     </div>
-  </div></section>
-
-{bloc_realisations(site)}{bloc_avis(site)}  <section class="tarifs" id="formules"><div class="conteneur">
-    <div class="titre-section revele"><span class="etq">Formules</span><h2>Trois formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
-    <div class="formules">
-{formules}
-    </div>
-    <p class="note">Paiement en ligne sécurisé. Toutes les options s'ajoutent aussi à l'unité. TVA non applicable, art. 293 B du CGI.</p>
   </div></section>
 
   <section class="rendezvous" id="assistance"><div class="conteneur revele">
