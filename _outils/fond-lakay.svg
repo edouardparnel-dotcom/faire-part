@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E1B4D"/>
+      <stop offset="0.45" stop-color="#1F3A8A"/>
+      <stop offset="0.72" stop-color="#B5476A"/>
+      <stop offset="0.86" stop-color="#E8A04A"/>
+      <stop offset="1" stop-color="#F3C969"/>
+    </linearGradient>
+    <radialGradient id="soleil" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFE7A3"/>
+      <stop offset="0.6" stop-color="#F6C453" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#F6C453" stop-opacity="0"/>
+    </radialGradient>
+    <g id="palme">
+      <path d="M0 0 C 40 -20, 110 -15, 160 20 C 110 0, 50 0, 0 0Z"/>
+      <path d="M0 0 C -40 -20, -110 -15, -160 20 C -110 0, -50 0, 0 0Z"/>
+      <path d="M0 0 C 30 -40, 90 -70, 150 -60 C 90 -50, 40 -30, 0 0Z"/>
+      <path d="M0 0 C -30 -40, -90 -70, -150 -60 C -90 -50, -40 -30, 0 0Z"/>
+      <path d="M0 0 C 10 -50, 30 -100, 60 -130 C 40 -90, 20 -50, 0 0Z"/>
+      <path d="M0 0 C -10 -50, -30 -100, -60 -130 C -40 -90, -20 -50, 0 0Z"/>
+    </g>
+    <g id="hibiscus">
+      <circle r="16" fill="#C8102E"/>
+      <g fill="#E0303F">
+        <ellipse cx="0" cy="-22" rx="16" ry="22"/>
+        <ellipse cx="21" cy="-7" rx="16" ry="22" transform="rotate(72 21 -7)"/>
+        <ellipse cx="13" cy="18" rx="16" ry="22" transform="rotate(144 13 18)"/>
+        <ellipse cx="-13" cy="18" rx="16" ry="22" transform="rotate(216 -13 18)"/>
+        <ellipse cx="-21" cy="-7" rx="16" ry="22" transform="rotate(288 -21 -7)"/>
+      </g>
+      <circle r="6" fill="#F6C453"/>
+    </g>
+  </defs>
+  <rect width="900" height="1600" fill="url(#ciel)"/>
+  <circle cx="450" cy="1130" r="260" fill="url(#soleil)"/>
+  <circle cx="450" cy="1130" r="120" fill="#FFD77A" opacity="0.85"/>
+  <g fill="#FFF3D1" opacity="0.7">
+    <circle cx="120" cy="140" r="2"/><circle cx="260" cy="90" r="1.5"/><circle cx="700" cy="160" r="2"/>
+    <circle cx="820" cy="300" r="1.5"/><circle cx="560" cy="60" r="1.5"/><circle cx="380" cy="220" r="1.2"/>
+  </g>
+  <!-- Mornes au loin -->
+  <path d="M0 1220 C 150 1150, 260 1180, 380 1140 C 500 1100, 620 1170, 760 1130 C 830 1110, 870 1130, 900 1120 L900 1600 L0 1600Z" fill="#3A2350" opacity="0.85"/>
+  <path d="M0 1300 C 180 1250, 300 1290, 470 1260 C 640 1230, 760 1290, 900 1260 L900 1600 L0 1600Z" fill="#24163A"/>
+  <!-- Palmiers royaux -->
+  <g fill="#120B22">
+    <path d="M150 1600 C 160 1400, 170 1200, 185 1020 L195 1020 C 185 1200, 180 1400, 172 1600Z"/>
+    <use href="#palme" transform="translate(190 1020) scale(1.1)"/>
+    <path d="M760 1600 C 748 1420, 735 1240, 718 1080 L728 1080 C 742 1240, 758 1420, 772 1600Z"/>
+    <use href="#palme" transform="translate(723 1080)"/>
+    <path d="M60 1600 C 66 1480, 72 1380, 80 1300 L88 1300 C 82 1380, 78 1480, 74 1600Z"/>
+    <use href="#palme" transform="translate(84 1300) scale(0.7)"/>
+  </g>
+  <!-- Bordure de fer découpé : arbre de vie stylisé en haut -->
+  <g fill="none" stroke="#C9A227" stroke-width="3" opacity="0.75">
+    <path d="M450 70 V 250"/>
+    <path d="M450 150 C 410 130, 380 100, 370 70"/><path d="M450 150 C 490 130, 520 100, 530 70"/>
+    <path d="M450 200 C 400 190, 350 160, 330 120"/><path d="M450 200 C 500 190, 550 160, 570 120"/>
+    <circle cx="370" cy="66" r="6"/><circle cx="530" cy="66" r="6"/><circle cx="330" cy="116" r="6"/><circle cx="570" cy="116" r="6"/>
+    <path d="M300 260 C 380 240, 520 240, 600 260"/>
+  </g>
+  <!-- Hibiscus (choublak) -->
+  <use href="#hibiscus" transform="translate(90 420) scale(1.4)"/>
+  <use href="#hibiscus" transform="translate(820 560) scale(1.1)"/>
+  <use href="#hibiscus" transform="translate(150 560) scale(0.8)"/>
+  <g fill="#2E6B3F">
+    <ellipse cx="45" cy="460" rx="34" ry="12" transform="rotate(-30 45 460)"/>
+    <ellipse cx="860" cy="610" rx="30" ry="10" transform="rotate(25 860 610)"/>
+  </g>
+</svg>

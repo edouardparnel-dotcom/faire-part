@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maëlle & Kévin — Mariage (démonstration)</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maëlle & Kévin — Nou ka mayé !">
+<meta property="og:description" content="Samedi 10 juillet 2027 · 16h00 · Habitation des Alizés, Le François (Martinique).">
+<meta property="og:image" content="https://maisonvivat.com/madras/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#B3121E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Madras » : coiffe tèt maré qui se dénoue, fenêtre de case créole,
+   lambrequins de bois, élégance blanche et madras jaune-rouge. */
+:root{--jaune:#E9A800;--rouge:#B3121E;--orange:#E76F00;--vert:#2A9D8F;--ivoire:#FBF7EF;--sable:#F1E6D2;--encre:#3B2418;--or:#B8860B}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',system-ui,sans-serif;color:var(--encre);background:var(--ivoire);line-height:1.6;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.madras{background:
+  repeating-linear-gradient(90deg,rgba(179,18,30,.55) 0 46px,transparent 46px 92px,rgba(42,157,143,.55) 92px 102px,transparent 102px 160px),
+  repeating-linear-gradient(0deg,rgba(179,18,30,.55) 0 46px,transparent 46px 92px,rgba(231,111,0,.6) 92px 116px,transparent 116px 160px),
+  repeating-linear-gradient(90deg,transparent 0 70px,rgba(255,255,255,.75) 70px 72px,transparent 72px 160px),
+  repeating-linear-gradient(0deg,transparent 0 70px,rgba(255,255,255,.75) 70px 72px,transparent 72px 160px),
+  var(--jaune)}
+
+/* ── Ouverture : le tèt maré (trois pointes = cœur pris) se dénoue ── */
+.tet{position:fixed;inset:0;z-index:50;display:grid;place-items:center;cursor:pointer;background:var(--ivoire)}
+.tet .tissu{position:absolute;inset:0;transition:clip-path 1.4s cubic-bezier(.7,0,.2,1),opacity .4s 1.2s;
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.tet.ouvert .tissu{clip-path:polygon(50% 50%,50% 50%,50% 50%,50% 50%);opacity:0}
+.noeud{position:relative;z-index:2;width:220px;height:220px;transition:transform 1s ease,opacity .5s .3s}
+.tet.ouvert .noeud{transform:scale(.3) rotate(160deg);opacity:0}
+.pointe{position:absolute;left:50%;bottom:50%;width:70px;height:110px;margin-left:-35px;transform-origin:50% 100%;
+  clip-path:polygon(50% 0,100% 100%,0 100%);box-shadow:0 0 0 2px rgba(0,0,0,.2)}
+.pointe:nth-child(1){transform:rotate(-38deg)} .pointe:nth-child(2){transform:rotate(0deg)} .pointe:nth-child(3){transform:rotate(38deg)}
+.coeur{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;
+  box-shadow:0 0 0 4px #fff,0 10px 24px rgba(0,0,0,.35)}
+.invite-tet{position:absolute;bottom:14%;left:0;right:0;text-align:center;z-index:2;transition:opacity .3s}
+.tet.ouvert .invite-tet{opacity:0}
+.invite-tet .s{display:inline-block;background:var(--ivoire);padding:14px 26px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.invite-tet b{font-family:'Pinyon Script',cursive;font-weight:400;font-size:32px;color:var(--rouge);display:block;line-height:1.1}
+.invite-tet small{letter-spacing:.24em;text-transform:uppercase;font-size:11px;color:var(--encre)}
+
+/* ── Couverture : la photo dans une fenêtre de case créole, persiennes ouvertes ── */
+.couv{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 22px;text-align:center;
+  background:radial-gradient(circle at 50% 30%,#fff 0,var(--ivoire) 60%)}
+.lambrequin{width:100%;max-width:420px;height:34px;margin-bottom:-2px;
+  background:radial-gradient(circle at 50% 100%,transparent 11px,var(--rouge) 12px) 0 0/30px 34px;
+  -webkit-mask:linear-gradient(#000 0 0);}
+.fenetre{position:relative;width:min(340px,82vw);aspect-ratio:3/4;border:12px solid #fff;outline:3px solid var(--rouge);
+  border-radius:170px 170px 8px 8px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.5);
+  background:url('photo.jpg') center 28%/cover}
+.persienne{position:absolute;top:0;bottom:0;width:50%;background:repeating-linear-gradient(180deg,#2A9D8F 0 9px,#1f7a6f 9px 12px);
+  transition:transform 1.4s 1.2s ease;border:2px solid #fff}
+.persienne.g{left:0;transform-origin:left} .persienne.d{right:0;transform-origin:right}
+.ouverte .persienne.g{transform:perspective(600px) rotateY(-100deg)} .ouverte .persienne.d{transform:perspective(600px) rotateY(100deg)}
+.accroche{margin-top:28px;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--or)}
+.noms{font-family:'Pinyon Script',cursive;font-weight:400;font-size:clamp(52px,15vw,82px);color:var(--rouge);line-height:1.05;margin:6px 0}
+.date{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:.08em}
+.ruban{width:120px;height:10px;margin:18px auto 0;border-radius:5px}
+
+/* ── Sections : cartes postales avec ourlet de madras à gauche ── */
+main{position:relative;max-width:540px;margin:0 auto;padding:10px 20px 70px}
+.carte{position:relative;background:#fff;border-radius:6px;margin:30px 0;padding:30px 26px 28px 40px;box-shadow:0 20px 40px -26px rgba(59,36,24,.45)}
+.carte::before{content:"";position:absolute;left:0;top:0;bottom:0;width:16px;border-radius:6px 0 0 6px}
+.carte h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;color:var(--rouge);line-height:1.15}
+.carte h2 em{display:block;font-family:'Jost',sans-serif;font-style:normal;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--or);margin-bottom:6px}
+.carte p{margin-top:10px}
+.citation{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;text-align:center;color:var(--encre)}
+.lien{display:inline-block;margin-top:14px;color:var(--rouge);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;cursor:pointer}
+.ligne{list-style:none;margin-top:14px;border-left:2px dotted var(--jaune);padding-left:18px}
+.ligne li{position:relative;padding:8px 0}
+.ligne li::before{content:"";position:absolute;left:-25px;top:15px;width:12px;height:12px;border-radius:50%;background:var(--rouge);box-shadow:0 0 0 3px #fff}
+.ligne b{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--rouge);margin-right:10px}
+.pastilles{display:flex;gap:24px;margin-top:16px}
+.pastilles span{display:flex;align-items:center;gap:10px}
+.pastilles i{width:42px;height:42px;border-radius:50%;border:2px solid var(--sable)}
+.rebours{display:flex;gap:18px;margin-top:14px;font-family:'Cormorant Garamond',serif}
+.rebours div{text-align:center;font-size:13px;color:#8A7564;letter-spacing:.1em;text-transform:uppercase}
+.rebours b{display:block;font-size:40px;color:var(--rouge);font-weight:600;letter-spacing:0}
+.choix{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{font:inherit;font-size:14px;padding:12px 18px;border-radius:999px;border:1.5px solid var(--rouge);color:var(--rouge);background:#fff;cursor:pointer}
+.btn.plein{background:var(--rouge);color:#fff}
+.demo{display:none;margin-top:14px;color:var(--rouge);font-weight:500}
+.pied{text-align:center;font-family:'Pinyon Script',cursive;font-size:30px;color:var(--rouge);margin-top:20px}
+.pied small{display:block;font-family:'Jost',sans-serif;font-size:12px;color:#9B8878;margin-top:4px}
+.apparait{opacity:0;transform:translateY(22px);transition:opacity .9s,transform .9s}
+.apparait.vu{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body class="ferme">
+
+<div class="tet" id="tet" role="button" aria-label="Ouvrir l'invitation">
+  <div class="tissu madras"></div>
+  <div class="noeud" aria-hidden="true">
+    <div class="pointe madras"></div><div class="pointe madras"></div><div class="pointe madras"></div>
+    <div class="coeur madras"></div>
+  </div>
+  <div class="invite-tet"><div class="s"><b>Maëlle &amp; Kévin</b><small>Touchez le madras pour l'ouvrir</small></div></div>
+</div>
+
+<header class="couv" id="couv">
+  <div class="lambrequin" aria-hidden="true"></div>
+  <div class="fenetre" aria-label="Photo du couple" data-fond-parallaxe="0.18" data-base="28" data-zoom="150% auto"><div class="persienne g"></div><div class="persienne d"></div></div>
+  <p class="accroche">Nou ka mayé · Nous nous marions</p>
+  <h1 class="noms">Maëlle &amp; Kévin</h1>
+  <p class="date">Samedi 10 juillet 2027 · Le François</p>
+  <div class="ruban madras" aria-hidden="true"></div>
+</header>
+
+<main>
+  <section class="carte apparait">
+    <p class="citation">« Dé kè, an sèl chimen. »<br><small style="font-size:16px">Deux cœurs, un seul chemin.</small></p>
+  </section>
+
+  <div class="bande-photo apparait" data-effet="fondu"><div class="bp-fond" data-parallaxe="0.25" style="background-image:url('photo.jpg')"></div><div class="bp-voile" style="background:linear-gradient(180deg,rgba(179,18,30,.25),rgba(59,36,24,.55))"></div><div class="bp-texte" style="color:#fff"><p style="font-family:'Pinyon Script',cursive;font-size:48px;line-height:1.1">Dé kè, an sèl chimen</p></div></div>
+  <div class="motif" style="right:-18px;top:24%;width:70px;height:70px" data-parallaxe="0.3" data-rotation="0.05" aria-hidden="true"><svg viewBox='-60 -130 130 200'><path d='M0 0 C -60 -50,-70 -120,-10 -110 C 0 -125,30 -130,45 -110 C 95 -90,70 -30,0 0Z' fill='#B3121E'/><path d='M0 -20 C 8 -60,18 -90,32 -118' stroke='#E9A800' stroke-width='9' stroke-linecap='round' fill='none'/></svg></div><div class="motif" style="left:-22px;top:58%;width:56px;height:56px" data-parallaxe="-0.22" data-rotation="-0.06" aria-hidden="true"><svg viewBox='-60 -130 130 200'><path d='M0 0 C -60 -50,-70 -120,-10 -110 C 0 -125,30 -130,45 -110 C 95 -90,70 -30,0 0Z' fill='#B3121E'/><path d='M0 -20 C 8 -60,18 -90,32 -118' stroke='#E9A800' stroke-width='9' stroke-linecap='round' fill='none'/></svg></div>
+  <section class="carte apparait c-madras" data-effet="gauche">
+    <h2><em>Le lieu</em>Habitation des Alizés</h2>
+    <p>Route de la Pointe, face à la mer<br>Le François, Martinique</p>
+    <a class="lien" href="https://www.google.com/maps/search/?api=1&query=Le+Fran%C3%A7ois+Martinique" target="_blank" rel="noopener">Voir sur la carte</a>
+  </section>
+
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+<section class="carte apparait c-madras">
+    <h2><em>Le programme</em>Samedi 10 juillet</h2>
+    <ul class="ligne">
+      <li><b>16h00</b>Cérémonie face à la mer</li>
+      <li><b>17h30</b>Cocktail, accras et ti-punch</li>
+      <li><b>19h30</b>Dîner créole</li>
+      <li><b>21h30</b>Bal zouk et biguine</li>
+      <li><b>01h00</b>Fin de la fête</li>
+    </ul>
+  </section>
+
+  <section class="carte apparait c-madras">
+    <h2><em>La tenue</em>Madras et blanc</h2>
+    <p>Une touche de madras, une coiffe ou un foulard, sur une tenue blanche.</p>
+    <div class="pastilles"><span><i class="madras"></i>Madras</span><span><i style="background:#fff"></i>Blanc</span></div>
+  </section>
+
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="carte apparait c-madras">
+    <h2><em>Plus que</em>Le compte à rebours</h2>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
+    <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a>
+  </section>
+
+  <section class="carte apparait c-madras">
+    <h2><em>Répondez-nous</em>Konfimé si zot ka vini</h2>
+    <div class="choix"><button class="btn plein reponse">Je serai présent(e)</button><button class="btn reponse">Je ne pourrai pas venir</button></div>
+    <p class="demo" id="demo">Démonstration : sur votre faire-part, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p>
+  </section>
+
+  <p class="pied">Mèsi anpil<small>Faire-part de démonstration · couple fictif · photo Pexels</small></p>
+</main>
+
+<style>.c-madras::before,.carte::before{background:
+  repeating-linear-gradient(0deg,var(--rouge) 0 10px,var(--jaune) 10px 18px,var(--vert) 18px 21px,var(--jaune) 21px 30px)}</style>
+<script>
+const tet = document.getElementById('tet'), $ = id => document.getElementById(id);
+tet.addEventListener('click', () => {
+  tet.classList.add('ouvert');
+  setTimeout(() => { document.body.classList.remove('ferme'); tet.remove(); $('couv').classList.add('ouverte'); }, 1500);
+});
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
+document.querySelectorAll('.apparait').forEach(el => io.observe(el));
+const cible = new Date('2027-07-10T16:00:00').getTime(), d2 = n => String(n).padStart(2, '0');
+function tic() {
+  let t = cible - Date.now();
+  if (t < 0) { $('rebours').innerHTML = '<div><b>Jodi a !</b>C\'est le grand jour</div>'; return; }
+  const j = Math.floor(t / 864e5); t -= j * 864e5; const h = Math.floor(t / 36e5); t -= h * 36e5; const m = Math.floor(t / 6e4); t -= m * 6e4;
+  $('j').textContent = j; $('h').textContent = d2(h); $('m').textContent = d2(m); $('s').textContent = d2(Math.floor(t / 1e3));
+}
+tic(); setInterval(tic, 1000);
+$('agenda').addEventListener('click', e => {
+  e.preventDefault();
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Demo//Madras//FR', 'BEGIN:VEVENT', 'UID:madras-demo@faire-part', 'DTSTAMP:20270101T000000Z',
+    'DTSTART:20270710T160000', 'DTEND:20270711T010000', 'SUMMARY:Mariage de Maëlle & Kévin', 'LOCATION:Habitation des Alizés\\, Le François\\, Martinique',
+    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })), download: 'mariage-maelle-kevin.ics' }).click();
+});
+document.querySelectorAll('.reponse').forEach(b => b.addEventListener('click', () => { $('demo').style.display = 'block'; }));
+</script>
+<script src="../_commun/animations.js?v=4"></script>
+<!-- maison:debut -->
+<nav aria-label="Maison Vivat" style="position:relative;z-index:40;background:#1E1B18;color:#BDB4A7;text-align:center;padding:26px 16px 30px;font:300 13px/1.9 Inter,system-ui,sans-serif;letter-spacing:.04em">
+  <a href="../index.html#collections" style="color:#F7F3EC;text-decoration:none;font:italic 500 21px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:0">← Maison Vivat · Mariage</a><br>
+  <a href="../creer/?evt=mariage&amp;modele=madras" style="display:inline-block;margin:10px 0 14px;color:#1E1B18;background:#F7F3EC;text-decoration:none;padding:9px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Créer mon espace avec cette collection</a><br>
+  <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8B8378">Nos maisons</span><br><a href="../index.html" style="color:#BDB4A7;text-decoration:none">Mariage</a> · <a href="../anniversaires/index.html" style="color:#BDB4A7;text-decoration:none">Anniversaires</a> · <a href="../baptemes/index.html" style="color:#BDB4A7;text-decoration:none">Baptêmes</a> · <a href="../reveal/index.html" style="color:#BDB4A7;text-decoration:none">Gender reveal</a> · <a href="../naissances/index.html" style="color:#BDB4A7;text-decoration:none">Naissances</a>
+</nav>
+<!-- maison:fin -->
+</body>
+</html>

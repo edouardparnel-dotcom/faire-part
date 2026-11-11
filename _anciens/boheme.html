@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inès & Mathis — Mariage (démonstration)</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Inès & Mathis — Bohème chic">
+<meta property="og:description" content="Samedi 4 septembre 2027 · 17h00 · Mas des Oliviers.">
+<meta property="og:image" content="https://maisonvivat.com/boheme/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#C9A38A">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Raleway:wght@300;400;500&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Bohème chic » : herbes de la pampa qui s'écartent, arches en terre cuite,
+   tons sable, rose poudré et terracotta, trame de rotin, lumière de fin d'été. */
+:root{--sable:#F3E9DD;--rose:#E7C9BC;--terra:#B8664A;--argile:#C9A38A;--olive:#8A8A5C;--encre:#4A3B33;--doux:#9A8676}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Raleway',sans-serif;font-weight:300;color:var(--encre);background:var(--sable);line-height:1.75;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.pampa{position:fixed;inset:0;z-index:50;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,#F6E3D3,#E7C9BC)}
+.touffe{position:absolute;bottom:-4%;width:58%;height:100%;transition:transform 1.5s cubic-bezier(.6,0,.2,1)}
+.touffe.g{left:-6%} .touffe.d{right:-6%;transform:scaleX(-1)}
+.pampa.ouvert .touffe.g{transform:translateX(-90%) rotate(-8deg)} .pampa.ouvert .touffe.d{transform:scaleX(-1) translateX(-90%) rotate(-8deg)}
+.pampa.ouvert{background:transparent;pointer-events:none;transition:background .3s 1.2s}
+.soleil{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);text-align:center;transition:opacity .5s}
+.pampa.ouvert .soleil{opacity:0}
+.soleil .rond{width:150px;height:150px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle,#F7D9B8,#E9A97F);display:grid;place-items:center;font-family:'Gilda Display',serif;font-size:34px;color:#fff}
+.soleil p{font-size:11px;letter-spacing:.4em;text-transform:uppercase}
+.couv{position:relative;min-height:100svh;display:grid;align-content:center;justify-items:center;gap:20px;padding:50px 22px;text-align:center;overflow:hidden}
+.arches{position:relative;width:min(320px,78vw);aspect-ratio:3/4}
+.arche-fond{position:absolute;inset:0;border-radius:200px 200px 0 0;background:var(--terra);transform:translate(16px,-16px)}
+.arche-photo{position:absolute;inset:0;border-radius:200px 200px 0 0;background:var(--rose) url('photo.jpg') center/cover;box-shadow:0 30px 50px -30px rgba(74,59,51,.6)}
+.script{font-family:'Mrs Saint Delafield',cursive;font-size:clamp(44px,13vw,70px);line-height:1;color:var(--terra)}
+.noms{font-family:'Gilda Display',serif;font-weight:400;font-size:clamp(34px,10vw,52px);letter-spacing:.12em;text-transform:uppercase}
+.date{font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--doux)}
+main{position:relative;max-width:540px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.bloc{margin:40px 0;padding:36px 26px;border-radius:160px 160px 14px 14px;background:rgba(255,255,255,.55)}
+.bloc.rotin{background:rgba(255,255,255,.6) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='12' cy='12' r='9' fill='none' stroke='%23C9A38A' stroke-opacity='.25'/><circle cx='0' cy='0' r='9' fill='none' stroke='%23C9A38A' stroke-opacity='.25'/><circle cx='24' cy='24' r='9' fill='none' stroke='%23C9A38A' stroke-opacity='.25'/></svg>")}
+h2{font-family:'Gilda Display',serif;font-weight:400;font-size:28px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.petit{font-family:'Mrs Saint Delafield',cursive;font-size:38px;color:var(--terra);line-height:1}
+.citation{font-family:'Gilda Display',serif;font-size:24px;line-height:1.5}
+.lien{display:inline-block;margin-top:16px;font-family:inherit;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--encre);border:1px solid var(--argile);border-radius:999px;padding:12px 22px;text-decoration:none;background:none;cursor:pointer}
+.lien.plein{background:var(--terra);border-color:var(--terra);color:#fff}
+.prog{list-style:none}
+.prog li{padding:10px 0;border-bottom:1px dashed rgba(184,102,74,.3)}
+.prog b{font-family:'Gilda Display',serif;font-weight:400;color:var(--terra);margin-right:10px}
+.teintes{display:flex;justify-content:center;gap:22px;margin-top:14px}
+.teintes i{display:block;width:40px;height:56px;margin:0 auto 6px;border-radius:20px 20px 4px 4px}
+.rebours{display:flex;justify-content:center;gap:20px}
+.rebours div{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux)}
+.rebours b{display:block;font-family:'Gilda Display',serif;font-weight:400;font-size:40px;color:var(--terra);letter-spacing:0}
+.demo{display:none;margin-top:12px;color:var(--terra)}
+.pied{margin-top:30px;font-size:12px;color:var(--doux)}
+.pied b{display:block;font-family:'Mrs Saint Delafield',cursive;font-weight:400;font-size:44px;color:var(--terra);line-height:1}
+</style>
+</head>
+<body class="ferme">
+<div class="pampa" data-ouverture role="button" aria-label="Ouvrir l'invitation">
+  <svg class="touffe g" viewBox="0 0 300 600" preserveAspectRatio="xMinYMax slice" aria-hidden="true"><g stroke="#C9A38A" stroke-width="3" fill="none"><path d="M60 600 C 70 400,90 250,140 90"/><path d="M110 600 C 120 420,150 300,220 160"/><path d="M30 600 C 30 450,20 330,40 200"/></g><g fill="#EBD6C2"><ellipse cx="140" cy="110" rx="34" ry="90" transform="rotate(20 140 110)"/><ellipse cx="225" cy="180" rx="30" ry="80" transform="rotate(38 225 180)"/><ellipse cx="45" cy="220" rx="26" ry="76" transform="rotate(4 45 220)"/></g><g fill="#F6E9DC" opacity=".8"><ellipse cx="150" cy="100" rx="18" ry="64" transform="rotate(20 150 100)"/><ellipse cx="232" cy="170" rx="16" ry="56" transform="rotate(38 232 170)"/></g></svg>
+  <svg class="touffe d" viewBox="0 0 300 600" preserveAspectRatio="xMinYMax slice" aria-hidden="true"><g stroke="#C9A38A" stroke-width="3" fill="none"><path d="M60 600 C 70 400,90 250,140 90"/><path d="M110 600 C 120 420,150 300,220 160"/><path d="M30 600 C 30 450,20 330,40 200"/></g><g fill="#EBD6C2"><ellipse cx="140" cy="110" rx="34" ry="90" transform="rotate(20 140 110)"/><ellipse cx="225" cy="180" rx="30" ry="80" transform="rotate(38 225 180)"/><ellipse cx="45" cy="220" rx="26" ry="76" transform="rotate(4 45 220)"/></g></svg>
+  <div class="soleil"><div class="rond">I &amp; M</div><p>Touchez pour entrer</p></div>
+</div>
+
+<header class="couv">
+  <div class="arches"><div class="arche-fond" data-parallaxe="-0.06"></div><div class="arche-photo" role="img" aria-label="Photo du couple" data-fond-parallaxe="0.12" data-base="30" data-zoom="160% auto"></div></div>
+  <p class="script">on se dit oui</p>
+  <h1 class="noms">Inès &amp; Mathis</h1>
+  <p class="date">04 · 09 · 2027 — Mas des Oliviers</p>
+</header>
+
+<main>
+  <div class="motif" style="left:-30px;top:8%;width:90px;height:180px" data-parallaxe="0.28" data-rotation="0.03" aria-hidden="true"><svg viewBox="0 0 90 180"><path d="M45 180 C 44 120,46 70,45 30" stroke="#C9A38A" stroke-width="2" fill="none"/><ellipse cx="45" cy="40" rx="18" ry="44" fill="#EBD6C2"/></svg></div>
+  <div class="motif" style="right:-26px;top:45%;width:80px;height:160px" data-parallaxe="-0.22" data-rotation="-0.03" aria-hidden="true"><svg viewBox="0 0 90 180"><path d="M45 180 C 44 120,46 70,45 30" stroke="#C9A38A" stroke-width="2" fill="none"/><ellipse cx="45" cy="40" rx="18" ry="44" fill="#E7C9BC"/></svg></div>
+  <section class="bloc apparait"><p class="citation">« Libres, ensemble, et un peu sauvages. »</p></section>
+  <div class="bande-photo apparait" data-effet="fondu" style="border-radius:200px 200px 0 0"><div class="bp-fond" data-parallaxe="0.22" style="background-image:url('photo.jpg')"></div><div class="bp-voile" style="background:linear-gradient(rgba(231,201,188,.2),rgba(74,59,51,.5))"></div><div class="bp-texte" style="color:#fff"><p style="font-family:'Mrs Saint Delafield',cursive;font-size:60px;line-height:1">golden hour</p></div></div>
+  <section class="bloc rotin apparait" data-effet="zoom"><p class="petit">le lieu</p><h2>Mas des Oliviers</h2><p>Route des Alpilles · en Provence</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=Alpilles+Provence" target="_blank" rel="noopener">Voir la carte</a></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+<section class="bloc apparait" data-effet="gauche"><p class="petit">le programme</p><h2>Samedi 4 septembre</h2>
+    <ul class="prog"><li><b>17h00</b>Cérémonie sous l'arche fleurie</li><li><b>18h30</b>Apéritif au coucher du soleil</li><li><b>20h30</b>Dîner sous les guirlandes</li><li><b>23h00</b>Danse pieds nus</li></ul></section>
+  <section class="bloc rotin apparait" data-effet="droite"><p class="petit">la tenue</p><h2>Tons de terre</h2><p>Lin, dentelle, couleurs douces</p>
+    <div class="teintes"><span><i style="background:#E7C9BC"></i>Rose poudré</span><span><i style="background:#B8664A"></i>Terracotta</span><span><i style="background:#8A8A5C"></i>Olive</span></div></section>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="bloc apparait"><p class="petit">plus que</p>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
+    <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait"><p class="petit">votre réponse</p><h2>Vous serez là ?</h2>
+    <button class="lien plein reponse">Avec joie</button> <button class="lien reponse">Je ne pourrai pas</button>
+    <p class="demo" id="demo">Démonstration : sur votre faire-part, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied"><b>à bientôt</b>Faire-part de démonstration · couple fictif · photo Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-09-04T17:00:00', fin: '20270905T020000', titre: 'Mariage d\'Inès & Mathis', lieu: 'Mas des Oliviers, Provence', fichier: 'mariage-ines-mathis', jour: 'C\'est le grand jour', duree: 1600 };</script>
+<script src="../_commun/noyau.js?v=3"></script>
+<script src="../_commun/animations.js?v=4"></script>
+<!-- maison:debut -->
+<nav aria-label="Maison Vivat" style="position:relative;z-index:40;background:#1E1B18;color:#BDB4A7;text-align:center;padding:26px 16px 30px;font:300 13px/1.9 Inter,system-ui,sans-serif;letter-spacing:.04em">
+  <a href="../index.html#collections" style="color:#F7F3EC;text-decoration:none;font:italic 500 21px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:0">← Maison Vivat · Mariage</a><br>
+  <a href="../creer/?evt=mariage&amp;modele=boheme" style="display:inline-block;margin:10px 0 14px;color:#1E1B18;background:#F7F3EC;text-decoration:none;padding:9px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Créer mon espace avec cette collection</a><br>
+  <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8B8378">Nos maisons</span><br><a href="../index.html" style="color:#BDB4A7;text-decoration:none">Mariage</a> · <a href="../anniversaires/index.html" style="color:#BDB4A7;text-decoration:none">Anniversaires</a> · <a href="../baptemes/index.html" style="color:#BDB4A7;text-decoration:none">Baptêmes</a> · <a href="../reveal/index.html" style="color:#BDB4A7;text-decoration:none">Gender reveal</a> · <a href="../naissances/index.html" style="color:#BDB4A7;text-decoration:none">Naissances</a>
+</nav>
+<!-- maison:fin -->
+</body>
+</html>

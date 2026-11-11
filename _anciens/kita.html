@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aya & Koffi — Mariage (démonstration)</title>
+<meta property="og:title" content="Aya & Koffi — Akwaba à notre mariage">
+<meta property="og:description" content="Samedi 9 octobre 2027 · Cocody, Abidjan.">
+<meta property="og:image" content="https://maisonvivat.com/kita/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#1A1410">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Kita » : le pagne kita baoulé, tissé en carreaux. Ouverture par une mosaïque
+   de carreaux qui se retournent un à un ; mise en page en grille de tuiles (bento), orange, noir et or. */
+:root{--orange:#E07A1F;--or:#D9A441;--noir:#1A1410;--creme:#FBF4E8;--brun:#5A3A22;--vert:#2F6B4F;--texte:#2A1F17;--doux:#8A7A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;font-weight:300;color:var(--texte);background:var(--creme);line-height:1.6;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.tisse{background:
+  linear-gradient(90deg,transparent 0 30%,rgba(26,20,16,.85) 30% 36%,transparent 36% 64%,rgba(26,20,16,.85) 64% 70%,transparent 70%),
+  linear-gradient(0deg,transparent 0 30%,rgba(217,164,65,.9) 30% 38%,transparent 38% 62%,rgba(217,164,65,.9) 62% 70%,transparent 70%),
+  var(--orange)}
+.tisse.b{background:
+  repeating-linear-gradient(45deg,var(--noir) 0 6px,var(--or) 6px 12px),var(--noir)}
+.tisse.c{background:
+  linear-gradient(90deg,var(--noir) 0 50%,var(--orange) 50%),var(--noir);background-size:24px 100%}
+.mosaique{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;perspective:900px;background:transparent}
+.carreau{transition:transform .7s cubic-bezier(.6,0,.3,1),opacity .7s;backface-visibility:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.mosaique.ouvert .carreau{transform:rotateY(90deg);opacity:0}
+.mosaique.ouvert{pointer-events:none}
+.plaque-kita{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:51;background:var(--creme);padding:24px 30px;text-align:center;box-shadow:0 0 0 6px var(--noir),0 0 0 8px var(--or),0 24px 50px rgba(0,0,0,.5);pointer-events:none}
+.plaque-kita b{display:block;font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:var(--noir)}
+.plaque-kita small{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--orange)}
+.couv{min-height:100svh;padding:22px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto auto;gap:10px}
+.t{border-radius:4px;overflow:hidden;position:relative}
+.t-entete{grid-column:1/-1;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--brun)}
+.t-photo{grid-column:1/-1;min-height:46svh;background:#ddd url('photo.jpg') center 25%/cover}
+.t-noms{grid-column:1/-1;background:var(--noir);color:var(--creme);padding:22px 18px}
+.t-noms h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(46px,14vw,80px);line-height:.92;letter-spacing:-.02em}
+.t-noms h1 span{color:var(--or)}
+.t-date{background:var(--orange);color:var(--noir);padding:16px;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;line-height:1.1}
+.t-akwaba{padding:16px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;display:flex;align-items:flex-end}
+main{position:relative;max-width:620px;margin:0 auto;padding:20px 22px 70px}
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.tuile{background:#fff;border-radius:4px;padding:22px 18px;box-shadow:0 14px 30px -24px rgba(42,31,23,.6)}
+.tuile.large{grid-column:1/-1}
+.tuile.sombre{background:var(--noir);color:var(--creme)}
+.tuile.orange{background:var(--orange);color:var(--noir)}
+.tuile h2{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;line-height:1.05;margin-bottom:8px}
+.etq{font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;margin-bottom:6px;display:block}
+.citation{font-family:'Syne',sans-serif;font-weight:600;font-size:22px;line-height:1.3}
+.lien{display:inline-block;margin-top:10px;font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:inherit;text-decoration:none;border-bottom:2px solid var(--or);background:none;border-top:0;border-left:0;border-right:0;font-family:inherit;cursor:pointer;padding:0 0 2px}
+.prog{list-style:none}
+.prog li{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.prog b{font-family:'Syne',sans-serif;font-weight:800;min-width:56px;color:var(--orange)}
+.teintes{display:flex;gap:10px;margin-top:8px}.teintes i{flex:1;height:54px;border-radius:3px}
+.rebours{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.rebours div{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.8}
+.rebours b{display:block;font-family:'Syne',sans-serif;font-weight:800;font-size:34px;letter-spacing:0}
+.btn{font:inherit;font-weight:600;font-size:13px;padding:12px 16px;border:2px solid var(--noir);background:var(--noir);color:var(--creme);border-radius:3px;cursor:pointer;margin:6px 6px 0 0}
+.btn.vide{background:transparent;color:var(--noir)}
+.demo{display:none;margin-top:10px;font-weight:600;color:var(--orange)}
+.pied{text-align:center;margin-top:30px;font-size:12px;color:var(--doux)}
+.pied b{display:block;font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--noir)}
+</style>
+</head>
+<body class="ferme">
+<div class="mosaique" data-ouverture role="button" aria-label="Ouvrir l'invitation">
+  <div class="carreau tisse"></div><div class="carreau tisse b"></div><div class="carreau tisse"></div><div class="carreau tisse c"></div>
+  <div class="carreau tisse c"></div><div class="carreau tisse"></div><div class="carreau tisse b"></div><div class="carreau tisse"></div>
+  <div class="carreau tisse"></div><div class="carreau tisse c"></div><div class="carreau tisse"></div><div class="carreau tisse b"></div>
+  <div class="carreau tisse b"></div><div class="carreau tisse"></div><div class="carreau tisse c"></div><div class="carreau tisse"></div>
+  <div class="carreau tisse"></div><div class="carreau tisse b"></div><div class="carreau tisse"></div><div class="carreau tisse c"></div>
+  <div class="carreau tisse c"></div><div class="carreau tisse"></div><div class="carreau tisse b"></div><div class="carreau tisse"></div>
+</div>
+<div class="plaque-kita" data-avec-ouverture><b>Aya &amp; Koffi</b><small>Touchez le pagne</small></div>
+
+<header class="couv">
+  <div class="t-entete"><span>Akwaba</span><span>09 · 10 · 2027</span></div>
+  <div class="t t-photo" role="img" aria-label="Photo du couple" data-fond-parallaxe="0.14" data-base="25" data-zoom="130% auto"></div>
+  <div class="t t-noms"><h1>Aya <span>&amp;</span><br>Koffi</h1></div>
+  <div class="t t-date">Samedi<br>9 octobre</div>
+  <div class="t t-akwaba tisse">Abidjan</div>
+</header>
+
+<main>
+  <div class="grille">
+    <section class="tuile large orange apparait"><span class="etq">Akwaba</span><p class="citation">« Bienvenue à vous qui comptez pour nous : venez fêter notre union. »</p></section>
+    <section class="tuile apparait" data-effet="gauche"><span class="etq">Le lieu</span><h2>Jardins de la Riviera</h2><p>Cocody · Abidjan</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=Cocody+Abidjan" target="_blank" rel="noopener">Carte</a></section>
+    <section class="tuile sombre apparait" data-effet="droite"><span class="etq">La tenue</span><h2>Pagne kita</h2><div class="teintes"><i style="background:#E07A1F"></i><i style="background:#D9A441"></i><i style="background:#1A1410;outline:1px solid #555"></i></div></section>
+  </div>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+  <div class="grille">
+    <section class="tuile large apparait"><span class="etq">Le programme</span><h2>Samedi 9 octobre</h2>
+      <ul class="prog"><li><b>10h00</b>Dot et mariage coutumier</li><li><b>15h00</b>Mariage civil</li><li><b>19h00</b>Réception et dîner</li><li><b>22h00</b>Coupé-décalé jusqu'au bout de la nuit</li></ul></section>
+  </div>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <div class="grille">
+    <section class="tuile sombre large apparait"><span class="etq">Il reste</span>
+      <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>h</div><div><b id="m">--</b>min</div><div><b id="s">--</b>s</div></div>
+      <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a></section>
+    <section class="tuile large apparait"><span class="etq">Votre réponse</span><h2>Serez-vous là ?</h2>
+      <button class="btn reponse">Je serai là</button><button class="btn vide reponse">Je ne pourrai pas</button>
+      <p class="demo" id="demo">Démonstration : sur votre faire-part, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  </div>
+  <p class="pied"><b>Akwaba &amp; merci</b>Faire-part de démonstration · couple fictif · photos Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-10-09T10:00:00', fin: '20271010T030000', titre: 'Mariage d\'Aya & Koffi', lieu: 'Jardins de la Riviera, Cocody, Abidjan', fichier: 'mariage-aya-koffi', jour: 'C\'est le grand jour', duree: 1000 };
+document.querySelectorAll('.carreau').forEach((c, i) => c.style.transitionDelay = `${(i % 4) * 60 + Math.floor(i / 4) * 50}ms`);</script>
+<script src="../_commun/noyau.js?v=4"></script>
+<script src="../_commun/animations.js?v=4"></script>
+<!-- maison:debut -->
+<nav aria-label="Maison Vivat" style="position:relative;z-index:40;background:#1E1B18;color:#BDB4A7;text-align:center;padding:26px 16px 30px;font:300 13px/1.9 Inter,system-ui,sans-serif;letter-spacing:.04em">
+  <a href="../index.html#collections" style="color:#F7F3EC;text-decoration:none;font:italic 500 21px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:0">← Maison Vivat · Mariage</a><br>
+  <a href="../creer/?evt=mariage&amp;modele=kita" style="display:inline-block;margin:10px 0 14px;color:#1E1B18;background:#F7F3EC;text-decoration:none;padding:9px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Créer mon espace avec cette collection</a><br>
+  <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8B8378">Nos maisons</span><br><a href="../index.html" style="color:#BDB4A7;text-decoration:none">Mariage</a> · <a href="../anniversaires/index.html" style="color:#BDB4A7;text-decoration:none">Anniversaires</a> · <a href="../baptemes/index.html" style="color:#BDB4A7;text-decoration:none">Baptêmes</a> · <a href="../reveal/index.html" style="color:#BDB4A7;text-decoration:none">Gender reveal</a> · <a href="../naissances/index.html" style="color:#BDB4A7;text-decoration:none">Naissances</a>
+</nav>
+<!-- maison:fin -->
+</body>
+</html>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Toghu : fond noir, broderies rayonnantes rouge, jaune, bleu, blanc -->
+    <pattern id="toghu" width="150" height="150" patternUnits="userSpaceOnUse">
+      <rect width="150" height="150" fill="#0B0B0B"/>
+      <g transform="translate(75 75)">
+        <path d="M0 -60 L14 -14 L60 0 L14 14 L0 60 L-14 14 L-60 0 L-14 -14Z" fill="#E63946"/>
+        <path d="M0 -40 L9 -9 L40 0 L9 9 L0 40 L-9 9 L-40 0 L-9 -9Z" fill="#F4C430"/>
+        <path d="M0 -22 L22 0 L0 22 L-22 0Z" fill="#1D4ED8"/>
+        <circle r="7" fill="#FFFFFF"/>
+        <g stroke="#FFFFFF" stroke-width="2" opacity="0.7">
+          <line x1="-42" y1="-42" x2="-28" y2="-28"/><line x1="42" y1="-42" x2="28" y2="-28"/>
+          <line x1="-42" y1="42" x2="-28" y2="28"/><line x1="42" y1="42" x2="28" y2="28"/>
+        </g>
+      </g>
+      <g fill="#F4C430"><circle cx="0" cy="0" r="4"/><circle cx="150" cy="0" r="4"/><circle cx="0" cy="150" r="4"/><circle cx="150" cy="150" r="4"/></g>
+    </pattern>
+    <linearGradient id="voile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000" stop-opacity="0.2"/>
+      <stop offset="0.55" stop-color="#000" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.92"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1600" fill="url(#toghu)"/>
+  <rect width="900" height="1600" fill="url(#voile)"/>
+  <!-- Bande brodée en haut -->
+  <g>
+    <rect x="0" y="0" width="900" height="54" fill="#0B0B0B"/>
+    <rect x="0" y="54" width="900" height="8" fill="#E63946"/>
+    <rect x="0" y="62" width="900" height="6" fill="#F4C430"/>
+    <rect x="0" y="68" width="900" height="6" fill="#1D4ED8"/>
+  </g>
+</svg>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sarah & Thomas — Mariage (démonstration)</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Sarah & Thomas — Faire-part de mariage">
+<meta property="og:description" content="Samedi 26 juin 2027 · 15h00 · Château de Valmont.">
+<meta property="og:image" content="https://maisonvivat.com/classique/apercu-whatsapp.jpg">
+<meta name="theme-color" content="#FAF7F1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* Direction artistique « Classique » : faire-part gravé intemporel. Enveloppe ivoire à sceau de cire,
+   monogramme, cadre à double filet doré, capitales gravées. La tradition, sans effet de mode. */
+:root{--ivoire:#FAF7F1;--papier:#FFFDF8;--or:#B08D57;--or2:#D4BC8E;--encre:#2F2A24;--doux:#857B6E;--cire:#7A1F2B}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;color:var(--encre);background:var(--ivoire);line-height:1.65;-webkit-font-smoothing:antialiased}
+body.ferme{overflow:hidden}
+.pli{position:fixed;inset:0;z-index:50;cursor:pointer;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#fff,#EFE8DA);transition:opacity .6s 1.1s}
+.pli.ouvert{opacity:0}
+.env{position:relative;width:min(340px,84vw);aspect-ratio:7/5;background:#F3ECDD;box-shadow:0 26px 50px -24px rgba(47,42,36,.5);perspective:900px}
+.env .poche{position:absolute;inset:0;background:linear-gradient(to top right,#EDE4D2 50%,transparent 50.2%) left/50.2% 100% no-repeat,linear-gradient(to top left,#EDE4D2 50%,transparent 50.2%) right/50.2% 100% no-repeat;z-index:3}
+.env .rabat{position:absolute;left:0;right:0;top:0;height:62%;z-index:4;transform-origin:top;transition:transform .9s ease;
+  background:linear-gradient(to bottom,#F7F1E5,#EADFCB);clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.1))}
+.pli.ouvert .rabat{transform:rotateX(180deg);z-index:1}
+.env .sceau{position:absolute;left:50%;top:62%;width:64px;height:64px;margin:-32px 0 0 -32px;z-index:5;border-radius:48% 52% 50% 50%/52% 47% 53% 48%;
+  background:radial-gradient(circle at 35% 30%,#A33645,var(--cire) 60%,#5a1620);box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 0 0 5px rgba(0,0,0,.15);
+  display:grid;place-items:center;font-family:'Pinyon Script',cursive;font-size:26px;color:#E9C9A0;transition:opacity .3s}
+.pli.ouvert .sceau{opacity:0}
+.env .carte{position:absolute;left:6%;right:6%;top:8%;bottom:8%;background:var(--papier);z-index:2;transition:transform .9s .5s ease;display:grid;place-items:center;font-family:'Cormorant SC',serif;letter-spacing:.2em;font-size:14px;color:var(--or)}
+.env .carte{color:transparent}
+.pli.ouvert .carte{transform:translateY(-70%);color:var(--or)}
+.indice{position:absolute;bottom:14%;left:0;right:0;text-align:center;font-style:italic;color:var(--doux)}
+.couv{min-height:100svh;display:grid;place-items:center;padding:30px 18px}
+.faire-part{position:relative;width:min(460px,100%);background:var(--papier);padding:40px 30px;text-align:center;box-shadow:0 30px 60px -40px rgba(47,42,36,.6);
+  outline:1px solid var(--or2);outline-offset:-14px}
+.faire-part::before{content:"";position:absolute;inset:20px;border:1px solid var(--or2);pointer-events:none}
+.mono{width:86px;height:86px;margin:0 auto 18px;border-radius:50%;border:1px solid var(--or);display:grid;place-items:center;font-family:'Pinyon Script',cursive;font-size:36px;color:var(--or)}
+.familles{font-style:italic;color:var(--doux);font-size:17px}
+.photo{width:76%;aspect-ratio:4/5;margin:22px auto;background:#EFE8DA url('photo.jpg') center/cover;outline:1px solid var(--or2);outline-offset:6px}
+.noms{font-family:'Pinyon Script',cursive;font-weight:400;font-size:clamp(46px,12vw,64px);line-height:1.1}
+.date{font-family:'Cormorant SC',serif;letter-spacing:.24em;font-size:16px;margin-top:10px}
+main{position:relative;max-width:500px;margin:0 auto;padding:10px 22px 80px;text-align:center}
+.orn{display:block;width:120px;margin:40px auto 24px;opacity:.9}
+h2{font-family:'Cormorant SC',serif;font-weight:600;font-size:22px;letter-spacing:.24em;color:var(--or);margin-bottom:12px}
+.citation{font-style:italic;font-size:24px}
+.lien{display:inline-block;margin-top:14px;font-family:'Cormorant SC',serif;font-size:15px;letter-spacing:.2em;color:var(--encre);border:1px solid var(--or);padding:10px 22px;text-decoration:none;background:none;cursor:pointer}
+.lien.plein{background:var(--encre);border-color:var(--encre);color:var(--papier)}
+.prog{list-style:none}
+.prog li{padding:8px 0}
+.prog b{font-family:'Cormorant SC',serif;font-weight:600;letter-spacing:.1em;color:var(--or);margin-right:10px}
+.rebours{display:flex;justify-content:center;gap:22px}
+.rebours div{font-family:'Cormorant SC',serif;font-size:13px;letter-spacing:.2em;color:var(--doux)}
+.rebours b{display:block;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:44px;color:var(--encre);letter-spacing:0}
+.demo{display:none;margin-top:12px;color:var(--cire);font-style:italic}
+.pied{margin-top:44px;color:var(--doux);font-size:15px}
+.pied b{display:block;font-family:'Pinyon Script',cursive;font-weight:400;font-size:38px;color:var(--encre)}
+</style>
+</head>
+<body class="ferme">
+<div class="pli" data-ouverture role="button" aria-label="Ouvrir l'invitation">
+  <div class="env"><div class="carte">Sarah &amp; Thomas</div><div class="poche"></div><div class="rabat"></div><div class="sceau">S&amp;T</div></div>
+  <p class="indice">Brisez le sceau</p>
+</div>
+
+<header class="couv">
+  <div class="faire-part apparait" data-effet="zoom">
+    <div class="mono">S·T</div>
+    <p class="familles">Monsieur et Madame Martel<br>Monsieur et Madame Delorme</p>
+    <p class="familles">ont la joie de vous annoncer le mariage de leurs enfants</p>
+    <div class="photo" role="img" aria-label="Photo du couple" data-fond-parallaxe="0.1" data-base="30" data-zoom="140% auto"></div>
+    <h1 class="noms">Sarah &amp; Thomas</h1>
+    <p class="date">Samedi 26 juin 2027</p>
+  </div>
+</header>
+
+<main>
+  <svg class="orn apparait" viewBox="0 0 120 30" aria-hidden="true"><path d="M2 15h44M74 15h44M60 4c-6 5-6 17 0 22 6-5 6-17 0-22Z" fill="none" stroke="#B08D57"/><circle cx="60" cy="15" r="2" fill="#B08D57"/></svg>
+  <section class="apparait"><p class="citation">« L'amour ne se voit pas avec les yeux, mais avec l'âme. »</p></section>
+  <div class="bande-photo apparait" data-effet="fondu"><div class="bp-fond" data-parallaxe="0.2" style="background-image:url('photo.jpg')"></div><div class="bp-voile" style="background:linear-gradient(rgba(250,247,241,.15),rgba(47,42,36,.55))"></div><div class="bp-texte" style="color:#fff"><p style="font-family:'Pinyon Script',cursive;font-size:48px;line-height:1.1">Pour le meilleur</p></div></div>
+  <svg class="orn apparait" viewBox="0 0 120 30" aria-hidden="true"><path d="M2 15h44M74 15h44M60 4c-6 5-6 17 0 22 6-5 6-17 0-22Z" fill="none" stroke="#B08D57"/><circle cx="60" cy="15" r="2" fill="#B08D57"/></svg>
+  <section class="apparait" data-effet="zoom"><h2>Cérémonie et réception</h2><p>Château de Valmont<br>Allée des Tilleuls · Val de Loire</p><a class="lien" href="https://www.google.com/maps/search/?api=1&query=Val+de+Loire" target="_blank" rel="noopener">Voir la carte</a></section>
+  <svg class="orn apparait" viewBox="0 0 120 30" aria-hidden="true"><path d="M2 15h44M74 15h44M60 4c-6 5-6 17 0 22 6-5 6-17 0-22Z" fill="none" stroke="#B08D57"/><circle cx="60" cy="15" r="2" fill="#B08D57"/></svg>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Le lieu, vue d'ensemble"><div class="sp-img" style="background-image:url('decor-ensemble.jpg')" data-parallaxe="0.2"></div></div>
+<section class="apparait"><h2>Le déroulé</h2>
+    <ul class="prog"><li><b>15h00</b>Cérémonie religieuse</li><li><b>16h30</b>Cocktail dans les jardins</li><li><b>19h30</b>Dîner de gala</li><li><b>22h30</b>Ouverture du bal</li></ul></section>
+  <svg class="orn apparait" viewBox="0 0 120 30" aria-hidden="true"><path d="M2 15h44M74 15h44M60 4c-6 5-6 17 0 22 6-5 6-17 0-22Z" fill="none" stroke="#B08D57"/><circle cx="60" cy="15" r="2" fill="#B08D57"/></svg>
+  <section class="apparait"><h2>Tenue de soirée</h2><p>Smoking ou costume sombre, robe longue</p></section>
+  <svg class="orn apparait" viewBox="0 0 120 30" aria-hidden="true"><path d="M2 15h44M74 15h44M60 4c-6 5-6 17 0 22 6-5 6-17 0-22Z" fill="none" stroke="#B08D57"/><circle cx="60" cy="15" r="2" fill="#B08D57"/></svg>
+  <div class="separateur apparait" data-effet="fondu" role="img" aria-label="Détail de la décoration"><div class="sp-img" style="background-image:url('decor-detail.jpg')" data-parallaxe="0.2"></div></div>
+  <section class="apparait"><h2>Dans</h2>
+    <div class="rebours" id="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div><div><b id="s">--</b>sec</div></div>
+    <a class="lien" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <svg class="orn apparait" viewBox="0 0 120 30" aria-hidden="true"><path d="M2 15h44M74 15h44M60 4c-6 5-6 17 0 22 6-5 6-17 0-22Z" fill="none" stroke="#B08D57"/><circle cx="60" cy="15" r="2" fill="#B08D57"/></svg>
+  <section class="apparait"><h2>Réponse souhaitée</h2><p>avant le 1er mai 2027</p>
+    <button class="lien plein reponse">Je serai présent(e)</button> <button class="lien reponse">Je ne pourrai pas venir</button>
+    <p class="demo" id="demo">Démonstration : sur votre faire-part, ce bouton ouvre WhatsApp vers votre numéro, avec la réponse déjà écrite.</p></section>
+  <p class="pied"><b>Avec toute notre affection</b>Faire-part de démonstration · couple fictif · photo Pexels</p>
+</main>
+<script>window.FAIREPART = { debut: '2027-06-26T15:00:00', fin: '20270627T020000', titre: 'Mariage de Sarah & Thomas', lieu: 'Château de Valmont, Val de Loire', fichier: 'mariage-sarah-thomas', jour: 'C\'est le grand jour', duree: 1700 };</script>
+<script src="../_commun/noyau.js?v=3"></script>
+<script src="../_commun/animations.js?v=4"></script>
+<!-- maison:debut -->
+<nav aria-label="Maison Vivat" style="position:relative;z-index:40;background:#1E1B18;color:#BDB4A7;text-align:center;padding:26px 16px 30px;font:300 13px/1.9 Inter,system-ui,sans-serif;letter-spacing:.04em">
+  <a href="../index.html#collections" style="color:#F7F3EC;text-decoration:none;font:italic 500 21px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:0">← Maison Vivat · Mariage</a><br>
+  <a href="../creer/?evt=mariage&amp;modele=classique" style="display:inline-block;margin:10px 0 14px;color:#1E1B18;background:#F7F3EC;text-decoration:none;padding:9px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Créer mon espace avec cette collection</a><br>
+  <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8B8378">Nos maisons</span><br><a href="../index.html" style="color:#BDB4A7;text-decoration:none">Mariage</a> · <a href="../anniversaires/index.html" style="color:#BDB4A7;text-decoration:none">Anniversaires</a> · <a href="../baptemes/index.html" style="color:#BDB4A7;text-decoration:none">Baptêmes</a> · <a href="../reveal/index.html" style="color:#BDB4A7;text-decoration:none">Gender reveal</a> · <a href="../naissances/index.html" style="color:#BDB4A7;text-decoration:none">Naissances</a>
+</nav>
+<!-- maison:fin -->
+</body>
+</html>

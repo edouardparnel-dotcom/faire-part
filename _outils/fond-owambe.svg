@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Aso-oke : bandes tissées émeraude et or, fils fins -->
+    <pattern id="asooke" width="60" height="60" patternUnits="userSpaceOnUse">
+      <rect width="60" height="60" fill="#0F5C4A"/>
+      <rect x="0" y="0" width="22" height="60" fill="#13705A"/>
+      <rect x="24" y="0" width="3" height="60" fill="#D9B44A"/>
+      <rect x="33" y="0" width="1.5" height="60" fill="#E9D18A" opacity="0.8"/>
+      <rect x="0" y="28" width="60" height="1.5" fill="#D9B44A" opacity="0.5"/>
+    </pattern>
+    <linearGradient id="voile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#03231C" stop-opacity="0.1"/>
+      <stop offset="0.6" stop-color="#03231C" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#021712" stop-opacity="0.9"/>
+    </linearGradient>
+    <g id="perle"><circle r="14" fill="#E2553F"/><circle r="5" cx="-4" cy="-4" fill="#F4A08F" opacity="0.8"/></g>
+    <g id="perleor"><circle r="9" fill="#D9B44A"/></g>
+  </defs>
+  <rect width="900" height="1600" fill="url(#asooke)"/>
+  <rect width="900" height="1600" fill="url(#voile)"/>
+  <!-- Rangs de perles de corail -->
+  <g>
+    <use href="#perle" x="90" y="80"/><use href="#perleor" x="125" y="100"/><use href="#perle" x="160" y="125"/><use href="#perleor" x="195" y="148"/><use href="#perle" x="232" y="168"/><use href="#perleor" x="270" y="185"/><use href="#perle" x="310" y="198"/><use href="#perleor" x="350" y="206"/><use href="#perle" x="390" y="211"/><use href="#perleor" x="430" y="213"/><use href="#perle" x="470" y="213"/><use href="#perleor" x="510" y="211"/><use href="#perle" x="550" y="206"/><use href="#perleor" x="590" y="198"/><use href="#perle" x="630" y="185"/><use href="#perleor" x="668" y="168"/><use href="#perle" x="705" y="148"/><use href="#perleor" x="740" y="125"/><use href="#perle" x="775" y="100"/><use href="#perleor" x="810" y="80"/>
+  </g>
+  <g opacity="0.85">
+    <use href="#perle" x="180" y="60"/><use href="#perle" x="230" y="92"/><use href="#perle" x="290" y="116"/><use href="#perle" x="355" y="131"/><use href="#perle" x="420" y="137"/><use href="#perle" x="485" y="137"/><use href="#perle" x="550" y="131"/><use href="#perle" x="615" y="116"/><use href="#perle" x="675" y="92"/><use href="#perle" x="725" y="60"/>
+  </g>
+  <!-- Pendentif doré -->
+  <g transform="translate(450 255)">
+    <path d="M0 0 L22 34 L0 68 L-22 34Z" fill="#D9B44A"/>
+    <circle cy="34" r="9" fill="#E2553F"/>
+  </g>
+</svg>
