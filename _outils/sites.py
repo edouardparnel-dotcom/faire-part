@@ -53,9 +53,9 @@ LANCEMENT = dict(prix=39, jusqu='2026-12-01T00:00:00+01:00', places=50, texte='3
 FORMULES_MARIAGE = [
   ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à l'espace complet à tout moment, en payant la différence"]),
   ('Faire-part et site', 190, [], ["Tout le Faire-part", "Le site du mariage : programme, lieu, hébergement, accès", "Liste de cadeaux et cagnotte", "Deux langues"]),
-  ('Essentiel', 390, [], ["Tout le Faire-part et site, plus l'organisation complète :", "Plan de table, budget, planning et prestataires", "Programme et déroulé de vos cérémonies", "Une invitation de la collection, à vos couleurs"]),
+  ('Essentiel', 390, ['ceremonies'], ["Tout le Faire-part et site, plus l'organisation complète :", "Invitations par cérémonie : dot, mairie, église, soirée, chacun ne reçoit que la sienne", "Plan de table, budget, planning et prestataires", "Programme et déroulé de vos cérémonies"]),
   ('Signature', 890, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue'], ["Tout l'Essentiel", "Save-the-date et invitations par cérémonie", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Trois langues"]),
-  ('Prestige', 1690, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique', 'covoiturage'], ["Tout le Signature", "Direct privé pour les proches qui ne peuvent pas venir", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
+  ('Prestige', 1390, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique', 'covoiturage'], ["Tout le Signature", "Direct privé pour les proches qui ne peuvent pas venir", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
 ]
 FORMULES_EVENEMENT = [
   ('Essentiel', 190, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),
@@ -317,8 +317,20 @@ def page(site, modeles):
     phares = [o for o in site['options'] if o[0] in ('savethedate', 'qr', 'direct', 'murphoto', 'album')][:4]
     selection = '\n'.join(f"""        <div class="phare-opt revele"><span class="etq">{e(mo)}</span><h4>{e(n)}</h4><p>{e(t)}</p><span class="tarif">{prix(p)}</span></div>"""
                           for k, mo, n, t, p, d in phares)
-    formules = '\n'.join(f"""      <div class="formule{' phare' if n == 'Signature' else ''} revele"><h3>{e(n)}</h3><p class="prix">{prix(LANCEMENT['prix']) if n == 'Faire-part' else prix(p)}</p>{f'<p class="lancement">Prix de lancement : {e(LANCEMENT["texte"])}</p>' if n == 'Faire-part' else ''}
-        <ul>{''.join(f'<li>{e(x)}</li>' for x in lst)}</ul><a class="btn{'' if n == 'Signature' else ' clair'}" href="{creer}&amp;formule={k}" style="margin-top:auto">Choisir {e(n)}</a></div>""" for k, (n, p, inc, lst) in enumerate(site['formules']))
+    PRINCIPALES = ('Faire-part', 'Signature', 'Prestige')
+    def carte(k, n, p, lst, petite=False):
+        badge = '<span class="badge-formule">Notre recommandation</span>' if n == 'Signature' else ''
+        prix_aff = prix(LANCEMENT['prix']) if n == 'Faire-part' else prix(p)
+        lance = f'<p class="lancement">Prix de lancement : {e(LANCEMENT["texte"])}</p>' if n == 'Faire-part' else ''
+        return f"""      <div class="formule{' phare' if n == 'Signature' else ''}{' secondaire' if petite else ''} revele">{badge}<h3>{e(n)}</h3><p class="prix">{prix_aff}</p>{lance}
+        <ul>{''.join(f'<li>{e(x)}</li>' for x in lst)}</ul><a class="btn{'' if n == 'Signature' else ' clair'}" href="{creer}&amp;formule={k}" style="margin-top:auto">Choisir {e(n)}</a></div>"""
+    tout = list(enumerate(site['formules']))
+    if site['cle'] == 'mariage':
+        formules = '\n'.join(carte(k, n, p, lst) for k, (n, p, inc, lst) in tout if n in PRINCIPALES) + \
+            '\n    </div>\n    <p class="aussi-formules revele">Aussi, pour aller pas à pas :</p>\n    <div class="formules formules-secondaires">\n' + \
+            '\n'.join(carte(k, n, p, lst, True) for k, (n, p, inc, lst) in tout if n not in PRINCIPALES)
+    else:
+        formules = '\n'.join(carte(k, n, p, lst) for k, (n, p, inc, lst) in tout)
     essai = f'<a class="btn clair" href="{pre}{site["essai"][0]}">{e(site["essai"][1])}</a>' if site['essai'] else f'<a class="btn clair" href="#collections">Voir les collections</a>'
     nav_essai = f'<a href="{pre}espace/#tableau">Démonstration</a>' if site['cle'] == 'mariage' else ''
 

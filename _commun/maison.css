@@ -281,4 +281,14 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .formule .lancement{font-size:12px;letter-spacing:.04em;color:var(--accent,#9a7b4f);margin:-6px 0 12px}
 .lancement-accueil{margin-top:14px;font-size:13px}.lancement-accueil a{color:var(--accent,#9a7b4f);text-decoration:underline;text-underline-offset:3px}
 
-@media (min-width:1100px){.formules:has(.formule:nth-child(5)){grid-template-columns:repeat(5,1fr);gap:18px}}
+
+/* Formules : trois en avant, deux plus discrètes */
+.formule{position:relative}
+.badge-formule{position:absolute;top:-12px;left:50%;translate:-50% 0;white-space:nowrap;padding:5px 12px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;background:var(--accent,#9a7b4f);color:#fff}
+.aussi-formules{text-align:center;margin:44px 0 16px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--doux,#6b6359)}
+.formules-secondaires{grid-template-columns:repeat(2,minmax(0,360px));justify-content:center}
+.formule.secondaire{padding:26px 24px}
+.formule.secondaire h3{font-size:26px}
+.formule.secondaire .prix{font-size:34px}
+.formule.secondaire li{font-size:13px}
+@media (max-width:760px){.formules-secondaires{grid-template-columns:1fr}}

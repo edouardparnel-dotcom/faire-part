@@ -21,7 +21,9 @@
    "essentiel": {
     "nom": "Essentiel",
     "prix": 390,
-    "inclus": []
+    "inclus": [
+     "ceremonies"
+    ]
    },
    "signature": {
     "nom": "Signature",
@@ -38,7 +40,7 @@
    },
    "prestige": {
     "nom": "Prestige",
-    "prix": 1690,
+    "prix": 1390,
     "inclus": [
      "savethedate",
      "ceremonies",
