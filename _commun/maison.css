@@ -292,3 +292,5 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .formule.secondaire .prix{font-size:34px}
 .formule.secondaire li{font-size:13px}
 @media (max-width:760px){.formules-secondaires{grid-template-columns:1fr}}
+
+.formule .valeur-formule{font-size:12px;letter-spacing:.04em;color:var(--accent,#9a7b4f);margin:-6px 0 12px}

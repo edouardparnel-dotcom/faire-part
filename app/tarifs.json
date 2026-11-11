@@ -98,7 +98,7 @@
    },
    "direct": {
     "nom": "Direct privé pour les proches qui ne peuvent pas venir",
-    "prix": 190
+    "prix": 120
    },
    "deroule": {
     "nom": "Déroulé en direct",
@@ -144,7 +144,7 @@
    },
    "prestige": {
     "nom": "Prestige",
-    "prix": 790,
+    "prix": 690,
     "inclus": [
      "murphoto",
      "livredor",
@@ -167,7 +167,7 @@
    },
    "direct": {
     "nom": "Direct privé pour les proches",
-    "prix": 190
+    "prix": 120
    },
    "murphoto": {
     "nom": "Mur photo en direct",

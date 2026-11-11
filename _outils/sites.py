@@ -25,7 +25,7 @@ OPTIONS_MARIAGE = [
   ('tenues', 'Avant', 'Tenues coordonnées', "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", 120, True),
   ('langue', 'Avant', 'Langue supplémentaire', "Anglais, créole, wolof, lingala, twi… Le site et l'invitation dans la langue de chacun.", 60, False),
   ('qr', 'Le jour J', "Contrôle d'entrée par QR code", "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", 150, True),
-  ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "La cérémonie en direct, sur un lien réservé à vos invités.", 190, True),
+  ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "La cérémonie en direct, sur un lien réservé à vos invités.", 120, True),
   ('deroule', 'Le jour J', 'Déroulé en direct', "Le programme de la journée sur le téléphone de chacun, avec des rappels.", 60, False),
   ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application, elles s'affichent pendant la fête.", 90, False),
   ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête, à réécouter des années plus tard.", 90, False),
@@ -38,7 +38,7 @@ OPTIONS_EVENEMENT = [
   ('fairepart', 'Avant', "L'invitation", "Au moins dix directions artistiques, chacune avec sa propre ouverture et sa propre mise en page, reprise à vos couleurs.", None, False),
   ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 40, False),
   ('langue', 'Avant', 'Langue supplémentaire', "L'invitation et la page dans la langue de chacun.", 60, False),
-  ('direct', 'Le jour J', 'Direct privé pour les proches', "Le moment en direct, sur un lien réservé à vos invités.", 190, True),
+  ('direct', 'Le jour J', 'Direct privé pour les proches', "Le moment en direct, sur un lien réservé à vos invités.", 120, True),
   ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application.", 90, False),
   ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête.", 90, False),
   ('jeux', 'Le jour J', 'Jeux et pronostics', "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", 60, False),
@@ -60,7 +60,7 @@ FORMULES_MARIAGE = [
 FORMULES_EVENEMENT = [
   ('Essentiel', 190, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),
   ('Signature', 390, ['murphoto', 'livredor', 'langue'], ["Tout l'Essentiel", "Mur photo et livre d'or", "Trois langues"]),
-  ('Prestige', 790, ['murphoto', 'livredor', 'langue', 'direct', 'album', 'merci', 'jeux'], ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]),
+  ('Prestige', 690, ['murphoto', 'livredor', 'langue', 'direct', 'album', 'merci', 'jeux'], ["Tout le Signature", "Direct privé pour les proches", "Album, jeux et remerciements personnalisés", "Ouverture retravaillée pour vous"]),
 ]
 
 SITES = [
@@ -318,11 +318,15 @@ def page(site, modeles):
     selection = '\n'.join(f"""        <div class="phare-opt revele"><span class="etq">{e(mo)}</span><h4>{e(n)}</h4><p>{e(t)}</p><span class="tarif">{prix(p)}</span></div>"""
                           for k, mo, n, t, p, d in phares)
     PRINCIPALES = ('Faire-part', 'Signature', 'Prestige')
+    prix_opt = {k: p for k, mo, n, t, p, d in site['options'] if isinstance(p, int)}
     def carte(k, n, p, lst, petite=False):
+        inc = next(f[2] for f in site['formules'] if f[0] == n)
+        val = sum(prix_opt.get(o, 0) for o in inc)
+        valeur = f'<p class="valeur-formule">{len(inc)} option{"s" if len(inc) > 1 else ""} incluse{"s" if len(inc) > 1 else ""}, {prix(val)} si prise{"s" if len(inc) > 1 else ""} à l\'unité</p>' if inc else ''
         badge = '<span class="badge-formule">Notre recommandation</span>' if n == 'Signature' else ''
         prix_aff = prix(LANCEMENT['prix']) if n == 'Faire-part' else prix(p)
         lance = f'<p class="lancement">Prix de lancement : {e(LANCEMENT["texte"])}</p>' if n == 'Faire-part' else ''
-        return f"""      <div class="formule{' phare' if n == 'Signature' else ''}{' secondaire' if petite else ''} revele">{badge}<h3>{e(n)}</h3><p class="prix">{prix_aff}</p>{lance}
+        return f"""      <div class="formule{' phare' if n == 'Signature' else ''}{' secondaire' if petite else ''} revele">{badge}<h3>{e(n)}</h3><p class="prix">{prix_aff}</p>{lance}{valeur}
         <ul>{''.join(f'<li>{e(x)}</li>' for x in lst)}</ul><a class="btn{'' if n == 'Signature' else ' clair'}" href="{creer}&amp;formule={k}" style="margin-top:auto">Choisir {e(n)}</a></div>"""
     tout = list(enumerate(site['formules']))
     if site['cle'] == 'mariage':
