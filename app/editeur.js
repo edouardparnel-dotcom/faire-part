@@ -5,8 +5,8 @@
 import { db, storage, fonctions, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=4';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, OUVERTURES, MISES_EN_PAGE, theme } from './themes.js?v=3';
-import { SECTIONS, designParDefaut } from './moteur.js?v=7';
-import { LANGUES } from './langues.js?v=2';
+import { SECTIONS, designParDefaut } from './moteur.js?v=8';
+import { LANGUES, A_RELIRE } from './langues.js?v=3';
 import { GUIDES } from './guides.js?v=1';
 import { doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
@@ -83,7 +83,7 @@ function remplir() {
   const c = design.couverture;
   if (!design.langues.includes(saisie)) saisie = 'fr';
   $('#langues').innerHTML = `<p class="app-note">Le français est la langue originale. ${maxLangues() === 3 ? 'Votre formule permet trois langues.' : 'Votre formule permet deux langues ; l\'option « Langue supplémentaire » en ajoute une troisième.'}</p>
-    <div class="coches">${Object.entries(LANGUES).map(([k, v]) => `<label><input type="checkbox" data-langue="${k}" ${design.langues.includes(k) ? 'checked' : ''} ${k === 'fr' || (!design.langues.includes(k) && design.langues.length >= maxLangues()) ? 'disabled' : ''}>${esc(v)}</label>`).join('')}</div>
+    <div class="coches">${Object.entries(LANGUES).map(([k, v]) => `<label><input type="checkbox" data-langue="${k}" ${design.langues.includes(k) ? 'checked' : ''} ${k === 'fr' || (!design.langues.includes(k) && design.langues.length >= maxLangues()) ? 'disabled' : ''}>${esc(v)}${A_RELIRE.includes(k) ? ' <small class="app-note">(traduction à faire relire)</small>' : ''}</label>`).join('')}</div>
     ${design.langues.length > 1 && ceremonies.length ? `<p class="app-note" style="margin-top:8px">Noms des cérémonies dans les autres langues :</p>${ceremonies.map((x, k) => design.langues.filter(l => l !== 'fr').map(l => `<label>${esc(x.nom)} · ${esc(LANGUES[l])}<input data-cer="${k}:${l}" value="${esc(x['nom@' + l] || '')}" maxlength="80"></label>`).join('')).join('')}` : ''}
     ${design.langues.includes('ht') ? '<p class="app-note">Les textes fixes en créole haïtien sont fournis par Maison Vivat ; faites relire les vôtres par un proche.</p>' : ''}`;
   $('#saisie').innerHTML = design.langues.length > 1 ? `<span>Langue de saisie des textes :</span>${design.langues.map(l => `<button class="mini ${l === saisie ? 'actif' : ''}" data-saisie="${l}">${esc(LANGUES[l])}</button>`).join('')}` : '';

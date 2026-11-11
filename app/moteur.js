@@ -4,7 +4,7 @@
 // Langues (option « Langue supplémentaire ») : textes fixes traduits dans langues.js, textes des organisateurs
 // traduits dans l'éditeur (« titre@en »…). Une partie liée à une option payante ne s'affiche que si l'option est active.
 import { theme as themeDe, POLICES } from './themes.js?v=3';
-import { traduire, champ as enLangue, LOCALES, memoriserLangue, LANGUES } from './langues.js?v=2';
+import { traduire, champ as enLangue, LOCALES, memoriserLangue, LANGUES, RTL } from './langues.js?v=3';
 import { GUIDES } from './guides.js?v=1';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -182,7 +182,7 @@ function ouverture(type, d, nom) {
 export function rendre(racine, ctx) {
   const langues = ctx.design.langues?.length ? ctx.design.langues : ['fr'];
   L = langues.includes(ctx.langue) ? ctx.langue : langues[0];
-  document.documentElement.lang = L === 'ht' ? 'ht' : L;
+  document.documentElement.lang = L === 'ht' ? 'ht' : L; document.documentElement.dir = RTL.includes(L) ? 'rtl' : 'ltr';
   // La structure choisie dans l'éditeur (ouverture, mise en page, couverture, programme, rythme) remplace celle de la direction.
   const d = ctx.design, th = { ...themeDe(d.theme), ...Object.fromEntries(Object.entries(d.structure || {}).filter(([, x]) => x)) }, pal = { ...th.palette, ...(d.palette || {}) }, pol = POLICES[d.polices || th.polices] || POLICES.cormorant;
   if (racine._minuteur) clearInterval(racine._minuteur);

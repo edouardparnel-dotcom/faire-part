@@ -314,3 +314,5 @@ body.fp-ferme{overflow:hidden}
 .photo-lieu{max-width:560px;margin:0 auto 22px}
 .photo-lieu img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px}
 .photo-lieu figcaption{font-size:11px;opacity:.65;margin-top:6px;text-align:right}
+/* Arabe (de droite à gauche) : chaque texte garde le sens de sa propre langue, les heures restent lisibles */
+[dir=rtl] .programme .h,[dir=rtl] .corps b,[dir=rtl] .corps span,[dir=rtl] .bloc p,[dir=rtl] .bloc h2,[dir=rtl] .bloc h3{unicode-bidi:plaintext}

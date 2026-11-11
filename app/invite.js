@@ -6,7 +6,7 @@ import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } fro
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { traduire, champ, LANGUES, LOCALES, langueChoisie, memoriserLangue } from './langues.js?v=2';
+import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue } from './langues.js?v=3';
 import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -61,7 +61,7 @@ function rendre() {
   const prenom = inv.nom.split(' ')[0], langues = evt.design?.langues || ['fr'];
   const guide = a('guide') ? (evt.design?.sections || []).find(s => s.type === 'guide' && s.visible !== false) : null;
   const merci = a('merci') && evt.merci?.actif ? evt.merci : null;
-  document.documentElement.lang = L;
+  document.documentElement.lang = L; document.documentElement.dir = RTL.includes(L) ? 'rtl' : 'ltr';
   vue.innerHTML = `${langues.length > 1 ? `<div class="langues-invite">${langues.map(l => `<button type="button" data-langue="${l}" class="${l === L ? 'actif' : ''}">${esc(LANGUES[l])}</button>`).join('')}</div>` : ''}
     ${merci ? `<div class="carte-merci" style="--accent-carte:${esc(carteCouleur())}">${inv.merci?.photo ? `<img src="${esc(inv.merci.photo)}" alt="">` : ''}<div><span class="etq">${t('Merci')}</span><h2 class="serif">${esc(prenom)},</h2>
       ${(champ(merci, 'texte', L) || '').split(/\n{2,}/).map(x => `<p>${esc(x)}</p>`).join('')}${inv.merci?.mot ? `<p class="mot-perso">« ${esc(inv.merci.mot)} »</p>` : ''}<p class="signature">${esc(evt.titre)}</p></div></div>` : ''}
