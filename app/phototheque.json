@@ -165,21 +165,6 @@
 "nom": "Kita"
 },
 {
-"src": "../bogolan/lieu.webp",
-"cat": "Lieux",
-"nom": "Bogolan"
-},
-{
-"src": "../bogolan/fond.jpg",
-"cat": "Matières et fonds",
-"nom": "Bogolan"
-},
-{
-"src": "../bogolan/photo.jpg",
-"cat": "Ambiances",
-"nom": "Bogolan"
-},
-{
 "src": "../tibeb/lieu.webp",
 "cat": "Lieux",
 "nom": "Tibeb"

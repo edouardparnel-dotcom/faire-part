@@ -128,9 +128,10 @@ MODELES = [
   dict(slug='kita', da="Mosaïque de carreaux de pagne qui se retournent, grille de tuiles orange et noir", modele='Kita', culture='Pagne kita · tissage baoulé', langues='Français', anglais=False,
     fond='fond-madras.svg', a='Aya', b='Koffi', sub='Akwaba à notre mariage', date_txt='Samedi 9 octobre 2027', heure='10h00', lieu='Jardins de la Riviera', l3='Cocody, Abidjan',
     og=dict(voile=('rgba(26,20,16,.2)', 'rgba(26,20,16,.85)'), texte='#FBF4E8', bouton=('#F0A04B', '#E07A1F'))),
-  dict(slug='bogolan', da="Rouleau de tissu de boue qui se relève, parchemin et frises géométriques", modele='Bogolan', culture='Bogolanfini · terre et teintures', langues='Français · bambara', anglais=False,
-    fond='fond-toghu.svg', a='Fatoumata', b='Moussa', sub='Furu · notre mariage', date_txt='Samedi 13 novembre 2027', heure='10h00', lieu='Domaine du Niger', l3='Bamako, Mali',
-    og=dict(voile=('rgba(59,42,30,.25)', 'rgba(30,26,22,.88)'), texte='#F2E8D5', bouton=('#D8BB94', '#C5A27A'))),
+  # Bogolan retiré du catalogue le 11/11 (Parnel : « j'aime pas »), fichiers gardés.
+  # dict(slug='bogolan', da="Rouleau de tissu de boue qui se relève, parchemin et frises géométriques", modele='Bogolan', culture='Bogolanfini · terre et teintures', langues='Français · bambara', anglais=False,
+  # fond='fond-toghu.svg', a='Fatoumata', b='Moussa', sub='Furu · notre mariage', date_txt='Samedi 13 novembre 2027', heure='10h00', lieu='Domaine du Niger', l3='Bamako, Mali',
+  # og=dict(voile=('rgba(59,42,30,.25)', 'rgba(30,26,22,.88)'), texte='#F2E8D5', bouton=('#D8BB94', '#C5A27A'))),
   dict(slug='tibeb', da="Pans de coton blanc à bordures tissées qui s'écartent, croix en ornement", modele='Tibeb', culture='Habesha kemis · tibeb', langues='English · amharique', anglais=True,
     fond='fond-kente.svg', a='Selam', b='Dawit', sub='We are getting married', date_txt='Saturday 25 September 2027', heure='10:00', lieu='Entoto Gardens', l3='Addis Ababa',
     og=dict(voile=('rgba(34,37,43,.2)', 'rgba(34,37,43,.85)'), texte='#FFFFFF', bouton=('#3FA36F', '#1F7A4D'))),
