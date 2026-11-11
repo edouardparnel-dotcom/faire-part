@@ -78,7 +78,7 @@ SITES = [
     titre_collections='Trente-neuf collections, trente-neuf façons de recevoir',
     groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, des lanternes qui s'envolent au-dessus d'un lac, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'lanternes', 'marine']),
              ('Héritages', "Les codes des cultures d'Afrique et des Antilles, travaillés avec finesse.",
-              ['kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'adinkra']),
+              ['kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'ndop', 'kreyol', 'adinkra']),  # 'kanaval' à remettre quand le couple sera prêt
              ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'shiromuku', 'lehenga', 'hanbok', 'aodai']),
              ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['versailles', 'gatsby', 'opera', 'classique', 'emeraude', 'bordeaux', 'chapelle', 'faubourg', 'ivoire', 'porcelaine', 'soie', 'monogramme', 'boheme', 'champetre'])]),
   dict(cle='anniversaire', dossier='anniversaires', nom='Anniversaires', accent='#8E4A52', evenements=('anniversaire',),
@@ -156,7 +156,7 @@ def themes_moteur():
 THEMES = themes_moteur()
 # Collection faite main et direction du moteur du même nom : la seconde sert de « site » à la première.
 SITE_DU_MODELE = {'lakay': 'lakou', 'madras': 'madras', 'kente': 'kente', 'owambe': 'owambe', 'toghu': 'toghu', 'teranga': 'teranga', 'sape': 'sape',
-                  'kita': 'kita', 'bogolan': 'bogolan', 'tibeb': 'tibeb', 'champetre': 'champetre', 'boheme': 'pampa', 'classique': 'ivoire', 'gatsby': 'gatsby', 'versailles': 'versailles', 'opera': 'opera', 'lanternes': 'lanternes', 'hanbok': 'hanbok', 'aodai': 'aodai', 'shiromuku': 'shiromuku', 'lehenga': 'lehenga', 'qunkwa': 'qunkwa', 'karabela': 'karabela', 'imbali': 'imbali', 'liputa': 'liputa', 'ndop': 'ndop', 'kreyol': 'kreyol', 'bazin': 'bazin', 'adinkra': 'adinkra', 'monogramme': 'monogramme', 'soie': 'soie', 'marine': 'marine', 'porcelaine': 'porcelaine', 'ivoire': 'ivoire', 'faubourg': 'faubourg', 'emeraude': 'emeraude', 'bordeaux': 'bordeaux', 'chapelle': 'chapelle',
+                  'kita': 'kita', 'bogolan': 'bogolan', 'tibeb': 'tibeb', 'champetre': 'champetre', 'boheme': 'pampa', 'classique': 'ivoire', 'gatsby': 'gatsby', 'versailles': 'versailles', 'opera': 'opera', 'lanternes': 'lanternes', 'hanbok': 'hanbok', 'aodai': 'aodai', 'shiromuku': 'shiromuku', 'lehenga': 'lehenga', 'qunkwa': 'qunkwa', 'karabela': 'karabela', 'imbali': 'imbali', 'liputa': 'liputa', 'ndop': 'ndop', 'kreyol': 'kreyol', 'bazin': 'bazin', 'adinkra': 'adinkra', 'kanaval': 'kanaval', 'monogramme': 'monogramme', 'soie': 'soie', 'marine': 'marine', 'porcelaine': 'porcelaine', 'ivoire': 'ivoire', 'faubourg': 'faubourg', 'emeraude': 'emeraude', 'bordeaux': 'bordeaux', 'chapelle': 'chapelle',
                   'anniversaire-gala': 'gala', 'anniversaire-disco': 'disco', 'anniversaire-tropical': 'tropicana', 'bapteme-lumiere': 'cierge',
                   'bapteme-nuage': 'nuage', 'bapteme-etoiles': 'aube', 'gender-reveal': 'ballons', 'gender-boite': 'rosebleu', 'gender-secret': 'secret'}
 
@@ -239,6 +239,7 @@ def tete(site, pre, titre, desc):
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{pre}_commun/maison.css?v={CSS_V}">
 <style>:root{{--accent:{site['accent']}}}</style>
+<script src="{pre}_commun/partenaire.js?v=1" defer></script>
 </head>
 <body>"""
 
@@ -253,7 +254,7 @@ def pied(site, pre):
   <div><h4>Nos maisons</h4><ul>
 {maisons}
   </ul></div>
-  <div><h4>Pour vous</h4><ul><li><a href="{pre}creer/?evt={site['cle']}">{e(site['cta'])}</a></li>{espace}<li><a href="{pre}app/organisateur.html">Mon espace (déjà client)</a></li><li><a href="{accueil}#formules">Formules</a></li><li><a href="{accueil}#assistance">Assistance</a></li></ul></div>
+  <div><h4>Pour vous</h4><ul><li><a href="{pre}creer/?evt={site['cle']}">{e(site['cta'])}</a></li>{espace}<li><a href="{pre}app/organisateur.html">Mon espace (déjà client)</a></li><li><a href="{accueil}#formules">Formules</a></li><li><a href="{accueil}#assistance">Assistance</a></li><li><a href="{pre}partenaires/index.html">Wedding planners</a></li></ul></div>
   <p class="mention"><a href="{pre}mentions-legales/index.html">Mentions légales</a> · <a href="{pre}confidentialite/index.html">Confidentialité</a> · <a href="{pre}cgv/index.html">CGV</a> · démonstrations : personnes et lieux fictifs, photos Pexels</p>
 </div></footer>
 <script>
@@ -411,7 +412,7 @@ def page_creer(modeles):
         donnees[s['cle']] = dict(
             nom=s['nom'], accent=s['accent'], cta=s['cta'], retour=('../' + s['dossier'] + '/' if s['dossier'] else '../') + 'index.html',
             modeles=[dict(slug=m['slug'], nom=m['modele'], culture=m['culture'], a=m['a'], b=m.get('b', ''), titre=m.get('titre_og', ''),
-                          img=f"../{m['slug']}/photo.jpg", voir=f"../{m['slug']}/index.html")
+                          img=f"../{m['slug']}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, m['slug'], 'miniature.jpg')) else 'photo.jpg'}", voir=f"../{m['slug']}/index.html")
                      for sl in slugs for m in modeles if m['slug'] == sl]
                     + [dict(slug=t['id'], nom=t['nom'], culture=t['culture'], a='', b='', titre='', img=f"../collections/apercus/{t['id']}-fp.jpg", voir=f"../app/fp.html?demo={t['id']}", moteur=True)
                        for t in THEMES if t['evt'] == s['cle']],
@@ -462,7 +463,9 @@ def page_creer(modeles):
     <div class="total">
       <div class="ligne-total"><span id="t-formule"></span><b id="t-formule-prix"></b></div>
       <div id="t-options"></div>
+      <div class="ligne-total" id="t-remise" hidden><span id="t-remise-nom"></span><b id="t-remise-val"></b></div>
       <div class="ligne-total grand"><span>Total</span><b id="t-total"></b></div>
+      <label class="code-partenaire">Code partenaire (votre wedding planner)<input id="f-partenaire" autocomplete="off" spellcheck="false" placeholder="facultatif"></label>
     </div>
     <label class="case"><input type="checkbox" id="c-cgv"><span>J'accepte les <a href="../cgv/index.html" target="_blank" rel="noopener">conditions générales de vente</a>.</span></label>
     <label class="case"><input type="checkbox" id="c-debut"><span>Je demande que la réalisation commence tout de suite. Je sais que je perdrai mon droit de rétractation une fois l'invitation validée par moi et mise en ligne.</span></label>
@@ -517,7 +520,10 @@ function rendre() {
   const extras = E.options.filter(o => choix.options.has(o.cle) && !F.inclus.includes(o.cle));
   $('t-formule').textContent = 'Formule ' + F.nom; $('t-formule-prix').textContent = eur(F.prix);
   $('t-options').innerHTML = extras.map(o => `<div class="ligne-total"><span>${esc(o.nom)}</span><b>+ ${eur(o.prix)}</b></div>`).join('');
-  $('t-total').textContent = eur(F.prix + extras.reduce((s, o) => s + o.prix, 0));
+  const brut = F.prix + extras.reduce((s, o) => s + o.prix, 0), code = window.codePartenaire ? window.codePartenaire() : '';
+  if ($('f-partenaire') && document.activeElement !== $('f-partenaire')) $('f-partenaire').value = code;
+  $('t-remise').hidden = !code; $('t-remise-nom').textContent = `Remise partenaire ${code}`; $('t-remise-val').textContent = '− ' + eur(Math.round(brut * 0.1));
+  $('t-total').textContent = eur(code ? brut - Math.round(brut * 0.1) : brut);
 }
 document.addEventListener('click', ev => {
   const e2 = ev.target.closest('[data-evt]'); if (e2) { ev.preventDefault(); return changerEvt(e2.dataset.evt); }
@@ -529,6 +535,7 @@ document.addEventListener('change', ev => { const o = ev.target.closest('[data-o
 ['f-noms', 'f-date', 'f-lieu'].forEach(id => $(id).addEventListener('input', rendre));
 // Le paiement n'est possible qu'après acceptation des CGV (la seconde case est facultative : sans elle, la réalisation attend la fin du délai de rétractation).
 $('c-cgv').addEventListener('change', e => $('b-payer').disabled = !e.target.checked);
+$('f-partenaire').addEventListener('change', e => { e.target.value = window.retenirPartenaire(e.target.value); rendre(); });
 // Vers l'espace : création du compte et de l'événement, puis paiement avec la formule et les options choisies.
 $('b-payer').addEventListener('click', () => {
   const E2 = D[evt], F = E2.formules[choix.formule], opts = [...choix.options].filter(o => !F.inclus.includes(o));
@@ -543,6 +550,50 @@ history.replaceState(null, '', `?evt=${evt}` + (choix.formule ? `&formule=${choi
 </html>
 """
 
+
+
+def page_partenaires():
+    """Page des wedding planners : vos couples ont 10 % de remise avec votre code, vous touchez 10 % de ce qu'ils paient."""
+    site, pre, e = SITES[0], '../', escape
+    exemples = [(n, p) for n, p, inc, l in site['formules'] if p]
+    lignes = ''.join(f'<tr><td>{e(n)}</td><td>{prix(p)}</td><td>{prix(p - round(p * .1))}</td><td><b>{prix(round((p - round(p * .1)) * .1))}</b></td></tr>' for n, p in exemples)
+    return tete(site, pre, f"{MARQUE} · Partenaires wedding planners", "Wedding planners : vos couples ont 10 % de remise sur leur espace mariage, vous touchez 10 % de ce qu'ils paient.") + f"""
+<header class="entete"><div class="conteneur">
+  <a class="marque" href="{pre}index.html"><b>{e(MARQUE)}</b><span>Partenaires</span></a>
+  <nav class="nav" aria-label="Sections"><a href="#principe">Le principe</a><a href="#exemples">Exemples</a><a href="#rejoindre">Nous rejoindre</a><a class="rdv" href="mailto:contact@maisonvivat.com?subject=Partenariat%20wedding%20planner">Demander mon code</a></nav>
+</div></header>
+<main id="haut">
+  <section><div class="conteneur mesure-texte revele">
+    <span class="etq">Wedding planners, lieux de réception</span>
+    <h1 class="serif" style="font-weight:500;font-size:clamp(36px,5vw,58px);line-height:1.06;margin:16px 0 20px">Offrez à vos couples<br><em>l'espace de leur mariage</em></h1>
+    <p>Invitation animée, site du mariage, réponses par cérémonie, plan de table, entrée des invités, photos : tout se pilote depuis un seul espace, que vous pouvez suivre avec eux. Vos couples ont <b>10 % de remise</b> avec votre code ; vous recevez <b>10 % de ce qu'ils paient</b>.</p>
+  </div></section>
+
+  <section id="principe"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">Le principe</span><h2>Simple pour vous, avantageux pour eux</h2></div>
+    <div class="fonctions">
+      <article class="revele"><h3>Votre code</h3><p>Nous vous remettons un code et un lien personnels. Vous les transmettez à vos couples, rien d'autre à installer.</p></article>
+      <article class="revele"><h3>10 % pour vos couples</h3><p>La remise s'applique toute seule au paiement, sur la formule comme sur les options.</p></article>
+      <article class="revele"><h3>10 % pour vous</h3><p>Calculés sur ce que le couple a réellement payé, versés chaque mois sur votre facture d'apport d'affaires.</p></article>
+      <article class="revele"><h3>Vous gardez la main</h3><p>Le couple peut vous inviter dans son espace au rôle de wedding planner : réponses, plan de table, déroulé du jour J.</p></article>
+    </div>
+  </div></section>
+
+  <section id="exemples" class="tarifs"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">Exemples</span><h2>Ce que chacun y gagne</h2><p>Montants arrondis à l'euro, pour une formule seule.</p></div>
+    <table class="tableau-partenaires revele"><thead><tr><th>Formule</th><th>Prix public</th><th>Le couple paie</th><th>Votre commission</th></tr></thead><tbody>{lignes}</tbody></table>
+  </div></section>
+
+  <section class="rendezvous" id="rejoindre"><div class="conteneur revele">
+    {ORN}
+    <span class="etq">Nous rejoindre</span>
+    <h2>Demandez votre code</h2>
+    <p>Écrivez-nous avec le nom de votre agence et votre site : nous vous répondons sous 24 heures avec votre code, votre lien et l'accès à l'espace de démonstration.</p>
+    <a class="btn" href="mailto:contact@maisonvivat.com?subject=Partenariat%20wedding%20planner">contact@maisonvivat.com</a>
+  </div></section>
+</main>
+
+""" + pied(site, pre)
 
 def page_collections(modeles=()):
     """Catalogue : d'abord les collections faites main (Grand Hôtel et Héritage en tête), puis toutes les directions
@@ -640,6 +691,7 @@ REALISTES = [
     dict(slug='monogramme', modele='Monogramme', culture='Intemporel · papier découpé', da="Portail de papier ciselé, diorama de trois feuilles découpées, silhouettes et monogramme doré", a='Lina', b='Gabriel'),
     dict(slug='karabela', modele='Karabela', culture='Karabela · robe quadrille', da="Enveloppe de chambray bordée de dentelle, fermée d'un hibiscus ; broderie anglaise et fleurs tropicales autour de la carte", a='Fabienne', b='Stanley'),
     dict(slug='qunkwa', modele='Qun kwa', culture='Qun kwa · cérémonie du thé', da="Enveloppe de soie rouge brodée d'un phénix, nœud chinois ; dragon et phénix d'or face à face", a='Ka-Yan', b='Jonathan'),
+    dict(slug='kanaval', modele='Kanaval', culture='Kanaval · Jacmel', da="Pochette de soie bleu nuit brodée de paillettes, papillons en papier mâché qui s'envolent, hibiscus", a='Darline', b='Stanley'),
     dict(slug='adinkra', modele='Adinkra', culture='Adinkra · symboles akan', da="Enveloppe ivoire au sceau du cœur, symboles Akoma et Nkonsonkonson qui s'impriment comme au tampon, flamboyants", a='Akosua', b='Kwame'),
     dict(slug='bazin', modele='Bazin', culture='Bazin riche · grand boubou', da="Enveloppe de bazin turquoise au médaillon de filigrane d'or, drapé de bazin traversé d'un reflet de lumière, roses du désert", a='Claire', b='Mamadou'),
     dict(slug='kreyol', modele='Kreyòl', culture='Kreyòl · « Krik ? Krak ! »', da="Livre de contes qui s'ouvre, case créole en papier qui se déplie comme un livre animé, anthuriums et colibri", a='Maëlle', b='Jordan'),
@@ -680,6 +732,9 @@ def construire_sites(modeles, racine):
     (racine / 'creer').mkdir(exist_ok=True)
     (racine / 'creer' / 'index.html').write_text(page_creer(visibles), encoding='utf-8')
     print('creer ok')
+    (racine / 'partenaires').mkdir(exist_ok=True)
+    (racine / 'partenaires' / 'index.html').write_text(page_partenaires(), encoding='utf-8')
+    print('partenaires ok')
     (racine / 'collections').mkdir(exist_ok=True)
     (racine / 'collections' / 'index.html').write_text(page_collections(visibles), encoding='utf-8')
     print('collections ok')

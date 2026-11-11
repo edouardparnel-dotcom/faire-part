@@ -441,7 +441,7 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i,[data-collection=adinkra] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i,[data-collection=adinkra] .noms i,[data-collection=kanaval] .noms i{font-size:.9em;margin:0 0 -4px}
 
 /* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
 .hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
@@ -724,3 +724,16 @@ img[src$="couple.jpg"]{object-position:50% 15%}
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) .ouverture .consigne{display:inline-block;padding:7px 16px;border-radius:999px;background:color-mix(in srgb,var(--carte) 84%,transparent);color:var(--encre)!important;text-shadow:none!important;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 4px 14px rgba(0,0,0,.18)}
 /* Cadre rond : les prénoms passent sous le cercle, ils ne chevauchent plus la bordure claire. */
 body[data-cadre=rond] .inter-couple figcaption{position:static!important;margin-top:18px!important;color:var(--sur-fond)!important;text-shadow:none!important}
+
+/* ───────── ENVOL (Kanaval) : des papillons en papier mâché traversent le haut de la couverture, ailes qui battent ───────── */
+.envol{position:relative;width:100%;height:min(46vw,230px);margin:0 auto -10px;pointer-events:none}
+.envol .papillon{position:absolute;left:var(--x);top:var(--y);width:calc(min(26vw,120px) * var(--t));rotate:var(--r);
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.25));animation:aile 1.1s ease-in-out var(--d) infinite alternate,derive 9s ease-in-out var(--d) infinite alternate}
+@keyframes aile{from{transform:scaleX(1)}to{transform:scaleX(.62)}}
+@keyframes derive{from{translate:0 0}to{translate:14px -18px}}
+body.ferme .envol .papillon{animation-play-state:paused}
+.suite-couv:has(.envol) .chapeau{margin-top:0;padding-top:8px}
+.suite-couv:has(.envol){justify-content:flex-start}
+.suite-titre .envol{height:110px}
+.mood-matieres .envol{display:inline-block;width:220px;height:120px;vertical-align:middle}
+@media (prefers-reduced-motion:reduce){.envol .papillon{animation:none}}

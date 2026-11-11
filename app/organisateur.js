@@ -381,14 +381,15 @@ const VUES = {
     const nouvelles = [...choixOptions].filter(o => g.options[o] && !acquises.has(o));
     const total = (actuelle ? g.formules[cible].prix - g.formules[actuelle].prix : g.formules[cible].prix) + nouvelles.reduce((s, o) => s + g.options[o].prix, 0);
     const payes = paiements.filter(p => p.etat === 'paye');
+    const codeP = window.codePartenaire ? window.codePartenaire() : '', remise = codeP ? Math.round(Math.max(0, total) * 0.1) : 0;
     return `${msgPublier && !actuelle ? `<div class="app-carte bandeau-paiement ok">${esc(msgPublier)}</div>` : ''}<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Publiez votre invitation'}</h2>
         <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Tout est gratuit tant que vous préparez : invitation, site, invités, plan de table, budget. Vous payez au moment de publier, pour envoyer le lien à vos invités.'}</p>
         <div class="choix-formules">${Object.entries(g.formules).map(([k, f]) => { const bloquee = actuelle && f.prix < g.formules[actuelle].prix; return `<label class="formule-paie ${k === cible ? 'choisie' : ''} ${bloquee ? 'bloquee' : ''}"><input type="radio" name="formule" value="${k}" data-choix-formule="${k}" ${k === cible ? 'checked' : ''} ${bloquee ? 'disabled' : ''}><b>${esc(f.nom)}</b><span>${euros(f.prix)}</span><small>${k === actuelle ? 'Votre formule' : actuelle && !bloquee ? `+ ${euros(f.prix - g.formules[actuelle].prix)}` : `${f.inclus.length} option${f.inclus.length > 1 ? 's' : ''} incluse${f.inclus.length > 1 ? 's' : ''}`}</small></label>`; }).join('')}</div></div>
       <div class="app-carte"><h2>Options à l'unité</h2><div class="options-paie">${Object.entries(g.options).map(([k, o]) => { const deja = acquises.has(k); return `<label class="coche ${deja ? 'deja' : ''}"><input type="checkbox" data-choix-option="${k}" ${deja || choixOptions.has(k) ? 'checked' : ''} ${deja ? 'disabled' : ''}><span>${esc(o.nom)}</span><em>${deja ? ((evt.options || []).includes(k) ? 'Active' : 'Incluse') : '+ ' + euros(o.prix)}</em></label>`; }).join('')}</div></div>
-      <div class="app-carte total-paie"><div class="ligne-conseil"><span>Total à payer</span><b>${euros(Math.max(0, total))}</b></div>
+      <div class="app-carte total-paie">${remise ? `<div class="ligne-conseil"><span>Remise partenaire ${esc(codeP)}</span><b>− ${euros(remise)}</b></div>` : ''}<div class="ligne-conseil"><span>Total à payer</span><b>${euros(Math.max(0, total) - remise)}</b></div>
         ${proprio ? `<label class="coche"><input type="checkbox" id="c-cgv-paie"> J'accepte les <a href="../cgv/index.html" target="_blank" rel="noopener">conditions générales de vente</a>.</label>
         <label class="coche"><input type="checkbox" id="c-debut-paie"> Je demande que la réalisation commence tout de suite ; je sais que je perdrai mon droit de rétractation une fois l'invitation validée par moi et mise en ligne.</label>
-        <button class="btn" data-payer="1" ${total > 0 ? '' : 'disabled'} style="margin-top:12px">Payer ${euros(Math.max(0, total))} par carte</button><p class="app-note" style="margin-top:8px">Paiement sécurisé par Stripe : Maison Vivat ne voit jamais votre carte. Facture envoyée par courriel.</p>` : '<p class="app-note">Seul le propriétaire de l\'événement peut payer.</p>'}
+        <button class="btn" data-payer="1" ${total > 0 ? '' : 'disabled'} style="margin-top:12px">Payer ${euros(Math.max(0, total) - remise)} par carte</button><p class="app-note" style="margin-top:8px">Paiement sécurisé par Stripe : Maison Vivat ne voit jamais votre carte. Facture envoyée par courriel.</p>` : '<p class="app-note">Seul le propriétaire de l\'événement peut payer.</p>'}
         <p class="app-erreur" id="m-paiement">${esc(msgPaiement)}</p></div>
       ${payes.length ? `<div class="app-carte"><h2>Vos paiements</h2>${payes.map(p => `<div class="ligne-conseil"><span>${esc(p.payeLe?.toDate ? p.payeLe.toDate().toLocaleDateString('fr-FR') : '')} · ${esc((p.lignes || []).map(l => l.nom).join(', '))}</span><b>${euros((p.montantPaye ?? p.total) / 100)}</b></div>`).join('')}</div>` : ''}`;
   },
@@ -593,7 +594,7 @@ document.addEventListener('click', async ev => {
     const g = evt.type === 'mariage' ? tarifs.mariage : tarifs.evenement, formule = document.querySelector('[data-choix-formule]:checked')?.value;
     t.disabled = true; t.textContent = 'Ouverture du paiement sécurisé…'; msgPaiement = '';
     try {
-      const r = await httpsCallable(fonctions, 'creerPaiement')({ eventId: E, formule, ajouts: [...choixOptions].filter(o => g.options[o]), debutImmediat: !!$('#c-debut-paie')?.checked });
+      const r = await httpsCallable(fonctions, 'creerPaiement')({ eventId: E, formule, ajouts: [...choixOptions].filter(o => g.options[o]), debutImmediat: !!$('#c-debut-paie')?.checked, partenaire: window.codePartenaire ? window.codePartenaire() : '' });
       location.href = r.data.url;
     } catch (e) {
       // Les refus du serveur (formule, options, propriétaire) sont déjà rédigés en français ; le reste reçoit un message clair.

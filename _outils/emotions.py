@@ -24,6 +24,7 @@ EMOTIONS = {
     'kreyol': "« Krik ? » — « Krak ! » : et l'histoire commence. Les rires des enfants, la voix des anciens, la mer au loin. Un mariage qui se raconte comme un conte, et qu'on se racontera longtemps.",
     'bazin': "Le bruissement du bazin quand les familles entrent, la voix du griot qui chante les noms, la kora qui répond. Une élégance éclatante, où chacun brille pour honorer les mariés.",
     'adinkra': "Chaque symbole dit quelque chose : la patience du cœur, la chaîne qui relie ceux qu'on aime. Un mariage qui parle sans mots, et que chacun peut lire à sa façon.",
+    'kanaval': "La joie d'un soir de fête, mais en habit de soie : des couleurs franches, des papillons qui s'envolent, et une piste de danse qui ne désemplit pas.",
     # Asie
     'qunkwa': "Le parfum du thé servi aux parents, les mains qui tremblent un peu, la bénédiction des aînés. Puis la fête éclate, rouge et or, au milieu des pivoines.",
     'hanbok': "La douceur d'un matin de printemps, les pétales qui tombent sur les épaules. Un mariage paisible et tendre, où l'on salue ses parents avec gratitude avant de danser.",

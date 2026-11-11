@@ -34,6 +34,7 @@ COLLECTIONS_EN = {
     'monogramme': ('Monogramme', 'Timeless · paper cut', 'Laser-cut paper gate, three-layer paper diorama with silhouettes and a gold monogram'),
     'karabela': ('Karabela', 'Karabela · quadrille dress', 'Chambray envelope edged with eyelet lace, hibiscus seal; broderie anglaise and tropical flowers around the card'),
     'qunkwa': ('Qun kwa', 'Qun kwa · tea ceremony', 'Red silk envelope embroidered with a phoenix, Chinese knot; gold dragon and phoenix facing each other'),
+    'kanaval': ('Kanaval', 'Kanaval · Jacmel', 'Midnight blue silk clutch embroidered with sequins, papier-mâché butterflies taking flight, hibiscus'),
     'adinkra': ('Adinkra', 'Adinkra · Akan symbols', 'Ivory envelope with a heart seal, Akoma and Nkonsonkonson symbols printed as if stamped by hand, flame trees'),
     'bazin': ('Bazin', 'Bazin riche · grand boubou', 'Teal bazin envelope with a gold filigree seal, a draped bazin swag crossed by a moving glint of light, desert roses'),
     'kreyol': ('Kreyòl', 'Kreyòl · “Krik? Krak!”', 'A storybook that opens, a paper Creole house that pops up, anthuriums and a hummingbird'),
