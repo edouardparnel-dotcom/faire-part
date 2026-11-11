@@ -11,7 +11,7 @@ import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'), T = p.get('g');
-let cadeaux = [], msgMot = '', evt, inv, live = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
+let covoit = [], msgCovoit = '', cadeaux = [], msgMot = '', evt, inv, live = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
 const a = o => evt?.options?.includes(o);
 const t = x => traduire(L, x);
 const dateLongue = d => { if (!d) return ''; try { return new Date(d).toLocaleDateString(LOCALES[L] || 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch { return new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } };
@@ -37,6 +37,7 @@ async function demarrer() {
   if (evt?.formule === 'essai') { vue.innerHTML = '<div class="app-carte" style="text-align:center"><h2 class="serif">Cette invitation se prépare</h2><p class="app-note">Les hôtes mettent la dernière main à leur invitation. Revenez très vite.</p></div>'; return; }
   onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
   onSnapshot(collection(db, `events/${E}/cadeaux`), s => { cadeaux = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.creeLe?.seconds || 0) - (y.creeLe?.seconds || 0)); rendre(); }, () => {});
+  if (a('covoiturage')) onSnapshot(collection(db, `events/${E}/covoiturage`), s => { covoit = s.docs.map(d => ({ id: d.id, ...d.data() })); rendre(); }, () => {});
   if (a('direct')) live = (await getDoc(doc(db, `events/${E}/prive/config`))).data()?.live || '';
   if (a('murphoto')) onSnapshot(query(collection(db, `events/${E}/photos`), where('visible', '==', true)), s => { photos = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreGalerie(); });
   if (a('livredor')) onSnapshot(query(collection(db, `events/${E}/livre`), where('visible', '==', true)), s => { mots = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreMots(); });
@@ -80,6 +81,7 @@ function rendre() {
       <div class="app-grille"><label>${t("Date d'arrivée")}<input name="date" type="date" value="${esc(inv.arrivee?.date || '')}"></label><label>${t('Vol ou train')}<input name="vol" maxlength="40" value="${esc(inv.arrivee?.vol || '')}"></label></div>
       <div class="coches"><label><input type="checkbox" name="hebergement" ${inv.arrivee?.hebergement ? 'checked' : ''}>${t("J'ai besoin d'un hébergement")}</label><label><input type="checkbox" name="visa" ${inv.arrivee?.visa ? 'checked' : ''}>${t("J'ai besoin d'une lettre pour le visa")}</label></div>
       <button class="btn clair">${t('Enregistrer')}</button><p class="ok-msg" id="m-voyage"></p></form>` : ''}
+    ${a('covoiturage') ? blocCovoit(prenom) : ''}
     ${a('qr') ? `<div class="app-carte qr"><h2>${t("Votre pass d'entrée")}</h2><div id="qr"></div><p class="app-note">${t("Présentez ce code à l'entrée. Il est personnel")}${inv.max ? ` ${t('et vaut pour vous et')} ${inv.max} ${t(inv.max > 1 ? 'accompagnants' : 'accompagnant')}` : ''}.</p>${inv.entree ? `<p class="ok-msg">${t('Entrée validée à')} ${heure(inv.entree.toDate())}. ${t('Bonne fête !')}</p>` : ''}</div>` : ''}
     ${evt.tablesVisibles && inv.tableNom ? `<div class="app-carte" style="text-align:center"><span class="etq">${t('Votre table')}</span><h2 style="font-size:34px;margin:6px 0 0">${esc(inv.tableNom)}</h2></div>` : ''}
     ${guide ? `<div class="app-carte"><h2>${esc(champ(guide, 'titre', L) || t('Le guide de la cérémonie'))}</h2>${champ(guide, 'intro', L) ? `<p class="app-note" style="margin-bottom:12px">${esc(champ(guide, 'intro', L))}</p>` : ''}
@@ -111,6 +113,39 @@ function rendre() {
 const carteCouleur = () => evt.design?.palette?.accent || theme(evt.design?.theme || 'ivoire').palette.accent;
 
 // ── Tenues coordonnées : l'invité choisit son tissu, sa quantité et sa taille ; le règlement est noté par les organisateurs.
+// ── Covoiturage : chacun dit d'où il part ; les trajets sont classés du plus proche au plus lointain de son propre départ ──
+const km = (a, b) => { const R = 6371, r = x => x * Math.PI / 180, dLa = r(b.lat - a.lat), dLo = r(b.lng - a.lng);
+  return 2 * R * Math.asin(Math.sqrt(Math.sin(dLa / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dLo / 2) ** 2)); };
+// Adresse → coordonnées : la Base adresse nationale (France), puis OpenStreetMap pour l'étranger.
+async function localiser(adresse) {
+  try {
+    const r = await (await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(adresse)}&limit=1`)).json(), f = r.features?.[0];
+    if (f && f.properties.score > 0.45) return { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+  } catch {}
+  const o = await (await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(adresse)}`, { headers: { 'Accept-Language': 'fr' } })).json();
+  if (o?.[0]) return { lat: +o[0].lat, lng: +o[0].lon };
+  throw new Error('introuvable');
+}
+function blocCovoit(prenom) {
+  const moi = covoit.find(x => x.id === T), autres = covoit.filter(x => x.id !== T);
+  const tri = l => moi ? l.map(x => ({ ...x, d: km(moi, x) })).sort((p, q) => p.d - q.d) : l;
+  const carte = x => `<li class="trajet"><div><b>${esc(x.prenom)}</b> · ${esc(x.depart)}${x.d != null ? ` <span class="app-note">(${x.d < 1 ? t('tout près') : Math.round(x.d) + ' km'})</span>` : ''}
+      <p class="app-note">${x.sens === 'propose' ? `${x.places} ${t(x.places > 1 ? 'places' : 'place')}` : t('cherche une place')}${x.heure ? ` · ${esc(x.heure)}` : ''}</p></div>
+      ${/^[+\d][\d .-]{5,}$/.test(x.contact || '') ? `<a class="btn petit clair" href="tel:${esc(x.contact.replace(/[ .-]/g, ''))}">${t('Appeler')}</a>` : ''}</li>`;
+  const offres = tri(autres.filter(x => x.sens === 'propose' && x.places > 0)), demandes = tri(autres.filter(x => x.sens === 'cherche'));
+  return `<form class="app-carte" id="f-covoit"><h2 id="covoiturage">${t('Covoiturage')}</h2><p class="app-note" style="margin-bottom:12px">${t("Vous avez de la place, ou vous en cherchez une ? Indiquez d'où vous partez : les trajets les plus proches de chez vous s'affichent en premier.")}</p>
+    <div class="choix-rep"><label><input type="radio" name="sens" value="propose" ${moi?.sens !== 'cherche' ? 'checked' : ''}> ${t("J'ai de la place")}</label><label><input type="radio" name="sens" value="cherche" ${moi?.sens === 'cherche' ? 'checked' : ''}> ${t('Je cherche une place')}</label></div>
+    <div class="app-grille" style="margin-top:10px"><label>${t('Je pars de (ville ou adresse)')}<input name="depart" required maxlength="160" value="${esc(moi?.depart || '')}" placeholder="Montreuil"></label>
+      <label>${t('Places libres')}<select name="places">${[1, 2, 3, 4, 5, 6].map(n => `<option ${n === (moi?.places || 2) ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label>${t('Heure de départ')}<input name="heure" maxlength="40" value="${esc(moi?.heure || '')}" placeholder="13 h 30"></label>
+      <label>${t('Téléphone (visible des invités, facultatif)')}<input name="contact" maxlength="40" value="${esc(moi?.contact || '')}" inputmode="tel"></label></div>
+    <button class="btn clair" style="margin-top:12px">${t(moi ? 'Mettre à jour' : 'Publier mon trajet')}</button>${moi ? `<button type="button" class="btn petit clair" data-retirer-covoit="1" style="margin:12px 0 0 8px">${t('Retirer')}</button>` : ''}
+    <p class="${msgCovoit.startsWith('!') ? 'app-erreur' : 'ok-msg'}">${esc(msgCovoit.replace(/^!/, ''))}</p>
+    ${offres.length ? `<h3 style="margin-top:18px">${t('Ils ont de la place')}</h3><ul class="trajets">${offres.map(carte).join('')}</ul>` : ''}
+    ${demandes.length ? `<h3 style="margin-top:18px">${t('Ils cherchent une place')}</h3><ul class="trajets">${demandes.map(carte).join('')}</ul>` : ''}
+    ${!offres.length && !demandes.length ? `<p class="app-note" style="margin-top:14px">${t('Aucun trajet pour le moment.')}</p>` : ''}</form>`;
+}
+
 function formTenue() {
   const c = inv.tenue || {}, tissu = tenues.tissus.find(x => x.id === c.tissu);
   return `<form class="app-carte" id="f-tenue"><h2>${t('Les tenues')}</h2>${tenues.consigne ? `<p class="app-note" style="margin-bottom:12px">${esc(tenues.consigne)}</p>` : ''}
@@ -198,6 +233,7 @@ async function telecharger(x) {
 }
 
 document.addEventListener('click', async ev => {
+  if (ev.target.closest('[data-retirer-covoit]')) { await deleteDoc(doc(db, `events/${E}/covoiturage/${T}`)); msgCovoit = ''; return rendre(); }
   const c = ev.target.closest('button, a, label'); if (!c) return;
   const d = c.dataset;
   if (d.reserver) { try { await updateDoc(doc(db, `events/${E}/cadeaux/${d.reserver}`), { reservePar: T, reserveNom: inv.nom, reserveLe: serverTimestamp() }); } catch { alert(t('Ce cadeau vient d\'être réservé par un autre invité.')); } return; }
@@ -231,6 +267,16 @@ document.addEventListener('submit', async ev => {
     if (f.has('accompagnants')) maj.accompagnants = +f.get('accompagnants');
     document.activeElement?.blur();
     await updateDoc(doc(db, `events/${E}/invites/${T}`), maj);
+  }
+  if (id === 'f-covoit') {
+    document.activeElement?.blur();
+    try {
+      const depart = (f.get('depart') || '').trim(), pos = await localiser(depart), sens = f.get('sens');
+      await setDoc(doc(db, `events/${E}/covoiturage/${T}`), { sens, prenom: inv.nom.split(' ')[0].slice(0, 60), depart: depart.slice(0, 160), lat: pos.lat, lng: pos.lng,
+        places: sens === 'propose' ? +f.get('places') : 0, heure: (f.get('heure') || '').slice(0, 40), contact: (f.get('contact') || '').slice(0, 40), majLe: serverTimestamp() });
+      msgCovoit = t('Trajet publié, merci.');
+    } catch (e) { console.error('Covoiturage', e); msgCovoit = '!' + t("Adresse introuvable : essayez avec la ville et le code postal."); }
+    rendre();
   }
   if (id === 'f-voyage') {
     document.activeElement?.blur();

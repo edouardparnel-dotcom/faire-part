@@ -47,7 +47,8 @@
      "guide",
      "merci",
      "deroule",
-     "musique"
+     "musique",
+     "covoiturage"
     ]
    }
   },
@@ -67,6 +68,10 @@
    "guide": {
     "nom": "Guide de la cérémonie",
     "prix": 90
+   },
+   "covoiturage": {
+    "nom": "Covoiturage entre invités",
+    "prix": 40
    },
    "etranger": {
     "nom": "Invités venus de l'étranger",

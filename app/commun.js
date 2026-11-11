@@ -47,7 +47,7 @@ export function jeton() {
 export const NOMS_OPTIONS = {
   savethedate: 'Save-the-date', ceremonies: 'Invitations par cérémonie', guide: 'Guide de la cérémonie', etranger: "Invités venus de l'étranger",
   tenues: 'Tenues coordonnées', langue: 'Langue supplémentaire', qr: "Contrôle d'entrée", direct: 'Direct privé', deroule: 'Déroulé en direct',
-  murphoto: 'Mur photo', livredor: "Livre d'or", jeux: 'Jeux', album: 'Album partagé', merci: 'Remerciements',
+  murphoto: 'Mur photo', livredor: "Livre d'or", covoiturage: 'Covoiturage', jeux: 'Jeux', album: 'Album partagé', merci: 'Remerciements',
 };
 
 export function bandeau(texte) {

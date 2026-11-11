@@ -20,6 +20,7 @@ OPTIONS_MARIAGE = [
   ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 40, False),
   ('ceremonies', 'Avant', 'Invitations par cérémonie', "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", 120, True),
   ('guide', 'Avant', 'Guide de la cérémonie', "La dot, le coutumier, les rites expliqués aux invités d'une autre culture.", 90, True),
+  ('covoiturage', 'Avant', 'Covoiturage entre invités', "Qui a de la place, qui en cherche : chaque invité indique son point de départ et voit d'abord les trajets qui partent près de chez lui.", 40, False),
   ('etranger', 'Avant', "Invités venus de l'étranger", "Dates d'arrivée, hébergement, navettes et lettre d'invitation pour le visa.", 120, True),
   ('tenues', 'Avant', 'Tenues coordonnées', "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", 120, True),
   ('langue', 'Avant', 'Langue supplémentaire', "Anglais, créole, wolof, lingala, twi… Le site et l'invitation dans la langue de chacun.", 60, False),
@@ -53,7 +54,7 @@ FORMULES_MARIAGE = [
   ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à l'espace complet à tout moment, en payant la différence"]),
   ('Essentiel', 390, [], ["Votre espace complet : site du mariage, réponses, invités, plan de table, budget, planning", "Une invitation de la collection, à vos couleurs", "Deux langues"]),
   ('Signature', 890, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue'], ["Tout l'Essentiel", "Save-the-date et invitations par cérémonie", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Trois langues"]),
-  ('Prestige', 1690, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique'], ["Tout le Signature", "Direct privé pour la famille au pays", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
+  ('Prestige', 1690, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique', 'covoiturage'], ["Tout le Signature", "Direct privé pour la famille au pays", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
 ]
 FORMULES_EVENEMENT = [
   ('Essentiel', 190, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),

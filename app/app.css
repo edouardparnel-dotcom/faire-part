@@ -147,3 +147,21 @@
 .pt-img small{position:absolute;left:0;right:0;bottom:0;padding:4px 6px;background:rgba(255,255,255,.85);font-size:11px}
 .pt-img:hover{outline:2px solid #b08d57}.pt-img.choisie{outline:3px solid #b08d57}
 .pt-ajout{display:grid;place-items:center;aspect-ratio:4/5;border:1px dashed #b08d57;cursor:pointer;font-size:13px;text-align:center;padding:10px}
+
+/* Éditeur : étapes du déroulé, images des parties, photos du lieu */
+.etapes-ed,.lieu-ed{display:grid;gap:10px;padding:12px 0;border-top:1px solid rgba(0,0,0,.08)}
+.etape-ed{display:grid;gap:8px;padding:10px;border:1px solid rgba(0,0,0,.08);border-radius:10px}
+.etape-ligne{display:flex;gap:8px;align-items:center}
+.etape-ligne input{flex:1;min-width:0}
+.image-partie{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.image-partie img{width:84px;height:56px;object-fit:cover;border-radius:6px}
+.photos-lieu{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.photos-lieu .pl{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:none}
+.photos-lieu .pl.choisie{border-color:var(--accent,#9a7b4f)}
+.photos-lieu img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+
+/* Covoiturage (page invité) */
+.trajets{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.trajet{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;border:1px solid rgba(0,0,0,.08);border-radius:10px}
+.trajet p{margin:2px 0 0}
+#f-covoit .choix-rep{display:flex;gap:16px;flex-wrap:wrap}

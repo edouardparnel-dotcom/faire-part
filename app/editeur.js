@@ -2,9 +2,10 @@
 // ajoute, retire, masque et réordonne les parties ; l'aperçu (fp.html?apercu=1) se met à jour en direct.
 // Langues : deux langues dans toute formule, trois avec l'option « Langue supplémentaire » ; chaque texte se saisit
 // dans la langue choisie en haut de l'éditeur (le français reste l'original).
-import { db, storage, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=4';
+import { db, storage, fonctions, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=4';
+import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, OUVERTURES, MISES_EN_PAGE, theme } from './themes.js?v=3';
-import { SECTIONS, designParDefaut } from './moteur.js?v=6';
+import { SECTIONS, designParDefaut } from './moteur.js?v=7';
 import { LANGUES } from './langues.js?v=2';
 import { GUIDES } from './guides.js?v=1';
 import { doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
@@ -15,6 +16,8 @@ const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');
 let evt, design, famille = 'tous', format = 'fp', ouverte = null, modifie = false, minuteur, saisie = 'fr', ceremonies = [];
 // Photothèque : les photos de l'organisateur (design.mesPhotos) et la bibliothèque Maison Vivat (phototheque.json).
 let biblio = [], cible = null, onglet = 'miennes', categorie = 'Toutes';
+// Photos du lieu proposées par Google Maps (le couple en choisit une) et message de la recherche.
+let photosLieu = [], msgLieu = '';
 fetch('phototheque.json').then(r => r.json()).then(l => { biblio = l; }).catch(() => {});
 const maxLangues = () => (evt.options || []).includes('langue') ? 3 : 2;
 const cle = ch => saisie === 'fr' ? ch : `${ch}@${saisie}`;   // champ de la langue en cours de saisie
@@ -92,6 +95,32 @@ function remplir() {
   parties();
 }
 
+// Image d'une partie : une photo de la photothèque (les vôtres ou celles de Maison Vivat), affichée sous le titre.
+function blocImage(s, k) {
+  return `<div class="image-partie">${s.image ? `<img src="${esc(s.image)}" alt="">` : ''}<button class="mini" data-phototheque="image:${k}">${s.image ? 'Changer l\'image' : 'Ajouter une image'}</button>${s.image ? `<button class="mini" data-retirer-image="${k}">Retirer l'image</button>` : ''}</div>`;
+}
+// Programme : les étapes du déroulé, modifiables une à une, et la photo du lieu.
+function blocProgramme(s, k) {
+  const E = s.etapes || [], lieu = ceremonies[0]?.lieu || evt.lieu || '';
+  return `<div class="etapes-ed"><b>Les étapes du déroulé</b>
+    ${E.map((x, i) => `<div class="etape-ed">
+      <div class="etape-ligne"><input data-etape="${k}:${i}:heure" value="${esc(x.heure || '')}" maxlength="20" placeholder="15 h 00" style="max-width:110px">
+        <input data-etape="${k}:${i}:${cle('titre')}" value="${esc(x[cle('titre')] || '')}" maxlength="120" placeholder="${esc(saisie === 'fr' ? 'Cérémonie' : x.titre || '')}">
+        <button class="icone" data-monter-etape="${k}:${i}" ${i ? '' : 'disabled'} title="Monter">↑</button><button class="icone" data-retirer-etape="${k}:${i}" title="Retirer">✕</button></div>
+      <textarea data-etape="${k}:${i}:${cle('texte')}" rows="2" maxlength="600" placeholder="${esc(saisie === 'fr' ? 'Quelques mots (facultatif)' : x.texte || '')}">${esc(x[cle('texte')] || '')}</textarea>
+      <div class="image-partie">${x.image ? `<img src="${esc(x.image)}" alt="">` : ''}<button class="mini" data-phototheque="etape:${k}:${i}">${x.image ? 'Changer l\'image' : 'Ajouter une image'}</button>${x.image ? `<button class="mini" data-retirer-image-etape="${k}:${i}">Retirer</button>` : ''}</div>
+    </div>`).join('')}
+    <div class="puces"><button class="mini" data-ajouter-etape="${k}">Ajouter une étape</button>${saisie === 'fr' ? `<button class="mini" data-etapes-ceremonies="${k}">Partir de mes cérémonies</button>` : ''}</div>
+    ${E.length ? '' : '<p class="app-note">Tant qu\'aucune étape n\'est écrite, le programme affiche vos cérémonies.</p>'}
+  </div>
+  <div class="lieu-ed"><b>Photo du lieu</b>
+    ${design.lieuPhoto?.apercu ? `<div class="image-partie"><img src="${esc(design.lieuPhoto.apercu)}" alt=""><button class="mini" data-retirer-lieu="1">Retirer</button></div>` : ''}
+    <div class="etape-ligne"><input id="q-lieu" value="${esc(design.lieuRecherche || lieu)}" maxlength="160" placeholder="Nom et ville du lieu"><button class="mini" data-chercher-lieu="1">Chercher sur Google Maps</button></div>
+    <p class="app-note">${esc(msgLieu || 'Nous proposons les photos publiées du lieu ; choisissez la plus belle, idéalement l\'intérieur décoré. Le nom de son auteur s\'affiche, comme Google le demande.')}</p>
+    <div class="photos-lieu">${photosLieu.map((p, i) => `<button class="pl ${design.lieuPhoto?.name === p.name ? 'choisie' : ''}" data-choisir-lieu="${i}"><img src="${esc(p.apercu)}" alt=""></button>`).join('')}</div>
+  </div>`;
+}
+
 function parties() {
   const S = design.sections;
   $('#parties').innerHTML = S.map((s, k) => `<li class="partie ${s.visible === false ? 'masquee' : ''}">
@@ -105,6 +134,8 @@ function parties() {
         ${optionManquante(s.type) ? `<p class="app-note">Partie liée à l'option « ${esc(SECTIONS[s.type].nom)} » : vos invités la verront une fois l'option activée.</p>` : ''}
         ${s.type === 'galerie' ? `<div class="photos-galerie">${(s.photos || []).map((u, i) => `<span><img src="${esc(u)}" alt=""><button class="icone" data-retirer-galerie="${k}:${i}" title="Retirer">✕</button></span>`).join('')}</div>
           <label class="btn petit clair" style="cursor:pointer;justify-self:start">Ajouter des photos<input type="file" accept="image/*" multiple data-galerie="${k}" hidden></label><button class="mini" data-phototheque="galerie:${k}" style="justify-self:start">Choisir dans la photothèque</button><p class="app-note" id="m-galerie"></p>` : ''}
+        ${s.type === 'programme' ? blocProgramme(s, k) : ''}
+        ${s.type !== 'galerie' ? blocImage(s, k) : ''}
         ${s.type === 'guide' && saisie === 'fr' ? `<label>Partir d'un modèle<select data-guide="${k}"><option value="">Choisir un modèle…</option>${Object.entries(GUIDES).map(([g, x]) => `<option value="${g}">${esc(x.nom)}</option>`).join('')}</select></label>` : ''}
         ${saisie !== 'fr' ? `<p class="app-note">Saisie en ${esc(LANGUES[saisie])} ; laissé vide, le texte français s'affiche.</p>` : ''}
         ${Object.entries(SECTIONS[s.type]?.champs || {}).filter(([ch]) => saisie === 'fr' || !['prenom', 'heure', 'poids', 'taille', 'parrain', 'marraine', 'couleurs', 'lien'].includes(ch)).map(([ch, lib]) => ch === 'texte'
@@ -167,6 +198,8 @@ document.addEventListener('click', async ev => {
   if (d.ptChoisir) {
     const src = d.ptChoisir;
     if (cible === 'couverture') { design.couverture.photo = src; $('#phototheque').close(); return changer(true); }
+    if (cible?.startsWith('image:')) { design.sections[+cible.split(':')[1]].image = src; $('#phototheque').close(); parties(); return changer(); }
+    if (cible?.startsWith('etape:')) { const [, k, i] = cible.split(':').map(Number); design.sections[k].etapes[i].image = src; $('#phototheque').close(); parties(); return changer(); }
     if (cible?.startsWith('galerie:')) { const S = design.sections[+cible.split(':')[1]]; S.photos ??= []; if (!S.photos.includes(src)) S.photos.push(src); b.classList.add('choisie'); parties(); return changer(); }
     return;
   }
@@ -177,6 +210,24 @@ document.addEventListener('click', async ev => {
   if (b.id === 'b-rejouer') return envoyer(true);
   if (b.id === 'b-couleurs-modele') { design.palette = null; return changer(true); }
   if (b.id === 'b-structure-modele') { design.structure = null; return changer(true); }
+  if (d.retirerImage) { delete S[+d.retirerImage].image; parties(); return changer(); }
+  if (d.ajouterEtape) { const s = S[+d.ajouterEtape]; (s.etapes ??= []).push({ heure: '', titre: '', texte: '' }); parties(); return changer(); }
+  if (d.etapesCeremonies) {
+    const s = S[+d.etapesCeremonies], h = x => x ? new Date(x).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }).replace(':', ' h ') : '';
+    s.etapes = ceremonies.map(c => ({ heure: h(c.date), titre: c.nom || '', texte: c.lieu || '' })); parties(); return changer();
+  }
+  if (d.retirerEtape) { const [k, i] = d.retirerEtape.split(':').map(Number); S[k].etapes.splice(i, 1); parties(); return changer(); }
+  if (d.monterEtape) { const [k, i] = d.monterEtape.split(':').map(Number), E = S[k].etapes; [E[i - 1], E[i]] = [E[i], E[i - 1]]; parties(); return changer(); }
+  if (d.retirerImageEtape) { const [k, i] = d.retirerImageEtape.split(':').map(Number); delete S[k].etapes[i].image; parties(); return changer(); }
+  if (d.chercherLieu) {
+    const q = ($('#q-lieu')?.value || '').trim(); if (!q) return;
+    design.lieuRecherche = q; msgLieu = 'Recherche des photos du lieu…'; parties();
+    try { const r = await httpsCallable(fonctions, 'photosLieu')({ eventId: E, requete: q }); photosLieu = r.data.photos || []; msgLieu = photosLieu.length ? `${r.data.nom || q} : ${photosLieu.length} photo(s). La première est notre suggestion.` : 'Aucune photo publiée pour ce lieu.'; }
+    catch (e) { console.error(e); photosLieu = []; msgLieu = 'La recherche Google Maps n\'est pas encore disponible. Vous pouvez ajouter votre propre photo du lieu avec « Ajouter une image ».'; }
+    parties(); return;
+  }
+  if (d.choisirLieu) { const p = photosLieu[+d.choisirLieu]; design.lieuPhoto = { name: p.name, auteurs: p.auteurs, apercu: p.apercu }; parties(); return changer(); }
+  if (d.retirerLieu) { delete design.lieuPhoto; parties(); return changer(); }
   if (d.retirerGalerie) { const [k, i] = d.retirerGalerie.split(':').map(Number); S[k].photos.splice(i, 1); parties(); return changer(); }
   if (b.id === 'b-sans-photo') { design.couverture.photo = ''; return changer(true); }
   if (d.monter) { const k = +d.monter; [S[k - 1], S[k]] = [S[k], S[k - 1]]; ouverte = null; parties(); return changer(); }
@@ -197,6 +248,7 @@ document.addEventListener('input', ev => {
   const t = ev.target; if (!design) return;
   if (t.dataset.couleur) { design.palette = { ...(design.palette || {}), [t.dataset.couleur]: t.value }; return changer(); }
   if (t.dataset.champ) { const i = t.dataset.champ.indexOf(':'), k = +t.dataset.champ.slice(0, i), ch = t.dataset.champ.slice(i + 1); design.sections[k][ch] = t.value; return changer(); }
+  if (t.dataset.etape) { const [k, i, ...ch] = t.dataset.etape.split(':'); design.sections[+k].etapes[+i][ch.join(':')] = t.value; return changer(); }
   if (t.dataset.cer) { const [k, l] = t.dataset.cer.split(':'); ceremonies[+k]['nom@' + l] = t.value; return changer(); }
   const c = { 'c-surtitre': 'surtitre', 'c-titre': 'titre', 'c-soustitre': 'soustitre' }[t.id];
   if (c) { design.couverture[c === 'titre' ? c : cle(c)] = t.value; return changer(); }

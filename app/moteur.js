@@ -22,7 +22,8 @@ export const SECTIONS = {
   accueil: { nom: 'Mot d\'accueil', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Bienvenue', texte: 'Nous avons la joie de vous inviter à partager ce jour avec nous.' } },
   histoire: { nom: 'Notre histoire', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Notre histoire', texte: 'Tout a commencé par une rencontre, un soir d\'été. Quelques années, deux familles et mille souvenirs plus tard, nous avons décidé de nous dire oui.' } },
   traditions: { nom: 'Nos traditions', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Nos traditions', texte: 'Notre mariage réunit deux familles et leurs coutumes. La dot, la cérémonie coutumière, les chants : voici ce qui vous attend, pour le vivre avec nous.' } },
-  programme: { nom: 'Programme', champs: { titre: 'Titre' }, defaut: { titre: 'Le programme' }, auto: 'Les cérémonies de votre espace, avec l\'heure, le lieu et le plan' },
+  programme: { nom: 'Programme', champs: { titre: 'Titre' }, defaut: { titre: 'Le programme' }, auto: 'Sans étape écrite ici, le programme reprend vos cérémonies, avec l\'heure, le lieu et le plan' },
+  covoiturage: { nom: 'Covoiturage', option: 'covoiturage', champs: { titre: 'Titre', texte: 'Texte' }, defaut: { titre: 'Covoiturage', texte: 'Vous avez de la place dans votre voiture, ou vous en cherchez une ? Proposez ou trouvez un trajet : les départs les plus proches de chez vous s\'affichent en premier.' } },
   compte: { nom: 'Compte à rebours', champs: { titre: 'Titre' }, defaut: { titre: 'Plus que' } },
   tenue: { nom: 'Tenue', champs: { titre: 'Titre', texte: 'Texte', couleurs: 'Couleurs suggérées (codes séparés par des virgules)' }, defaut: { titre: 'Tenue', texte: 'Tenue de cérémonie. Une touche de couleur est la bienvenue.', couleurs: '' } },
   hebergement: { nom: 'Hébergement', champs: { titre: 'Titre', texte: 'Texte', libelle: 'Texte du lien', lien: 'Adresse du lien' }, defaut: { titre: 'Où dormir', texte: 'Quelques adresses proches du lieu de réception.', libelle: '', lien: '' } },
@@ -117,10 +118,29 @@ function programme(C) {
     <div class="corps"><b>${esc(enLangue(c, 'nom', L))}</b><span class="d">${esc(dateLongue(c.date))}</span><span class="l">${esc(c.lieu)} · ${plan(c)}</span></div></li>`).join('')}</ol>`;
 }
 
+// Photo du lieu choisie par le couple parmi celles de Google Maps : servie par la fonction photoLieu (jamais copiée chez nous),
+// avec le nom de son auteur, comme Google le demande.
+const PHOTO_LIEU = 'https://europe-west9-maison-vivat.cloudfunctions.net/photoLieu';
+const surImage = u => /^(https:\/\/|\.\.\/)/.test(u || '') ? u : '';
+function photoLieu(p) {
+  if (!p?.name || !/^places\/[\w-]+\/photos\/[\w-]+$/.test(p.name)) return '';
+  const auteurs = (p.auteurs || []).map(a => esc(a)).join(', ');
+  return `<figure class="photo-lieu"><img src="${PHOTO_LIEU}?n=${encodeURIComponent(p.name)}&amp;w=1400" alt="" loading="lazy"><figcaption>${auteurs ? `Photo : ${auteurs} · ` : ''}Google Maps</figcaption></figure>`;
+}
+// Déroulé écrit par le couple : chaque étape a son heure, son titre, son texte et, si l'on veut, son image.
+function etapes(E) {
+  return `<ol class="programme etapes-perso">${E.map((x, k) => `<li style="--n:${k}"><span class="num">${String(k + 1).padStart(2, '0')}</span><span class="h">${esc(x.heure || '')}</span>
+    <div class="corps">${surImage(x.image) ? `<img class="etape-img" src="${esc(x.image)}" alt="" loading="lazy">` : ''}<b>${esc(enLangue(x, 'titre', L))}</b>${enLangue(x, 'texte', L) ? `<span class="d">${esc(enLangue(x, 'texte', L))}</span>` : ''}</div></li>`).join('')}</ol>`;
+}
+
 function section(s, ctx) {
-  const { evt, invite, lienReponse } = ctx, v = nom => enLangue(s, nom, L), titre = v('titre'), h = titre ? `<h2>${esc(titre)}</h2>` : '';
+  const { evt, invite, lienReponse } = ctx, v = nom => enLangue(s, nom, L), titre = v('titre'), h = (titre ? `<h2>${esc(titre)}</h2>` : '') + (surImage(s.image) && s.type !== 'galerie' ? `<img class="illus-partie" src="${esc(s.image)}" alt="" loading="lazy">` : '');
   switch (s.type) {
-    case 'programme': return h + programme((evt.ceremonies || []).filter(c => !invite || invite.ceremonies?.includes(c.cle)));
+    case 'programme': {
+      const E = (s.etapes || []).filter(x => x.titre || x.heure);
+      return h + photoLieu(ctx.design?.lieuPhoto) + (E.length ? etapes(E) : programme((evt.ceremonies || []).filter(c => !invite || invite.ceremonies?.includes(c.cle))));
+    }
+    case 'covoiturage': return `${h}${paragraphes(v('texte'))}<a class="bouton" href="${esc(lienReponse ? lienReponse + '#covoiturage' : '#')}"${lienReponse ? '' : ' data-demo'}>${t('Proposer ou trouver un trajet')}</a>`;
     case 'compte': return `${h}<div class="rebours" data-rebours="${esc(evt.date)}"><div><b>--</b>${t('jours')}</div><div><b>--</b>${t('heures')}</div><div><b>--</b>${t('min')}</div><div><b>--</b>${t('sec')}</div></div>`;
     case 'tenue': {
       const cs = (s.couleurs || '').split(',').map(x => x.trim()).filter(x => /^#[0-9a-f]{3,8}$/i.test(x));
