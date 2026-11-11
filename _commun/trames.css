@@ -441,7 +441,7 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i,[data-collection=adinkra] .noms i,[data-collection=kanaval] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i,[data-collection=adinkra] .noms i,[data-collection=kanaval] .noms i,[data-collection=orangerie] .noms i{font-size:.9em;margin:0 0 -4px}
 
 /* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
 .hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
@@ -737,3 +737,19 @@ body.ferme .envol .papillon{animation-play-state:paused}
 .suite-titre .envol{height:110px}
 .mood-matieres .envol{display:inline-block;width:220px;height:120px;vertical-align:middle}
 @media (prefers-reduced-motion:reduce){.envol .papillon{animation:none}}
+
+/* ───────── VERRIÈRE (Orangerie) : les arcs de fer forgé se dessinent, puis le citronnier apparaît dessous ───────── */
+.verriere{position:relative;width:min(78vw,360px);aspect-ratio:4/5;margin:min(8vw,34px) auto 4px}
+.verriere svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:var(--or1);stroke-width:.9;stroke-linecap:round}
+.verriere path{stroke-dasharray:400;stroke-dashoffset:400;animation:trace 2.4s cubic-bezier(.4,0,.2,1) forwards}
+.verriere .v2{animation-delay:.3s;opacity:.7}.verriere .v3{animation-delay:.7s;opacity:.55}.verriere .v4{animation-delay:1s;opacity:.5}
+@keyframes trace{to{stroke-dashoffset:0}}
+.verriere .citronnier{position:absolute;left:50%;bottom:2%;width:58%;height:auto;translate:-50% 0;filter:drop-shadow(0 18px 18px rgba(40,50,30,.25));
+  animation:pousse 1.6s cubic-bezier(.2,.8,.3,1) 1.2s both;transform-origin:50% 100%}
+@keyframes pousse{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
+body.ferme .verriere path,body.ferme .verriere .citronnier{animation-play-state:paused}
+.suite-couv:has(.verriere) .chapeau{margin-top:0;padding-top:10px}
+.suite-couv:has(.verriere){justify-content:flex-start}
+.suite-titre .verriere{width:150px}
+.mood-matieres .verriere{display:inline-block;width:160px;vertical-align:middle}
+@media (prefers-reduced-motion:reduce){.verriere path{animation:none;stroke-dashoffset:0}.verriere .citronnier{animation:none}}

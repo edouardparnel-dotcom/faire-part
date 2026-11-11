@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nadia &amp; Samuel — Mur photo (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@500;600&family=Italianno&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/vivant.css?v=16">
+<link rel="stylesheet" href="../_commun/trames.css?v=44">
+<script src="../_commun/vivant.js?v=24" defer></script>
+<style>
+:root{--fond:#EEF0E6;--carte:#FBFAF5;--encre:#2F3A2C;--doux:#6C7565;--or1:#B7A15A;--or2:#E3D9A6;--or3:#7D6E32;--accent:#5F7A55;
+  --f-titre:'Cormorant Infant',serif;--f-script:'Italianno',cursive;--f-texte:'Karla',system-ui,sans-serif;--decor:linear-gradient(rgba(251,250,245,.25),rgba(251,250,245,.25)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#2F3A2C;}
+
+
+</style>
+</head>
+<body data-blocs="bandes" data-titres="capitales" data-images="deborde" data-revele="monte" data-paral="derive" data-cadre="polaroid" data-prog="frise" data-lieu="classique" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="fleche" data-teinte="accent" data-collection="orangerie" data-particules="petales" data-trame="centree">
+<nav class="suite-nav" aria-label="La collection Orangerie"><a class="suite-marque" href="index.html">✦ Orangerie</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html" aria-current=page>Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><div class="verriere"><svg viewBox="0 0 100 125" aria-hidden="true"><path class="v1" d="M4 125V46A46 46 0 0 1 96 46V125"/><path class="v2" d="M14 125V48A36 36 0 0 1 86 48V125"/><path class="v3" d="M32 125V18M50 125V12M68 125V18M14 76H86M14 100H86"/><path class="v4" d="M50 48L22 30M50 48L35 17M50 48L50 12M50 48L65 17M50 48L78 30"/></svg><img class="citronnier" src="objet.webp" alt="" width="960" height="1389"></div><p class="chapeau">Nadia &amp; Samuel · en direct</p><h1>Le mur photo</h1>
+  <p class="intro">Vos invités ajoutent leurs photos depuis leur téléphone, sans application. Elles s'affichent ici, et sur grand écran pendant la fête.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : l’appareil photo s’ouvrirait ici'">Ajouter mes photos</a></header>
+<main class="suite-main large"><div class="mur"><figure class="photo apparait" style="--r:1deg"><img src="couple.jpg" alt="" loading="lazy"><figcaption>La famille au complet</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="lieu.webp" alt="" loading="lazy"><figcaption>Premier regard</figcaption></figure><figure class="photo apparait" style="--r:3deg"><img src="../classique/couple.jpg" alt="" loading="lazy"><figcaption>Les témoins</figcaption></figure><figure class="photo apparait" style="--r:-1deg"><img src="../champetre/couple.jpg" alt="" loading="lazy"><figcaption>Sur la piste</figcaption></figure><figure class="photo apparait" style="--r:2deg"><img src="../versailles/couple.jpg" alt="" loading="lazy"><figcaption>Le dîner</figcaption></figure><figure class="photo apparait" style="--r:-3deg"><img src="../boheme/couple.jpg" alt="" loading="lazy"><figcaption>Les cousins</figcaption></figure><figure class="photo apparait" style="--r:1deg"><img src="../lanternes/couple.jpg" alt="" loading="lazy"><figcaption>Le gâteau</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="../ivoire/couple.jpg" alt="" loading="lazy"><figcaption>Fin de soirée</figcaption></figure></div></main>
+<footer class="suite-pied"><p class="script">Nadia &amp; Samuel</p><p>Merci d&#x27;avoir partagé ce jour sous la verrière</p>
+<small>Démonstration de la collection Orangerie · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-05-22T15:00:00+02:00'; document.body.dataset.evenement = 'Mariage Nadia & Samuel'; document.body.dataset.ville = 'Yvelines';
+document.querySelectorAll('[data-offrir]').forEach(b => b.addEventListener('click', () => { b.outerHTML = '<em class="a-vous">Réservé par vous ✓</em>'; }));
+document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); b.textContent = 'Démonstration : ouvre la cagnotte des mariés'; }));
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>

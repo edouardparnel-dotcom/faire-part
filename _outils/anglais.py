@@ -34,6 +34,7 @@ COLLECTIONS_EN = {
     'monogramme': ('Monogramme', 'Timeless · paper cut', 'Laser-cut paper gate, three-layer paper diorama with silhouettes and a gold monogram'),
     'karabela': ('Karabela', 'Karabela · quadrille dress', 'Chambray envelope edged with eyelet lace, hibiscus seal; broderie anglaise and tropical flowers around the card'),
     'qunkwa': ('Qun kwa', 'Qun kwa · tea ceremony', 'Red silk envelope embroidered with a phoenix, Chinese knot; gold dragon and phoenix facing each other'),
+    'orangerie': ('Orangerie', 'Timeless · winter garden', 'Sage green envelope with an orange blossom sprig, a wrought iron glasshouse drawing itself around a lemon tree'),
     'kanaval': ('Kanaval', 'Kanaval · Jacmel', 'Midnight blue silk clutch embroidered with sequins, papier-mâché butterflies taking flight, hibiscus'),
     'adinkra': ('Adinkra', 'Adinkra · Akan symbols', 'Ivory envelope with a heart seal, Akoma and Nkonsonkonson symbols printed as if stamped by hand, flame trees'),
     'bazin': ('Bazin', 'Bazin riche · grand boubou', 'Teal bazin envelope with a gold filigree seal, a draped bazin swag crossed by a moving glint of light, desert roses'),
@@ -100,7 +101,7 @@ def page():
   </div>
 
   <section id="collections"><div class="conteneur">
-    <div class="titre-section revele"><span class="etq">Collections</span><h2>Forty collections, forty ways to host</h2>
+    <div class="titre-section revele"><span class="etq">Collections</span><h2>Forty-one collections, as many ways to host</h2>
       <p>Each one has its own opening (envelope, doors, curtain), its own layout, its own music and the couple's photo. Your guests read it in their language: English, French, Creole, Wolof, Lingala, Twi and more.</p></div>
     {''.join(blocs)}
   </div></section>
