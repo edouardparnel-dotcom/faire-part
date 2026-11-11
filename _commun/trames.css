@@ -715,7 +715,7 @@ img[src$="couple.jpg"]{object-position:50% 15%}
 /* Reflet de l'ouverture limité à la forme de l'objet : plus de bande claire à côté de la porte ou de l'enveloppe. */
 .enveloppe::after,.portail::after{-webkit-mask:var(--masque,none) center/100% 100% no-repeat;mask:var(--masque,none) center/100% 100% no-repeat}
 /* Carte derrière les portes : le texte reste lisible (la carte est étroite, la largeur commande la taille). */
-.portail .derriere.mini{padding:8cqh 7cqw!important;justify-content:center!important}
+.portail .derriere.mini{padding:12% 7%!important;justify-content:center!important}
 .portail .derriere.mini .mini-deco{max-height:13cqh;max-width:86%;margin-bottom:3cqh}
 .portail .derriere.mini b{font-size:min(9cqh,15.5cqw,34px)!important;line-height:1.05}
 .portail .derriere.mini i{font-size:min(7cqh,12cqw,26px)!important}
