@@ -440,6 +440,21 @@
 "nom": "Qun kwa"
 },
 {
+"src": "../adinkra/lieu.webp",
+"cat": "Lieux",
+"nom": "Adinkra"
+},
+{
+"src": "../adinkra/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Adinkra"
+},
+{
+"src": "../adinkra/photo.jpg",
+"cat": "Ambiances",
+"nom": "Adinkra"
+},
+{
 "src": "../bazin/lieu.webp",
 "cat": "Lieux",
 "nom": "Bazin"

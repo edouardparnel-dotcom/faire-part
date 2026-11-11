@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Great+Vibes&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=31">
+<link rel="stylesheet" href="../_commun/trames.css?v=33">
 <script src="../_commun/vivant.js?v=22" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=4">
 <style>
@@ -23,17 +23,26 @@
 .ouverture .consigne{color:var(--sur-fond)}
 .mini{background:linear-gradient(color-mix(in srgb,var(--carte) 82%,transparent),color-mix(in srgb,var(--carte) 82%,transparent)),url('fond.jpg') center/cover,var(--carte);
   outline:1px solid var(--or1);outline-offset:-7px;box-shadow:inset 0 0 0 11px var(--carte),inset 0 0 0 12px var(--or2);overflow:hidden}
-.mini .mini-deco{width:78%;max-height:30%;object-fit:contain;margin:0 auto 6px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
-.mini b{font-family:var(--f-titre);font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--accent)}
-.mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:clamp(17px,5vw,24px);line-height:1}
-.mini small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
+/* Carte élastique : tout se cale sur sa taille réelle (enveloppe large ou portail haut), jamais de texte qui déborde ni qui touche le bord. */
+.mini{container-type:size;justify-content:center!important;padding:7cqh 9cqw!important;gap:0;line-height:1.05}
+.mini .mini-deco{width:auto;max-width:72%;max-height:24cqh;object-fit:contain;margin:0 auto 2.5cqh;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.mini b{font-family:var(--f-titre);font-weight:400;font-size:min(10.5cqh,8.5cqw,26px);letter-spacing:.08em;color:var(--accent);max-width:100%;overflow-wrap:anywhere}
+.mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:min(9cqh,7cqw,24px);line-height:1;margin:.5cqh 0}
+.mini small{font-size:min(4.6cqh,3.4cqw,11px);letter-spacing:.24em;text-transform:uppercase;color:var(--doux);margin:1.6cqh 0}
+/* Dans l'enveloppe, seule la moitié haute de la carte sort : tout y tient, en plus grand, sans le motif. */
+.env-carte.mini{justify-content:flex-start!important;padding-top:6cqh!important}
+.env-carte.mini .mini-deco{display:none}
+.env-carte.mini b{font-size:min(13cqh,10cqw,30px)}
+.env-carte.mini i{font-size:min(9cqh,7cqw,24px)}
+.env-carte.mini small{font-size:min(5.2cqh,3.6cqw,11px);margin:1.2cqh 0}
+.ouvert .env-carte{transform:translateY(-66%)}
 body.ferme{overflow:hidden}
 .std-seul{display:none} body.std .fp-seul{display:none} body.std .std-seul{display:block}
 .suite-couv{min-height:100svh}
 
 </style>
 </head>
-<body class="ferme" data-date="2027-12-04T16:00:00+01:00" data-evenement="Mariage Tolu &amp; Femi" data-ville="Lekki, Lagos" data-titre-std="Tolu &amp; Femi — Save the date (démonstration)" data-blocs="bandes" data-titres="capitales" data-images="deborde" data-revele="monte" data-paral="derive" data-collection="owambe" data-particules="or" data-trame="edito">
+<body class="ferme" data-date="2027-12-04T16:00:00+01:00" data-evenement="Mariage Tolu &amp; Femi" data-ville="Lekki, Lagos" data-titre-std="Tolu &amp; Femi — Save the date (démonstration)" data-blocs="bandes" data-titres="capitales" data-images="deborde" data-revele="monte" data-paral="derive" data-cadre="polaroid" data-prog="ligne" data-lieu="cote" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="carre" data-teinte="accent" data-collection="owambe" data-particules="or" data-trame="edito">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
 <div class="ouverture attente" id="ouverture" style="--ratio:1000/1741;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
@@ -61,12 +70,12 @@ body.ferme{overflow:hidden}
   <blockquote class="inter inter-citation apparait fp-seul"><p>Ils se sont rencontrés au mariage d&#x27;une cousine, sur la piste, chacun en aso ebi d&#x27;une famille différente.</p><cite class="script">Tolu &amp; Femi</cite></blockquote>
   <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 4 décembre 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>12 h 00</b><span>Cérémonie traditionnelle</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>14 h 00</b><span>Le gele et les tenues</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Entrée aux tambours parlants</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>17 h 30</b><span>Jollof et grand buffet</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>19 h 00</b><span>Danses et aso ebi</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>22 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
   <figure class="inter inter-couple apparait"><img src="couple.jpg" alt="Tolu et Femi" loading="lazy"><figcaption class="script">Tolu &amp; Femi</figcaption></figure>
-  <section class="bloc apparait fp-seul"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Royal Coral Hall<br>Lekki, Lagos</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Lekki, Lagos" target="_blank" rel="noopener">Voir le plan</a></section>
-  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="ouverture.webp" alt="" loading="lazy"><figcaption>Aso ebi</figcaption></figure>
-  <section class="bloc apparait fp-seul"><h2>Tenue</h2><p class="titre-tenue">Aso ebi</p><p>Les familles porteront l&#x27;émeraude et le corail. Gele, agbada et perles de corail vivement encouragés.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
+  <section class="bloc apparait fp-seul" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Royal Coral Hall<br>Lekki, Lagos</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Lekki, Lagos" target="_blank" rel="noopener">Voir le plan</a></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail" src="haut.webp" alt="" loading="lazy"><figcaption>Aso ebi</figcaption></figure>
+  <section class="bloc apparait fp-seul" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Aso ebi</p><p>Les familles porteront l&#x27;émeraude et le corail. Gele, agbada et perles de corail vivement encouragés.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
   <figure class="inter inter-table apparait fp-seul"><img src="bas.webp" alt="" loading="lazy"></figure>
   <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
-  <section class="bloc apparait fp-seul"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er novembre 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
+  <section class="bloc apparait fp-seul" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er novembre 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
 </main>
 <footer class="suite-pied"><p class="script">Tolu &amp; Femi</p><p>E ku ayo : merci de partager notre joie</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>

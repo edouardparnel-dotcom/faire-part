@@ -441,7 +441,7 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .mood-matieres .m-etang .libellule,.mood-matieres .m-etang .reflet{display:none}
 @media (prefers-reduced-motion:reduce){.etang .reflet,.etang .libellule{animation:none}.etang .libellule{transform:translate(60vw,0) rotate(90deg)}}
 .suite-couv:has(.etang) .chapeau{margin-top:0;padding-top:min(10vw,40px)}
-[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i{font-size:.9em;margin:0 0 -4px}
+[data-collection=aodai] .noms i,[data-collection=shiromuku] .noms i,[data-collection=imbali] .noms i,[data-collection=liputa] .noms i,[data-collection=ndop] .noms i,[data-collection=kreyol] .noms i,[data-collection=bazin] .noms i,[data-collection=adinkra] .noms i{font-size:.9em;margin:0 0 -4px}
 
 /* ───────── FENÊTRE RONDE (Shiromuku) : un marumado ouvert sur le jardin, la branche de cerisier passe devant ───────── */
 .hublot{position:relative;width:min(72vw,330px);aspect-ratio:1;margin:min(12vw,52px) auto 4px;z-index:0;flex:none}
@@ -581,3 +581,116 @@ body.ferme .popup img,body.ferme .krik span{animation-play-state:paused}
 .suite-titre:has(.drape)>*:not(.drape){position:relative;z-index:1}
 .mood-matieres .m-drape{position:relative!important;display:inline-block;width:min(46vw,220px);inset:auto!important;vertical-align:middle}
 @media (prefers-reduced-motion:reduce){.drape .lustre{animation:none;opacity:0}}
+
+/* ───────── TAMPONS (Adinkra) : les symboles s'impriment l'un après l'autre, dans des cases tracées au peigne ───────── */
+.tampons{width:min(88vw,400px);margin:min(9vw,40px) auto 6px;color:var(--encre)}
+.tampons .rang{display:grid;grid-template-columns:repeat(4,1fr);border-block:3px double var(--or1)}
+.tampon{display:grid;place-items:center;aspect-ratio:1;padding:16%;border-right:1px solid color-mix(in srgb,var(--or1) 60%,transparent);
+  background:repeating-linear-gradient(90deg,transparent 0 6px,color-mix(in srgb,var(--or1) 14%,transparent) 6px 7px)}
+.tampon:last-child{border-right:0}
+.tampon svg{width:100%;height:100%;fill:currentColor;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15));opacity:.92;
+  animation:tampon .55s cubic-bezier(.2,.9,.3,1.2) calc(.5s + var(--i) * .45s) both}
+@keyframes tampon{0%{opacity:0;transform:scale(1.45) rotate(-8deg)}55%{opacity:.95;transform:scale(.94)}100%{opacity:.92;transform:none}}
+body.ferme .tampon svg{animation-play-state:paused}
+.tampons .legende{font-size:11px;letter-spacing:.06em;color:var(--doux);margin:10px 0 0;text-align:center}
+.tampons .legende b{font-weight:500;color:var(--encre)}
+.suite-couv:has(.tampons) .chapeau{margin-top:0;padding-top:18px}
+.suite-couv:has(.tampons){justify-content:flex-start}
+.suite-titre .tampons{width:min(60vw,240px);margin-top:4px}
+.suite-titre .tampons .legende{display:none}
+.mood-matieres .tampons{display:inline-block;width:200px;margin:0 8px;vertical-align:middle}
+.mood-matieres .tampons .legende{display:none}
+@media (prefers-reduced-motion:reduce){.tampon svg{animation:none}}
+
+/* ═══ DÉROULÉ VARIÉ : cadre du couple, programme, lieu, tenue, compte à rebours, réponse, boutons, couleurs des sections ═══ */
+/* Cadre de la photo du couple */
+body[data-cadre] .inter-couple img{max-width:none!important;display:block}
+body[data-cadre=arche] .inter-couple img{width:min(76vw,330px)!important;aspect-ratio:3/4;object-fit:cover;border-radius:999px 999px 6px 6px!important;clip-path:none!important;transform:none!important;margin:0 auto!important;box-shadow:0 0 0 6px var(--carte),0 0 0 7px var(--or1),0 26px 40px -22px rgba(0,0,0,.45)!important;padding:0!important}
+body[data-cadre=rond] .inter-couple img{width:min(78vw,340px)!important;aspect-ratio:1;object-fit:cover;border-radius:50%!important;clip-path:none!important;transform:none!important;margin:0 auto!important;box-shadow:0 0 0 7px var(--carte),0 0 0 8px var(--or1),0 24px 40px -20px rgba(0,0,0,.45)!important;padding:0!important}
+body[data-cadre=polaroid] .inter-couple img{width:min(76vw,320px)!important;aspect-ratio:4/5;object-fit:cover;padding:12px 12px 58px!important;background:#fff;border-radius:2px!important;clip-path:none!important;transform:rotate(-3deg)!important;margin:0 auto!important;box-shadow:0 18px 30px -14px rgba(0,0,0,.35)!important}
+body[data-cadre=polaroid] .inter-couple figcaption{transform:rotate(-3deg);margin-top:-52px!important;position:relative;z-index:2;color:var(--encre)!important}
+body[data-cadre=plein] .inter-couple{margin-inline:-14px!important;position:relative}
+body[data-cadre=plein] .inter-couple img{width:100%!important;aspect-ratio:4/5;object-fit:cover;border-radius:0!important;clip-path:none!important;transform:none!important;margin:0!important;box-shadow:none!important;padding:0!important}
+body[data-cadre=plein] .inter-couple figcaption{position:absolute!important;left:0;right:0;bottom:22px;margin:0!important;color:#fff!important;text-shadow:0 2px 14px rgba(0,0,0,.6);z-index:2}
+body[data-cadre=decale] .inter-couple img{width:min(72vw,310px)!important;aspect-ratio:3/4;object-fit:cover;border-radius:0!important;clip-path:none!important;transform:none!important;margin:0 auto 0 8%!important;padding:0!important;box-shadow:22px 22px 0 -4px color-mix(in srgb,var(--accent) 45%,transparent)!important}
+body[data-cadre=losange] .inter-couple img{width:min(80vw,340px)!important;aspect-ratio:1;object-fit:cover;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)!important;border-radius:0!important;transform:none!important;margin:0 auto!important;box-shadow:none!important;padding:0!important}
+
+/* Programme */
+body[data-prog=cartes] .frise{grid-template-columns:1fr 1fr;gap:12px}
+body[data-prog=cartes] .frise::before{display:none}
+body[data-prog=cartes] .frise li{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:16px 10px;border-radius:16px;background:color-mix(in srgb,var(--or2) 28%,var(--carte));grid-template-columns:none}
+body[data-prog=cartes] .frise img{width:64px;height:64px}
+body[data-prog=ligne] .frise{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding:4px 4px 14px;margin-inline:-6px}
+body[data-prog=ligne] .frise::before{display:none}
+body[data-prog=ligne] .frise li{flex:0 0 64%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:20px 12px;border:1px solid var(--or1);border-radius:999px 999px 18px 18px;background:var(--carte)}
+body[data-prog=numeros] .frise{counter-reset:etape;gap:16px}
+body[data-prog=numeros] .frise::before{display:none}
+body[data-prog=numeros] .frise li{counter-increment:etape;grid-template-columns:58px 1fr;gap:16px;padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--or1) 45%,transparent)}
+body[data-prog=numeros] .frise li::before{content:counter(etape,decimal-leading-zero);font-family:var(--f-titre);font-size:40px;line-height:1;color:var(--accent)}
+body[data-prog=numeros] .frise img{display:none}
+body[data-prog=zigzag] .frise::before{left:50%}
+body[data-prog=zigzag] .frise li{grid-template-columns:1fr 1fr;gap:20px}
+body[data-prog=zigzag] .frise li>div{text-align:left}
+body[data-prog=zigzag] .frise li:nth-child(even) img{order:2}
+body[data-prog=zigzag] .frise li:nth-child(even)>div{text-align:right}
+body[data-prog=zigzag] .frise img{justify-self:center}
+
+/* Lieu */
+body[data-lieu=plein] #lieu{position:relative;overflow:hidden;min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;padding:28px 22px!important;color:#fff}
+body[data-lieu=plein] #lieu .bande{display:none}
+body[data-lieu=plein] #lieu .illus{position:absolute;inset:0;width:100%!important;height:100%;object-fit:cover;margin:0!important;z-index:0}
+body[data-lieu=plein] #lieu::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(rgba(0,0,0,0) 30%,rgba(0,0,0,.7))}
+body[data-lieu=plein] #lieu>*:not(.illus){position:relative;z-index:2;color:#fff!important}
+body[data-lieu=plein] #lieu .bouton{border-color:#fff!important;color:#fff!important;background:transparent!important}
+body[data-lieu=postale] #lieu .illus{width:86%!important;margin:12px auto 20px!important;border:10px solid #fff;box-shadow:0 16px 28px -14px rgba(0,0,0,.45);transform:rotate(2.5deg)}
+body[data-lieu=cote] #lieu{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center;text-align:left}
+body[data-lieu=cote] #lieu h2,body[data-lieu=cote] #lieu .bande{grid-column:1/-1}
+body[data-lieu=cote] #lieu .illus{grid-row:span 2;width:100%!important;margin:0!important;aspect-ratio:3/4;object-fit:cover;border-radius:12px}
+body[data-lieu=cote] #lieu .bouton{justify-self:start;margin-top:4px}
+body[data-lieu=rond] #lieu .illus{width:72%!important;aspect-ratio:1;object-fit:cover;border-radius:50%;margin:8px auto 18px!important;box-shadow:0 0 0 6px var(--carte),0 0 0 7px var(--or1)}
+
+/* Tenue */
+body[data-tenue=nuancier] #tenue .titre-tenue::after{content:"";display:block;width:190px;height:26px;margin:14px auto 4px;border-radius:999px;
+  background:linear-gradient(90deg,var(--accent) 0 25%,var(--or1) 25% 50%,var(--or2) 50% 75%,var(--encre) 75%);box-shadow:0 6px 12px -6px rgba(0,0,0,.35)}
+body[data-tenue=sombre] #tenue{background:var(--encre)!important;color:var(--carte)!important}
+body[data-tenue=sombre] #tenue h2,body[data-tenue=sombre] #tenue p{color:var(--carte)!important}
+body[data-tenue=sombre] #tenue .illus{background:color-mix(in srgb,var(--carte) 92%,transparent);border-radius:14px;padding:10px}
+body[data-tenue=image] #tenue{display:flex;flex-direction:column}
+body[data-tenue=image] #tenue .illus{order:-1;margin:0 0 14px!important}
+
+/* Compte à rebours */
+body[data-compte=chiffres] .medaillons{gap:0}
+body[data-compte=chiffres] .medaillons div{width:auto;height:auto;padding:0 18px;border-radius:0;background:none;box-shadow:none;border-right:1px solid var(--or1)}
+body[data-compte=chiffres] .medaillons div:last-child{border-right:0}
+body[data-compte=chiffres] .medaillons b{font-size:52px;color:var(--accent)}
+body[data-compte=tuiles] .medaillons div{width:86px;height:100px;border-radius:12px;background:var(--encre);color:var(--or2);box-shadow:0 12px 20px -10px rgba(0,0,0,.45)}
+body[data-compte=tuiles] .medaillons b{color:var(--carte);font-size:36px}
+body[data-compte=ligne] .medaillons{gap:10px;flex-wrap:wrap}
+body[data-compte=ligne] .medaillons div{width:auto;height:auto;display:flex;gap:6px;align-items:baseline;background:none;box-shadow:none;border-radius:0;font-size:13px}
+body[data-compte=ligne] .medaillons b{font-size:38px;color:var(--accent)}
+
+/* Réponse */
+body[data-rep=ticket] #reponse{border:2px dashed var(--or1)!important;border-radius:18px!important;background:var(--carte)!important;box-shadow:none!important}
+body[data-rep=sombre] #reponse{background:var(--encre)!important;color:var(--carte)!important}
+body[data-rep=sombre] #reponse h2,body[data-rep=sombre] #reponse p,body[data-rep=sombre] #reponse label{color:var(--carte)!important}
+body[data-rep=accent] #reponse{background:var(--accent)!important;color:var(--carte)!important}
+body[data-rep=accent] #reponse h2,body[data-rep=accent] #reponse p,body[data-rep=accent] #reponse label{color:var(--carte)!important}
+body[data-rep=sombre] #reponse .bouton,body[data-rep=accent] #reponse .bouton{border-color:var(--carte)!important;color:var(--carte)!important;background:transparent!important}
+body[data-rep=sombre] #reponse .bouton.plein,body[data-rep=accent] #reponse .bouton.plein{background:var(--carte)!important;color:var(--encre)!important}
+
+/* Boutons */
+body[data-btn=pilule] .bouton{border-radius:999px!important}
+body[data-btn=carre] .bouton{border-radius:0!important;border-width:2px!important;letter-spacing:.16em!important}
+body[data-btn=souligne] .bouton:not(.plein){background:none!important;border:0!important;border-bottom:2px solid var(--accent)!important;border-radius:0!important;padding:8px 2px!important}
+body[data-btn=fleche] .bouton{border-radius:999px!important;padding-right:46px!important;position:relative}
+body[data-btn=fleche] .bouton::after{content:"→"!important;position:absolute;right:18px;top:50%;translate:0 -50%;font-size:16px;letter-spacing:0;background:none!important;width:auto!important;height:auto!important;border:0!important}
+body[data-btn=plein] .bouton{background:var(--accent)!important;color:var(--carte)!important;border-color:var(--accent)!important;border-radius:10px!important}
+
+/* Couleurs des sections */
+body[data-teinte=accent] .suite-main>section.bloc:nth-of-type(3n+2):not(#reponse):not(#lieu){background:var(--accent)!important;color:var(--carte)!important}
+body[data-teinte=accent] .suite-main>section.bloc:nth-of-type(3n+2):not(#reponse):not(#lieu) :is(h2,p,b,span,.sous,.titre-tenue,label){color:var(--carte)!important}
+body[data-teinte=sombre] .suite-main>section.bloc:nth-of-type(4n+3):not(#reponse):not(#lieu){background:var(--encre)!important;color:var(--carte)!important}
+body[data-teinte=sombre] .suite-main>section.bloc:nth-of-type(4n+3):not(#reponse):not(#lieu) :is(h2,p,b,span,.sous,.titre-tenue,label){color:var(--carte)!important}
+body[data-teinte=papier] .suite-main>section.bloc:nth-of-type(odd){background:linear-gradient(color-mix(in srgb,var(--carte) 70%,transparent),color-mix(in srgb,var(--carte) 70%,transparent)),url('fond.jpg') center/cover!important}
+:is(body[data-teinte=accent],body[data-teinte=sombre]) .suite-main>section.bloc .bouton:not(.plein){color:inherit!important;border-color:currentColor!important}
+.suite-couv:has(.collier){align-content:center!important;padding-bottom:90px!important}
