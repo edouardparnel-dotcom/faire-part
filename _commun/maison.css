@@ -277,3 +277,6 @@ section{padding:104px 0;border-top:1px solid var(--filet)}
 .tableau-partenaires th,.tableau-partenaires td{padding:14px 12px;border-bottom:1px solid var(--filet,#d9cfbf);text-align:left}
 .tableau-partenaires th{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:var(--doux,#6b6359)}
 @media (max-width:560px){.tableau-partenaires{font-size:13px}.tableau-partenaires th,.tableau-partenaires td{padding:10px 6px}}
+
+.formule .lancement{font-size:12px;letter-spacing:.04em;color:var(--accent,#9a7b4f);margin:-6px 0 12px}
+.lancement-accueil{margin-top:14px;font-size:13px}.lancement-accueil a{color:var(--accent,#9a7b4f);text-decoration:underline;text-underline-offset:3px}

@@ -2,6 +2,17 @@
  "devise": "eur",
  "mariage": {
   "formules": {
+   "faire-part": {
+    "nom": "Faire-part",
+    "prix": 79,
+    "inclus": [],
+    "lancement": {
+     "prix": 39,
+     "jusqu": "2026-12-01T00:00:00+01:00",
+     "places": 50,
+     "texte": "39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €"
+    }
+   },
    "essentiel": {
     "nom": "Essentiel",
     "prix": 390,

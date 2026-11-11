@@ -46,7 +46,11 @@ OPTIONS_EVENEMENT = [
 ]
 
 # Formules : nom, prix, options incluses, lignes affichées
+# Prix de lancement de la formule Faire-part : 39 € pour les 50 premiers couples, jusqu'au 30 novembre 2026 inclus, puis 79 €.
+# On annonce le prix à venir (« puis 79 € »), jamais un faux prix barré : la formule n'a encore jamais été vendue 79 €.
+LANCEMENT = dict(prix=39, jusqu='2026-12-01T00:00:00+01:00', places=50, texte='39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €')
 FORMULES_MARIAGE = [
+  ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à l'espace complet à tout moment, en payant la différence"]),
   ('Essentiel', 390, [], ["Votre espace complet : site du mariage, réponses, invités, plan de table, budget, planning", "Une invitation de la collection, à vos couleurs", "Deux langues"]),
   ('Signature', 890, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue'], ["Tout l'Essentiel", "Save-the-date et invitations par cérémonie", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Trois langues"]),
   ('Prestige', 1690, ['savethedate', 'ceremonies', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'etranger', 'guide', 'merci', 'deroule', 'musique'], ["Tout le Signature", "Direct privé pour la famille au pays", "Invités venus de l'étranger et guide de la cérémonie", "Déroulé en direct et remerciements personnalisés", "Musique au choix, site protégé par code et à votre nom de domaine", "Ouverture retravaillée selon votre histoire"]),
@@ -311,8 +315,8 @@ def page(site, modeles):
     phares = [o for o in site['options'] if o[0] in ('savethedate', 'qr', 'direct', 'murphoto', 'album')][:4]
     selection = '\n'.join(f"""        <div class="phare-opt revele"><span class="etq">{e(mo)}</span><h4>{e(n)}</h4><p>{e(t)}</p><span class="tarif">{prix(p)}</span></div>"""
                           for k, mo, n, t, p, d in phares)
-    formules = '\n'.join(f"""      <div class="formule{' phare' if k == 1 else ''} revele"><h3>{e(n)}</h3><p class="prix">{prix(p)}</p>
-        <ul>{''.join(f'<li>{e(x)}</li>' for x in lst)}</ul><a class="btn{'' if k == 1 else ' clair'}" href="{creer}&amp;formule={k}" style="margin-top:auto">Choisir {e(n)}</a></div>""" for k, (n, p, inc, lst) in enumerate(site['formules']))
+    formules = '\n'.join(f"""      <div class="formule{' phare' if n == 'Signature' else ''} revele"><h3>{e(n)}</h3><p class="prix">{prix(LANCEMENT['prix']) if n == 'Faire-part' else prix(p)}</p>{f'<p class="lancement">Prix de lancement : {e(LANCEMENT["texte"])}</p>' if n == 'Faire-part' else ''}
+        <ul>{''.join(f'<li>{e(x)}</li>' for x in lst)}</ul><a class="btn{'' if n == 'Signature' else ' clair'}" href="{creer}&amp;formule={k}" style="margin-top:auto">Choisir {e(n)}</a></div>""" for k, (n, p, inc, lst) in enumerate(site['formules']))
     essai = f'<a class="btn clair" href="{pre}{site["essai"][0]}">{e(site["essai"][1])}</a>' if site['essai'] else f'<a class="btn clair" href="#collections">Voir les collections</a>'
     nav_essai = f'<a href="{pre}espace/#tableau">Démonstration</a>' if site['cle'] == 'mariage' else ''
 
@@ -330,6 +334,7 @@ def page(site, modeles):
       <p>{e(site['sous'])}</p>
       <div class="actions"><a class="btn" href="{creer}">{e(site['cta'])}</a>{essai}</div>
       <p class="rassure">Gratuit jusqu'à la publication : vous préparez tout, vous ne payez qu'au moment d'envoyer le lien à vos invités.</p>
+      {f'<p class="lancement-accueil"><a href="#formules">Lancement : le faire-part animé seul, {e(LANCEMENT["texte"])}.</a></p>' if site['cle'] == 'mariage' else ''}
     </div>
     <div class="arche revele">{f'<video src="{pre}{site["video"]}" poster="{pre}{site["image"]}" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>' if site.get('video') else f'<img src="{pre}{site["image"]}" alt="" fetchpriority="high">'}</div>
   </div>
@@ -357,7 +362,7 @@ def page(site, modeles):
   </div></section>
 
   <section class="tarifs" id="formules"><div class="conteneur">
-    <div class="titre-section revele"><span class="etq">Formules</span><h2>Trois formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
+    <div class="titre-section revele"><span class="etq">Formules</span><h2>{'Quatre' if len(site['formules']) == 4 else 'Trois'} formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
     <div class="formules">
 {formules}
     </div>
@@ -417,7 +422,7 @@ def page_creer(modeles):
                     + [dict(slug=t['id'], nom=t['nom'], culture=t['culture'], a='', b='', titre='', img=f"../collections/apercus/{t['id']}-fp.jpg", voir=f"../app/fp.html?demo={t['id']}", moteur=True)
                        for t in THEMES if t['evt'] == s['cle']],
             exemple={'mariage': 'Awa et Thomas', 'anniversaire': 'Les 40 ans de Nadia', 'bapteme': 'Gabriel', 'gender': 'Fille ou garçon ?', 'naissance': 'Léo'}[s['cle']],
-            formules=[dict(nom=n, prix=p, inclus=inc, lignes=l) for n, p, inc, l in s['formules']],
+            formules=[dict(nom=n, prix=p, inclus=inc, lignes=l, **({'lancement': LANCEMENT} if n == 'Faire-part' else {})) for n, p, inc, l in s['formules']],
             options=[dict(cle=k, moment=mo, nom=n, texte=t, prix=p if isinstance(p, int) else 0, devis=p == 'devis') for k, mo, n, t, p, d in s['options'] if p is not None])
     js = json.dumps(donnees, ensure_ascii=False)
     return tete(site, '../', f'{MARQUE} · Créer', "Composez votre espace : collection, formule, options, et l'aperçu de votre invitation.") + """
@@ -478,13 +483,14 @@ def page_creer(modeles):
 <script>
 const D = """ + js + """;
 const q = new URLSearchParams(location.search);
-let evt = D[q.get('evt')] ? q.get('evt') : 'mariage', choix = { modele: 0, formule: +q.get('formule') || 0, options: new Set() };
+let evt = D[q.get('evt')] ? q.get('evt') : 'mariage', choix = { modele: 0, formule: q.has('formule') ? +q.get('formule') : -1, options: new Set() };
+const prixF = f => f.lancement && Date.now() < Date.parse(f.lancement.jusqu) ? f.lancement.prix : f.prix;
 const $ = id => document.getElementById(id), eur = n => n.toLocaleString('fr-FR') + ' €';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 function changerEvt(k) {
   evt = k; const E = D[evt]; choix.modele = 0; choix.options.clear();
-  if (choix.formule >= E.formules.length) choix.formule = 0;
+  if (choix.formule < 0 || choix.formule >= E.formules.length) choix.formule = Math.max(0, E.formules.findIndex(f => f.nom === 'Signature'));
   document.documentElement.style.setProperty('--accent', E.accent);
   $('evt-nom').textContent = E.nom; $('retour').href = E.retour; $('h-objet').textContent = evt === 'mariage' ? 'espace' : evt === 'naissance' ? 'faire-part' : 'invitation';
   $('evts').innerHTML = Object.entries(D).map(([c, x]) => `<a href="?evt=${c}" data-evt="${c}" ${c === evt ? 'class="rdv"' : ''}>${esc(x.nom)}</a>`).join('');
@@ -495,7 +501,7 @@ function changerEvt(k) {
 function rendre() {
   const E = D[evt], F = E.formules[choix.formule], m = E.modeles[choix.modele];
   $('modeles').innerHTML = E.modeles.map((x, i) => `<button type="button" class="vignette ${i === choix.modele ? 'choisie' : ''}" data-modele="${i}"><img src="${x.img}" alt="" loading="lazy"><span>${esc(x.nom)}</span></button>`).join('');
-  $('formules').innerHTML = E.formules.map((f, i) => `<button type="button" class="choix-formule ${i === choix.formule ? 'choisie' : ''}" data-formule="${i}"><b>${esc(f.nom)}</b><span>${eur(f.prix)}</span><small>${esc(f.lignes.slice(0, 3).join(' · '))}</small></button>`).join('');
+  $('formules').innerHTML = E.formules.map((f, i) => `<button type="button" class="choix-formule ${i === choix.formule ? 'choisie' : ''}" data-formule="${i}"><b>${esc(f.nom)}</b><span>${eur(prixF(f))}${prixF(f) < f.prix ? ` <em class="lancement">puis ${eur(f.prix)}</em>` : ''}</span><small>${esc(f.lignes.slice(0, 3).join(' · '))}</small></button>`).join('');
   const moments = [...new Set(E.options.map(o => o.moment))];
   $('options').innerHTML = moments.map(mo => `<h3 class="moment-titre">${esc(mo)}</h3>` + E.options.filter(o => o.moment === mo).map(o => {
     const inclus = F.inclus.includes(o.cle), coche = inclus || choix.options.has(o.cle);
@@ -518,9 +524,9 @@ function rendre() {
   }
   // Total
   const extras = E.options.filter(o => choix.options.has(o.cle) && !F.inclus.includes(o.cle));
-  $('t-formule').textContent = 'Formule ' + F.nom; $('t-formule-prix').textContent = eur(F.prix);
+  $('t-formule').textContent = 'Formule ' + F.nom + (prixF(F) < F.prix ? ' (prix de lancement)' : ''); $('t-formule-prix').textContent = eur(prixF(F));
   $('t-options').innerHTML = extras.map(o => `<div class="ligne-total"><span>${esc(o.nom)}</span><b>+ ${eur(o.prix)}</b></div>`).join('');
-  const brut = F.prix + extras.reduce((s, o) => s + o.prix, 0), code = window.codePartenaire ? window.codePartenaire() : '';
+  const brut = prixF(F) + extras.reduce((s, o) => s + o.prix, 0), code = window.codePartenaire ? window.codePartenaire() : '';
   if ($('f-partenaire') && document.activeElement !== $('f-partenaire')) $('f-partenaire').value = code;
   $('t-remise').hidden = !code; $('t-remise-nom').textContent = `Remise partenaire ${code}`; $('t-remise-val').textContent = '− ' + eur(Math.round(brut * 0.1));
   $('t-total').textContent = eur(code ? brut - Math.round(brut * 0.1) : brut);
@@ -670,7 +676,7 @@ def tarifs():
     def site(cle):
         s = next(x for x in SITES if x['cle'] == cle)
         return dict(
-            formules={n.lower(): dict(nom=n, prix=p, inclus=inc) for n, p, inc, _ in s['formules']},
+            formules={n.lower(): dict(nom=n, prix=p, inclus=inc, **({'lancement': LANCEMENT} if n == 'Faire-part' else {})) for n, p, inc, _ in s['formules']},
             options={k: dict(nom=n, prix=p) for k, mo, n, t, p, d in s['options'] if isinstance(p, int)})
     return dict(devise='eur', mariage=site('mariage'), evenement=site('anniversaire'))
 

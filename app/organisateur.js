@@ -23,6 +23,10 @@ const lienInvite = t => new URL(`fp.html?e=${encodeURIComponent(E)}&g=${encodeUR
 const lienPage = t => new URL(`invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
 const lienEquipe = c => new URL(`organisateur.html?rejoindre=${encodeURIComponent(E)}&code=${encodeURIComponent(c)}`, location.href).href;
 const a = o => evt?.options?.includes(o);
+// Prix de lancement (formule Faire-part) : affiché ici, décidé par le serveur (date et nombre de places).
+const prixF = f => f.lancement && Date.now() < Date.parse(f.lancement.jusqu) ? f.lancement.prix : f.prix;
+// Formule Faire-part : l'invitation, les invités, les envois et les réponses ; le reste de l'espace s'ouvre en passant à une formule complète.
+const FAIRE_PART = ['accueil', 'invites', 'envois', 'paiement', 'equipe', 'reglages'];
 const jours = d => Math.ceil((new Date(d) - Date.now()) / 864e5);
 const aujourdhui = () => new Date().toISOString().slice(0, 10);
 
@@ -114,11 +118,12 @@ function rendre() {
     budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', cadeaux: 'Liste et cagnotte', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
     ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
     paiement: evt.formule === 'essai' ? 'Publier' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
+  if (evt.formule === 'faire-part') { for (const k of Object.keys(onglets)) if (!FAIRE_PART.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à l\'espace complet'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))} · ${esc(evt.lieu)}</p></div>
-    <div class="puces"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser le faire-part</a><a class="btn petit clair" href="fp.html?e=${E}&amp;f=site" target="_blank" rel="noopener">Voir le site</a>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
+    <div class="puces"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser le faire-part</a><a class="btn petit clair" href="imprimer.html?e=${E}" target="_blank" rel="noopener">Version à imprimer</a><a class="btn petit clair" href="fp.html?e=${E}&amp;f=site" target="_blank" rel="noopener">Voir le site</a>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
     ${onglet === 'invites' ? `<div class="app-grille">
       <div class="app-stat"><b>${invites.length}</b><span>Invitations</span></div>
       <div class="app-stat"><b>${repondu}</b><span>Ont répondu</span></div>
@@ -379,12 +384,12 @@ const VUES = {
     const cible = choixFormule && g.formules[choixFormule] && (!actuelle || g.formules[choixFormule].prix >= g.formules[actuelle].prix) ? choixFormule : actuelle || 'signature';
     const acquises = new Set([...(evt.options || []), ...g.formules[cible].inclus]);
     const nouvelles = [...choixOptions].filter(o => g.options[o] && !acquises.has(o));
-    const total = (actuelle ? g.formules[cible].prix - g.formules[actuelle].prix : g.formules[cible].prix) + nouvelles.reduce((s, o) => s + g.options[o].prix, 0);
+    const total = (actuelle ? g.formules[cible].prix - g.formules[actuelle].prix : prixF(g.formules[cible])) + nouvelles.reduce((s, o) => s + g.options[o].prix, 0);
     const payes = paiements.filter(p => p.etat === 'paye');
     const codeP = window.codePartenaire ? window.codePartenaire() : '', remise = codeP ? Math.round(Math.max(0, total) * 0.1) : 0;
     return `${msgPublier && !actuelle ? `<div class="app-carte bandeau-paiement ok">${esc(msgPublier)}</div>` : ''}<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Publiez votre invitation'}</h2>
         <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Tout est gratuit tant que vous préparez : invitation, site, invités, plan de table, budget. Vous payez au moment de publier, pour envoyer le lien à vos invités.'}</p>
-        <div class="choix-formules">${Object.entries(g.formules).map(([k, f]) => { const bloquee = actuelle && f.prix < g.formules[actuelle].prix; return `<label class="formule-paie ${k === cible ? 'choisie' : ''} ${bloquee ? 'bloquee' : ''}"><input type="radio" name="formule" value="${k}" data-choix-formule="${k}" ${k === cible ? 'checked' : ''} ${bloquee ? 'disabled' : ''}><b>${esc(f.nom)}</b><span>${euros(f.prix)}</span><small>${k === actuelle ? 'Votre formule' : actuelle && !bloquee ? `+ ${euros(f.prix - g.formules[actuelle].prix)}` : `${f.inclus.length} option${f.inclus.length > 1 ? 's' : ''} incluse${f.inclus.length > 1 ? 's' : ''}`}</small></label>`; }).join('')}</div></div>
+        <div class="choix-formules">${Object.entries(g.formules).map(([k, f]) => { const bloquee = actuelle && f.prix < g.formules[actuelle].prix; return `<label class="formule-paie ${k === cible ? 'choisie' : ''} ${bloquee ? 'bloquee' : ''}"><input type="radio" name="formule" value="${k}" data-choix-formule="${k}" ${k === cible ? 'checked' : ''} ${bloquee ? 'disabled' : ''}><b>${esc(f.nom)}</b><span>${euros(actuelle ? f.prix : prixF(f))}</span>${!actuelle && prixF(f) < f.prix ? `<small>Prix de lancement, puis ${euros(f.prix)}</small>` : ''}<small>${k === actuelle ? 'Votre formule' : actuelle && !bloquee ? `+ ${euros(f.prix - g.formules[actuelle].prix)}` : `${f.inclus.length} option${f.inclus.length > 1 ? 's' : ''} incluse${f.inclus.length > 1 ? 's' : ''}`}</small></label>`; }).join('')}</div></div>
       <div class="app-carte"><h2>Options à l'unité</h2><div class="options-paie">${Object.entries(g.options).map(([k, o]) => { const deja = acquises.has(k); return `<label class="coche ${deja ? 'deja' : ''}"><input type="checkbox" data-choix-option="${k}" ${deja || choixOptions.has(k) ? 'checked' : ''} ${deja ? 'disabled' : ''}><span>${esc(o.nom)}</span><em>${deja ? ((evt.options || []).includes(k) ? 'Active' : 'Incluse') : '+ ' + euros(o.prix)}</em></label>`; }).join('')}</div></div>
       <div class="app-carte total-paie">${remise ? `<div class="ligne-conseil"><span>Remise partenaire ${esc(codeP)}</span><b>− ${euros(remise)}</b></div>` : ''}<div class="ligne-conseil"><span>Total à payer</span><b>${euros(Math.max(0, total) - remise)}</b></div>
         ${proprio ? `<label class="coche"><input type="checkbox" id="c-cgv-paie"> J'accepte les <a href="../cgv/index.html" target="_blank" rel="noopener">conditions générales de vente</a>.</label>

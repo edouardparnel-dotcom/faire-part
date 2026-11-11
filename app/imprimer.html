@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maison Vivat · Version à imprimer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* Carte A5 à imprimer ou à enregistrer en PDF : l'ambiance de la collection en haut, les informations du jour en dessous. */
+@page{size:A5 portrait;margin:0}
+*{box-sizing:border-box}
+body{margin:0;background:#EDE7DD;font-family:'Inter',system-ui,sans-serif;color:#2B2620}
+.barre{max-width:560px;margin:24px auto 16px;padding:0 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.barre p{margin:0;font-size:13px;color:#6B6359}
+.barre button{padding:12px 20px;border:0;background:#2B2620;color:#fff;font:500 12px/1 'Inter';letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.carte{width:148mm;height:210mm;margin:0 auto 32px;background:#FBF8F2;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px -24px rgba(0,0,0,.4)}
+.visuel{height:92mm;background:#E7DED0 center/cover no-repeat}
+.texte{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10mm 14mm;gap:3mm}
+.chapeau{font-size:8.5pt;letter-spacing:.32em;text-transform:uppercase;color:#8A7A62}
+.noms{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30pt;line-height:1.05;margin:2mm 0}
+.date{font-family:'Cormorant Garamond',serif;font-size:15pt;letter-spacing:.06em}
+.lieu{font-size:9pt;letter-spacing:.2em;text-transform:uppercase;color:#6B6359}
+.filet{width:30mm;height:1px;background:#B98A3E;margin:2mm 0}
+.reponse{font-size:8.5pt;color:#6B6359;line-height:1.5}
+.erreur{max-width:560px;margin:60px auto;padding:0 16px;text-align:center}
+@media print{body{background:#fff}.barre{display:none}.carte{margin:0;box-shadow:none}}
+@media (max-width:600px){.carte{width:100%;height:auto;aspect-ratio:148/210}}
+</style>
+</head>
+<body>
+<div class="barre" id="barre" hidden><p>Format A5. Choisissez « Enregistrer au format PDF » pour garder le fichier, ou imprimez directement.</p><button type="button" onclick="print()">Imprimer ou enregistrer en PDF</button></div>
+<main id="vue"><p class="erreur">Chargement…</p></main>
+<script type="module">
+import { db, $, esc, dateLongue, heure, majuscule, exigerOrganisateur } from './commun.js?v=4';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+const E = new URLSearchParams(location.search).get('e');
+exigerOrganisateur($('#vue'), async () => {
+  const s = E ? await getDoc(doc(db, 'events', E)).catch(() => null) : null;
+  if (!s?.exists()) { $('#vue').innerHTML = '<p class="erreur">Événement introuvable.</p>'; return; }
+  const e = s.data(), modele = /^[a-z-]{2,30}$/.test(e.modele || '') ? e.modele : '';
+  const visuel = modele ? `background-image:url('../${modele}/photo.jpg')` : '';
+  const chapeau = e.type === 'mariage' ? 'Ont la joie de vous inviter à leur mariage' : 'Vous invitent';
+  $('#barre').hidden = false;
+  $('#vue').innerHTML = `<article class="carte"><div class="visuel" style="${visuel}"></div><div class="texte">
+    <span class="chapeau">${esc(chapeau)}</span><h1 class="noms">${esc(e.titre)}</h1><div class="filet"></div>
+    <p class="date">${esc(majuscule(dateLongue(e.date)))}${heure(e.date) ? ' · ' + esc(heure(e.date)) : ''}</p>
+    <p class="lieu">${esc(e.lieu)}</p>
+    <p class="reponse">Merci de répondre avec le lien personnel reçu par message.</p></div></article>`;
+});
+</script>
+</body>
+</html>
