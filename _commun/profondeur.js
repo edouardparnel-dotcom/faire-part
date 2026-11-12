@@ -5,12 +5,15 @@
 //   images attendues : <base>-1.webp … <base>-N.webp (nettes) et <base>-1-flou.webp … (premier plan)
 // Avec data-profondeur-sequence="decor-3d/lanterne-seq" : bandes de vues 3D (<seq>.webp, <seq>-flou.webp) ; chaque objet
 // prend la vue de sa hauteur à l'écran : vu d'au-dessus en bas, de face au milieu, d'en dessous en haut.
+// Avec data-profondeur-mouvement="vol" (mouettes de Marine) : les objets traversent l'écran à l'horizontale, dans les
+// deux sens, en ondulant ; la bande de vues est un cycle (battement d'ailes) joué en continu.
 (function () {
   const b = document.body, base = b.dataset.profondeur;
   if (!base || window.__profondeur) return; window.__profondeur = true;
   const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nb = parseInt(b.dataset.profondeurN, 10) || 1;
   const seq = b.dataset.profondeurSequence;
+  const vol = b.dataset.profondeurMouvement === 'vol';
   const bandes = {};   // nette / floue : { url, n (nombre de vues), ratio (hauteur / largeur d'une vue) }
 
   const st = document.createElement('style');
@@ -19,7 +22,9 @@
 .prof img,.prof i{position:absolute;left:0;top:0;max-width:none;will-change:transform;user-select:none;background-repeat:no-repeat}
 .prof-loin :is(img,i){opacity:.5;filter:blur(1px)}
 .prof-milieu :is(img,i){opacity:.92;filter:drop-shadow(0 0 18px rgba(255,140,40,.45))}
-.prof-devant :is(img,i){opacity:.78}`;
+.prof-devant :is(img,i){opacity:.78}` + (vol ? `
+.prof-loin :is(img,i){opacity:.6;filter:blur(.6px)}
+.prof-milieu :is(img,i){opacity:.95;filter:drop-shadow(0 6px 8px rgba(30,50,80,.18))}` : '');
   document.head.appendChild(st);
 
   const hasard = (a, z) => a + Math.random() * (z - a);
@@ -55,7 +60,15 @@
         // tous les calques sur toute la largeur, réparties par tranches pour ne pas s'agglutiner ;
         // le premier plan passe aussi devant le texte (flou et légèrement transparent, il reste lisible)
         const x = (j / n + hasard(0, 1 / n)) * (W + t * .6) - t * .8;
-        c.objets.push({ im, t, x, y0: hasard(0, H + t * 2), v: hasard(c.v[0], c.v[1]) * echelle, ph: hasard(0, 6.28), rot: bd ? 0 : hasard(-6, 6), bd, vue: -1 });
+        const o = { im, t, x, y0: hasard(0, H + t * 2), v: hasard(c.v[0], c.v[1]) * echelle, ph: hasard(0, 6.28), rot: bd ? 0 : hasard(-6, 6), bd, vue: -1 };
+        if (vol) {
+          // en vol : une hauteur par tranche d'écran, un sens au hasard, trois à quatre fois plus vite qu'une lanterne
+          o.y0 = (j / n + hasard(.1, .9) / n) * H * .85;
+          o.sens = Math.random() < .5 ? 1 : -1;
+          o.v *= 3.5;
+          o.x = hasard(0, W);
+        }
+        c.objets.push(o);
         c.el.appendChild(im);
       }
     }
@@ -65,6 +78,19 @@
   function rendu(temps) {
     const s = temps / 1000, sy = scrollY;
     for (const c of calques) for (const o of c.objets) {
+      if (vol) {
+        const large = W + o.t * 2;
+        const x = (((o.x + s * o.v * o.sens) % large) + large) % large - o.t;
+        const hy = H + o.t * 2;
+        const y = (((o.y0 - sy * c.k + Math.sin(s * .7 + o.ph) * c.amp * 1.5) % hy) + hy) % hy - o.t;
+        o.im.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scaleX(${o.sens})`;
+        if (o.bd) {
+          // battement d'ailes : la bande est un cycle, ~12 vues par seconde (plus lent au loin)
+          const vue = Math.floor(s * (c.nom === 'loin' ? 9 : 12) + o.ph * 4) % o.bd.n;
+          if (vue !== o.vue) { o.vue = vue; o.im.style.backgroundPosition = `${(vue / (o.bd.n - 1) * 100).toFixed(3)}% 0`; }
+        }
+        continue;
+      }
       const tour = H + o.t * 2.4;
       const y = (((o.y0 - s * o.v - sy * c.k) % tour) + tour) % tour - o.t * 1.4;
       const x = o.x + Math.sin(s * .25 + o.ph) * c.amp + px * c.k * 40;

@@ -114,11 +114,20 @@
 .battant .dos{background:var(--dos,#d8cfc0)!important;filter:brightness(.82);box-shadow:inset 0 0 18px rgba(0,0,0,.22)}
 .battant .tranche{background:var(--dos,#d8cfc0)!important;filter:brightness(.62)}
 
-/* Ouverture en vidéo 3D : plein écran sur téléphone ; sur grand écran, la vidéo entière au centre sur son propre décor flouté */
+/* Ouverture en vidéo 3D : la vidéo toujours entière (la carte n'est jamais rognée), complétée par son propre décor flouté */
 .ouv-film-cadre{position:absolute;inset:0;overflow:hidden;background:#1c2138}
 .ouv-film-fond{position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);max-width:none;object-fit:cover;filter:blur(28px) brightness(.7)}
-.ouv-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:pointer}
-@media (min-aspect-ratio:3/4){.ouv-film{object-fit:contain}}
+.ouv-film{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;cursor:pointer}
 .ouverture.ouv-video{transition:opacity 1s ease}
 .ouverture.ouv-video .consigne{z-index:2}
 .ouverture.en-cours .consigne{animation:none;opacity:0;visibility:hidden}
+/* Prénoms posés sur la carte vierge de la vidéo : mêmes proportions que la carte (100cqh = sa hauteur), apparition comme de l'encre */
+.ouv-carte{position:fixed;z-index:1;container-type:size;pointer-events:none;opacity:0;filter:blur(6px);transition:opacity 1.3s ease,filter 1.3s ease;
+  font-family:var(--f-titre);color:var(--accent);text-align:center}
+.ouv-carte.visible{opacity:1;filter:none}
+.ouv-carte>*{position:absolute;left:0;right:0;margin:0;line-height:1;white-space:nowrap}
+.ouv-carte b{font-weight:500;font-size:16.7cqh;letter-spacing:.06em}
+.ouv-carte b:first-of-type{top:27.5%}
+.ouv-carte i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:12.4cqh;top:45.6%}
+.ouv-carte b:last-of-type{top:56.5%}
+.ouv-carte small{font-family:var(--f-texte);font-size:3.9cqh;letter-spacing:.37em;color:var(--doux);top:78.6%}

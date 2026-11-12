@@ -31,6 +31,28 @@
   }
   // Ouverture en vidéo 3D (Lanternes) : le geste lance la vidéo, la page apparaît à la fin. Sans lecture possible, on ouvre aussitôt.
   const film = ouv.querySelector('video.ouv-film');
+  // La carte de la vidéo est vierge : les prénoms et la date du couple s'y posent quand elle s'immobilise face à l'invité.
+  // data-cadre = gauche, haut, droite, bas de la carte dans l'image de la vidéo (0 à 1) ; data-des = seconde où elle est immobile.
+  const texte = ouv.querySelector('.ouv-carte');
+  if (film && texte) {
+    const [g, h, d, b] = texte.dataset.cadre.split(',').map(Number);
+    const cale = () => {
+      const vw = film.videoWidth || 720, vh = film.videoHeight || 1280;
+      const r = film.getBoundingClientRect();
+      const k = (getComputedStyle(film).objectFit === 'contain' ? Math.min : Math.max)(r.width / vw, r.height / vh);
+      const x0 = r.left + (r.width - vw * k) / 2, y0 = r.top + (r.height - vh * k) / 2;
+      Object.assign(texte.style, { left: x0 + g * vw * k + 'px', top: y0 + h * vh * k + 'px', width: (d - g) * vw * k + 'px', height: (b - h) * vh * k + 'px' });
+      // prénom long : on réduit pour qu'il tienne dans la carte
+      texte.querySelectorAll('b').forEach(el => {
+        el.style.fontSize = '';
+        const max = texte.clientWidth * .86;
+        if (el.scrollWidth > max) el.style.fontSize = parseFloat(getComputedStyle(el).fontSize) * max / el.scrollWidth + 'px';
+      });
+    };
+    cale(); film.addEventListener('loadedmetadata', cale); addEventListener('resize', cale);
+    const des = parseFloat(texte.dataset.des) || 7.2;
+    film.addEventListener('timeupdate', () => { if (film.currentTime >= des) { cale(); texte.classList.add('visible'); } });
+  }
   function lancer() {
     if (!film) return ouvrir();
     if (film.dataset.lance) return;
