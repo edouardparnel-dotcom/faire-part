@@ -64,7 +64,7 @@
 .enveloppe::before{content:"";position:absolute;left:6%;right:6%;bottom:-7%;height:16%;z-index:-1;pointer-events:none;
   background:radial-gradient(closest-side,rgba(0,0,0,.42),rgba(0,0,0,.18) 55%,transparent);filter:blur(6px);transition:transform 1.2s ease .5s,opacity 1.2s ease .5s}
 .ouvert .enveloppe::before{transform:scaleX(.92);opacity:.75}
-.env-dos{box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.env-dos{filter:brightness(.74) saturate(.85) drop-shadow(0 1px 1.5px rgba(0,0,0,.25))}   /* ombre qui suit la forme de l'enveloppe (une ombre de boîte dessinait un cadre autour des enveloppes aux bords arrondis) */
 /* Intérieur de la poche : une ombre en haut, visible dès que le rabat se lève */
 .env-dos::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.38),rgba(0,0,0,0) 38%);opacity:0;transition:opacity .6s ease .8s}
 .ouvert .env-dos::after{opacity:1}
