@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salma &amp; Mehdi — Livre d&#x27;or (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/vivant.css?v=16">
+<link rel="stylesheet" href="../_commun/trames.css?v=46">
+<script src="../_commun/vivant.js?v=25" defer></script>
+<style>
+:root{--fond:#F7EFEC;--carte:#FFFBF8;--encre:#3B2A2E;--doux:#7D6A6C;--or1:#B8904A;--or2:#E8CF9A;--or3:#8A6A2E;--accent:#1F5E4F;
+  --f-titre:'Playfair Display',serif;--f-script:'Great Vibes',cursive;--f-texte:'Montserrat',system-ui,sans-serif;--decor:linear-gradient(rgba(255,255,255,.25),rgba(255,255,255,.25)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#3B2A2E;}
+
+
+</style>
+</head>
+<body data-blocs="bandes" data-titres="capitales" data-images="deborde" data-revele="monte" data-paral="derive" data-cadre="polaroid" data-prog="frise" data-lieu="classique" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="fleche" data-teinte="accent" data-collection="takchita" data-particules="or" data-trame="centree">
+<nav class="suite-nav" aria-label="La collection Takchita"><a class="suite-marque" href="index.html">✦ Takchita</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html" aria-current=page>Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><img class="deco-haut" src="haut.webp" alt="" width="1800" height="900"><p class="chapeau">Salma &amp; Mehdi</p><h1>Le livre d'or</h1>
+  <p class="intro">Un mot, un message vocal ou une vidéo : vos souvenirs, à réécouter des années plus tard.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : votre message s’enregistrerait ici'">Laisser un message</a></header>
+<main class="suite-main"><div class="mots"><article class="mot apparait"><p>« Que votre maison soit toujours pleine de rires, comme ce soir. Je vous aime fort. »</p><span class="script">Tante Odile</span></article><article class="mot apparait"><p>« Quelle fête ! On n&#x27;oubliera jamais l&#x27;entrée des mariés. Longue vie à vous deux ! »</p><span class="script">Les cousins de Bordeaux</span><em class=media>▶ Message vocal · 0:42</em></article><article class="mot apparait"><p>« J&#x27;ai dansé comme à vingt ans. Merci de m&#x27;avoir donné cette joie. »</p><span class="script">Mamie Jeanne</span></article><article class="mot apparait"><p>« Votre histoire nous émeut depuis le premier jour. Que le meilleur reste à venir. »</p><span class="script">Karim et Sarah</span></article><article class="mot apparait"><p>« On vous a vus tomber amoureux, on vous voit vous marier : la boucle est bouclée. »</p><span class="script">Les témoins</span><em class=media>▶ Vidéo · 0:31</em></article><article class="mot apparait"><p>« Merci pour ce moment hors du temps. Le dîner était une merveille. »</p><span class="script">Paul, le collègue</span></article></div></main>
+<footer class="suite-pied"><p class="script">Salma &amp; Mehdi</p><p>Merci de faire partie de notre histoire</p>
+<small>Démonstration de la collection Takchita · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-06-19T18:00:00+02:00'; document.body.dataset.evenement = 'Mariage Salma & Mehdi'; document.body.dataset.ville = 'Fès';
+document.querySelectorAll('[data-offrir]').forEach(b => b.addEventListener('click', () => { b.outerHTML = '<em class="a-vous">Réservé par vous ✓</em>'; }));
+document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); b.textContent = 'Démonstration : ouvre la cagnotte des mariés'; }));
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>

@@ -455,6 +455,21 @@
 "nom": "Karakou"
 },
 {
+"src": "../takchita/lieu.webp",
+"cat": "Lieux",
+"nom": "Takchita"
+},
+{
+"src": "../takchita/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Takchita"
+},
+{
+"src": "../takchita/photo.jpg",
+"cat": "Ambiances",
+"nom": "Takchita"
+},
+{
 "src": "../adinkra/lieu.webp",
 "cat": "Lieux",
 "nom": "Adinkra"
