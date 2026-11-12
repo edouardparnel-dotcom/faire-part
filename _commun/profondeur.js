@@ -19,7 +19,7 @@
 .prof img,.prof i{position:absolute;left:0;top:0;max-width:none;will-change:transform;user-select:none;background-repeat:no-repeat}
 .prof-loin :is(img,i){opacity:.5;filter:blur(1px)}
 .prof-milieu :is(img,i){opacity:.92;filter:drop-shadow(0 0 18px rgba(255,140,40,.45))}
-.prof-devant :is(img,i){opacity:.85}`;
+.prof-devant :is(img,i){opacity:.78}`;
   document.head.appendChild(st);
 
   const hasard = (a, z) => a + Math.random() * (z - a);
@@ -56,11 +56,12 @@
           im.src = `${base}-${1 + (i % nb)}${c.flou ? '-flou' : ''}.webp`;
           im.style.width = t + 'px';
         }
-        // loin : partout ; milieu : dans les marges dès qu'elles sont assez larges ; devant : marges ou à demi hors de l'écran
+        // loin : partout ; milieu : dans les marges dès qu'elles sont assez larges ;
+        // devant : partout, elles passent aussi devant le texte (floues et légèrement transparentes, il reste lisible)
         let x;
-        if (c.nom === 'loin' || (!c.flou && marge < t * 1.2)) x = hasard(-.05, .95) * W;
-        else if (marge > t * .7) x = j % 2 ? hasard(W - marge + 10, W - t * .75) : hasard(t * -.25, marge - t * 1.1);
-        else x = j % 2 ? W - t * hasard(.35, .55) : -t * hasard(.45, .65);
+        if (c.flou) x = (j / n + hasard(0, 1 / n)) * (W + t * .6) - t * .8;
+        else if (c.nom === 'loin' || marge < t * 1.2) x = hasard(-.05, .95) * W;
+        else x = j % 2 ? hasard(W - marge + 10, W - t * .75) : hasard(t * -.25, marge - t * 1.1);
         c.objets.push({ im, t, x, y0: hasard(0, H + t * 2), v: hasard(c.v[0], c.v[1]) * echelle, ph: hasard(0, 6.28), rot: bd ? 0 : hasard(-6, 6), bd, vue: -1 });
         c.el.appendChild(im);
       }
