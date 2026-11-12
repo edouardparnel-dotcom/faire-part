@@ -440,6 +440,21 @@
 "nom": "Kanaval"
 },
 {
+"src": "../karakou/lieu.webp",
+"cat": "Lieux",
+"nom": "Karakou"
+},
+{
+"src": "../karakou/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Karakou"
+},
+{
+"src": "../karakou/photo.jpg",
+"cat": "Ambiances",
+"nom": "Karakou"
+},
+{
 "src": "../adinkra/lieu.webp",
 "cat": "Lieux",
 "nom": "Adinkra"

@@ -36,6 +36,7 @@ COLLECTIONS_EN = {
     'qunkwa': ('Qun kwa', 'Qun kwa · tea ceremony', 'Red silk envelope embroidered with a phoenix, Chinese knot; gold dragon and phoenix facing each other'),
     'orangerie': ('Orangerie', 'Timeless · winter garden', 'Sage green envelope with an orange blossom sprig, a wrought iron glasshouse drawing itself around a lemon tree'),
     'kanaval': ('Kanaval', 'Kanaval · Jacmel', 'Midnight blue silk clutch embroidered with sequins, papier-mâché butterflies taking flight, hibiscus'),
+    'karakou': ('Karakou', 'Karakou · khit errouh', 'Ivory envelope embroidered with gold thread, garnet wax seal; embroidered velvet, white arches and bougainvillea'),
     'adinkra': ('Adinkra', 'Adinkra · Akan symbols', 'Ivory envelope with a heart seal, Akoma and Nkonsonkonson symbols printed as if stamped by hand, flame trees'),
     'bazin': ('Bazin', 'Bazin riche · grand boubou', 'Teal bazin envelope with a gold filigree seal, a draped bazin swag crossed by a moving glint of light, desert roses'),
     'kreyol': ('Kreyòl', 'Kreyòl · “Krik? Krak!”', 'A storybook that opens, a paper Creole house that pops up, anthuriums and a hummingbird'),
