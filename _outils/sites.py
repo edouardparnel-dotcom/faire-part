@@ -5,6 +5,7 @@ Chaque site tient seul et le pied de page les relie. Appelé par construire.py a
 import os
 RACINE_MINI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import json
+import math
 from html import escape
 from emotions import EMOTIONS
 
@@ -51,9 +52,12 @@ OPTIONS_EVENEMENT = [
 # On annonce le prix à venir (« puis 79 € »), jamais un faux prix barré : la formule n'a encore jamais été vendue 79 €.
 # Lancement : moitié prix sur les trois formules mariage pour les 50 premiers couples, jusqu'au 30 novembre 2026 inclus.
 # On annonce le prix qui suivra (« puis 190 € »), jamais un faux prix barré : ces prix n'ont encore jamais été pratiqués.
-LANCEMENT = dict(jusqu='2026-12-01T00:00:00+01:00', places=50, prix={'Faire-part': 39, 'Signature': 95, 'Prestige': 195})
+# Les options suivent la même remise (choix de Parnel, 12/11) : -50 % sur les options prises avec la formule au prix de lancement.
+LANCEMENT = dict(jusqu='2026-12-01T00:00:00+01:00', places=50, prix={'Faire-part': 39, 'Signature': 95, 'Prestige': 195}, options=0.5)
+def opt_lancement(p):
+    return math.ceil(p * LANCEMENT['options'])
 def lancement(n, p):
-    return dict(prix=LANCEMENT['prix'][n], jusqu=LANCEMENT['jusqu'], places=LANCEMENT['places'],
+    return dict(prix=LANCEMENT['prix'][n], jusqu=LANCEMENT['jusqu'], places=LANCEMENT['places'], options=LANCEMENT['options'],
                 texte=f"{LANCEMENT['prix'][n]} € pour les 50 premiers couples, jusqu’au 30 novembre, puis {p} €") if n in LANCEMENT['prix'] else None
 FORMULES_MARIAGE = [
   ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à une formule supérieure à tout moment, en payant la différence"]),
@@ -310,16 +314,21 @@ def page(site, modeles):
           <span class="etq">{e(t['culture'])}</span><b>{e(t['nom'])}</b>
           <span class="liens-cat"><a href="{pre}app/fp.html?demo={t['id']}" target="_blank" rel="noopener">Invitation</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=std" target="_blank" rel="noopener">Annonce</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=site" target="_blank" rel="noopener">Site</a></span></div>""" for t in miennes) + """
       </div></div>"""
+    # Mariage, pendant le lancement : l'option à moitié prix, puis son prix normal (jamais de faux prix barré).
+    def tarif(p):
+        if site['cle'] == 'mariage' and isinstance(p, int):
+            return f'{prix(opt_lancement(p))}<small class="puis"> puis {prix(p)}</small>'
+        return prix(p)
     moments = []
     for moment in ('Avant', 'Le jour J', 'Après'):
-        lignes = '\n'.join(f"""        <li class="option"><div><h4>{e(n)}{' <span class="etoile" title="Pensé pour les familles réparties entre plusieurs pays">✦</span>' if d else ''}</h4><p>{e(t)}</p></div><span class="tarif">{prix(p)}</span></li>"""
+        lignes = '\n'.join(f"""        <li class="option"><div><h4>{e(n)}{' <span class="etoile" title="Pensé pour les familles réparties entre plusieurs pays">✦</span>' if d else ''}</h4><p>{e(t)}</p></div><span class="tarif">{tarif(p)}</span></li>"""
                            for k, mo, n, t, p, d in site['options'] if mo == moment)
         if lignes:
             moments.append(f'      <div class="moment revele"><h3>{e(moment)}</h3><ul>\n{lignes}\n      </ul></div>')
     a_etoile = any(o[5] for o in site['options'])
     # L'accueil ne montre que quelques options phares ; la liste complète se déplie, et reste sur la page de commande.
     phares = [o for o in site['options'] if o[0] in ('savethedate', 'qr', 'direct', 'murphoto', 'album')][:4]
-    selection = '\n'.join(f"""        <div class="phare-opt revele"><span class="etq">{e(mo)}</span><h4>{e(n)}</h4><p>{e(t)}</p><span class="tarif">{prix(p)}</span></div>"""
+    selection = '\n'.join(f"""        <div class="phare-opt revele"><span class="etq">{e(mo)}</span><h4>{e(n)}</h4><p>{e(t)}</p><span class="tarif">{tarif(p)}</span></div>"""
                           for k, mo, n, t, p, d in phares)
     PRINCIPALES = ('Faire-part', 'Signature', 'Prestige')
     prix_opt = {k: p for k, mo, n, t, p, d in site['options'] if isinstance(p, int)}
@@ -357,7 +366,7 @@ def page(site, modeles):
       <p>{e(site['sous'])}</p>
       <div class="actions"><a class="btn" href="{creer}">{e(site['cta'])}</a>{essai}</div>
       <p class="rassure">Gratuit jusqu'à la publication : vous préparez tout, vous ne payez qu'au moment d'envoyer le lien à vos invités.</p>
-      {f'<p class="lancement-accueil"><a href="#formules">Lancement : -50 % sur toutes les formules pour les 50 premiers couples, jusqu’au 30 novembre.</a></p>' if site['cle'] == 'mariage' else ''}
+      {f'<p class="lancement-accueil"><a href="#formules">Lancement : -50 % sur toutes les formules et les options pour les 50 premiers couples, jusqu’au 30 novembre.</a></p>' if site['cle'] == 'mariage' else ''}
     </div>
     <div class="arche revele">{f'<video src="{pre}{site["video"]}" poster="{pre}{site["image"]}" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>' if site.get('video') else f'<img src="{pre}{site["image"]}" alt="" fetchpriority="high">'}</div>
   </div>
@@ -508,6 +517,8 @@ const D = """ + js + """;
 const q = new URLSearchParams(location.search);
 let evt = D[q.get('evt')] ? q.get('evt') : 'mariage', choix = { modele: 0, formule: q.has('formule') ? +q.get('formule') : -1, options: new Set() };
 const prixF = f => f.lancement && Date.now() < Date.parse(f.lancement.jusqu) ? f.lancement.prix : f.prix;
+// Options : même remise que la formule pendant le lancement (le serveur recalcule le montant).
+const prixO = (o, f) => prixF(f) < f.prix && f.lancement.options ? Math.ceil(o.prix * f.lancement.options) : o.prix;
 const $ = id => document.getElementById(id), eur = n => n.toLocaleString('fr-FR') + ' €';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
@@ -528,7 +539,7 @@ function rendre() {
   const moments = [...new Set(E.options.map(o => o.moment))];
   $('options').innerHTML = moments.map(mo => `<h3 class="moment-titre">${esc(mo)}</h3>` + E.options.filter(o => o.moment === mo).map(o => {
     const inclus = F.inclus.includes(o.cle), coche = inclus || choix.options.has(o.cle);
-    return `<label class="choix-option ${inclus ? 'inclus' : ''}"><input type="checkbox" data-option="${o.cle}" ${coche ? 'checked' : ''} ${inclus || o.devis ? 'disabled' : ''}><span><b>${esc(o.nom)}</b><small>${esc(o.texte)}</small></span><em>${inclus ? 'Inclus' : o.devis ? 'Sur devis' : '+ ' + eur(o.prix)}</em></label>`;
+    return `<label class="choix-option ${inclus ? 'inclus' : ''}"><input type="checkbox" data-option="${o.cle}" ${coche ? 'checked' : ''} ${inclus || o.devis ? 'disabled' : ''}><span><b>${esc(o.nom)}</b><small>${esc(o.texte)}</small></span><em>${inclus ? 'Inclus' : o.devis ? 'Sur devis' : '+ ' + eur(prixO(o, F)) + (prixO(o, F) < o.prix ? `<small class="lancement"> puis ${eur(o.prix)}</small>` : '')}</em></label>`;
   }).join('')).join('');
   // Aperçu : la photo de la collection, vos prénoms, votre date, votre lieu
   const noms = $('f-noms').value.trim() || $('f-noms').placeholder, d = $('f-date').value;
@@ -548,8 +559,8 @@ function rendre() {
   // Total
   const extras = E.options.filter(o => choix.options.has(o.cle) && !F.inclus.includes(o.cle));
   $('t-formule').textContent = 'Formule ' + F.nom + (prixF(F) < F.prix ? ' (prix de lancement)' : ''); $('t-formule-prix').textContent = eur(prixF(F));
-  $('t-options').innerHTML = extras.map(o => `<div class="ligne-total"><span>${esc(o.nom)}</span><b>+ ${eur(o.prix)}</b></div>`).join('');
-  const brut = prixF(F) + extras.reduce((s, o) => s + o.prix, 0), code = window.codePartenaire ? window.codePartenaire() : '';
+  $('t-options').innerHTML = extras.map(o => `<div class="ligne-total"><span>${esc(o.nom)}</span><b>+ ${eur(prixO(o, F))}</b></div>`).join('');
+  const brut = prixF(F) + extras.reduce((s, o) => s + prixO(o, F), 0), code = window.codePartenaire ? window.codePartenaire() : '';
   if ($('f-partenaire') && document.activeElement !== $('f-partenaire')) $('f-partenaire').value = code;
   $('t-remise').hidden = !code; $('t-remise-nom').textContent = `Remise partenaire ${code}`; $('t-remise-val').textContent = '− ' + eur(Math.round(brut * 0.1));
   $('t-total').textContent = eur(code ? brut - Math.round(brut * 0.1) : brut);

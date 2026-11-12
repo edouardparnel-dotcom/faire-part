@@ -10,6 +10,7 @@
      "prix": 39,
      "jusqu": "2026-12-01T00:00:00+01:00",
      "places": 50,
+     "options": 0.5,
      "texte": "39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €"
     }
    },
@@ -24,6 +25,7 @@
      "prix": 95,
      "jusqu": "2026-12-01T00:00:00+01:00",
      "places": 50,
+     "options": 0.5,
      "texte": "95 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 190 €"
     }
    },
@@ -46,6 +48,7 @@
      "prix": 195,
      "jusqu": "2026-12-01T00:00:00+01:00",
      "places": 50,
+     "options": 0.5,
      "texte": "195 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 390 €"
     }
    }
