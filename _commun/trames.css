@@ -623,6 +623,10 @@ body[data-prog=cartes] .frise img{width:64px;height:64px}
 body[data-prog=ligne] .frise{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding:4px 4px 14px;margin-inline:-6px}
 body[data-prog=ligne] .frise::before{display:none}
 body[data-prog=ligne] .frise li{flex:0 0 64%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:20px 12px;border:1px solid var(--or1);border-radius:999px 999px 18px 18px;background:var(--carte)}
+/* en carrousel, toujours l'image au-dessus puis l'heure et le texte centrés (annule l'alternance gauche-droite de la trame arche) */
+body[data-prog=ligne] .frise li img,body[data-prog=ligne] .frise li:nth-child(even) img{order:0;align-self:center;width:76px;height:76px}
+body[data-prog=ligne] .frise li div,body[data-prog=ligne] .frise li:nth-child(even) div{text-align:center}
+body[data-prog=ligne] .frise{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--or1) 60%,transparent) transparent}
 body[data-prog=numeros] .frise{counter-reset:etape;gap:16px}
 body[data-prog=numeros] .frise::before{display:none}
 body[data-prog=numeros] .frise li{counter-increment:etape;grid-template-columns:58px 1fr;gap:16px;padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--or1) 45%,transparent)}
