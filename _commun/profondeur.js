@@ -1,6 +1,6 @@
 // Décor en profondeur : des objets rendus en 3D, répartis sur trois calques (loin, milieu, devant), qui montent
 // lentement et glissent à des vitesses différentes au défilement. Téléphone comme ordinateur : nombre d'objets
-// selon la largeur, et sur grand écran le premier plan reste dans les marges pour ne jamais couvrir le texte.
+// selon la largeur, répartis sur toute la largeur ; le premier plan flou passe aussi devant le texte.
 //   <body data-profondeur="decor-3d/lanterne-3d" data-profondeur-n="5">
 //   images attendues : <base>-1.webp … <base>-N.webp (nettes) et <base>-1-flou.webp … (premier plan)
 // Avec data-profondeur-sequence="decor-3d/lanterne-seq" : bandes de vues 3D (<seq>.webp, <seq>-flou.webp) ; chaque objet
@@ -35,10 +35,6 @@
   function place() {
     W = innerWidth; H = innerHeight;
     const large = W >= 900, echelle = large ? 1.25 : 1;
-    // largeur du texte : le premier plan passe à côté sur grand écran, à demi hors de l'écran sur téléphone
-    const main = document.querySelector('.suite-main');
-    const col = main ? Math.min(main.getBoundingClientRect().width || W, W) : W;
-    const marge = (W - col) / 2;
     let i = 0;
     for (const c of calques) {
       c.el.textContent = ''; c.objets = [];
@@ -56,12 +52,9 @@
           im.src = `${base}-${1 + (i % nb)}${c.flou ? '-flou' : ''}.webp`;
           im.style.width = t + 'px';
         }
-        // loin : partout ; milieu : dans les marges dès qu'elles sont assez larges ;
-        // devant : partout, elles passent aussi devant le texte (floues et légèrement transparentes, il reste lisible)
-        let x;
-        if (c.flou) x = (j / n + hasard(0, 1 / n)) * (W + t * .6) - t * .8;
-        else if (c.nom === 'loin' || marge < t * 1.2) x = hasard(-.05, .95) * W;
-        else x = j % 2 ? hasard(W - marge + 10, W - t * .75) : hasard(t * -.25, marge - t * 1.1);
+        // tous les calques sur toute la largeur, réparties par tranches pour ne pas s'agglutiner ;
+        // le premier plan passe aussi devant le texte (flou et légèrement transparent, il reste lisible)
+        const x = (j / n + hasard(0, 1 / n)) * (W + t * .6) - t * .8;
         c.objets.push({ im, t, x, y0: hasard(0, H + t * 2), v: hasard(c.v[0], c.v[1]) * echelle, ph: hasard(0, 6.28), rot: bd ? 0 : hasard(-6, 6), bd, vue: -1 });
         c.el.appendChild(im);
       }
