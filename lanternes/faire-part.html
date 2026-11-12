@@ -39,10 +39,16 @@
 body.ferme{overflow:hidden}
 .std-seul{display:none} body.std .fp-seul{display:none} body.std .std-seul{display:block}
 .suite-couv{min-height:100svh}
+/* Ordinateur : le lac en plein écran (bande montagnes, lac et ciel), la suite reste en colonne entourée des lanternes 3D */
+@media (min-width:720px){
+  .couv-scene.carte{width:100%;max-width:none;margin:0!important;min-height:100vh!important;box-shadow:none;padding-top:16vh}
+  .couv-scene .scene-fond{object-position:50% 70%}
+  .couv-scene .noms{font-size:clamp(56px,7vw,96px)}
+}
 
 </style>
 </head>
-<body class="ferme" data-date="2027-08-28T17:00:00+02:00" data-evenement="Mariage Aïcha &amp; Hugo" data-ville="Talloires" data-titre-std="Aïcha &amp; Hugo — Save the date (démonstration)" data-blocs="decale" data-titres="script" data-images="flotte" data-revele="flou" data-paral="incline" data-cadre="rond" data-prog="ligne" data-lieu="cote" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="carre" data-teinte="clair" data-collection="lanternes" data-particules="or" data-trame="scene">
+<body class="ferme" data-date="2027-08-28T17:00:00+02:00" data-evenement="Mariage Aïcha &amp; Hugo" data-ville="Talloires" data-titre-std="Aïcha &amp; Hugo — Save the date (démonstration)" data-blocs="decale" data-titres="script" data-images="flotte" data-revele="flou" data-paral="incline" data-cadre="rond" data-prog="ligne" data-lieu="cote" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="carre" data-teinte="clair" data-collection="lanternes" data-profondeur="decor-3d/lanterne-3d" data-profondeur-n="5" data-particules="or" data-trame="scene">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
 <div class="ouverture attente" id="ouverture" style="--ratio:1400/949;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 2%,50% 82%,0 2%);--devant:polygon(0 2%,50% 82%,100% 2%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 98%,50% 18%,0 98%);--doublure:linear-gradient(0deg,#8C6A24,#F1D79A 55%,#D4A44C);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
@@ -63,7 +69,7 @@ body.ferme{overflow:hidden}
 <header class="suite-couv carte couv-scene">
   
   <img class="scene-fond" src="scene.jpg" alt=""><div class="scene-texte"><p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Aïcha<i class="or">&amp;</i>Hugo</h1><div class="filet">✦</div><p class="date">28 · 08 · 2027</p>
-  <p class="lieu">Domaine du Lac<br>Talloires</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p></div><div class="lanternes"><img src="lanterne.webp" alt="" style="--x:8%;--t:30px;--d:26s;--r:0s;--s:14px;--l:0.7;--o:0.75;--y:20%"><img src="lanterne.webp" alt="" style="--x:22%;--t:54px;--d:17s;--r:-6s;--s:-18px;--l:1;--o:0.95;--y:27%"><img src="lanterne.webp" alt="" style="--x:37%;--t:22px;--d:30s;--r:-12s;--s:10px;--l:0.6;--o:0.6;--y:34%"><img src="lanterne.webp" alt="" style="--x:52%;--t:44px;--d:20s;--r:-3s;--s:20px;--l:0.95;--o:0.9;--y:41%"><img src="lanterne.webp" alt="" style="--x:66%;--t:26px;--d:28s;--r:-18s;--s:-12px;--l:0.65;--o:0.7;--y:48%"><img src="lanterne.webp" alt="" style="--x:78%;--t:60px;--d:16s;--r:-10s;--s:16px;--l:1;--o:1;--y:55%"><img src="lanterne.webp" alt="" style="--x:88%;--t:34px;--d:24s;--r:-21s;--s:-16px;--l:0.8;--o:0.8;--y:62%"><img src="lanterne.webp" alt="" style="--x:14%;--t:40px;--d:22s;--r:-15s;--s:18px;--l:0.9;--o:0.85;--y:69%"><img src="lanterne.webp" alt="" style="--x:60%;--t:18px;--d:34s;--r:-25s;--s:8px;--l:0.55;--o:0.55;--y:76%"></div><span class="defile">Défiler</span>
+  <p class="lieu">Domaine du Lac<br>Talloires</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p></div><div class="lanternes"><img src="decor-3d/lanterne-3d-1.webp" alt="" style="--x:8%;--t:30px;--d:26s;--r:0s;--s:14px;--l:0.7;--o:0.75;--y:20%"><img src="decor-3d/lanterne-3d-2.webp" alt="" style="--x:22%;--t:54px;--d:17s;--r:-6s;--s:-18px;--l:1;--o:0.95;--y:27%"><img src="decor-3d/lanterne-3d-3.webp" alt="" style="--x:37%;--t:22px;--d:30s;--r:-12s;--s:10px;--l:0.6;--o:0.6;--y:34%"><img src="decor-3d/lanterne-3d-4.webp" alt="" style="--x:52%;--t:44px;--d:20s;--r:-3s;--s:20px;--l:0.95;--o:0.9;--y:41%"><img src="decor-3d/lanterne-3d-5.webp" alt="" style="--x:66%;--t:26px;--d:28s;--r:-18s;--s:-12px;--l:0.65;--o:0.7;--y:48%"><img src="decor-3d/lanterne-3d-1.webp" alt="" style="--x:78%;--t:60px;--d:16s;--r:-10s;--s:16px;--l:1;--o:1;--y:55%"><img src="decor-3d/lanterne-3d-2.webp" alt="" style="--x:88%;--t:34px;--d:24s;--r:-21s;--s:-16px;--l:0.8;--o:0.8;--y:62%"><img src="decor-3d/lanterne-3d-3.webp" alt="" style="--x:14%;--t:40px;--d:22s;--r:-15s;--s:18px;--l:0.9;--o:0.85;--y:69%"><img src="decor-3d/lanterne-3d-4.webp" alt="" style="--x:60%;--t:18px;--d:34s;--r:-25s;--s:8px;--l:0.55;--o:0.55;--y:76%"></div><span class="defile">Défiler</span>
 </header>
 
 <main class="suite-main">
@@ -80,5 +86,6 @@ body.ferme{overflow:hidden}
 <footer class="suite-pied"><p class="script">Aïcha &amp; Hugo</p><p>Merci d’avoir éclairé notre nuit</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
 <script src="../_commun/realiste.js?v=9"></script>
+<script src="../_commun/profondeur.js?v=1"></script>
 </body>
 </html>
