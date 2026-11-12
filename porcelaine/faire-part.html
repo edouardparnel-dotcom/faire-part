@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
-<script src="../_commun/vivant.js?v=24" defer></script>
-<link rel="stylesheet" href="../_commun/realiste.css?v=9">
+<script src="../_commun/vivant.js?v=25" defer></script>
+<link rel="stylesheet" href="../_commun/realiste.css?v=10">
 <style>
 :root{--fond:#EEF2F8;--carte:#FFFFFF;--encre:#15306B;--doux:#5A6A88;--or1:#B8964F;--or2:#E4D2A2;--or3:#86692C;--accent:#1E4BA0;
   --f-titre:'Cormorant Upright',serif;--f-script:'Pinyon Script',cursive;--f-texte:'Montserrat',system-ui,sans-serif;--decor:linear-gradient(rgba(255,255,255,.25),rgba(255,255,255,.25)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#15306B;}
@@ -43,19 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-06-05T16:00:00+02:00" data-evenement="Mariage Joanne &amp; Malick" data-ville="Sceaux" data-titre-std="Joanne &amp; Malick — Save the date (démonstration)" data-blocs="grappe" data-titres="capitales" data-images="deborde" data-revele="zoom" data-paral="derive" data-cadre="polaroid" data-prog="cartes" data-lieu="rond" data-tenue="classique" data-compte="tuiles" data-rep="ticket" data-btn="souligne" data-teinte="papier" data-collection="porcelaine" data-particules="petales" data-trame="centree">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/2525;--masque:url('ouverture.webp');--dos:#c1c3c9;">
-  <div class="portail" role="button" aria-label="Ouvrir l'invitation">
-    <div class="derriere mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Joanne</b><i>&amp;</i><b>Malick</b><small>05 · 06 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Ouvrez le cabinet de porcelaine</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte">
@@ -81,6 +74,6 @@ body.ferme{overflow:hidden}
 </main>
 <footer class="suite-pied"><p class="script">Joanne &amp; Malick</p><p>Merci de partager notre table</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
-<script src="../_commun/realiste.js?v=9"></script>
+<script src="../_commun/realiste.js?v=10"></script>
 </body>
 </html>
