@@ -43,21 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-07-10T16:30:00+02:00" data-evenement="Mariage Salomé &amp; Ibrahim" data-ville="Saint-Martin-de-Ré" data-titre-std="Salomé &amp; Ibrahim — Save the date (démonstration)" data-profondeur="decor-3d/mouette" data-profondeur-n="1" data-profondeur-sequence="decor-3d/mouette-seq" data-profondeur-mouvement="vol" data-profondeur-vues="24" data-profondeur-vues-flou="12" data-blocs="cartes" data-titres="script" data-images="flotte" data-revele="glisse" data-paral="incline" data-cadre="rond" data-prog="zigzag" data-lieu="plein" data-tenue="nuancier" data-compte="chiffres" data-rep="sombre" data-btn="plein" data-teinte="sombre" data-collection="marine" data-particules="bulles" data-trame="affiche">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/951;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 6%,50% 92%,0 5%);--devant:polygon(0 5%,50% 92%,100% 6%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 94%,50% 8%,0 95%);--doublure:linear-gradient(0deg,#1D3557,#4F7CA6 55%,#BFD3E6);">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Salomé</b><i>&amp;</i><b>Ibrahim</b><small>10 · 07 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:84%;width:17%;transform:translate(-50%,-50%)"></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Brisez le sceau du coquillage</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-affiche">
