@@ -66,7 +66,7 @@
 [data-trame=affiche] .frise li img{display:none}
 [data-trame=affiche] .frise li div{display:flex;align-items:baseline;gap:10px;width:100%}
 [data-trame=affiche] .frise li b{order:3;flex:none;font-size:17px}
-[data-trame=affiche] .frise li span{order:1;flex:none;font-family:var(--f-titre);text-transform:none;letter-spacing:.04em;font-size:18px}
+[data-trame=affiche] .frise li span{order:1;flex:0 1 auto;min-width:0;font-family:var(--f-titre);text-transform:none;letter-spacing:.04em;font-size:18px}
 [data-trame=affiche] .frise li div::after{content:"";order:2;flex:1;border-bottom:2px dotted var(--or1);translate:0 -5px}
 [data-trame=affiche] .medaillons div{border-radius:4px;background:var(--accent);color:var(--carte)}
 [data-trame=affiche] .medaillons b{color:var(--carte)}
