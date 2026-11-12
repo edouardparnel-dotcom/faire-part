@@ -3,19 +3,23 @@
 // selon la largeur, et sur grand écran le premier plan reste dans les marges pour ne jamais couvrir le texte.
 //   <body data-profondeur="decor-3d/lanterne-3d" data-profondeur-n="5">
 //   images attendues : <base>-1.webp … <base>-N.webp (nettes) et <base>-1-flou.webp … (premier plan)
+// Avec data-profondeur-sequence="decor-3d/lanterne-seq" : bandes de vues 3D (<seq>.webp, <seq>-flou.webp) ; chaque objet
+// prend la vue de sa hauteur à l'écran : vu d'au-dessus en bas, de face au milieu, d'en dessous en haut.
 (function () {
   const b = document.body, base = b.dataset.profondeur;
   if (!base || window.__profondeur) return; window.__profondeur = true;
   const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nb = parseInt(b.dataset.profondeurN, 10) || 1;
+  const seq = b.dataset.profondeurSequence;
+  const bandes = {};   // nette / floue : { url, n (nombre de vues), ratio (hauteur / largeur d'une vue) }
 
   const st = document.createElement('style');
   st.textContent = `.prof{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1;contain:strict}
 .prof-devant{z-index:39}
-.prof img{position:absolute;left:0;top:0;max-width:none;will-change:transform;user-select:none}
-.prof-loin img{opacity:.5;filter:blur(1px)}
-.prof-milieu img{opacity:.92;filter:drop-shadow(0 0 18px rgba(255,140,40,.45))}
-.prof-devant img{opacity:.85}`;
+.prof img,.prof i{position:absolute;left:0;top:0;max-width:none;will-change:transform;user-select:none;background-repeat:no-repeat}
+.prof-loin :is(img,i){opacity:.5;filter:blur(1px)}
+.prof-milieu :is(img,i){opacity:.92;filter:drop-shadow(0 0 18px rgba(255,140,40,.45))}
+.prof-devant :is(img,i){opacity:.85}`;
   document.head.appendChild(st);
 
   const hasard = (a, z) => a + Math.random() * (z - a);
@@ -41,16 +45,23 @@
       const n = large ? c.ordi : c.tel;
       for (let j = 0; j < n; j++, i++) {
         const t = hasard(c.taille[0], c.taille[1]) * echelle;
-        const im = new Image();
-        im.alt = ''; im.decoding = 'async';
-        im.src = `${base}-${1 + (i % nb)}${c.flou ? '-flou' : ''}.webp`;
-        im.style.width = t + 'px';
+        const bd = seq && bandes[c.flou ? 'floue' : 'nette'];
+        let im;
+        if (bd) {
+          im = document.createElement('i');
+          im.style.cssText = `width:${t}px;height:${(t * bd.ratio).toFixed(1)}px;background-image:url(${bd.url});background-size:${bd.n * 100}% 100%`;
+        } else {
+          im = new Image();
+          im.alt = ''; im.decoding = 'async';
+          im.src = `${base}-${1 + (i % nb)}${c.flou ? '-flou' : ''}.webp`;
+          im.style.width = t + 'px';
+        }
         // loin : partout ; milieu : dans les marges dès qu'elles sont assez larges ; devant : marges ou à demi hors de l'écran
         let x;
         if (c.nom === 'loin' || (!c.flou && marge < t * 1.2)) x = hasard(-.05, .95) * W;
         else if (marge > t * .7) x = j % 2 ? hasard(W - marge + 10, W - t * .75) : hasard(t * -.25, marge - t * 1.1);
         else x = j % 2 ? W - t * hasard(.35, .55) : -t * hasard(.45, .65);
-        c.objets.push({ im, t, x, y0: hasard(0, H + t * 2), v: hasard(c.v[0], c.v[1]) * echelle, ph: hasard(0, 6.28), rot: hasard(-6, 6) });
+        c.objets.push({ im, t, x, y0: hasard(0, H + t * 2), v: hasard(c.v[0], c.v[1]) * echelle, ph: hasard(0, 6.28), rot: bd ? 0 : hasard(-6, 6), bd, vue: -1 });
         c.el.appendChild(im);
       }
     }
@@ -63,11 +74,30 @@
       const tour = H + o.t * 2.4;
       const y = (((o.y0 - s * o.v - sy * c.k) % tour) + tour) % tour - o.t * 1.4;
       const x = o.x + Math.sin(s * .25 + o.ph) * c.amp + px * c.k * 40;
-      const r = o.rot + Math.sin(s * .4 + o.ph) * 2.5;
+      const r = o.rot + Math.sin(s * .4 + o.ph) * (o.bd ? 1.2 : 2.5);
       o.im.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${r.toFixed(2)}deg)`;
+      if (o.bd) {
+        // bas de l'écran -> vue 0 (d'au-dessus) ; haut -> dernière vue (d'en dessous)
+        const p = Math.min(1, Math.max(0, 1 - (y + o.t * .6) / H));
+        const vue = Math.round(p * (o.bd.n - 1));
+        if (vue !== o.vue) { o.vue = vue; o.im.style.backgroundPosition = `${(vue / (o.bd.n - 1) * 100).toFixed(3)}% 0`; }
+      }
     }
   }
 
+  // les bandes de vues sont chargées avant de placer les objets (il faut leurs proportions)
+  function charge(nom, url, n) {
+    return new Promise(ok => {
+      const im = new Image();
+      im.onload = () => { bandes[nom] = { url, n, ratio: im.naturalHeight / (im.naturalWidth / n) }; ok(); };
+      im.onerror = ok;
+      im.src = url;
+    });
+  }
+  if (seq) Promise.all([charge('nette', seq + '.webp', parseInt(b.dataset.profondeurVues, 10) || 48),
+                        charge('floue', seq + '-flou.webp', parseInt(b.dataset.profondeurVuesFlou, 10) || 24)]).then(demarre);
+  else demarre();
+  function demarre() {
   place();
   let largeur = W;
   addEventListener('resize', () => { if (Math.abs(innerWidth - largeur) > 40 || innerHeight > H + 150) { largeur = innerWidth; place(); if (reduit) rendu(0); } });
@@ -77,4 +107,5 @@
   document.addEventListener('visibilitychange', () => visible = !document.hidden);
   const boucle = t => { if (visible) rendu(t); requestAnimationFrame(boucle); };
   requestAnimationFrame(boucle);
+  }
 })();
