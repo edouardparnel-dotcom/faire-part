@@ -11,20 +11,33 @@
 <link rel="stylesheet" href="../_commun/suite.css?v=2">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
 <link rel="stylesheet" href="../_commun/trames.css?v=44">
-<script src="../_commun/vivant.js?v=24" defer></script>
+<script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#0F1733;--carte:#FBF7EF;--encre:#1A2240;--doux:#5D6380;--or1:#D4A44C;--or2:#F1D79A;--or3:#8C6A24;--accent:#1F2E63;
   --f-titre:'Cormorant Garamond',serif;--f-script:'Great Vibes',cursive;--f-texte:'Raleway',system-ui,sans-serif;--decor:radial-gradient(ellipse at 50% 0%,rgba(80,90,170,.35),rgba(0,0,0,0) 60%),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#F1E6CF;}
 
-
+/* Lanternes du haut de page : la vue change pendant la montée (d'au-dessus en bas, de face, d'en dessous en haut) */
+.couv-scene .lanternes .lsq{position:absolute;bottom:-14%;left:var(--x);width:var(--t);aspect-ratio:195/240;opacity:0;background:url('decor-3d/lanterne-seq.webp') 0 0/4800% 100% no-repeat;
+  filter:drop-shadow(0 0 12px rgba(255,170,60,.7)) brightness(var(--l,1));animation:lanterne var(--d) linear var(--r) infinite,vues var(--d) steps(48,end) var(--r) infinite}
+@keyframes vues{from{background-position-x:0%}to{background-position-x:calc(100% * 48 / 47)}}
+@media (prefers-reduced-motion:reduce){.couv-scene .lanternes .lsq{animation:none;opacity:.8;bottom:auto;top:var(--y,40%);background-position-x:50%}}
+/* Haut de page en plans : ciel → lanternes lointaines → montagnes, forêt et lac → lanternes → sapins et ponton */
+.couv-scene .scene-plan{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;z-index:1;pointer-events:none;animation:scene-zoom 18s ease-out both}
+.couv-scene .lanternes.loin .lsq{filter:drop-shadow(0 0 8px rgba(255,170,60,.6)) brightness(var(--l,1))}
+/* Ordinateur : le lac en plein écran (bande montagnes, lac et ciel), la suite reste en colonne entourée des lanternes 3D */
+@media (min-width:720px){
+  .couv-scene.carte{width:100%;max-width:none;margin:0!important;min-height:100vh!important;box-shadow:none;padding-top:16vh}
+  .couv-scene :is(.scene-fond,.scene-plan){object-position:50% 70%}
+  .couv-scene .noms{font-size:clamp(56px,7vw,96px)}
+}
 </style>
 </head>
 <body data-blocs="decale" data-titres="script" data-images="flotte" data-revele="flou" data-paral="incline" data-cadre="rond" data-prog="ligne" data-lieu="cote" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="carre" data-teinte="clair" data-collection="lanternes" data-particules="or" data-trame="scene">
 <nav class="suite-nav" aria-label="La collection Lanternes"><a class="suite-marque" href="index.html">✦ Lanternes</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html" aria-current=page>Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html">Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
 <header class="suite-couv carte couv-scene">
   
-  <img class="scene-fond" src="scene.jpg" alt=""><div class="scene-texte"><p class="chapeau">Bienvenue sur notre site de mariage</p><h1 class="noms">Aïcha<i class="or">&amp;</i>Hugo</h1><div class="filet">✦</div><p class="date">28 · 08 · 2027</p>
-  <p class="lieu">Domaine du Lac<br>Talloires</p></div><div class="lanternes"><img src="lanterne.webp" alt="" style="--x:8%;--t:30px;--d:26s;--r:0s;--s:14px;--l:0.7;--o:0.75;--y:20%"><img src="lanterne.webp" alt="" style="--x:22%;--t:54px;--d:17s;--r:-6s;--s:-18px;--l:1;--o:0.95;--y:27%"><img src="lanterne.webp" alt="" style="--x:37%;--t:22px;--d:30s;--r:-12s;--s:10px;--l:0.6;--o:0.6;--y:34%"><img src="lanterne.webp" alt="" style="--x:52%;--t:44px;--d:20s;--r:-3s;--s:20px;--l:0.95;--o:0.9;--y:41%"><img src="lanterne.webp" alt="" style="--x:66%;--t:26px;--d:28s;--r:-18s;--s:-12px;--l:0.65;--o:0.7;--y:48%"><img src="lanterne.webp" alt="" style="--x:78%;--t:60px;--d:16s;--r:-10s;--s:16px;--l:1;--o:1;--y:55%"><img src="lanterne.webp" alt="" style="--x:88%;--t:34px;--d:24s;--r:-21s;--s:-16px;--l:0.8;--o:0.8;--y:62%"><img src="lanterne.webp" alt="" style="--x:14%;--t:40px;--d:22s;--r:-15s;--s:18px;--l:0.9;--o:0.85;--y:69%"><img src="lanterne.webp" alt="" style="--x:60%;--t:18px;--d:34s;--r:-25s;--s:8px;--l:0.55;--o:0.55;--y:76%"></div><span class="defile">Défiler</span>
+  <img class="scene-fond" src="scene.jpg" alt=""><div class="lanternes loin"><i class="lsq" style="--x:6%;--t:14px;--d:38s;--r:0s;--s:8px;--l:0.7;--o:0.8;--y:20%"></i><i class="lsq" style="--x:19%;--t:11px;--d:44s;--r:-9s;--s:-8px;--l:0.7;--o:0.8;--y:25%"></i><i class="lsq" style="--x:31%;--t:16px;--d:36s;--r:-20s;--s:8px;--l:0.7;--o:0.8;--y:30%"></i><i class="lsq" style="--x:44%;--t:12px;--d:42s;--r:-4s;--s:-8px;--l:0.7;--o:0.8;--y:35%"></i><i class="lsq" style="--x:57%;--t:15px;--d:40s;--r:-27s;--s:8px;--l:0.7;--o:0.8;--y:40%"></i><i class="lsq" style="--x:70%;--t:11px;--d:46s;--r:-14s;--s:-8px;--l:0.7;--o:0.8;--y:45%"></i><i class="lsq" style="--x:83%;--t:17px;--d:34s;--r:-31s;--s:8px;--l:0.7;--o:0.8;--y:50%"></i><i class="lsq" style="--x:93%;--t:12px;--d:40s;--r:-7s;--s:-8px;--l:0.7;--o:0.8;--y:55%"></i><i class="lsq" style="--x:26%;--t:13px;--d:48s;--r:-38s;--s:8px;--l:0.7;--o:0.8;--y:60%"></i><i class="lsq" style="--x:64%;--t:14px;--d:38s;--r:-22s;--s:-8px;--l:0.7;--o:0.8;--y:65%"></i></div><img class="scene-plan" src="scene-terre.webp" alt=""><div class="lanternes milieu"><i class="lsq" style="--x:8%;--t:30px;--d:26s;--r:0s;--s:14px;--l:0.7;--o:0.75;--y:20%"></i><i class="lsq" style="--x:22%;--t:54px;--d:17s;--r:-6s;--s:-18px;--l:1;--o:0.95;--y:27%"></i><i class="lsq" style="--x:37%;--t:22px;--d:30s;--r:-12s;--s:10px;--l:0.6;--o:0.6;--y:34%"></i><i class="lsq" style="--x:52%;--t:44px;--d:20s;--r:-3s;--s:20px;--l:0.95;--o:0.9;--y:41%"></i><i class="lsq" style="--x:66%;--t:26px;--d:28s;--r:-18s;--s:-12px;--l:0.65;--o:0.7;--y:48%"></i><i class="lsq" style="--x:78%;--t:60px;--d:16s;--r:-10s;--s:16px;--l:1;--o:1;--y:55%"></i><i class="lsq" style="--x:88%;--t:34px;--d:24s;--r:-21s;--s:-16px;--l:0.8;--o:0.8;--y:62%"></i><i class="lsq" style="--x:14%;--t:40px;--d:22s;--r:-15s;--s:18px;--l:0.9;--o:0.85;--y:69%"></i><i class="lsq" style="--x:60%;--t:18px;--d:34s;--r:-25s;--s:8px;--l:0.55;--o:0.55;--y:76%"></i></div><img class="scene-plan" src="scene-devant.webp" alt=""><div class="scene-texte"><p class="chapeau">Bienvenue sur notre site de mariage</p><h1 class="noms">Aïcha<i class="or">&amp;</i>Hugo</h1><div class="filet">✦</div><p class="date">28 · 08 · 2027</p>
+  <p class="lieu">Domaine du Lac<br>Talloires</p></div><span class="defile">Défiler</span>
 </header>
 
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#cadeaux">Cadeaux</a><a href="#reponse">Réponse</a></nav>

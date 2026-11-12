@@ -29,8 +29,21 @@
     if (bouton) bouton.classList.add('visible');
     setTimeout(() => document.body.classList.remove('ferme'), 3200);
   }
-  ouv.addEventListener('click', ouvrir);
-  if (q.has('auto')) setTimeout(ouvrir, 300);
+  // Ouverture en vidéo 3D (Lanternes) : le geste lance la vidéo, la page apparaît à la fin. Sans lecture possible, on ouvre aussitôt.
+  const film = ouv.querySelector('video.ouv-film');
+  function lancer() {
+    if (!film) return ouvrir();
+    if (film.dataset.lance) return;
+    film.dataset.lance = '1';
+    ouv.classList.add('en-cours');
+    let fini = false;
+    const fin = () => { if (!fini) { fini = true; ouvrir(); } };
+    film.addEventListener('ended', fin);
+    film.addEventListener('error', fin);
+    film.play().then(() => setTimeout(fin, ((film.duration || 8) + 1.5) * 1000), fin);
+  }
+  ouv.addEventListener('click', lancer);
+  if (q.has('auto')) setTimeout(lancer, 300);
   // Choix de la musique : celle de la collection, une autre de la bibliothèque, la sienne (fichier MP3) ou aucune.
   const PISTES = [['Grand Hôtel', 'grand-hotel'], ['Héritage', 'heritage'], ['Lakou', 'lakay'], ['Madras', 'madras'], ['Kente', 'kente'], ['Owambe', 'owambe'],
     ['Toghu', 'toghu'], ['Teranga', 'teranga'], ['Bogolan', 'bogolan'], ['Kita', 'kita'], ['Sape', 'sape'], ['Tibeb', 'tibeb'], ['Classique', 'classique'],
