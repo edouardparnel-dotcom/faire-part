@@ -27,6 +27,7 @@ EMOTIONS = {
     'kanaval': "La joie d'un soir de fête, mais en habit de soie : des couleurs franches, des papillons qui s'envolent, et une piste de danse qui ne désemplit pas.",
     'karakou': "Le velours brodé d'or que portaient les grands-mères, une terrasse face à la baie et le chaâbi qui monte : un mariage algérois, élégant et joyeux, où chaque tenue raconte la famille.",
     'takchita': "La cour d'un riad à la nuit tombée, les lanternes qui s'allument une à une, et la mariée qui change de tenue sous les youyous : un mariage marocain, raffiné et généreux.",
+    'keswa': "Le satin brodé que l'on garde dans la famille, une terrasse blanche face à la mer, et la mariée qui se dévoile pendant la jelwa : un mariage tunisien, lumineux et tendre.",
     'orangerie': "La lumière douce d'une verrière, l'odeur de la fleur d'oranger, des citronniers en pots : un mariage clair et paisible, où l'on prend le temps.",
     # Asie
     'qunkwa': "Le parfum du thé servi aux parents, les mains qui tremblent un peu, la bénédiction des aînés. Puis la fête éclate, rouge et or, au milieu des pivoines.",
