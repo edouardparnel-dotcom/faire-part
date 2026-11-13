@@ -47,16 +47,18 @@ async function liste() {
   const [miens, autres] = await Promise.all([getDocs(query(collection(db, 'events'), where('owner', '==', user.uid))), getDocs(collection(db, `utilisateurs/${user.uid}/acces`))]);
   const carte = (id, d, role) => `<a class="app-carte" style="display:block;text-decoration:none" href="?e=${id}"><span class="etq">${esc(TYPES[d.type] || '')}${d.formule ? ` · formule ${esc(d.formule)}` : ''}${role ? ` · ${esc(ROLES[role])}` : ''}</span>
       <h2 style="margin-top:6px">${esc(d.titre)}</h2>${d.date ? `<p class="app-note">${esc(majuscule(dateLongue(d.date)))}</p>` : ''}</a>`;
-  vue.innerHTML = `<div class="app-haut"><div><span class="etq">Bonjour</span><h1 class="serif">Vos événements</h1></div></div>
-    ${miens.docs.map(d => carte(d.id, d.data())).join('')}${autres.docs.map(d => carte(d.id, d.data(), d.data().role)).join('')}
-    ${miens.empty && autres.empty ? '<p class="app-note">Aucun événement pour l\'instant.</p>' : ''}
-    <form class="app-carte" id="f-evt"><h2>Créer un événement</h2>${Q.get('nouveau') ? '<p class="app-note" style="margin-bottom:12px">Créez votre événement : vous préparez tout gratuitement, vous voyez votre faire-part, puis vous validez votre formule quand il vous plaît.</p>' : ''}
+  const nouveau = Q.get('nouveau'), dateQ = Q.get('date') ? Q.get('date') + 'T15:00' : '';
+  const form = `<form class="app-carte ${nouveau ? 'nouvel-espace' : ''}" id="f-evt"><h2>${nouveau ? 'Dernière vérification, et votre espace est prêt' : 'Créer un événement'}</h2>${nouveau ? '<p class="app-note" style="margin-bottom:12px">Vous préparez tout gratuitement, vous voyez votre faire-part, puis vous validez votre formule quand il vous plaît.</p>' : ''}
       <div class="app-grille">
-        <label>Type<select name="type">${Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${Q.get('nouveau') === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-        <label>Prénoms ou titre<input name="titre" required maxlength="120" placeholder="Awa et Thomas"></label>
-        <label>Date et heure<input name="date" type="datetime-local" required></label>
-        <label>Lieu<input name="lieu" required placeholder="Domaine des Tilleuls"></label>
-      </div><button class="btn">Créer</button></form>`;
+        <label>Type<select name="type">${Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${nouveau === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+        <label>Prénoms ou titre<input name="titre" required maxlength="120" placeholder="Awa et Thomas" value="${esc(Q.get('noms') || '')}"></label>
+        <label>Date et heure<input name="date" type="datetime-local" required value="${esc(dateQ)}"></label>
+        <label>Lieu<input name="lieu" required placeholder="Domaine des Tilleuls" value="${esc(Q.get('lieu') || '')}"></label>
+      </div><button class="btn">${nouveau ? 'Ouvrir mon espace' : 'Créer'}</button></form>`;
+  const cartes = `${miens.docs.map(d => carte(d.id, d.data())).join('')}${autres.docs.map(d => carte(d.id, d.data(), d.data().role)).join('')}`;
+  vue.innerHTML = nouveau ? `<div class="app-haut"><div><span class="etq">Bienvenue</span><h1 class="serif">Votre espace</h1></div></div>${form}${cartes ? `<h2 style="margin-top:32px">Vos autres événements</h2>${cartes}` : ''}`
+    : `<div class="app-haut"><div><span class="etq">Bonjour</span><h1 class="serif">Vos événements</h1></div></div>
+    ${cartes}${miens.empty && autres.empty ? '<p class="app-note">Aucun événement pour l\'instant.</p>' : ''}${form}`;
   $('#f-evt').addEventListener('submit', async ev => {
     ev.preventDefault(); const f = Object.fromEntries(new FormData(ev.target));
     const r = await addDoc(collection(db, 'events'), { owner: user.uid, type: f.type, titre: f.titre, date: f.date, lieu: f.lieu, modele: Q.get('modele') || '',
