@@ -13,7 +13,7 @@
 <meta name="p:domain_verify" content="e429689e0f4edbe6245b75c5ab73d5c7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../_commun/maison.css?v=13">
+<link rel="stylesheet" href="../_commun/maison.css?v=14">
 <style>:root{--accent:#A8834A}</style>
 <script src="../_commun/partenaire.js?v=1" defer></script>
 </head>
@@ -70,6 +70,14 @@
   const vu = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vu'); vu.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.revele').forEach(el => vu.observe(el));
   document.querySelectorAll('[data-demo]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.demo).style.display = 'block'));
+  document.querySelectorAll('video.survol-arche').forEach(v => { const a = v.parentElement;
+    a.addEventListener('mouseenter', () => v.play().catch(() => {})); a.addEventListener('mouseleave', () => v.pause()); });
+  // Survol d'une collection : son ouverture se joue (chargée au premier survol), puis s'arrête en partant.
+  document.querySelectorAll('.oeuvre').forEach(o => {
+    const v = o.querySelector('video.survol'); if (!v) return;
+    o.addEventListener('mouseenter', () => { if (!v.src) v.src = v.dataset.src; v.currentTime = 0; v.play().then(() => o.classList.add('joue')).catch(() => {}); });
+    o.addEventListener('mouseleave', () => { o.classList.remove('joue'); v.pause(); });
+  });
 </script>
 </body>
 </html>
