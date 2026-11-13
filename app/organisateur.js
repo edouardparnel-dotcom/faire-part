@@ -121,13 +121,13 @@ function rendre() {
   const onglets = { accueil: 'Vue d\'ensemble', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
     budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', cadeaux: 'Liste et cagnotte', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
     ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
-    paiement: evt.formule === 'essai' ? 'Publier' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
+    paiement: evt.formule === 'essai' ? 'Valider ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
   if (evt.formule === 'faire-part') { const garder = FAIRE_PART; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à Signature ou Prestige'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))} · ${esc(evt.lieu)}</p></div>
-    <div class="puces"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser le faire-part</a><a class="btn petit clair" href="imprimer.html?e=${E}" target="_blank" rel="noopener">Version à imprimer</a><a class="btn petit clair" href="fp.html?e=${E}&amp;f=site" target="_blank" rel="noopener">Voir le site</a>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
+    <div class="puces"><button class="btn petit voir" data-apercu="fp">Voir mon faire-part</button><a class="btn petit clair" href="editeur.html?e=${E}">Personnaliser</a><a class="btn petit clair" href="imprimer.html?e=${E}" target="_blank" rel="noopener">Version à imprimer</a><button class="btn petit clair" data-apercu="site">Voir le site</button>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
     ${onglet === 'invites' ? `<div class="app-grille">
       <div class="app-stat"><b>${invites.length}</b><span>Invitations</span></div>
       <div class="app-stat"><b>${repondu}</b><span>Ont répondu</span></div>
@@ -136,7 +136,7 @@ function rendre() {
     </div>` : ''}
     ${Q.get('paiement') === 'ok' ? `<div class="app-carte bandeau-paiement ok">${evt.formule === 'essai' ? 'Paiement reçu, merci. Vos options s\'activent dans quelques secondes ; la facture arrive par courriel.' : `Paiement reçu, merci : formule ${esc(evt.formule)} active. La facture arrive par courriel.`}</div>` : Q.get('paiement') === 'annule' ? '<div class="app-carte bandeau-paiement">Paiement annulé : rien n\'a été débité.</div>' : ''}
     ${navigation(onglets)}
-    <div id="contenu">${VUES[onglet]()}</div>`;
+    <div id="contenu" class="rub-${rubriqueDe(onglet)}">${VUES[onglet]()}</div>`;
   appliquerRecherche(); scrollTo(0, y);
 }
 
@@ -146,8 +146,35 @@ const RUBRIQUES = [['accueil', 'Accueil', ['accueil']], ['invites', 'Invités', 
 function navigation(onglets) {
   const rubs = RUBRIQUES.map(([k, nom, pages]) => [k, nom, pages.filter(p => onglets[p])]).filter(([, , p]) => p.length);
   const ici = rubs.find(([, , p]) => p.includes(onglet)) || rubs[0];
-  return `<div class="app-onglets">${rubs.map(([k, nom, p]) => `<button data-onglet="${p[0]}" class="${k === ici[0] ? 'actif' : ''}">${nom}</button>`).join('')}</div>`
-    + (ici[2].length > 1 ? `<div class="app-sous-onglets">${ici[2].map(p => `<button data-onglet="${p}" class="${p === onglet ? 'actif' : ''}">${onglets[p]}</button>`).join('')}</div>` : '');
+  return `<div class="app-onglets rubriques">${rubs.map(([k, nom, p]) => `<button data-onglet="${p[0]}" class="rub-${k} ${k === ici[0] ? 'actif' : ''}">${nom}</button>`).join('')}</div>`
+    + (ici[2].length > 1 ? `<div class="app-sous-onglets rub-${ici[0]}">${ici[2].map(p => `<button data-onglet="${p}" class="${p === onglet ? 'actif' : ''}">${onglets[p]}</button>`).join('')}</div>` : '');
+}
+const rubriqueDe = o => (RUBRIQUES.find(([, , p]) => p.includes(o)) || RUBRIQUES[0])[0];
+
+// Le parcours du couple, du choix de la collection au partage : l'étape en cours est mise en avant, les autres attendent.
+function parcours() {
+  const etapes = [
+    ['Choisir la collection', !!evt.modele, 'Choisir', 'data-changer-collection="1"'],
+    ['Personnaliser', !!evt.design, 'Personnaliser', `data-lien="editeur.html?e=${E}"`],
+    ['Voir mon faire-part', !!evt.design, 'Voir', 'data-apercu="fp"'],
+    ['Valider ma formule', evt.formule !== 'essai', 'Valider', 'data-onglet="paiement"'],
+    ['Partager avec un message', invites.some(i => i.envoi), 'Partager', 'data-onglet="envois"'],
+  ], ici = etapes.findIndex(e => !e[1]);
+  return `<div class="parcours">${etapes.map(([t, fait, b, attr], k) => `<div class="pas ${fait ? 'fait' : k === ici ? 'ici' : ''}"><span class="num">${fait ? '✓' : k + 1}</span><b>${t}</b>
+    <button class="btn petit ${k === ici ? '' : 'clair'}" ${attr}>${fait && k !== 2 ? 'Modifier' : b}</button></div>`).join('')}</div>`;
+}
+
+// Aperçu de l'invitation dans l'espace, dans un téléphone (hors de #vue : il survit aux mises à jour en direct).
+function apercu(f) {
+  document.querySelector('.apercu-fond')?.remove();
+  const url = `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`, d = document.createElement('div');
+  d.className = 'apercu-fond';
+  d.innerHTML = `<div class="apercu-boite"><div class="puces apercu-barre"><button class="btn petit ${f === 'fp' ? '' : 'clair'}" data-ap="fp">Faire-part</button><button class="btn petit ${f === 'site' ? '' : 'clair'}" data-ap="site">Site</button>
+    <a class="btn petit clair" href="${url}" target="_blank" rel="noopener">Ouvrir en grand</a><button class="btn petit clair" data-ap="fermer">Fermer</button></div>
+    <div class="telephone"><iframe src="${url}" title="Aperçu de votre invitation"></iframe></div>
+    <p class="app-note">C'est exactement ce que verront vos invités${evt.formule === 'essai' ? ', une fois votre formule validée' : ''}.</p></div>`;
+  d.addEventListener('click', e => { const b = e.target.closest('[data-ap]'); if (e.target === d || b?.dataset.ap === 'fermer') d.remove(); else if (b) apercu(b.dataset.ap); });
+  document.body.appendChild(d);
 }
 
 // Carte « Votre collection » : la voir, la personnaliser, en changer ou la retirer.
@@ -199,12 +226,12 @@ const VUES = {
       places && `<div class="app-stat"><b>${places}/${nbAttendus}</b><span>Personnes placées</span>${barre(places, nbAttendus)}</div>`,
     ].filter(Boolean);
     const [prochaine, ...autres] = conseils, actives = Object.entries(NOMS_OPTIONS).filter(([k]) => a(k));
-    return `${carteCollection()}
-      <div class="app-grille">${stats.join('')}</div>
+    return `${parcours()}${carteCollection()}
+      <div class="app-grille stats-couleur">${stats.join('')}</div>
       ${prochaine ? `<div class="app-carte"><span class="etq">Prochaine étape</span><div class="ligne-conseil" style="border:0;padding-top:6px"><span style="font-size:17px">${esc(prochaine[0])}</span><button class="btn petit" data-onglet="${prochaine[1]}">${esc(prochaine[2])}</button></div>
         ${autres.length ? `<details style="margin-top:8px"><summary class="app-note" style="cursor:pointer">Voir ${autres.length} autre${autres.length > 1 ? 's' : ''} étape${autres.length > 1 ? 's' : ''}</summary>${autres.map(([t, o, b]) => `<div class="ligne-conseil"><span>${esc(t)}</span><button class="btn petit clair" data-onglet="${o}">${esc(b)}</button></div>`).join('')}</details>` : ''}</div>` : ''}
       ${restantes.length ? `<div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 4).map(ligneTache).join('')}</div>` : ''}
-      <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${actives.map(([, v]) => `<span class="puce-o">${esc(v)}</span>`).join('') || '<span class="app-note">Aucune option pour l\'instant.</span>'}<button class="btn petit clair" data-onglet="paiement">${evt.formule === 'essai' ? 'Publier mon invitation' : 'Ajouter une option'}</button></div>
+      <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${actives.map(([, v]) => `<span class="puce-o">${esc(v)}</span>`).join('') || '<span class="app-note">Aucune option pour l\'instant.</span>'}<button class="btn petit clair" data-onglet="paiement">${evt.formule === 'essai' ? 'Valider ma formule' : 'Ajouter une option'}</button></div>
         ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit jusqu'à la publication : préparez tout, l'envoi à vos invités se débloque quand vous publiez.</p>` : ''}</div>`;
   },
 
@@ -416,8 +443,8 @@ const VUES = {
     const total = (actuelle ? g.formules[cible].prix - g.formules[actuelle].prix : prixF(g.formules[cible])) + nouvelles.reduce((s, o) => s + prixO(g.options[o], g.formules[cible], actuelle), 0);
     const payes = paiements.filter(p => p.etat === 'paye');
     const codeP = window.codePartenaire ? window.codePartenaire() : '', remise = codeP ? Math.round(Math.max(0, total) * 0.1) : 0;
-    return `${msgPublier && !actuelle ? `<div class="app-carte bandeau-paiement ok">${esc(msgPublier)}</div>` : ''}<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Publiez votre invitation'}</h2>
-        <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Tout est gratuit tant que vous préparez : invitation, site, invités, plan de table, budget. Vous payez au moment de publier, pour envoyer le lien à vos invités.'}</p>
+    return `${msgPublier && !actuelle ? `<div class="app-carte bandeau-paiement ok">${esc(msgPublier)}</div>` : ''}<div class="app-carte"><h2>${actuelle ? `Votre formule : ${esc(g.formules[actuelle].nom)}` : 'Validez votre formule'}</h2>
+        <p class="app-note" style="margin-bottom:14px">${actuelle ? 'Vous pouvez passer à une formule supérieure (vous ne payez que la différence) ou ajouter des options.' : 'Tout est gratuit tant que vous préparez : invitation, site, invités, plan de table, budget. Vous validez votre formule quand votre invitation vous plaît : le lien part alors à vos invités, avec votre message.'}</p>
         <div class="choix-formules">${Object.entries(g.formules).map(([k, f]) => { const bloquee = actuelle && f.prix < g.formules[actuelle].prix; return `<label class="formule-paie ${k === cible ? 'choisie' : ''} ${bloquee ? 'bloquee' : ''}"><input type="radio" name="formule" value="${k}" data-choix-formule="${k}" ${k === cible ? 'checked' : ''} ${bloquee ? 'disabled' : ''}><b>${esc(f.nom)}</b><span>${euros(actuelle ? f.prix : prixF(f))}</span>${!actuelle && prixF(f) < f.prix ? `<small>Prix de lancement, puis ${euros(f.prix)}</small>` : ''}<small>${k === actuelle ? 'Votre formule' : actuelle && !bloquee ? `+ ${euros(f.prix - g.formules[actuelle].prix)}` : `${f.inclus.length} option${f.inclus.length > 1 ? 's' : ''} incluse${f.inclus.length > 1 ? 's' : ''}`}</small></label>`; }).join('')}</div></div>
       <div class="app-carte"><h2>Options à l'unité</h2><div class="options-paie">${Object.entries(g.options).map(([k, o]) => { const deja = acquises.has(k); return `<label class="coche ${deja ? 'deja' : ''}"><input type="checkbox" data-choix-option="${k}" ${deja || choixOptions.has(k) ? 'checked' : ''} ${deja ? 'disabled' : ''}><span>${esc(o.nom)}</span><em>${deja ? ((evt.options || []).includes(k) ? 'Active' : 'Incluse') : '+ ' + euros(prixO(o, g.formules[cible], actuelle)) + (prixO(o, g.formules[cible], actuelle) < o.prix ? ` <small>puis ${euros(o.prix)}</small>` : '')}</em></label>`; }).join('')}</div></div>
       <div class="app-carte total-paie">${remise ? `<div class="ligne-conseil"><span>Remise partenaire ${esc(codeP)}</span><b>− ${euros(remise)}</b></div>` : ''}<div class="ligne-conseil"><span>Total à payer</span><b>${euros(Math.max(0, total) - remise)}</b></div>
@@ -584,6 +611,8 @@ document.addEventListener('click', async ev => {
   if (img && E && photoPour) { const id = photoPour; photoPour = null; return updateDoc(doc(db, `events/${E}/invites/${id}`), { 'merci.photo': img.dataset.photoMerci }); }
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
+  if (d.apercu) return apercu(d.apercu);
+  if (d.lien) { location.href = d.lien; return; }
   if (d.changerCollection) { choisirCollection = !choisirCollection; return rendre(); }
   if (d.collection) { choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: d.collection }); return; }
   if (d.retirerCollection) { if (!confirm('Retirer cette collection ? Votre personnalisation est conservée ; vous en choisirez une autre.')) return; choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: '' }); return; }
@@ -591,7 +620,7 @@ document.addEventListener('click', async ev => {
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
   if ((d.copier || d.copierMessage || d.envoi) && evt.formule === 'essai') {   // gratuit jusqu'à la publication : l'envoi aux invités se débloque au paiement
     ev.preventDefault(); onglet = 'paiement';
-    msgPublier = 'Votre invitation est prête à partir. Publiez-la pour l\'envoyer à vos invités : tout ce que vous avez préparé reste en place, rien n\'est à refaire.';
+    msgPublier = 'Votre invitation est prête à partir. Validez votre formule pour l\'envoyer à vos invités : tout ce que vous avez préparé reste en place, rien n\'est à refaire.';
     rendre(); scrollTo(0, 0); return;
   }
   if (d.copier) { await navigator.clipboard?.writeText(lienInvite(d.copier)).catch(() => {}); $('#m-copie').textContent = 'Lien copié : ' + lienInvite(d.copier); return; }
