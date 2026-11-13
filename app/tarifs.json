@@ -78,6 +78,10 @@
     "nom": "Invités venus de l'étranger",
     "prix": 40
    },
+   "portrait": {
+    "nom": "Portrait illustré du couple",
+    "prix": 60
+   },
    "tenues": {
     "nom": "Tenues coordonnées",
     "prix": 40
