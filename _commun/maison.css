@@ -198,6 +198,7 @@ section{padding:64px 0;border-top:1px solid var(--filet)}
 .total{border-top:1px solid var(--encre);margin-bottom:20px}
 .ligne-total{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--filet);font-size:14px}
 .ligne-total b{font-weight:400;white-space:nowrap}
+.ligne-total[hidden]{display:none}
 .ligne-total.grand{font-size:16px;border-bottom:0;padding-top:14px}
 .ligne-total.grand b{font-family:'Bodoni Moda',serif;font-size:32px;line-height:1}
 .demo-note{display:none;font-size:13px;color:var(--accent);margin-top:12px}

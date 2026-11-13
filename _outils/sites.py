@@ -10,7 +10,7 @@ from html import escape
 from emotions import EMOTIONS
 
 MARQUE = 'Maison Vivat'   # domaine maisonvivat.com (acheté le 08/11/2026)
-CSS_V = 17               # augmenter à chaque modification de _commun/maison.css (cache GitHub Pages)
+CSS_V = 18               # augmenter à chaque modification de _commun/maison.css (cache GitHub Pages)
 
 ORN = '<svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50M70 7h50" stroke="currentColor" stroke-width=".8"/><path d="M60 1l6 6-6 6-6-6z" fill="none" stroke="currentColor" stroke-width=".8"/></svg>'
 
@@ -502,7 +502,7 @@ def page_creer(modeles):
                           img=f"../{m['slug']}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, m['slug'], 'miniature.jpg')) else 'photo.jpg'}", voir=f"../{m['slug']}/index.html")
                      for sl in slugs for m in modeles if m['slug'] == sl]
                     + [dict(slug=t['id'], nom=t['nom'], culture=t['culture'], a='', b='', titre='', img=f"../collections/apercus/{t['id']}-fp.jpg", voir=f"../app/fp.html?demo={t['id']}", moteur=True)
-                       for t in THEMES if t['evt'] == s['cle']],
+                       for t in THEMES if t['evt'] == s['cle'] and not any(m['slug'] == sl for sl in slugs for m in modeles)],
             exemple={'mariage': 'Awa et Thomas', 'anniversaire': 'Les 40 ans de Nadia', 'bapteme': 'Gabriel', 'gender': 'Fille ou garçon ?', 'naissance': 'Léo'}[s['cle']],
             formules=[dict(nom=n, prix=p, inclus=inc, lignes=l, **({'lancement': lancement(n, p)} if s['cle'] == 'mariage' and lancement(n, p) else {})) for n, p, inc, l in s['formules']],
             options=[dict(cle=k, moment=mo, nom=n, texte=t, prix=p if isinstance(p, int) else 0, devis=p == 'devis') for k, mo, n, t, p, d in s['options'] if p is not None])
@@ -556,8 +556,8 @@ def page_creer(modeles):
     </div>
     <label class="case"><input type="checkbox" id="c-cgv"><span>J'accepte les <a href="../cgv/index.html" target="_blank" rel="noopener">conditions générales de vente</a>.</span></label>
     <label class="case"><input type="checkbox" id="c-debut"><span>Je demande que la réalisation commence tout de suite. Je sais que je perdrai mon droit de rétractation une fois l'invitation validée par moi et mise en ligne.</span></label>
-    <button class="btn" type="button" id="b-payer" style="width:100%" disabled>Continuer vers le paiement</button>
-    <p class="rassure">Vous créez votre espace, puis vous payez par carte sur la page sécurisée de Stripe.</p>
+    <button class="btn" type="button" id="b-payer" style="width:100%" disabled>Créer mon espace, gratuitement</button>
+    <p class="rassure">Gratuit tant que vous préparez. Vous validez votre formule après avoir vu votre faire-part, par carte, sur la page sécurisée de Stripe.</p>
     <p class="rassure">Sans rendez-vous. Assistance écrite sous 24 heures.</p>
     <p class="rassure">Vos données et celles de vos invités restent en France : <a href="../confidentialite/index.html">confidentialité</a>.</p>
   </aside>

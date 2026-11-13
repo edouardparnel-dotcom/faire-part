@@ -50,7 +50,7 @@ async function liste() {
   vue.innerHTML = `<div class="app-haut"><div><span class="etq">Bonjour</span><h1 class="serif">Vos événements</h1></div></div>
     ${miens.docs.map(d => carte(d.id, d.data())).join('')}${autres.docs.map(d => carte(d.id, d.data(), d.data().role)).join('')}
     ${miens.empty && autres.empty ? '<p class="app-note">Aucun événement pour l\'instant.</p>' : ''}
-    <form class="app-carte" id="f-evt"><h2>Créer un événement</h2>${Q.get('nouveau') ? '<p class="app-note" style="margin-bottom:12px">Créez votre événement : vous arriverez ensuite au paiement, avec la formule et les options choisies.</p>' : ''}
+    <form class="app-carte" id="f-evt"><h2>Créer un événement</h2>${Q.get('nouveau') ? '<p class="app-note" style="margin-bottom:12px">Créez votre événement : vous préparez tout gratuitement, vous voyez votre faire-part, puis vous validez votre formule quand il vous plaît.</p>' : ''}
       <div class="app-grille">
         <label>Type<select name="type">${Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${Q.get('nouveau') === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
         <label>Prénoms ou titre<input name="titre" required maxlength="120" placeholder="Awa et Thomas"></label>
@@ -61,7 +61,7 @@ async function liste() {
     ev.preventDefault(); const f = Object.fromEntries(new FormData(ev.target));
     const r = await addDoc(collection(db, 'events'), { owner: user.uid, type: f.type, titre: f.titre, date: f.date, lieu: f.lieu, modele: Q.get('modele') || '',
       formule: 'essai', options: [], ceremonies: [{ cle: 'principale', nom: f.type === 'mariage' ? 'Cérémonie' : 'La fête', date: f.date, lieu: f.lieu }], creeLe: serverTimestamp() });
-    location.href = `?e=${r.id}` + (Q.get('nouveau') ? `&onglet=paiement&formule=${encodeURIComponent(Q.get('formule') || '')}&options=${encodeURIComponent(Q.get('options') || '')}` : '');
+    location.href = `?e=${r.id}` + (Q.get('nouveau') ? `&formule=${encodeURIComponent(Q.get('formule') || '')}&options=${encodeURIComponent(Q.get('options') || '')}` : '');
   });
 }
 
