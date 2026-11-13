@@ -10,19 +10,20 @@ from html import escape
 from emotions import EMOTIONS
 
 MARQUE = 'Maison Vivat'   # domaine maisonvivat.com (acheté le 08/11/2026)
-CSS_V = 12                # augmenter à chaque modification de _commun/maison.css (cache GitHub Pages)
+CSS_V = 17               # augmenter à chaque modification de _commun/maison.css (cache GitHub Pages)
 
 ORN = '<svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50M70 7h50" stroke="currentColor" stroke-width=".8"/><path d="M60 1l6 6-6 6-6-6z" fill="none" stroke="currentColor" stroke-width=".8"/></svg>'
 
 # Options : clé, moment, nom, description, prix (None = inclus, 'devis' = sur devis), pensé pour la diaspora
 OPTIONS_MARIAGE = [
-  ('fairepart', 'Avant', "L'invitation", "Quarante-six collections réalistes, chacune avec son ouverture, sa mise en page et sa musique : invitation, save-the-date et site, à vos couleurs.", None, False),
+  ('fairepart', 'Avant', "L'invitation", "Cinquante collections réalistes, chacune avec son ouverture, sa mise en page et sa musique : invitation, save-the-date et site, à vos couleurs.", None, False),
   ('savethedate', 'Avant', 'Save-the-date animé', "L'annonce envoyée des mois avant, pour que chacun bloque la date.", 30, False),
   ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 15, False),
   ('ceremonies', 'Avant', 'Invitations par cérémonie', "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", 40, True),
   ('guide', 'Avant', 'Guide de la cérémonie', "La dot, le coutumier, les rites expliqués aux invités d'une autre culture.", 30, True),
   ('covoiturage', 'Avant', 'Covoiturage entre invités', "Qui a de la place, qui en cherche : chaque invité indique son point de départ et voit d'abord les trajets qui partent près de chez lui.", 15, False),
   ('etranger', 'Avant', "Invités venus de l'étranger", "Dates d'arrivée, hébergement, navettes et lettre d'invitation pour le visa.", 40, True),
+  ('portrait', 'Avant', 'Portrait illustré du couple', "À partir de votre photo, vous deux dessinés à l'aquarelle dans l'univers de votre collection, puis repris sur l'invitation, le site et les remerciements. Une retouche incluse.", 60, True),
   ('tenues', 'Avant', 'Tenues coordonnées', "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", 40, True),
   ('langue', 'Avant', 'Langue supplémentaire', "Quatorze langues, de l'anglais à l'arabe, au chinois ou au swahili : le site et l'invitation dans la langue de chacun.", 20, False),
   ('qr', 'Le jour J', "Contrôle d'entrée par QR code", "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", 50, True),
@@ -88,13 +89,14 @@ SITES = [
             ('Et l\'organisation, en prime', "Réponses, plan de table, budget, planning, liste et cagnotte sont inclus, sans supplément. Maison Vivat ne touche jamais l'argent.")],
     options=OPTIONS_MARIAGE, formules=FORMULES_MARIAGE,
     intro_collections="L'invitation donne le ton de votre réception. Chaque collection a sa direction artistique ; nous la reprenons à vos couleurs, à vos prénoms, à votre langue.",
-    titre_collections='Quarante-six collections, autant de façons de recevoir',
+    titre_collections='Cinquante collections, autant de façons de recevoir',
+    # ordre alterné : deux collections voisines ne s'ouvrent pas de la même façon (livre, enveloppe, portes, papillon…)
     groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, des lanternes qui s'envolent au-dessus d'un lac, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'lanternes', 'marine']),
-             ('Héritages', "Les codes des cultures d'Afrique et des Antilles, travaillés avec finesse.",
-              ['kreyol', 'kanaval', 'karakou', 'takchita', 'keswa', 'ndop', 'kente', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'adinkra']),
-             ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'aodai', 'lehenga', 'hanbok', 'shiromuku']),
-             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['gatsby', 'chapelle', 'porcelaine', 'versailles', 'opera', 'orangerie', 'classique', 'emeraude', 'bordeaux', 'faubourg', 'ivoire', 'soie', 'monogramme', 'boheme', 'champetre']),
-             ('Univers', "Pour les passionnés : l'esprit d'une saga au château, sans costume obligatoire.", ['citadelle', 'nocturne'])]),
+             ('Héritages', "Les codes des cultures d'Afrique, d'Orient, des Antilles et des Amériques, travaillés avec finesse.",
+              ['kreyol', 'karakou', 'ndop', 'kanaval', 'takchita', 'keswa', 'huipil', 'kente', 'bindalli', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'adinkra']),
+             ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'aodai', 'lehenga', 'hanbok', 'kanchipuram', 'shiromuku']),
+             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['gatsby', 'porcelaine', 'chapelle', 'versailles', 'faubourg', 'opera', 'orangerie', 'classique', 'emeraude', 'bordeaux', 'ivoire', 'soie', 'monogramme', 'boheme', 'champetre']),
+             ('Univers', "Pour les passionnés : une saga au château, une nuit gothique, un mariage sous les étoiles.", ['citadelle', 'nocturne', 'celeste'])]),
   dict(cle='anniversaire', dossier='anniversaires', nom='Anniversaires', accent='#8E4A52', evenements=('anniversaire',),
     image='anniversaire-gala/decor-detail.jpg', image2='anniversaire-disco/decor-detail.jpg',
     titre_page="Invitations d'anniversaire",
@@ -211,16 +213,26 @@ def bloc_realisations(site):
 """
 
 
+def decor_paral(pre, elements):
+    """Éléments graphiques des collections posés en bord de section, déplacés en parallaxe au défilement (data-v : vitesse,
+    négative = sens inverse). elements : (image, style CSS de position et de taille, rotation en degrés, vitesse)."""
+    return '<div class="decor-paral" aria-hidden="true">' + ''.join(
+        f'<img class="paral" src="{pre}{img}" alt="" loading="lazy" style="{pos};--r:{r}deg" data-v="{v}">' for img, pos, r, v in elements) + '</div>'
+
+
 def bloc_avis(site):
     avis = [a for a in AVIS if a['valide'] and a['site'] == site['cle']]
     if not avis:
         return ''
     e = escape
-    return f"""  <section class="avis-clients"><div class="conteneur">
+    pre = '../' if site['dossier'] else ''
+    decor = decor_paral(pre, [('karakou/ouverture.webp', 'left:-70px;top:22%;width:250px', -9, .16), ('citadelle/sceau.webp', 'right:6%;top:9%;width:96px', 14, -.22),
+                              ('kanchipuram/sceau.webp', 'left:9%;bottom:6%;width:78px', 0, .3), ('bindalli/sceau.webp', 'right:-10px;bottom:12%;width:120px', -12, .12)])
+    return f"""  <section class="avis-clients">{decor}<div class="conteneur">
     <div class="titre-section revele"><span class="etq">Ils nous ont confié leur invitation</span><h2>Leurs mots</h2>
       <p>Des fêtes accompagnées par Maison Vivat, avant le lancement de l'espace complet.</p></div>
     <div class="avis-liste">
-{chr(10).join(f'      <figure class="avis revele"><blockquote>« {e(a["texte"])} »</blockquote><figcaption><b>{e(a["signature"])}</b>{' · ' + e(a["lieu"]) if a["lieu"] else ''}</figcaption></figure>' for a in avis)}
+{chr(10).join(f'      <figure class="avis revele"><blockquote>«&nbsp;{e(a["texte"])}&nbsp;»</blockquote><figcaption><b>{e(a["signature"])}</b>{' · ' + e(a["lieu"]) if a["lieu"] else ''}</figcaption></figure>' for a in avis)}
     </div>
   </div></section>
 
@@ -277,6 +289,23 @@ def pied(site, pre):
   const vu = new IntersectionObserver(es => es.forEach(x => {{ if (x.isIntersecting) {{ x.target.classList.add('vu'); vu.unobserve(x.target); }} }}), {{ rootMargin: '0px 0px -8% 0px' }});
   document.querySelectorAll('.revele').forEach(el => vu.observe(el));
   document.querySelectorAll('[data-demo]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.demo).style.display = 'block'));
+  document.querySelectorAll('video.survol-arche').forEach(v => {{ const a = v.parentElement;
+    a.addEventListener('mouseenter', () => v.play().catch(() => {{}})); a.addEventListener('mouseleave', () => v.pause()); }});
+  // Décor en parallaxe : chaque élément glisse à sa vitesse quand la section défile (rien si le mouvement réduit est demandé).
+  const paral = [...document.querySelectorAll('.paral')];
+  if (paral.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {{
+    let attente = false;
+    const bouge = () => {{ attente = false; const mi = innerHeight / 2;
+      for (const el of paral) {{ const r = el.parentElement.getBoundingClientRect(); if (r.bottom < -200 || r.top > innerHeight + 200) continue;
+        el.style.transform = `translate3d(0,${{((r.top + r.height / 2 - mi) * -parseFloat(el.dataset.v)).toFixed(1)}}px,0) rotate(var(--r))`; }} }};
+    addEventListener('scroll', () => {{ if (!attente) {{ attente = true; requestAnimationFrame(bouge); }} }}, {{ passive: true }}); bouge();
+  }}
+  // Survol d'une collection : son ouverture se joue (chargée au premier survol), puis s'arrête en partant.
+  document.querySelectorAll('.oeuvre, .vignette-cat.reelle').forEach(o => {{
+    const v = o.querySelector('video.survol'); if (!v) return;
+    o.addEventListener('mouseenter', () => {{ if (!v.src) v.src = v.dataset.src; v.currentTime = 0; v.play().then(() => o.classList.add('joue')).catch(() => {{}}); }});
+    o.addEventListener('mouseleave', () => {{ o.classList.remove('joue'); v.pause(); }});
+  }});
 </script>
 </body>
 </html>
@@ -289,7 +318,21 @@ def page(site, modeles):
     e = escape
     creer = f"{pre}creer/?evt={site['cle']}"
 
-    def oeuvre(slug, rang=0):
+    def visuel(slug, m, une):
+        image = f"{pre}{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}"
+        # Au survol, l'ouverture du faire-part se joue sans le son (jamais de lancement automatique) ; « À la une » : format vertical entier.
+        en3d = os.path.exists(os.path.join(RACINE_MINI, slug, 'ouverture-3d.mp4'))
+        film = 'ouverture-3d.mp4' if en3d else 'ouverture.mp4' if os.path.exists(os.path.join(RACINE_MINI, slug, 'ouverture.mp4')) else None
+        if une and en3d:
+            image = f'{pre}{slug}/ouverture-3d.jpg'
+        html = f'<img src="{image}" alt="Collection {e(m["modele"])}" loading="lazy">'
+        if film:
+            html += f'<video class="survol" data-src="{pre}{slug}/{film}" muted loop playsinline preload="none" aria-hidden="true"></video>'
+        if une and en3d:
+            html += '<span class="pastille">Ouverture en 3D</span>'
+        return html
+
+    def oeuvre(slug, rang=0, une=False):
         m = par_slug[slug]
         site_m = SITE_DU_MODELE.get(slug)
         # Le vrai site de la collection (décor, photos, programme illustré) quand il existe ; sinon le site du moteur.
@@ -298,7 +341,7 @@ def page(site, modeles):
         else:
             lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site" target="_blank" rel="noopener">Voir le site de cette collection</a>' if site_m else ''
         return f"""        <div class="revele{' en-plus' if rang >= 3 and site['cle'] == 'mariage' else ''}"><a class="oeuvre" href="{pre}{slug}/index.html">
-          <div class="cadre"><img src="{pre}{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}" alt="Collection {e(m['modele'])}" loading="lazy"></div>
+          <div class="cadre">{visuel(slug, m, une)}</div>
           <span class="etq">{e(m['culture'])}</span>
           <h4>{e(m['modele'])}</h4>
           <span class="ouvrir">Ouvrir l'invitation</span>
@@ -308,7 +351,8 @@ def page(site, modeles):
     for titre, texte, slugs in site['groupes']:
         slugs = [s for s in slugs if s in par_slug]
         tg = f'<div class="groupe-tete"><h3>{e(titre)}</h3><p>{e(texte)}</p></div>' if titre else ''
-        groupes.append(f'      <div class="groupe">{tg}\n      <div class="oeuvres">\n' + '\n'.join(oeuvre(s, k) for k, s in enumerate(slugs)) + '\n      </div></div>')
+        une = titre == 'À la une'
+        groupes.append(f'      <div class="groupe{" une" if une else ""}">{tg}\n      <div class="oeuvres">\n' + '\n'.join(oeuvre(s, k, une) for k, s in enumerate(slugs)) + '\n      </div></div>')
 
     espace = '\n'.join(f'      <article class="revele"><h3>{e(t)}</h3><p>{e(p)}</p></article>' for t, p in site['espace'])
     # Directions du moteur pour cet événement (le mariage renvoie au catalogue complet, trop long pour cette page).
@@ -376,10 +420,11 @@ def page(site, modeles):
     <div class="arche revele">{f'<video src="{pre}{site["video"]}" poster="{pre}{site["image"]}" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>' if site.get('video') else f'<img src="{pre}{site["image"]}" alt="" fetchpriority="high">'}</div>
   </div>
 
-  <section class="manifeste"><div class="conteneur revele">
+  <section class="manifeste">{decor_paral(pre, [('lanternes/ouverture.webp', 'left:-50px;top:14%;width:260px', -12, .18), ('takchita/sceau.webp', 'right:9%;top:16%;width:104px', 10, -.14),
+                                    ('kanaval/papillon.webp', 'right:4%;bottom:10%;width:92px', 16, .32), ('grand-hotel/cachet.webp', 'left:12%;bottom:8%;width:74px', -6, -.24)]) if site['cle'] == 'mariage' else ''}<div class="conteneur revele">
     <span class="etq">L'art de recevoir</span>
     <div style="height:22px"></div>
-    <blockquote>« {e(site['manifeste'])} »</blockquote>
+    <blockquote>«&nbsp;{e(site['manifeste'])}&nbsp;»</blockquote>
   </div></section>
 
 {bloc_avis(site)}  <section id="collections"><div class="conteneur">
@@ -387,10 +432,10 @@ def page(site, modeles):
 {chr(10).join(groupes)}
 {'<p class="note revele voir-plus"><button class="btn clair" type="button" onclick="document.getElementById(\'collections\').classList.add(\'tout\');this.parentNode.remove()">Voir plus de collections</button></p>' if site['cle'] == 'mariage' else ''}
 {catalogue}
-    <p class="note revele"><a class="btn" href="{pre}collections/index.html{'' if site['cle'] == 'mariage' else '?evt=' + site['cle']}">{f"Voir les {sum(t['evt'] == 'mariage' for t in THEMES)} directions du mariage, en faire-part, save-the-date et site" if site['cle'] == 'mariage' else 'Toutes les directions de la maison'}</a></p>
+    <p class="note revele"><a class="btn" href="{pre}collections/index.html{'' if site['cle'] == 'mariage' else '?evt=' + site['cle']}">{"Voir toutes les collections, en faire-part, save-the-date et site" if site['cle'] == 'mariage' else 'Toutes les directions de la maison'}</a></p>
   </div></section>
 
-  <section id="espace"><div class="conteneur">
+  <section id="espace" class="avec-decor">{decor_paral(pre, [('qunkwa/suspendu.webp', 'right:5%;top:0;width:70px', 0, 0.2), ('shiromuku/branche.webp', 'left:-40px;top:38%;width:300px', 8, -0.12), ('takchita/icone-4.webp', 'right:-20px;bottom:14%;width:120px', -6, 0.26), ('huipil/sceau.webp', 'left:6%;bottom:4%;width:110px', 10, -0.2)]) if site['cle'] == 'mariage' else ''}<div class="conteneur">
     <div class="titre-section revele"><span class="etq">L'espace</span><h2>{e(site['titre_espace'])}</h2></div>
     <div class="fonctions">
 {espace}
@@ -398,7 +443,7 @@ def page(site, modeles):
     {f'<p class="note revele"><a href="{pre}espace/#tableau" class="lien-or">Essayer l’espace de démonstration →</a></p>' if site['essai'] else ''}
   </div></section>
 
-  <section class="tarifs" id="formules"><div class="conteneur">
+  <section class="tarifs avec-decor" id="formules">{decor_paral(pre, [('marine/ouverture.webp', 'left:-80px;top:10%;width:240px', 10, 0.14), ('keswa/sceau.webp', 'right:4%;top:6%;width:88px', -10, -0.22), ('kanchipuram/icone-1.webp', 'right:-30px;bottom:8%;width:170px', 6, 0.2)]) if site['cle'] == 'mariage' else ''}<div class="conteneur">
     <div class="titre-section revele"><span class="etq">Formules</span><h2>{['Trois', 'Quatre', 'Cinq'][len(site['formules']) - 3]} formules, des options à l'unité</h2><p>Paiement unique au moment de publier · prix indépendant du nombre d'invités · accès jusqu'à 12 mois après la date · droit de rétractation de 14 jours (voir les CGV).</p></div>
     <div class="formules">
 {formules}
@@ -406,7 +451,7 @@ def page(site, modeles):
     <p class="note">Paiement en ligne sécurisé. Toutes les options s'ajoutent aussi à l'unité. TVA non applicable, art. 293 B du CGI.</p>
   </div></section>
 
-  <section class="tarifs" id="options"><div class="conteneur">
+  <section class="tarifs avec-decor" id="options">{decor_paral(pre, [('gatsby/icone-1.webp', 'left:-30px;top:18%;width:140px', -8, 0.18), ('nocturne/sceau.webp', 'right:6%;top:10%;width:84px', 12, -0.2), ('bindalli/icone-1.webp', 'left:5%;bottom:6%;width:120px', 0, -0.16), ('huipil/icone-2.webp', 'right:-20px;bottom:16%;width:130px', -14, 0.24)]) if site['cle'] == 'mariage' else ''}<div class="conteneur">
     <div class="titre-section revele"><span class="etq">Options</span><h2>Quelques options, pour aller plus loin</h2><p>L'invitation est incluse. Ajoutez seulement ce qui compte pour vous ; plusieurs options sont réunies dans les formules.</p></div>
     <div class="phares-opt">
 {selection}
@@ -433,7 +478,7 @@ def page(site, modeles):
     </div>
   </div></section>
 
-  <section class="rendezvous" id="assistance"><div class="conteneur revele">
+  <section class="rendezvous avec-decor" id="assistance">{decor_paral(pre, [('lehenga/toran.webp', 'left:50%;top:0;width:520px;margin-left:-260px', 0, 0.1), ('kanaval/papillon.webp', 'left:8%;bottom:14%;width:84px', -18, 0.34), ('takchita/sceau.webp', 'right:9%;bottom:18%;width:92px', 8, -0.18)]) if site['cle'] == 'mariage' else ''}<div class="conteneur revele">
     {ORN}
     <span class="etq">Assistance</span>
     <h2>Une question ? Nous répondons par écrit</h2>
@@ -584,7 +629,7 @@ $('f-partenaire').addEventListener('change', e => { e.target.value = window.rete
 // Vers l'espace : création du compte et de l'événement, puis paiement avec la formule et les options choisies.
 $('b-payer').addEventListener('click', () => {
   const E2 = D[evt], F = E2.formules[choix.formule], opts = [...choix.options].filter(o => !F.inclus.includes(o));
-  location.href = `../app/organisateur.html?nouveau=${evt}&formule=${encodeURIComponent(F.nom.toLowerCase())}&options=${encodeURIComponent(opts.join(','))}`;
+  location.href = `../app/organisateur.html?nouveau=${evt}&formule=${encodeURIComponent(F.nom.toLowerCase())}&options=${encodeURIComponent(opts.join(','))}&modele=${encodeURIComponent(E2.modeles[choix.modele]?.slug || '')}`;
 });
 changerEvt(evt);
 const depart = D[evt].modeles.findIndex(x => x.slug === q.get('modele'));
@@ -648,31 +693,42 @@ def page_collections(modeles=()):
     par_slug = {m['slug']: m for m in modeles}
     e = escape
 
-    def carte(slug, une):
+    def aper(slug, nom):
+        f = os.path.join(RACINE_MINI, slug, 'apercus', nom)
+        return f'../{slug}/apercus/{nom}' if os.path.exists(f) else f"../{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}"
+
+    def carte(slug, groupe, une):
+        # une collection réelle : son aperçu et sa page changent avec la bascule Faire-part / Save-the-date / Site
         m = par_slug[slug]
         badge = '<span class="badge-une">À la une</span>' if une else ''
-        return f"""      <a class="vignette-cat main" href="../{slug}/index.html">{badge}
-        <img src="../{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}" alt="Collection {e(m['modele'])}" loading="lazy">
-        <span class="etq">{e(m['culture'])}</span><b>{e(m['modele'])}</b><small>{e(m['da'])}</small></a>"""
+        site_ok = os.path.exists(os.path.join(RACINE_MINI, slug, 'site.html'))
+        film = 'ouverture-3d.mp4' if os.path.exists(os.path.join(RACINE_MINI, slug, 'ouverture-3d.mp4')) else 'ouverture.mp4'
+        return (f"""      <a class="vignette-cat main reelle" data-groupe="{e(groupe)}" href="../{slug}/faire-part.html" target="_blank" rel="noopener" """
+                f"""data-fp="../{slug}/faire-part.html" data-std="../{slug}/faire-part.html?f=std" data-site="../{slug}/{'site.html' if site_ok else 'index.html'}" """
+                f"""data-img-fp="{aper(slug, 'faire-part.webp')}" data-img-std="{aper(slug, 'save-the-date.webp')}" data-img-site="{aper(slug, 'site.webp')}">{badge}
+        <span class="cadre-cat"><img src="{aper(slug, 'faire-part.webp')}" alt="Collection {e(m['modele'])}" loading="lazy"><video class="survol" data-src="../{slug}/{film}" muted loop playsinline preload="none" aria-hidden="true"></video></span>
+        <span class="etq">{e(m['culture'])}</span><b>{e(m['modele'])}</b><small>{e(m['da'])}</small></a>""")
 
-    vus, blocs = set(), []
-    for x in SITES:
-        for titre, texte, slugs in x['groupes']:
-            slugs = [g for g in slugs if g in par_slug and g not in vus]
-            if not slugs:
-                continue
-            vus.update(slugs)
-            nom = titre if x['cle'] == 'mariage' else f"{x['nom']} · {titre}"
-            blocs.append(f'    <h3 class="banque-groupe">{e(nom)}</h3>\n    <div class="catalogue">\n'
-                         + '\n'.join(carte(g, titre == 'À la une') for g in slugs) + '\n    </div>')
+    vus, cartes, groupes_vus = set(), [], []
+    for titre, texte, slugs in SITES[0]['groupes']:
+        slugs = [g for g in slugs if g in par_slug and g not in vus]
+        if not slugs:
+            continue
+        vus.update(slugs); groupes_vus.append((titre, len(slugs)))
+        cartes += [carte(g, titre, titre == 'À la une') for g in slugs]
     nb_main = len(vus)
-    faites_main = f"""  <div class="titre-section"><span class="etq">Faites main</span><h2>{nb_main} collections signées</h2>
-    <p>Dessinées une à une, avec leur ouverture animée, leur musique, leur site, leur plan de table, leur mur photo et leur livre d'or.</p></div>
-{chr(10).join(blocs)}
+    filtres = ''.join(f'<button data-groupe="{e(t)}">{e(t)} ({k})</button>' for t, k in groupes_vus)
+    faites_main = f"""  <div class="titre-section"><span class="etq">Mariage</span><h2>{nb_main} collections signées</h2>
+    <p>Dessinées une à une, avec leur ouverture animée, leur musique, leur site, leur plan de table, leur mur photo et leur livre d'or. Toutes existent en faire-part, en save-the-date et en site.</p></div>
+  <div class="filtres" id="filtres-main"><button data-groupe="tous" class="actif">Toutes ({nb_main})</button>{filtres}</div>
+  <div class="bascule" id="bascule-main"><button data-fmt="fp" class="actif">Faire-part</button><button data-fmt="std">Save-the-date</button><button data-fmt="site">Site</button></div>
+  <div class="catalogue" id="catalogue-main">
+{chr(10).join(cartes)}
+  </div>
   <div style="height:72px"></div>
-""" if blocs else ""
+""" if cartes else ""
     nav = ''.join(f'<a href="../{x["dossier"] + "/" if x["dossier"] else ""}index.html">{escape(x["nom"])}</a>' for x in SITES)
-    return tete(site, '../', f'{MARQUE} · Collections', f"{n} directions artistiques, chacune en faire-part, save-the-date et site, toutes personnalisables.") + f"""
+    return tete(site, '../', f'{MARQUE} · Collections', f"{nb_main} collections de mariage, chacune en faire-part, save-the-date et site, et des invitations pour les autres fêtes de la vie.") + f"""
 <header class="entete"><div class="conteneur">
   <a class="marque" href="../index.html"><b>{escape(MARQUE)}</b><span>Collections</span></a>
   <nav class="nav" aria-label="Sites">{nav}<a class="rdv" href="../creer/index.html">Créer</a></nav>
@@ -680,30 +736,49 @@ def page_collections(modeles=()):
 <main class="conteneur" style="padding-top:56px;padding-bottom:96px">
 <style>.banque-groupe{{font-family:'Bodoni Moda',serif;font-weight:400;font-size:30px;margin:48px 0 22px}}
 .vignette-cat.main{{position:relative}}.vignette-cat.main small{{display:block;margin-top:6px}}
+.vignette-cat.reelle img{{aspect-ratio:420/700;object-position:top}}
+.cadre-cat{{position:relative;display:block;overflow:hidden}}.cadre-cat video.survol{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none}}.reelle.joue video.survol{{opacity:1}}
 .badge-une{{position:absolute;top:12px;left:12px;z-index:1;background:#A8834A;color:#fff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}}</style>
-{faites_main}  <div class="titre-section"><span class="etq">Directions artistiques</span><h2>{n} directions personnalisables</h2>
-    <p>Chacune a sa propre structure : la composition de la couverture, la présentation du programme, le rythme des parties. Toutes existent en faire-part, en save-the-date et en site ; couleurs, polices, photo et parties se changent ensuite dans votre espace, avec un aperçu en direct.</p></div>
+{faites_main}  <div class="titre-section"><span class="etq">Les autres fêtes</span><h2>Anniversaires, baptêmes, naissances</h2>
+    <p>Des invitations pour les autres grands moments : chacune a sa propre structure et existe en faire-part, en save-the-date et en site ; couleurs, polices, photo et parties se changent ensuite dans votre espace, avec un aperçu en direct.</p></div>
   <div class="filtres" id="filtres"></div>
   <div class="bascule" id="bascule"><button data-format="fp" class="actif">Faire-part</button><button data-format="std">Save-the-date</button><button data-format="site">Site</button></div>
   <div class="catalogue" id="catalogue"></div>
 </main>
+<script>
+  // Collections de mariage : filtre par famille, et bascule du format (aperçu et page)
+  let groupe = 'tous', fmt = 'fp';
+  function majMain() {{
+    document.querySelectorAll('#catalogue-main .reelle').forEach(a => {{
+      a.style.display = groupe === 'tous' || a.dataset.groupe === groupe ? '' : 'none';
+      a.href = a.dataset[fmt]; a.querySelector('img').src = a.dataset['img' + fmt[0].toUpperCase() + fmt.slice(1)];
+    }});
+  }}
+  document.getElementById('filtres-main')?.addEventListener('click', ev => {{ const b = ev.target.closest('button'); if (!b) return; groupe = b.dataset.groupe;
+    document.querySelectorAll('#filtres-main button').forEach(x => x.classList.toggle('actif', x === b)); majMain(); }});
+  document.getElementById('bascule-main')?.addEventListener('click', ev => {{ const b = ev.target.closest('button'); if (!b) return; fmt = b.dataset.fmt;
+    document.querySelectorAll('#bascule-main button').forEach(x => x.classList.toggle('actif', x === b)); majMain(); }});
+</script>
 <script type="module">
   import {{ THEMES, FAMILLES, FAMILLES_DE, COUVERTURES, PROGRAMMES }} from '../app/themes.js?v=3';
+  // le moteur ne sert plus que les autres fêtes : les directions de mariage sont remplacées par les collections ci-dessus
+  const AUTRES = THEMES.filter(t => !FAMILLES_DE.mariage.includes(t.famille));
   const q = new URLSearchParams(location.search);
   let famille = FAMILLES_DE[q.get('evt')]?.length === 1 ? FAMILLES_DE[q.get('evt')][0] : 'tous', format = 'fp';
+  if (FAMILLES_DE.mariage.includes(famille)) famille = 'tous';
   const esc = s => String(s).replace(/[&<>"]/g, c => ({{ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }})[c]);
   function rendre() {{
-    document.getElementById('filtres').innerHTML = [['tous', 'Toutes (' + THEMES.length + ')'], ...Object.entries(FAMILLES).map(([k, v]) => [k, v + ' (' + THEMES.filter(t => t.famille === k).length + ')'])]
+    document.getElementById('filtres').innerHTML = [['tous', 'Toutes (' + AUTRES.length + ')'], ...Object.entries(FAMILLES).filter(([k]) => !FAMILLES_DE.mariage.includes(k)).map(([k, v]) => [k, v + ' (' + AUTRES.filter(t => t.famille === k).length + ')'])]
       .map(([k, v]) => `<button data-famille="${{k}}" class="${{k === famille ? 'actif' : ''}}">${{v}}</button>`).join('');
-    document.getElementById('catalogue').innerHTML = THEMES.filter(t => famille === 'tous' || t.famille === famille).map(t => `
+    document.getElementById('catalogue').innerHTML = AUTRES.filter(t => famille === 'tous' || t.famille === famille).map(t => `
       <a class="vignette-cat" href="../app/fp.html?demo=${{t.id}}${{format === 'fp' ? '' : '&f=' + format}}" target="_blank" rel="noopener">
         <img src="apercus/${{t.id}}-${{format === 'std' ? 'std' : 'fp'}}.jpg" alt="${{esc(t.nom)}}" loading="lazy">
         <span class="etq">${{esc(t.culture)}}</span><b>${{esc(t.nom)}}</b><small>${{esc(COUVERTURES[t.couv])}} · programme en ${{esc(PROGRAMMES[t.prog].toLowerCase())}}</small></a>`).join('');
   }}
   document.addEventListener('click', e => {{
-    const b = e.target.closest('button'); if (!b) return;
+    const b = e.target.closest('#filtres button, #bascule button'); if (!b) return;
     if (b.dataset.famille) {{ famille = b.dataset.famille; rendre(); }}
-    if (b.dataset.format) {{ format = b.dataset.format; document.querySelectorAll('[data-format]').forEach(x => x.classList.toggle('actif', x === b)); rendre(); }}
+    if (b.dataset.format) {{ format = b.dataset.format; document.querySelectorAll('#bascule [data-format]').forEach(x => x.classList.toggle('actif', x === b)); rendre(); }}
   }});
   rendre();
 </script>
@@ -739,6 +814,10 @@ REALISTES = [
     dict(slug='kanaval', modele='Kanaval', culture='Kanaval · Jacmel', da="Pochette de soie bleu nuit brodée de paillettes, papillons en papier mâché qui s'envolent, hibiscus", a='Darline', b='Stanley'),
     dict(slug='karakou', modele='Karakou', culture='Karakou · khit errouh', da="Enveloppe d'ivoire brodée au fil d'or, sceau de cire grenat ; velours brodé, arcades blanches et bougainvilliers", a='Lina', b='Yanis'),
     dict(slug='takchita', modele='Takchita', culture='Takchita · sfifa et mdamma', da="Enveloppe de soie ivoire à la passementerie d'or, sceau de cire émeraude ; cour de riad, lanternes ciselées et rose poudré", a='Salma', b='Mehdi'),
+    dict(slug='celeste', modele='Céleste', culture='Univers · sous les étoiles', da="Enveloppe de velours bleu nuit à la carte du ciel dorée, cachet d'or étoilé ; observatoire et voie lactée", a='Iris', b='Raphaël'),
+    dict(slug='kanchipuram', modele='Kanchipuram', culture='Kanchipuram · sari de soie et zari', da="Enveloppe de soie magenta bordée de zari d'or, nouée d'un fil de jasmin ; guirlandes de jasmin et d'œillets d'Inde, kolam", a='Meenakshi', b='Arjun'),
+    dict(slug='bindalli', modele='Bindallı', culture='Bindallı · soirée du henné', da="Enveloppe de velours bordeaux brodée d'or et de perles, ruban rouge à pompons dorés ; voile rouge, henné et bougies", a='Elif', b='Can'),
+    dict(slug='huipil', modele='Huipil', culture='Huipil · lazo et arras', da="Enveloppe de coton blanc brodée de fleurs, nouée d'un lazo de perles ; patio d'hacienda et bougainvillées", a='Valeria', b='Mateo'),
     dict(slug='keswa', modele='Keswa', culture='Keswa · fouta et blouza', da="Enveloppe de satin ivoire brodée au fil d'or, sceau de cire bleu canard ; terrasse blanche face à la mer", a='Yasmine', b='Karim'),
     dict(slug='citadelle', modele='Citadelle', culture='Univers · fantasy médiévale', da="Enveloppe de parchemin au liseré bordeaux, sceau de cire au dragon héraldique ; château dans la brume, bannières et chandeliers de fer forgé", a='Aliénor', b='Gauthier'),
     dict(slug='nocturne', modele='Nocturne', culture='Univers · gothique romantique', da="Enveloppe de velours prune à dentelle d'or, sceau de cire noire à la rose ; chapelle gothique aux chandelles sous la lune", a='Morgane', b='Victor'),
@@ -765,6 +844,12 @@ def construire_sites(modeles, racine):
     # Grille de prix : pour l'espace (app/tarifs.json) et pour les fonctions de paiement (backend/functions/tarifs.json).
     grille = json.dumps(tarifs(), ensure_ascii=False, indent=1)
     (racine / 'app' / 'tarifs.json').write_text(grille, encoding='utf-8')
+    # Collections proposées dans l'espace du couple (choisir, changer de collection) : nom, culture, aperçu.
+    cols = [dict(slug=m['slug'], nom=m['modele'], culture=m['culture'],
+                 img=f"../{m['slug']}/apercus/faire-part.webp" if (racine / m['slug'] / 'apercus' / 'faire-part.webp').exists() else f"../{m['slug']}/photo.jpg")
+            for _, _, slugs in SITES[0]['groupes'] for m in visibles if m['slug'] in slugs]
+    vus = set(); cols = [c for c in cols if not (c['slug'] in vus or vus.add(c['slug']))]
+    (racine / 'app' / 'collections.json').write_text(json.dumps(cols, ensure_ascii=False, indent=1), encoding='utf-8')
     # Photothèque de l'éditeur : les lieux, fonds et ambiances des collections, que l'organisateur peut reprendre.
     biblio = []
     for m in visibles:

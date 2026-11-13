@@ -166,3 +166,16 @@
 .trajet p{margin:2px 0 0}
 #f-covoit .choix-rep{display:flex;gap:16px;flex-wrap:wrap}
 [dir=rtl] .app h1,[dir=rtl] .app h2,[dir=rtl] .app h3,[dir=rtl] .app p,[dir=rtl] .trajet b{unicode-bidi:plaintext}
+.app-sous-onglets{display:flex;gap:4px;flex-wrap:wrap;margin:-8px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--filet)}
+.app-sous-onglets button{font:inherit;font-size:13px;border:0;background:none;padding:6px 12px;cursor:pointer;color:var(--doux);border-bottom:2px solid transparent}
+.app-sous-onglets button.actif{color:var(--encre);border-bottom-color:var(--accent)}
+.carte-collection{display:flex;gap:22px;align-items:center}
+.carte-collection>img{width:150px;aspect-ratio:4/5;object-fit:cover;flex:none}
+.carte-collection h2{margin:4px 0 2px}
+.choix-collections{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;max-height:460px;overflow:auto}
+.vignette-col{font:inherit;text-align:left;border:1px solid var(--filet);background:var(--papier);padding:0 0 8px;cursor:pointer;color:var(--encre);display:flex;flex-direction:column}
+.vignette-col img{width:100%;aspect-ratio:4/5;object-fit:cover;margin-bottom:6px}
+.vignette-col b{font-size:13px;font-weight:500;padding:0 8px}
+.vignette-col span{font-size:11px;color:var(--doux);padding:0 8px}
+.vignette-col:hover,.vignette-col.choisie{border-color:var(--accent)}
+@media(max-width:560px){.carte-collection{flex-direction:column;align-items:flex-start}.carte-collection>img{width:100%;max-width:220px}}

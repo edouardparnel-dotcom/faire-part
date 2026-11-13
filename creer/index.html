@@ -139,7 +139,7 @@ $('f-partenaire').addEventListener('change', e => { e.target.value = window.rete
 // Vers l'espace : création du compte et de l'événement, puis paiement avec la formule et les options choisies.
 $('b-payer').addEventListener('click', () => {
   const E2 = D[evt], F = E2.formules[choix.formule], opts = [...choix.options].filter(o => !F.inclus.includes(o));
-  location.href = `../app/organisateur.html?nouveau=${evt}&formule=${encodeURIComponent(F.nom.toLowerCase())}&options=${encodeURIComponent(opts.join(','))}`;
+  location.href = `../app/organisateur.html?nouveau=${evt}&formule=${encodeURIComponent(F.nom.toLowerCase())}&options=${encodeURIComponent(opts.join(','))}&modele=${encodeURIComponent(E2.modeles[choix.modele]?.slug || '')}`;
 });
 changerEvt(evt);
 const depart = D[evt].modeles.findIndex(x => x.slug === q.get('modele'));

@@ -16,6 +16,8 @@ let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'ac
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
 let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '';
 let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
+let COLLECTIONS = [], choisirCollection = false;
+fetch('collections.json?v=1').then(r => r.json()).then(l => { COLLECTIONS = l; rendre(); }).catch(() => {});
 let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
 // Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.
@@ -57,7 +59,7 @@ async function liste() {
       </div><button class="btn">Créer</button></form>`;
   $('#f-evt').addEventListener('submit', async ev => {
     ev.preventDefault(); const f = Object.fromEntries(new FormData(ev.target));
-    const r = await addDoc(collection(db, 'events'), { owner: user.uid, type: f.type, titre: f.titre, date: f.date, lieu: f.lieu, modele: '',
+    const r = await addDoc(collection(db, 'events'), { owner: user.uid, type: f.type, titre: f.titre, date: f.date, lieu: f.lieu, modele: Q.get('modele') || '',
       formule: 'essai', options: [], ceremonies: [{ cle: 'principale', nom: f.type === 'mariage' ? 'Cérémonie' : 'La fête', date: f.date, lieu: f.lieu }], creeLe: serverTimestamp() });
     location.href = `?e=${r.id}` + (Q.get('nouveau') ? `&onglet=paiement&formule=${encodeURIComponent(Q.get('formule') || '')}&options=${encodeURIComponent(Q.get('options') || '')}` : '');
   });
@@ -133,9 +135,30 @@ function rendre() {
       ${a('qr') ? `<div class="app-stat"><b>${entrees}</b><span>Entrées validées</span></div>` : ''}
     </div>` : ''}
     ${Q.get('paiement') === 'ok' ? `<div class="app-carte bandeau-paiement ok">${evt.formule === 'essai' ? 'Paiement reçu, merci. Vos options s\'activent dans quelques secondes ; la facture arrive par courriel.' : `Paiement reçu, merci : formule ${esc(evt.formule)} active. La facture arrive par courriel.`}</div>` : Q.get('paiement') === 'annule' ? '<div class="app-carte bandeau-paiement">Paiement annulé : rien n\'a été débité.</div>' : ''}
-    <div class="app-onglets">${Object.entries(onglets).map(([k, v]) => `<button data-onglet="${k}" class="${k === onglet ? 'actif' : ''}">${v}</button>`).join('')}</div>
+    ${navigation(onglets)}
     <div id="contenu">${VUES[onglet]()}</div>`;
   appliquerRecherche(); scrollTo(0, y);
+}
+
+// Navigation en rubriques : on ne montre que la rubrique ouverte et ses pages (les informations arrivent quand on en a besoin).
+const RUBRIQUES = [['accueil', 'Accueil', ['accueil']], ['invites', 'Invités', ['invites', 'envois', 'table']], ['jour', 'Le jour J', ['ceremonies', 'souvenirs', 'jeux']],
+  ['organisation', 'Organisation', ['planning', 'budget', 'prestataires', 'cadeaux', 'tenues', 'merci']], ['compte', 'Formule et compte', ['paiement', 'equipe', 'reglages']]];
+function navigation(onglets) {
+  const rubs = RUBRIQUES.map(([k, nom, pages]) => [k, nom, pages.filter(p => onglets[p])]).filter(([, , p]) => p.length);
+  const ici = rubs.find(([, , p]) => p.includes(onglet)) || rubs[0];
+  return `<div class="app-onglets">${rubs.map(([k, nom, p]) => `<button data-onglet="${p[0]}" class="${k === ici[0] ? 'actif' : ''}">${nom}</button>`).join('')}</div>`
+    + (ici[2].length > 1 ? `<div class="app-sous-onglets">${ici[2].map(p => `<button data-onglet="${p}" class="${p === onglet ? 'actif' : ''}">${onglets[p]}</button>`).join('')}</div>` : '');
+}
+
+// Carte « Votre collection » : la voir, la personnaliser, en changer ou la retirer.
+function carteCollection() {
+  const c = COLLECTIONS.find(x => x.slug === evt.modele);
+  const choix = choisirCollection || !c ? `<div class="choix-collections">${COLLECTIONS.map(x => `<button class="vignette-col ${x.slug === evt.modele ? 'choisie' : ''}" data-collection="${esc(x.slug)}"><img src="${esc(x.img)}" alt="" loading="lazy"><b>${esc(x.nom)}</b><span>${esc(x.culture)}</span></button>`).join('')}</div>` : '';
+  if (!COLLECTIONS.length) return '';
+  if (!c) return `<div class="app-carte"><h2>Choisissez votre collection</h2><p class="app-note" style="margin-bottom:14px">Elle donne son ouverture, sa musique et sa mise en page à votre invitation ; vous pourrez en changer à tout moment.</p>${choix}</div>`;
+  return `<div class="app-carte carte-collection"><img src="${esc(c.img)}" alt=""><div><span class="etq">Votre collection</span><h2>${esc(c.nom)}</h2><p class="app-note">${esc(c.culture)}</p>
+    <div class="puces" style="margin-top:12px"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser</a><a class="btn petit clair" href="../${esc(c.slug)}/faire-part.html" target="_blank" rel="noopener">Voir la démonstration</a>
+    <button class="btn petit clair" data-changer-collection="1">${choisirCollection ? 'Fermer' : 'Changer de collection'}</button><button class="btn petit clair" data-retirer-collection="1">Retirer</button></div></div></div>${choix ? `<div class="app-carte">${choix}</div>` : ''}`;
 }
 
 // Onglet d'une option : visible si elle est active, ou pendant l'essai pour la découvrir.
@@ -167,18 +190,22 @@ const VUES = {
       !budget.length && ['Posez votre budget, poste par poste.', 'budget', 'Budget'],
       attendus.length && places < nbAttendus && j < 90 && [`${nbAttendus - places} personne${nbAttendus - places > 1 ? 's' : ''} sans table.`, 'table', 'Plan de table'],
     ].filter(Boolean);
-    return `<div class="app-grille">
-        <div class="app-stat"><b>${j > 0 ? 'J-' + j : j === 0 ? 'Jour J' : 'Passé'}</b><span>${esc(dateLongue(evt.date))}</span></div>
-        <div class="app-stat"><b>${invites.length ? Math.round(100 * invites.filter(i => i.reponduLe).length / invites.length) : 0} %</b><span>Réponses reçues</span>${barre(invites.filter(i => i.reponduLe).length, invites.length)}</div>
-        <div class="app-stat"><b>${nbAttendus}</b><span>Personnes attendues</span></div>
-        <div class="app-stat"><b>${euros(paye)}</b><span>Payé sur ${euros(prevu)} prévus${cible ? ` · budget ${euros(cible)}` : ''}</span>${barre(paye, prevu || cible, cible && prevu > cible)}</div>
-        <div class="app-stat"><b>${taches.length - restantes.length}/${taches.length}</b><span>Tâches faites${retard.length ? ` · ${retard.length} en retard` : ''}</span>${barre(taches.length - restantes.length, taches.length)}</div>
-        <div class="app-stat"><b>${places}/${nbAttendus}</b><span>Personnes placées</span>${barre(places, nbAttendus)}</div>
-      </div>
-      ${conseils.length ? `<div class="app-carte"><h2>Maintenant</h2>${conseils.map(([t, o, b]) => `<div class="ligne-conseil"><span>${esc(t)}</span><button class="btn petit clair" data-onglet="${o}">${esc(b)}</button></div>`).join('')}</div>` : ''}
-      <div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 6).map(ligneTache).join('') || '<p class="app-note">Rien à faire pour l\'instant.</p>'}</div>
-      <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${Object.entries(NOMS_OPTIONS).map(([k, v]) => `<span class="puce-o ${a(k) ? '' : 'off'}">${esc(v)}</span>`).join('')}</div>
-        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit jusqu'à la publication : préparez tout, l'envoi à vos invités se débloque quand vous publiez. <a class="lien-or" href="#" data-onglet="paiement">Publier mon invitation</a></p>` : ''}</div>`;
+    const stats = [
+      `<div class="app-stat"><b>${j > 0 ? 'J-' + j : j === 0 ? 'Jour J' : 'Passé'}</b><span>${esc(dateLongue(evt.date))}</span></div>`,
+      invites.length && `<div class="app-stat"><b>${Math.round(100 * invites.filter(i => i.reponduLe).length / invites.length)} %</b><span>Réponses reçues</span>${barre(invites.filter(i => i.reponduLe).length, invites.length)}</div>`,
+      invites.length && `<div class="app-stat"><b>${nbAttendus}</b><span>Personnes attendues</span></div>`,
+      budget.length && `<div class="app-stat"><b>${euros(paye)}</b><span>Payé sur ${euros(prevu)} prévus${cible ? ` · budget ${euros(cible)}` : ''}</span>${barre(paye, prevu || cible, cible && prevu > cible)}</div>`,
+      taches.length && `<div class="app-stat"><b>${taches.length - restantes.length}/${taches.length}</b><span>Tâches faites${retard.length ? ` · ${retard.length} en retard` : ''}</span>${barre(taches.length - restantes.length, taches.length)}</div>`,
+      places && `<div class="app-stat"><b>${places}/${nbAttendus}</b><span>Personnes placées</span>${barre(places, nbAttendus)}</div>`,
+    ].filter(Boolean);
+    const [prochaine, ...autres] = conseils, actives = Object.entries(NOMS_OPTIONS).filter(([k]) => a(k));
+    return `${carteCollection()}
+      <div class="app-grille">${stats.join('')}</div>
+      ${prochaine ? `<div class="app-carte"><span class="etq">Prochaine étape</span><div class="ligne-conseil" style="border:0;padding-top:6px"><span style="font-size:17px">${esc(prochaine[0])}</span><button class="btn petit" data-onglet="${prochaine[1]}">${esc(prochaine[2])}</button></div>
+        ${autres.length ? `<details style="margin-top:8px"><summary class="app-note" style="cursor:pointer">Voir ${autres.length} autre${autres.length > 1 ? 's' : ''} étape${autres.length > 1 ? 's' : ''}</summary>${autres.map(([t, o, b]) => `<div class="ligne-conseil"><span>${esc(t)}</span><button class="btn petit clair" data-onglet="${o}">${esc(b)}</button></div>`).join('')}</details>` : ''}</div>` : ''}
+      ${restantes.length ? `<div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 4).map(ligneTache).join('')}</div>` : ''}
+      <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${actives.map(([, v]) => `<span class="puce-o">${esc(v)}</span>`).join('') || '<span class="app-note">Aucune option pour l\'instant.</span>'}<button class="btn petit clair" data-onglet="paiement">${evt.formule === 'essai' ? 'Publier mon invitation' : 'Ajouter une option'}</button></div>
+        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit jusqu'à la publication : préparez tout, l'envoi à vos invités se débloque quand vous publiez.</p>` : ''}</div>`;
   },
 
   // ── Invités : ajout, import, liste ─────────────────────────────────────────
@@ -557,6 +584,9 @@ document.addEventListener('click', async ev => {
   if (img && E && photoPour) { const id = photoPour; photoPour = null; return updateDoc(doc(db, `events/${E}/invites/${id}`), { 'merci.photo': img.dataset.photoMerci }); }
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
+  if (d.changerCollection) { choisirCollection = !choisirCollection; return rendre(); }
+  if (d.collection) { choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: d.collection }); return; }
+  if (d.retirerCollection) { if (!confirm('Retirer cette collection ? Votre personnalisation est conservée ; vous en choisirez une autre.')) return; choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: '' }); return; }
   if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; msgOption = ''; avantPlacement = null; photoPour = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
   if ((d.copier || d.copierMessage || d.envoi) && evt.formule === 'essai') {   // gratuit jusqu'à la publication : l'envoi aux invités se débloque au paiement
