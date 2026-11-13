@@ -83,28 +83,16 @@ main{max-width:520px;margin:0 auto;padding:10px 22px 70px}
 body.std .fp-seul{display:none} body.std .std-seul{display:block}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<link rel="stylesheet" href="../_commun/realiste.css?v=4">
+<link rel="stylesheet" href="../_commun/realiste.css?v=10">
 </head>
 <body class="ferme" data-date="2027-06-12T15:00:00+02:00" data-evenement="Mariage Éléonore &amp; Gabriel" data-ville="Paris" data-titre-std="Éléonore &amp; Gabriel — Save the date (démonstration)">
 
 <link rel="preload" as="image" href="enveloppe.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/696;
-  --rabat:polygon(0 0,100% 0,100% 5%,50% 79%,0 4%);--devant:polygon(0 4%,50% 79%,100% 5%,100% 100%,0 100%);
-  --verso:polygon(0 100%,100% 100%,100% 95%,50% 21%,0 96%);--doublure:linear-gradient(0deg,#E9DFCC,#F6EFE2 70%)">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini-gh"><small>Mariage</small><b>Éléonore</b><i>&amp;</i><b>Gabriel</b><small>12 · 06 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
-    <img class="env-sceau" src="cachet.webp" alt="" width="420" height="429" style="left:50%;top:60%;width:22%;transform:translate(-50%,-50%)">
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
   <p class="consigne">Brisez le cachet</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'enveloppe.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 
@@ -162,6 +150,6 @@ body.std .fp-seul{display:none} body.std .std-seul{display:block}
   <p class="pied">Nous avons hâte de célébrer ce jour avec vous<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><a href="index.html" style="display:inline-block;margin-top:14px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:inherit">✦ Voir toute la collection</a></p>
 </main>
 
-<script src="../_commun/realiste.js?v=7"></script>
+<script src="../_commun/realiste.js?v=10"></script>
 </body>
 </html>
