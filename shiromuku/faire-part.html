@@ -43,21 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-04-03T11:00:00+09:00" data-evenement="Mariage Yui &amp; Haruto" data-ville="Kyoto" data-titre-std="Yui &amp; Haruto — Save the date (démonstration)" data-blocs="cartes" data-titres="capitales" data-images="deborde" data-revele="glisse" data-paral="derive" data-cadre="losange" data-prog="numeros" data-lieu="postale" data-tenue="nuancier" data-compte="chiffres" data-rep="sombre" data-btn="pilule" data-teinte="sombre" data-collection="shiromuku" data-particules="petales" data-trame="centree">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/892;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 4%,50% 95%,0 4%);--devant:polygon(0 4%,50% 95%,100% 4%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 96%,50% 5%,0 96%);--doublure:linear-gradient(0deg,#F3E3E3,#FFFFFF 60%,#F2E6D2);">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini"><img class="mini-deco" src="branche.webp" alt=""><small>Mariage</small><b>Yui</b><i>&amp;</i><b>Haruto</b><small>03 · 04 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:88%;width:24%;transform:translate(-50%,-50%)"></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Soulevez le rabat de washi</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte">
