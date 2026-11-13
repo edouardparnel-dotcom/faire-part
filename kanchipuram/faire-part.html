@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meenakshi &amp; Arjun — Mariage (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Tangerine:wght@700&family=Mukta:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/vivant.css?v=16">
+<link rel="stylesheet" href="../_commun/trames.css?v=46">
+<script src="../_commun/vivant.js?v=25" defer></script>
+<link rel="stylesheet" href="../_commun/realiste.css?v=11">
+<style>
+:root{--fond:#FBF3EE;--carte:#FFFCF8;--encre:#3D1430;--doux:#7A5A6B;--or1:#C29A3C;--or2:#EFD592;--or3:#8E6B22;--accent:#A3155E;
+  --f-titre:'Marcellus',serif;--f-script:'Tangerine',cursive;--f-texte:'Mukta',system-ui,sans-serif;--decor:linear-gradient(rgba(255,252,248,.86),rgba(255,252,248,.86)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#3D1430;}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
+.ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
+.ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
+.ouverture{background:var(--decor),var(--fond)}
+.ouverture .consigne{color:var(--sur-fond)}
+.mini{background:linear-gradient(color-mix(in srgb,var(--carte) 82%,transparent),color-mix(in srgb,var(--carte) 82%,transparent)),url('fond.jpg') center/cover,var(--carte);
+  outline:1px solid var(--or1);outline-offset:-7px;box-shadow:inset 0 0 0 11px var(--carte),inset 0 0 0 12px var(--or2);overflow:hidden}
+/* Carte élastique : tout se cale sur sa taille réelle (enveloppe large ou portail haut), jamais de texte qui déborde ni qui touche le bord. */
+.mini{container-type:size;justify-content:center!important;padding:5% 7%!important;gap:0;line-height:1.05}
+.mini .mini-deco{width:auto;max-width:72%;max-height:24cqh;object-fit:contain;margin:0 auto 2.5cqh;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.mini b{font-family:var(--f-titre);font-weight:400;font-size:min(10.5cqh,8.5cqw,26px);letter-spacing:.08em;color:var(--accent);max-width:100%;overflow-wrap:anywhere}
+.mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:min(9cqh,7cqw,24px);line-height:1;margin:.5cqh 0}
+.mini small{font-size:min(4.6cqh,3.4cqw,11px);letter-spacing:.24em;text-transform:uppercase;color:var(--doux);margin:1.6cqh 0}
+/* Dans l'enveloppe, seule la moitié haute de la carte sort : tout y tient, en plus grand, sans le motif. */
+.env-carte.mini{justify-content:flex-start!important;padding:4% 6% 2%!important}
+.env-carte.mini .mini-deco{display:none}
+.env-carte.mini b{font-size:min(19cqh,12cqw,36px)}
+.env-carte.mini i{font-size:min(12cqh,8cqw,28px)}
+.env-carte.mini small{font-size:min(7.5cqh,4.8cqw,14px);margin:1.6cqh 0}
+.ouvert .env-carte{transform:translateY(-66%)}
+body.ferme{overflow:hidden}
+.std-seul{display:none} body.std .fp-seul{display:none} body.std .std-seul{display:block}
+.suite-couv{min-height:100svh}
+
+</style>
+</head>
+<body class="ferme" data-date="2027-02-14T09:30:00+05:30" data-evenement="Mariage Meenakshi &amp; Arjun" data-ville="Chennai" data-titre-std="Meenakshi &amp; Arjun — Save the date (démonstration)" data-profondeur="decor-3d/jasmin" data-profondeur-n="5" data-profondeur-mouvement="chute" data-profondeur-echelle="0.55" data-blocs="bandes" data-titres="script" data-images="flotte" data-revele="monte" data-paral="incline" data-cadre="decale" data-prog="ligne" data-lieu="cote" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="carre" data-teinte="accent" data-collection="kanchipuram" data-particules="petales" data-trame="arche">
+<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
+<div class="ouverture attente" id="ouverture" style="--ratio:1400/1479;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 1%,50% 55%,0 1%);--devant:polygon(0 1%,50% 55%,100% 1%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 99%,50% 45%,0 99%);--doublure:linear-gradient(0deg,#A3155E,#E79AC1 55%,#EFD592);">
+  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
+    <div class="env-dos"></div>
+    <div class="env-carte mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Meenakshi</b><i>&amp;</i><b>Arjun</b><small>14 · 02 · 2027</small></div>
+    <div class="env-devant"></div>
+    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:55%;width:17%;transform:translate(-50%,-50%)"></div>
+  </div>
+  <p class="consigne">Dénouez le fil de jasmin</p>
+</div>
+<script>(() => {
+  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
+  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
+  setTimeout(pret, 5000);
+})();</script>
+<button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
+<audio id="audio" src="musique.mp3" loop preload="auto"></audio>
+<header class="suite-couv carte couv-arche">
+  <img class="deco-haut" src="haut.webp" alt="" width="1800" height="809">
+  <div class="arche"><img src="couple.jpg" alt=""></div>
+  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p><h1 class="noms">Meenakshi<i class="or">&amp;</i>Arjun</h1><div class="filet">✦</div><p class="date">14 · 02 · 2027</p>
+  <p class="lieu">Salle des Jasmins<br>Chennai</p><p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p><img class="deco-bas" src="bas.webp" alt="" width="1800" height="889">
+</header>
+
+<main class="suite-main">
+  <blockquote class="inter inter-citation apparait fp-seul"><p>Ils se sont rencontrés à Chennai, chez une tante commune, un matin de Pongal où toute la famille dessinait le kolam devant la maison.</p><cite class="script">Meenakshi &amp; Arjun</cite></blockquote>
+  <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Dimanche 14 février 2027</p><ol class="frise"><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>8 h 00</b><span>Accueil des familles, kolam à l&#x27;entrée</span></div></li><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>9 h 30</b><span>Échange des guirlandes</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>10 h 15</b><span>La mariée en sari kanchipuram</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>10 h 45</b><span>Le thali, au son du nadaswaram</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>12 h 30</b><span>Repas sur feuille de bananier</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>19 h 00</b><span>Réception et gâteau</span></div></li></ol></section>
+  <div class="inter inter-galerie apparait fp-seul"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <section class="bloc apparait fp-seul" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Salle des Jasmins<br>Chennai</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Chennai" target="_blank" rel="noopener">Voir le plan</a></section>
+  <section class="bloc apparait fp-seul" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Tenue de fête</p><p>Saris de soie, kurtas, veshtis ou tenues de jour élégantes. Les couleurs vives sont les bienvenues, sans aucune obligation.</p><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail bord-haut" src="haut.webp" alt="" loading="lazy"><figcaption>Tenue de fête</figcaption></figure>
+  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait fp-seul" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 10 janvier 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
+</main>
+<footer class="suite-pied"><p class="script">Meenakshi &amp; Arjun</p><p>Merci de faire partie de notre histoire</p>
+<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
+<script src="../_commun/realiste.js?v=11"></script>
+<script src="../_commun/profondeur.js?v=7"></script>
+</body>
+</html>

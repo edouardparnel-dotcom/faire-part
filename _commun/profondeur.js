@@ -49,7 +49,7 @@
   let W = 0, H = 0;
   function place() {
     W = innerWidth; H = innerHeight;
-    const large = W >= 900, echelle = large ? 1.25 : 1;
+    const large = W >= 900, echelle = (large ? 1.25 : 1) * (parseFloat(b.dataset.profondeurEchelle) || 1);   // data-profondeur-echelle : objets plus petits (jasmin de Kanchipuram)
     let i = 0;
     for (const c of calques) {
       c.el.textContent = ''; c.objets = [];
