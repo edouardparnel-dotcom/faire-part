@@ -426,8 +426,9 @@ body[data-paral=incline] .suite-main{perspective:1300px}
 .etang img{position:absolute;max-width:none;left:-5%;width:110%}
 .etang .brume{bottom:30%;opacity:.9;left:-10%;width:120%}
 .etang .nenuphars{bottom:22%;transform-origin:50% 100%;filter:drop-shadow(0 6px 10px rgba(50,80,60,.14))}
-.etang .reflet{bottom:22%;transform-origin:50% 100%;transform:scale(1,-.42);opacity:.22;filter:blur(1.2px);animation:reflet 7s ease-in-out infinite}
-@keyframes reflet{0%,100%{transform:scale(1,-.42) skewX(0)}50%{transform:scale(1.02,-.4) skewX(2deg)}}
+.etang .reflet{bottom:22%;transform-origin:50% 100%;transform:scale(1,-.42);opacity:.22;filter:blur(1.2px);animation:reflet-etang 7s ease-in-out infinite}
+/* nom propre : « reflet » est déjà l'éclat doré du & et des enveloppes (le doublon retournait le & à l'envers) */
+@keyframes reflet-etang{0%,100%{transform:scale(1,-.42) skewX(0)}50%{transform:scale(1.02,-.4) skewX(2deg)}}
 .etang .libellule{left:0;width:58px;bottom:62%;animation:libellule 19s ease-in-out infinite;filter:drop-shadow(0 4px 4px rgba(40,60,40,.18))}
 @keyframes libellule{0%{transform:translate(-20vw,10px) rotate(80deg)}18%{transform:translate(min(26vw,150px),-30px) rotate(96deg)}26%{transform:translate(min(30vw,170px),-22px) rotate(70deg)}
   44%{transform:translate(min(52vw,290px),20px) rotate(110deg)}54%{transform:translate(min(54vw,300px),14px) rotate(84deg)}76%{transform:translate(min(78vw,430px),-40px) rotate(100deg)}100%{transform:translate(min(124vw,680px),-10px) rotate(86deg)}}

@@ -33,7 +33,7 @@ a{color:inherit}
 .suite-couv .chapeau{margin-top:auto;padding-top:22px}
 .suite-couv:not(:has(.objet)) .chapeau{padding-top:min(48vw,240px)}
 .noms{position:relative;margin-top:10px;font-family:var(--f-titre);font-weight:400;font-size:clamp(38px,11.5vw,62px);letter-spacing:.1em;line-height:1.06;color:var(--accent)}
-.noms i{display:block;font-family:Georgia,'Times New Roman',serif;font-style:normal;font-weight:400;font-size:.62em;letter-spacing:0;margin:2px 0}
+.noms i{display:block;font-family:var(--f-script);font-style:normal;font-size:.72em;letter-spacing:0;margin:2px 0}
 .filet{position:relative;display:flex;align-items:center;gap:12px;margin:20px auto 14px;width:min(70%,280px);color:var(--or1)}
 .filet::before,.filet::after{content:"";flex:1;height:1px;background:currentColor;opacity:.7}
 .date{position:relative;font-family:var(--f-titre);font-size:clamp(18px,5.4vw,25px);letter-spacing:.22em}
@@ -157,5 +157,5 @@ a{color:inherit}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* esperluette des prénoms et des signatures : Georgia, dont le « & » est classique (ceux des polices calligraphiques et de Playfair semblaient à l'envers) */
-.esp{font-family:Georgia,'Times New Roman',serif;font-style:normal;font-weight:400;font-size:.72em;letter-spacing:0}
+/* esperluette des signatures (même police que le texte qui l'entoure) */
+.esp{font-family:inherit}
