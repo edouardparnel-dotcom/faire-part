@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iris &amp; Raphaël — Mur photo (démonstration)</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Pinyon+Script&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=5">
+<link rel="stylesheet" href="../_commun/vivant.css?v=16">
+<link rel="stylesheet" href="../_commun/trames.css?v=47">
+<script src="../_commun/vivant.js?v=25" defer></script>
+<style>
+:root{--fond:#0F1830;--carte:#F8F4EA;--encre:#14213D;--doux:#5C6680;--or1:#C9A55A;--or2:#ECD9A6;--or3:#8E7032;--accent:#1E2F5C;
+  --f-titre:'Cormorant Garamond',serif;--f-script:'Pinyon Script',cursive;--f-texte:'Josefin Sans',system-ui,sans-serif;--decor:linear-gradient(rgba(10,16,36,.35),rgba(10,16,36,.35)),url('fond-tuile.jpg') center top/640px auto repeat fixed;--couv:var(--carte);--sur-fond:#0F1830;}
+
+
+</style>
+</head>
+<body data-blocs="decale" data-titres="grand" data-images="pleine" data-revele="flou" data-paral="vertical" data-cadre="plein" data-prog="frise" data-lieu="classique" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="fleche" data-teinte="clair" data-collection="celeste" data-particules="or" data-trame="centree">
+<nav class="suite-nav" aria-label="La collection Céleste"><a class="suite-marque" href="index.html">✦ Céleste</a><div><a href="index.html">La collection</a><a href="faire-part.html">Faire-part</a><a href="faire-part.html?f=std">Save-the-date</a><a href="site.html">Site</a><a href="plan-de-table.html">Plan de table</a><a href="mur-photo.html" aria-current=page>Mur photo</a><a href="livre-or.html">Livre d&#x27;or</a></div></nav>
+
+<header class="suite-titre carte"><img class="deco-haut" src="haut.webp" alt="" width="1800" height="900"><p class="chapeau">Iris &amp; Raphaël · en direct</p><h1>Le mur photo</h1>
+  <p class="intro">Vos invités ajoutent leurs photos depuis leur téléphone, sans application. Elles s'affichent ici, et sur grand écran pendant la fête.</p>
+  <a class="bouton plein" href="#" onclick="event.preventDefault();this.textContent='Démonstration : l’appareil photo s’ouvrirait ici'">Ajouter mes photos</a></header>
+<main class="suite-main large"><div class="mur"><figure class="photo apparait" style="--r:1deg"><img src="photo.jpg" alt="" loading="lazy"><figcaption>La famille au complet</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="decor-detail.jpg" alt="" loading="lazy"><figcaption>Premier regard</figcaption></figure><figure class="photo apparait" style="--r:3deg"><img src="decor-ensemble.jpg" alt="" loading="lazy"><figcaption>Les témoins</figcaption></figure><figure class="photo apparait" style="--r:-1deg"><img src="../nocturne/photo.jpg" alt="" loading="lazy"><figcaption>Sur la piste</figcaption></figure><figure class="photo apparait" style="--r:2deg"><img src="../citadelle/photo.jpg" alt="" loading="lazy"><figcaption>Le dîner</figcaption></figure><figure class="photo apparait" style="--r:-3deg"><img src="../lanternes/photo.jpg" alt="" loading="lazy"><figcaption>Les cousins</figcaption></figure><figure class="photo apparait" style="--r:1deg"><img src="../grand-hotel/photo.jpg" alt="" loading="lazy"><figcaption>Le gâteau</figcaption></figure><figure class="photo apparait" style="--r:-2deg"><img src="../gatsby/photo.jpg" alt="" loading="lazy"><figcaption>Fin de soirée</figcaption></figure></div></main>
+<footer class="suite-pied"><p class="script">Iris <span class="esp">&amp;</span> Raphaël</p><p>Merci de faire partie de notre histoire</p>
+<small>Démonstration de la collection Céleste · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
+<script>
+document.body.dataset.date = '2027-08-12T20:30:00+02:00'; document.body.dataset.evenement = 'Mariage Iris & Raphaël'; document.body.dataset.ville = 'Haute-Provence';
+document.querySelectorAll('[data-offrir]').forEach(b => b.addEventListener('click', () => { b.outerHTML = '<em class="a-vous">Réservé par vous ✓</em>'; }));
+document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); b.textContent = 'Démonstration : ouvre la cagnotte des mariés'; }));
+if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
+document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+  const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
+</script>
+</body>
+</html>

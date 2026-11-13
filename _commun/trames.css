@@ -306,12 +306,12 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage])[data-tra
 
 /* ───────── BORDURE LATÉRALE : un dessin à l'encre qui pousse le long du bord gauche, le texte à côté ───────── */
 .bord-g{position:absolute;left:6px;top:0;height:100%;width:auto;max-width:34%;object-fit:contain;object-position:left center;z-index:0;pointer-events:none}
-.suite-couv:has(.bord-g){position:relative;padding-left:max(30%,120px);padding-right:18px}
+.suite-couv:has(.bord-g){position:relative;padding-left:clamp(120px,30%,190px);padding-right:18px}
 .suite-couv:has(.bord-g)>*:not(.bord-g){position:relative;z-index:1}
 .suite-couv:has(.bord-g){justify-content:center}
 .suite-couv:has(.bord-g) .chapeau{margin-top:0;padding-top:0}
 .suite-couv:has(.bord-g) .noms{font-size:clamp(34px,10vw,52px)}
-.suite-titre:has(.bord-g){position:relative;overflow:clip;padding-left:max(26%,100px)}
+.suite-titre:has(.bord-g){position:relative;overflow:clip;padding-left:clamp(100px,26%,170px)}
 
 /* ───────── PAPIER DÉCOUPÉ EN COUCHES : un diorama de trois feuilles superposées, monogramme doré dans le ciel ───────── */
 .papier{position:absolute;left:0;right:0;bottom:0;height:57%;z-index:0;pointer-events:none;overflow:visible}

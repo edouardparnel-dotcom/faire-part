@@ -8,9 +8,9 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Homemade+Apple&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../_commun/suite.css?v=2">
+<link rel="stylesheet" href="../_commun/suite.css?v=5">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=46">
+<link rel="stylesheet" href="../_commun/trames.css?v=47">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#F2EEE4;--carte:#FCFAF5;--encre:#2F3326;--doux:#6B6E5E;--or1:#8A7AA8;--or2:#C9BEDD;--or3:#5E6B3E;--accent:#5E6B3E;
@@ -24,7 +24,7 @@
 <header class="suite-couv carte couv-carnet">
   <img class="deco-haut" src="haut.webp" alt="" width="1400" height="630">
   <div class="feuille"><p class="chapeau">Bienvenue sur notre site de mariage</p><h1 class="noms">Clara<i class="or">&amp;</i>Julien</h1><p class="date">12 · 06 · 2027</p>
-  <figure class="polaroid"><img src="couple.jpg" alt=""><figcaption>Clara &amp; Julien</figcaption></figure><p class="lieu">Bourgogne</p></div><img class="deco-bas" src="bas.webp" alt="" width="1400" height="574">
+  <figure class="polaroid"><img src="couple.jpg" alt=""><figcaption>Clara <span class="esp">&amp;</span> Julien</figcaption></figure><p class="lieu">Bourgogne</p></div><img class="deco-bas" src="bas.webp" alt="" width="1400" height="574">
 </header>
 
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#cadeaux">Cadeaux</a><a href="#reponse">Réponse</a></nav>
@@ -34,14 +34,14 @@
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 12 juin 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 30</b><span>Échange des alliances au bord de l’eau</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>16 h 30</b><span>Bouquet et photos dans le pré</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 30</b><span>Vin d’honneur à la grange</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Grande tablée champêtre</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>21 h 30</b><span>Bal dans la grange</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Gâteau aux fruits rouges</span></div></li></ol></section>
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Domaine du Moulin<br>Bourgogne</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Bourgogne" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Chic champêtre</p><p>Lin, coton et couleurs douces. Talons fins déconseillés : la cérémonie a lieu dans le pré.</p><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
-  <blockquote class="inter inter-citation apparait"><p>Ils se sont rencontrés aux vendanges, un automne en Bourgogne, entre deux rangs de pinot.</p><cite class="script">Clara &amp; Julien</cite></blockquote>
+  <blockquote class="inter inter-citation apparait"><p>Ils se sont rencontrés aux vendanges, un automne en Bourgogne, entre deux rangs de pinot.</p><cite class="script">Clara <span class="esp">&amp;</span> Julien</cite></blockquote>
   <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel du Vieux Pressoir</b><span>À 5 minutes · tarif invité sur demande</span></div><div class="hotel"><b>Gîtes du Domaine</b><span>Navette vers le moulin à 15 h et à 2 h</span></div></div></section>
   <section class="bloc apparait"><h2>Le compte à rebours</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
   <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p><a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
   <section class="bloc apparait" id="cadeaux"><h2>Liste et cagnotte</h2><p>Votre présence est notre plus beau cadeau. Pour ceux qui le souhaitent :</p><a class="bouton plein" href="#" data-demo-cagnotte>Participer à la cagnotte</a><ul class="cadeaux-demo"><li><span>Service à thé</span><b>80 €</b><button class="bouton" data-offrir>Je l'offre</button></li><li><span>Linge de maison</span><b>120 €</b><button class="bouton" data-offrir>Je l'offre</button></li><li class="pris"><span>Week-end en amoureux</span><b>250 €</b><em>Déjà offert</em></li></ul><p class="note-cadeaux">Réservez le cadeau que vous offrez : les autres invités le voient pris. La cagnotte et les boutiques sont celles des mariés ; Maison Vivat ne touche jamais l'argent.</p></section>
   <section class="bloc apparait" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er mai 2027.</p><form class="reponse" onsubmit="event.preventDefault();document.getElementById('demo').style.display='block'"><label>Prénom et nom<input required placeholder="Votre nom"></label><div class="choix"><label><input type="radio" name="v" checked> Je serai présent·e</label><label><input type="radio" name="v"> Je ne pourrai pas venir</label></div><label>Un mot pour les mariés<textarea rows="3" placeholder="Facultatif"></textarea></label><button class="bouton plein">Envoyer ma réponse</button><p id="demo" style="display:none">Démonstration : votre réponse arrive directement dans l'espace des mariés.</p></form></section>
 </main>
-<footer class="suite-pied"><p class="script">Clara &amp; Julien</p><p>Merci de partager notre joie</p>
+<footer class="suite-pied"><p class="script">Clara <span class="esp">&amp;</span> Julien</p><p>Merci de partager notre joie</p>
 <small>Démonstration de la collection Champêtre · couple et lieu fictifs · <a href="/">Maison Vivat</a></small></footer>
 <script>
 document.body.dataset.date = '2027-06-12T15:30:00+02:00'; document.body.dataset.evenement = 'Mariage Clara & Julien'; document.body.dataset.ville = 'Bourgogne';

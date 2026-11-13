@@ -116,7 +116,7 @@
   document.querySelectorAll('video.survol-arche').forEach(v => { const a = v.parentElement;
     a.addEventListener('mouseenter', () => v.play().catch(() => {})); a.addEventListener('mouseleave', () => v.pause()); });
   // Survol d'une collection : son ouverture se joue (chargée au premier survol), puis s'arrête en partant.
-  document.querySelectorAll('.oeuvre').forEach(o => {
+  document.querySelectorAll('.oeuvre, .vignette-cat.reelle').forEach(o => {
     const v = o.querySelector('video.survol'); if (!v) return;
     o.addEventListener('mouseenter', () => { if (!v.src) v.src = v.dataset.src; v.currentTime = 0; v.play().then(() => o.classList.add('joue')).catch(() => {}); });
     o.addEventListener('mouseleave', () => { o.classList.remove('joue'); v.pause(); });
