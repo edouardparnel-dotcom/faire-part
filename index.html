@@ -13,7 +13,7 @@
 <meta name="p:domain_verify" content="e429689e0f4edbe6245b75c5ab73d5c7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_commun/maison.css?v=15">
+<link rel="stylesheet" href="_commun/maison.css?v=16">
 <style>:root{--accent:#A8834A}</style>
 <script src="_commun/partenaire.js?v=1" defer></script>
 </head>
@@ -36,13 +36,13 @@
     <div class="arche revele"><video src="lanternes/ouverture.mp4" poster="lanternes/photo.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video></div>
   </div>
 
-  <section class="manifeste"><div class="conteneur revele">
+  <section class="manifeste"><div class="decor-paral" aria-hidden="true"><img class="paral" src="lanternes/ouverture.webp" alt="" loading="lazy" style="left:-50px;top:14%;width:260px;--r:-12deg" data-v="0.18"><img class="paral" src="takchita/sceau.webp" alt="" loading="lazy" style="right:9%;top:16%;width:104px;--r:10deg" data-v="-0.14"><img class="paral" src="kanaval/papillon.webp" alt="" loading="lazy" style="right:4%;bottom:10%;width:92px;--r:16deg" data-v="0.32"><img class="paral" src="grand-hotel/cachet.webp" alt="" loading="lazy" style="left:12%;bottom:8%;width:74px;--r:-6deg" data-v="-0.24"></div><div class="conteneur revele">
     <span class="etq">L'art de recevoir</span>
     <div style="height:22px"></div>
     <blockquote>« Recevoir, c&#x27;est penser à chacun, qu&#x27;il vienne de la rue d&#x27;à côté ou de l&#x27;autre bout du monde. Votre espace s&#x27;occupe d&#x27;eux ; vous profitez de votre journée. »</blockquote>
   </div></section>
 
-  <section class="avis-clients"><div class="conteneur">
+  <section class="avis-clients"><div class="decor-paral" aria-hidden="true"><img class="paral" src="karakou/ouverture.webp" alt="" loading="lazy" style="left:-70px;top:22%;width:250px;--r:-9deg" data-v="0.16"><img class="paral" src="citadelle/sceau.webp" alt="" loading="lazy" style="right:6%;top:9%;width:96px;--r:14deg" data-v="-0.22"><img class="paral" src="kanchipuram/sceau.webp" alt="" loading="lazy" style="left:9%;bottom:6%;width:78px;--r:0deg" data-v="0.3"><img class="paral" src="bindalli/sceau.webp" alt="" loading="lazy" style="right:-10px;bottom:12%;width:120px;--r:-12deg" data-v="0.12"></div><div class="conteneur">
     <div class="titre-section revele"><span class="etq">Ils nous ont confié leur invitation</span><h2>Leurs mots</h2>
       <p>Des fêtes accompagnées par Maison Vivat, avant le lancement de l'espace complet.</p></div>
     <div class="avis-liste">
@@ -475,6 +475,15 @@
   document.querySelectorAll('[data-demo]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.demo).style.display = 'block'));
   document.querySelectorAll('video.survol-arche').forEach(v => { const a = v.parentElement;
     a.addEventListener('mouseenter', () => v.play().catch(() => {})); a.addEventListener('mouseleave', () => v.pause()); });
+  // Décor en parallaxe : chaque élément glisse à sa vitesse quand la section défile (rien si le mouvement réduit est demandé).
+  const paral = [...document.querySelectorAll('.paral')];
+  if (paral.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let attente = false;
+    const bouge = () => { attente = false; const mi = innerHeight / 2;
+      for (const el of paral) { const r = el.parentElement.getBoundingClientRect(); if (r.bottom < -200 || r.top > innerHeight + 200) continue;
+        el.style.transform = `translate3d(0,${((r.top + r.height / 2 - mi) * -parseFloat(el.dataset.v)).toFixed(1)}px,0) rotate(var(--r))`; } };
+    addEventListener('scroll', () => { if (!attente) { attente = true; requestAnimationFrame(bouge); } }, { passive: true }); bouge();
+  }
   // Survol d'une collection : son ouverture se joue (chargée au premier survol), puis s'arrête en partant.
   document.querySelectorAll('.oeuvre, .vignette-cat.reelle').forEach(o => {
     const v = o.querySelector('video.survol'); if (!v) return;

@@ -302,3 +302,13 @@ section{padding:64px 0;border-top:1px solid var(--filet)}
 @media (max-width:760px){.formules-secondaires{grid-template-columns:1fr}}
 
 .formule .valeur-formule{font-size:12px;letter-spacing:.04em;color:var(--accent,#9a7b4f);margin:-6px 0 12px}
+
+/* Décor en parallaxe des sections de texte (citation, avis) : éléments des collections en bord de section */
+.manifeste,.avis-clients{position:relative;overflow:hidden}
+.manifeste>.conteneur,.avis-clients>.conteneur{position:relative;z-index:1}
+.decor-paral{position:absolute;inset:0;pointer-events:none;z-index:0}
+.paral{position:absolute;height:auto;transform:rotate(var(--r));filter:drop-shadow(0 14px 18px rgba(40,30,20,.18));will-change:transform;animation:flotte 7s ease-in-out infinite}
+.paral:nth-child(2n){animation-duration:9s;animation-delay:-3s}
+@keyframes flotte{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@media (max-width:860px){.paral{opacity:.5;scale:.62}.paral:nth-child(n+3){display:none}}
+@media (prefers-reduced-motion:reduce){.paral{animation:none}}
