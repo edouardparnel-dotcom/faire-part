@@ -485,6 +485,21 @@
 "nom": "Keswa"
 },
 {
+"src": "../citadelle/lieu.webp",
+"cat": "Lieux",
+"nom": "Citadelle"
+},
+{
+"src": "../citadelle/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Citadelle"
+},
+{
+"src": "../citadelle/photo.jpg",
+"cat": "Ambiances",
+"nom": "Citadelle"
+},
+{
 "src": "../adinkra/lieu.webp",
 "cat": "Lieux",
 "nom": "Adinkra"

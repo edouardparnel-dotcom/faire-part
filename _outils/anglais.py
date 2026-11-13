@@ -39,6 +39,7 @@ COLLECTIONS_EN = {
     'karakou': ('Karakou', 'Karakou · khit errouh', 'Ivory envelope embroidered with gold thread, garnet wax seal; embroidered velvet, white arches and bougainvillea'),
     'takchita': ('Takchita', 'Takchita · sfifa and mdamma', 'Ivory silk envelope with gold passementerie, emerald wax seal; riad courtyard, pierced lanterns and blush pink'),
     'keswa': ('Keswa', 'Keswa · fouta and blouza', 'Ivory satin envelope embroidered with gold thread, teal wax seal; white terrace facing the sea'),
+    'citadelle': ('Citadelle', 'Worlds · medieval fantasy', 'Parchment envelope with a burgundy border, heraldic dragon wax seal; a castle in the mist, banners and wrought iron chandeliers'),
     'adinkra': ('Adinkra', 'Adinkra · Akan symbols', 'Ivory envelope with a heart seal, Akoma and Nkonsonkonson symbols printed as if stamped by hand, flame trees'),
     'bazin': ('Bazin', 'Bazin riche · grand boubou', 'Teal bazin envelope with a gold filigree seal, a draped bazin swag crossed by a moving glint of light, desert roses'),
     'kreyol': ('Kreyòl', 'Kreyòl · “Krik? Krak!”', 'A storybook that opens, a paper Creole house that pops up, anthuriums and a hummingbird'),
