@@ -292,7 +292,11 @@ def page(site, modeles):
     def oeuvre(slug, rang=0):
         m = par_slug[slug]
         site_m = SITE_DU_MODELE.get(slug)
-        lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site" target="_blank" rel="noopener">Voir le site de cette collection</a>' if site_m else ''
+        # Le vrai site de la collection (décor, photos, programme illustré) quand il existe ; sinon le site du moteur.
+        if os.path.exists(os.path.join(RACINE_MINI, slug, 'site.html')):
+            lien_site = f'<a class="lien-site" href="{pre}{slug}/site.html" target="_blank" rel="noopener">Voir le site de cette collection</a>'
+        else:
+            lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site" target="_blank" rel="noopener">Voir le site de cette collection</a>' if site_m else ''
         return f"""        <div class="revele{' en-plus' if rang >= 3 and site['cle'] == 'mariage' else ''}"><a class="oeuvre" href="{pre}{slug}/index.html">
           <div class="cadre"><img src="{pre}{slug}/{'miniature.jpg' if os.path.exists(os.path.join(RACINE_MINI, slug, 'miniature.jpg')) else 'photo.jpg'}" alt="Collection {e(m['modele'])}" loading="lazy"></div>
           <span class="etq">{e(m['culture'])}</span>
