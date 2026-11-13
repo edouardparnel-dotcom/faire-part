@@ -27,7 +27,8 @@
     // Musique coupée par défaut : l’invité la lance depuis le bouton.
     if (bouton) bouton.classList.add('coupe');
     if (bouton) bouton.classList.add('visible');
-    setTimeout(() => document.body.classList.remove('ferme'), 3200);
+    // enveloppe animée en CSS : on attend la fin de son animation ; vidéo 3D : la page apparaît aussitôt (la vidéo a déjà tout montré)
+    setTimeout(() => document.body.classList.remove('ferme'), ouv.querySelector('video.ouv-film') ? 250 : 3200);
   }
   // Ouverture en vidéo 3D (Lanternes) : le geste lance la vidéo, la page apparaît à la fin. Sans lecture possible, on ouvre aussitôt.
   const film = ouv.querySelector('video.ouv-film');
@@ -62,6 +63,8 @@
     const fin = () => { if (!fini) { fini = true; ouvrir(); } };
     film.addEventListener('ended', fin);
     film.addEventListener('error', fin);
+    // la fin de la vidéo est une carte immobile : on n'attend pas qu'elle se termine (remarque de Parnel : la page arrivait en retard)
+    film.addEventListener('timeupdate', () => { if (film.duration && film.currentTime >= film.duration - 0.4) fin(); });
     film.play().then(() => setTimeout(fin, ((film.duration || 8) + 1.5) * 1000), fin);
   }
   ouv.addEventListener('click', lancer);
