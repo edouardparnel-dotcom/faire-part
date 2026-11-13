@@ -470,6 +470,21 @@
 "nom": "Takchita"
 },
 {
+"src": "../celeste/lieu.webp",
+"cat": "Lieux",
+"nom": "Céleste"
+},
+{
+"src": "../celeste/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Céleste"
+},
+{
+"src": "../celeste/photo.jpg",
+"cat": "Ambiances",
+"nom": "Céleste"
+},
+{
 "src": "../kanchipuram/lieu.webp",
 "cat": "Lieux",
 "nom": "Kanchipuram"
