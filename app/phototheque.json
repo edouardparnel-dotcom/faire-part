@@ -470,6 +470,21 @@
 "nom": "Takchita"
 },
 {
+"src": "../huipil/lieu.webp",
+"cat": "Lieux",
+"nom": "Huipil"
+},
+{
+"src": "../huipil/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Huipil"
+},
+{
+"src": "../huipil/photo.jpg",
+"cat": "Ambiances",
+"nom": "Huipil"
+},
+{
 "src": "../keswa/lieu.webp",
 "cat": "Lieux",
 "nom": "Keswa"
