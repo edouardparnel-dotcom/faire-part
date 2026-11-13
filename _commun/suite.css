@@ -159,3 +159,18 @@ a{color:inherit}
 
 /* esperluette des signatures (même police que le texte qui l'entoure) */
 .esp{font-family:inherit}
+
+/* Nuancier de la tenue : couleurs suggérées aux invités */
+.nuancier-tenue{display:flex;justify-content:center;gap:34px;margin:18px auto 6px;flex-wrap:wrap}
+.nuancier-tenue div{text-align:center}
+.nuancier-tenue b{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;opacity:.75;margin-bottom:8px}
+.nuancier-tenue p{margin:0;display:flex;gap:8px;justify-content:center}
+.nuancier-tenue span{display:inline-block;width:30px;height:30px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14),0 2px 6px rgba(0,0,0,.12)}
+
+/* Une surprise : médaillon rond cerclé du métal de la collection, la photo se découvre en grattant */
+.medaillon-surprise{position:relative;width:min(240px,62vw);aspect-ratio:1;margin:18px auto 6px;border-radius:50%;overflow:hidden;
+  box-shadow:0 0 0 3px var(--or1),0 0 0 9px var(--carte,#fff),0 0 0 10px var(--or2),0 18px 30px -12px rgba(0,0,0,.35)}
+.medaillon-surprise img{width:100%;height:100%;object-fit:cover;display:block}
+.medaillon-surprise canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+.medaillon-surprise.decouvert{animation:eclat 1.2s ease-out}
+@keyframes eclat{0%{box-shadow:0 0 0 3px var(--or1),0 0 0 9px var(--carte,#fff),0 0 0 10px var(--or2),0 0 0 0 rgba(255,220,140,.8)}100%{box-shadow:0 0 0 3px var(--or1),0 0 0 9px var(--carte,#fff),0 0 0 10px var(--or2),0 0 0 40px rgba(255,220,140,0)}}

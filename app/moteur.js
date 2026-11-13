@@ -66,6 +66,15 @@ const TEXTES = {
   gender: { accueil: { titre: 'Le grand suspense', texte: 'Nous allons découvrir ensemble si nous attendons une fille ou un garçon. Venez vivre la surprise avec nous.' }, tenue: { titre: 'Choisissez votre camp', texte: 'Venez en rose si vous pariez sur une fille, en bleu pour un garçon.', couleurs: '#E8A9B8, #9CC3DE' } },
   naissance: { accueil: { titre: 'Il est là', texte: 'Après neuf mois d\'attente, notre petit garçon est arrivé. Nous avons hâte de vous le présenter.' }, programme: { titre: 'Venez le rencontrer' }, cadeaux: { titre: 'Liste de naissance', texte: 'Pour ceux qui nous l\'ont demandé, sa liste de naissance est en ligne.', libelle: 'Voir la liste' }, reponse: { titre: 'Annoncer votre visite', texte: 'Dites-nous quand vous passerez, pour que nous puissions vous accueillir.' }, histoire: { titre: 'Les premiers jours', texte: 'Ses premiers sourires, ses premières nuits (courtes), et toute la famille déjà sous le charme.' } },
 };
+// Formule d'ouverture au choix du couple, au-dessus de la couverture (aucune par défaut ; textes vérifiés, jamais imposés).
+export const FORMULES = {
+  aucune: { nom: 'Aucune', texte: '' },
+  basmala: { nom: 'Basmala (arabe)', texte: 'بسم الله الرحمن الرحيم', dir: 'rtl' },
+  'basmala-fr': { nom: 'Basmala (français)', texte: 'Au nom de Dieu, le Tout Miséricordieux, le Très Miséricordieux' },
+  benediction: { nom: 'Bénédiction', texte: 'Avec la bénédiction de Dieu et de nos familles' },
+  ganesh: { nom: 'Shri Ganeshaya Namah', texte: 'श्री गणेशाय नमः' },
+  libre: { nom: 'Texte libre', texte: '' },
+};
 const SURTITRES = { mariage: 'Nous nous marions', anniversaire: 'Vous êtes invités', bapteme: 'Baptême', gender: 'Fille ou garçon ?', naissance: 'Bienvenue au monde' };
 
 export function designParDefaut(evt, themeId = 'ivoire', format = 'fp') {
@@ -200,6 +209,7 @@ export function rendre(racine, ctx) {
   const couverture = `<header class="couv couv-${couv}" id="haut">${visuel}
       <div class="couv-texte">
         ${prenom ? `<p class="pour">${t('Pour')} ${esc(prenom)}</p>` : ''}
+        ${(() => { const f = FORMULES[c.formule]; const txt = c.formule === 'libre' ? (c.formule_txt || '') : f?.texte; return txt ? `<p class="formule"${f?.dir ? ` dir="${f.dir}" lang="ar"` : ''}>${esc(txt)}</p>` : ''; })()}
         <p class="surtitre">${esc(std ? (enLangue(d.std, 'surtitre', L) || 'Réservez la date') : enLangue(c, 'surtitre', L))}</p>
         <h1>${esc(c.titre || ctx.evt.titre)}</h1>
         ${c.soustitre && !std ? `<p class="soustitre">${esc(enLangue(c, 'soustitre', L))}</p>` : ''}

@@ -5,7 +5,7 @@
 import { db, storage, fonctions, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=4';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, OUVERTURES, MISES_EN_PAGE, theme } from './themes.js?v=3';
-import { SECTIONS, designParDefaut } from './moteur.js?v=8';
+import { SECTIONS, designParDefaut, FORMULES } from './moteur.js?v=9';
 import { LANGUES, A_RELIRE } from './langues.js?v=3';
 import { GUIDES } from './guides.js?v=1';
 import { doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
@@ -39,6 +39,8 @@ exigerOrganisateur(vue, async user => {
       <details class="boite"><summary>Langues</summary><div id="langues"></div></details>
       <details class="boite"><summary>Polices</summary><div><label>Couple de polices<select id="polices"></select></label></div></details>
       <details class="boite"><summary>Couverture</summary><div>
+        <label>Formule d'ouverture (facultatif)<select id="c-formule">${Object.entries(FORMULES).map(([k, f]) => `<option value="${k}">${esc(f.nom)}</option>`).join('')}</select></label>
+        <label id="l-formule-txt" hidden>Votre formule<input id="c-formule-txt" maxlength="120"></label>
         <label>Petite ligne au-dessus<input id="c-surtitre" maxlength="60"></label>
         <label>Prénoms ou titre<input id="c-titre" maxlength="80"></label>
         <label>Sous-titre (facultatif)<input id="c-soustitre" maxlength="120"></label>
@@ -87,6 +89,7 @@ function remplir() {
     ${design.langues.length > 1 && ceremonies.length ? `<p class="app-note" style="margin-top:8px">Noms des cérémonies dans les autres langues :</p>${ceremonies.map((x, k) => design.langues.filter(l => l !== 'fr').map(l => `<label>${esc(x.nom)} · ${esc(LANGUES[l])}<input data-cer="${k}:${l}" value="${esc(x['nom@' + l] || '')}" maxlength="80"></label>`).join('')).join('')}` : ''}
     ${design.langues.includes('ht') ? '<p class="app-note">Les textes fixes en créole haïtien sont fournis par Maison Vivat ; faites relire les vôtres par un proche.</p>' : ''}`;
   $('#saisie').innerHTML = design.langues.length > 1 ? `<span>Langue de saisie des textes :</span>${design.langues.map(l => `<button class="mini ${l === saisie ? 'actif' : ''}" data-saisie="${l}">${esc(LANGUES[l])}</button>`).join('')}` : '';
+  $('#c-formule').value = c.formule || 'aucune'; $('#c-formule-txt').value = c.formule_txt || ''; $('#l-formule-txt').hidden = c.formule !== 'libre';
   $('#c-surtitre').value = c[cle('surtitre')] || ''; $('#c-titre').value = c.titre || ''; $('#c-soustitre').value = c[cle('soustitre')] || '';
   $('#photo-couv').innerHTML = (c.photo ? `<img src="${esc(c.photo)}" alt=""><button class="mini" id="b-sans-photo">Retirer la photo</button><label class="mini" style="cursor:pointer">Changer<input type="file" accept="image/*" id="i-photo" hidden></label>`
     : `<label class="btn petit clair" style="cursor:pointer">Ajouter une photo<input type="file" accept="image/*" id="i-photo" hidden></label>`)
@@ -250,6 +253,9 @@ document.addEventListener('input', ev => {
   if (t.dataset.champ) { const i = t.dataset.champ.indexOf(':'), k = +t.dataset.champ.slice(0, i), ch = t.dataset.champ.slice(i + 1); design.sections[k][ch] = t.value; return changer(); }
   if (t.dataset.etape) { const [k, i, ...ch] = t.dataset.etape.split(':'); design.sections[+k].etapes[+i][ch.join(':')] = t.value; return changer(); }
   if (t.dataset.cer) { const [k, l] = t.dataset.cer.split(':'); ceremonies[+k]['nom@' + l] = t.value; return changer(); }
+  if (t.id === 'c-formule' || t.id === 'c-formule-txt') {
+    design.couverture[t.id === 'c-formule' ? 'formule' : 'formule_txt'] = t.value; $('#l-formule-txt').hidden = design.couverture.formule !== 'libre'; return changer();
+  }
   const c = { 'c-surtitre': 'surtitre', 'c-titre': 'titre', 'c-soustitre': 'soustitre' }[t.id];
   if (c) { design.couverture[c === 'titre' ? c : cle(c)] = t.value; return changer(); }
   if (t.id === 's-surtitre' || t.id === 's-texte') { design.std = { ...(design.std || {}), [cle(t.id === 's-texte' ? 'texte' : 'surtitre')]: t.value }; return changer(); }

@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>Faire-part</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="moteur.css?v=8">
+<link rel="stylesheet" href="moteur.css?v=9">
 </head>
 <body>
 <div id="fp"><p style="font-family:sans-serif;text-align:center;padding:40px;color:#888">Ouverture…</p></div>
@@ -15,7 +15,7 @@
 //  fp.html?demo=<direction>[&f=std|site]   démonstration d'une direction artistique (sans serveur), en faire-part, save-the-date ou site ;
 //  fp.html?apercu=1[&f=std]                aperçu en direct dans l'éditeur (réglages reçus par message) ;
 //  fp.html?e=<événement>[&g=<jeton>][&f=std] la vraie invitation ; avec un jeton, elle est personnelle.
-import { rendre, designParDefaut } from './moteur.js?v=8';
+import { rendre, designParDefaut } from './moteur.js?v=9';
 import { langueChoisie } from './langues.js?v=3';
 import { theme } from './themes.js?v=3';
 
@@ -69,6 +69,7 @@ if (q.get('demo')) {
   if (perso.date) { const decalage = new Date(perso.date + 'T' + evt.date.slice(11)) - new Date(evt.date); evt.date = perso.date + 'T' + evt.date.slice(11); evt.ceremonies = evt.ceremonies.map(c => ({ ...c, date: local(new Date(new Date(c.date).getTime() + decalage)) })); }
   if (perso.lieu) { evt.lieu = perso.lieu; evt.ceremonies = evt.ceremonies.map((c, k) => k === evt.ceremonies.length - 1 ? { ...c, lieu: perso.lieu } : c); }
   const design = designParDefaut(evt, t.id, format);
+  if (q.get('formule')) design.couverture.formule = q.get('formule');   // aperçu d'une formule d'ouverture (?formule=basmala)
   const gal = design.sections.find(s => s.type === 'galerie');
   if (gal && PHOTOS[t.id]) { const dossier = PHOTOS[t.id].split('/')[0]; gal.photos = ['photo', 'decor-detail', 'decor-ensemble'].map(x => `../${dossier}/${x}.jpg`); }
   if (evt.type === 'naissance') { const b = design.sections.find(s => s.type === 'bebe'); if (b) b.prenom = evt.titre; const acc = design.sections.find(s => s.type === 'accueil'); if (acc && ['lila', 'iris', 'zoe'].includes(evt.titre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) Object.assign(acc, { titre: 'Elle est là', texte: 'Après neuf mois d\'attente, notre petite fille est arrivée. Nous avons hâte de vous la présenter.' }); }

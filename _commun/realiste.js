@@ -139,6 +139,34 @@
     }, 3400);
   }
 
+  // Une surprise : la photo des mariés se découvre en grattant le médaillon, recouvert de la matière de la collection.
+  document.querySelectorAll('.medaillon-surprise').forEach(md => {
+    const cv = md.querySelector('canvas'), x = cv.getContext('2d'), dpr = devicePixelRatio || 1;
+    const prepare = () => {
+      const r = md.getBoundingClientRect(); cv.width = r.width * dpr; cv.height = r.height * dpr;
+      const peint = img => {
+        x.globalCompositeOperation = 'source-over';
+        if (img) { const s = Math.max(cv.width / img.width, cv.height / img.height); x.drawImage(img, (cv.width - img.width * s) / 2, (cv.height - img.height * s) / 2, img.width * s, img.height * s); }
+        else { x.fillStyle = getComputedStyle(md).getPropertyValue('--or1') || '#b8904a'; x.fillRect(0, 0, cv.width, cv.height); }
+        const g = x.createLinearGradient(0, 0, cv.width, cv.height);
+        g.addColorStop(0, 'rgba(255,240,200,.10)'); g.addColorStop(.5, 'rgba(255,255,255,.38)'); g.addColorStop(1, 'rgba(120,90,40,.18)');
+        x.fillStyle = g; x.fillRect(0, 0, cv.width, cv.height);
+        x.fillStyle = 'rgba(40,30,20,.72)'; x.font = `600 ${12 * dpr}px system-ui`; x.textAlign = 'center'; x.textBaseline = 'middle';
+        x.fillText('GRATTEZ ICI', cv.width / 2, cv.height / 2);
+        x.globalCompositeOperation = 'destination-out';
+      };
+      const im = new Image(); im.onload = () => peint(im); im.onerror = () => peint(null); im.src = 'fond.jpg';
+    };
+    prepare();
+    let actif = false, n = 0;
+    const gratte = e => { if (!actif) return; const b = cv.getBoundingClientRect(); x.beginPath(); x.arc((e.clientX - b.left) * dpr, (e.clientY - b.top) * dpr, 22 * dpr, 0, 7); x.fill();
+      if (++n % 10 === 0) { const d = x.getImageData(0, 0, cv.width, cv.height).data; let v = 0; for (let i = 3; i < d.length; i += 16) if (!d[i]) v++;
+        if (v / (d.length / 16) > .45) { cv.style.transition = 'opacity .8s'; cv.style.opacity = 0; md.classList.add('decouvert'); setTimeout(() => cv.remove(), 900); } } };
+    cv.addEventListener('pointerdown', e => { actif = true; cv.setPointerCapture(e.pointerId); gratte(e); });
+    cv.addEventListener('pointermove', gratte);
+    cv.addEventListener('pointerup', () => actif = false);
+  });
+
   const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
   document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
 
