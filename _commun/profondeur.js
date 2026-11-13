@@ -14,6 +14,8 @@
   const nb = parseInt(b.dataset.profondeurN, 10) || 1;
   const seq = b.dataset.profondeurSequence;
   const vol = b.dataset.profondeurMouvement === 'vol';
+  // data-profondeur-mouvement="chute" (pétales, plumes) : les objets descendent en tournoyant et en se balançant, plus petits
+  const chute = b.dataset.profondeurMouvement === 'chute';
   const bandes = {};   // nette / floue : { url, n (nombre de vues), ratio (hauteur / largeur d'une vue) }
 
   const st = document.createElement('style');
@@ -24,7 +26,10 @@
 .prof-milieu :is(img,i){opacity:.92;filter:drop-shadow(0 0 18px rgba(255,140,40,.45))}
 .prof-devant :is(img,i){opacity:.78}` + (vol ? `
 .prof-loin :is(img,i){opacity:.6;filter:blur(.6px)}
-.prof-milieu :is(img,i){opacity:.95;filter:drop-shadow(0 6px 8px rgba(30,50,80,.18))}` : '');
+.prof-milieu :is(img,i){opacity:.95;filter:drop-shadow(0 6px 8px rgba(30,50,80,.18))}` : '') + (chute ? `
+.prof-loin :is(img,i){opacity:.55;filter:blur(.8px)}
+.prof-milieu :is(img,i){opacity:.95;filter:drop-shadow(0 5px 6px rgba(40,30,20,.16))}
+.prof-devant :is(img,i){opacity:.85}` : '');
   document.head.appendChild(st);
 
   const hasard = (a, z) => a + Math.random() * (z - a);
@@ -34,6 +39,11 @@
     { nom: 'milieu', tel: 4, ordi: 8,  taille: [62, 96], v: [12, 20], k: .2,  amp: 12 },
     { nom: 'devant', tel: 2, ordi: 3,  taille: [190, 250], v: [26, 36], k: .55, amp: 18, flou: true },
   ];
+  if (chute) {   // pétales : plus petits, un peu plus nombreux, chute douce
+    CALQUES[0].taille = [14, 26]; CALQUES[0].tel = 8; CALQUES[0].ordi = 16;
+    CALQUES[1].taille = [34, 56]; CALQUES[1].tel = 5; CALQUES[1].ordi = 10;
+    CALQUES[2].taille = [110, 150];
+  }
   const calques = CALQUES.map(c => { const d = document.createElement('div'); d.className = 'prof prof-' + c.nom; d.setAttribute('aria-hidden', 'true'); b.appendChild(d); return { ...c, el: d, objets: [] }; });
 
   let W = 0, H = 0;
@@ -92,6 +102,14 @@
         continue;
       }
       const tour = H + o.t * 2.4;
+      if (chute) {
+        // descend, se balance de gauche à droite et tournoie lentement sur lui-même
+        const y = (((o.y0 + s * o.v * .8 - sy * c.k) % tour) + tour) % tour - o.t * 1.4;
+        const x = o.x + Math.sin(s * .6 + o.ph) * c.amp * 2.2 + px * c.k * 40;
+        const r = o.rot * 6 + s * (12 + o.ph * 3) * (o.ph > 3.14 ? 1 : -1) + Math.sin(s * .9 + o.ph) * 14;
+        o.im.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${r.toFixed(1)}deg) scaleY(${(.75 + .25 * Math.sin(s * 1.3 + o.ph)).toFixed(3)})`;
+        continue;
+      }
       const y = (((o.y0 - s * o.v - sy * c.k) % tour) + tour) % tour - o.t * 1.4;
       const x = o.x + Math.sin(s * .25 + o.ph) * c.amp + px * c.k * 40;
       const r = o.rot + Math.sin(s * .4 + o.ph) * (o.bd ? 1.2 : 2.5);
