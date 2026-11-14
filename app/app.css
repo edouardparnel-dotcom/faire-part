@@ -249,3 +249,4 @@
 .fp-perso audio.ecoute{width:100%;max-width:420px}
 .cadrage{display:grid;gap:8px;background:var(--rub-clair);padding:10px 12px}.cadrage input[type=range]{padding:0;accent-color:var(--rub)}
 .photos-plus{display:grid;gap:12px}.vignette-perso{width:90px;aspect-ratio:1;object-fit:cover;margin-top:6px;border:1px solid var(--filet)}
+.ligne-lien{display:flex;gap:8px}.ligne-lien input{flex:1}.vignette-perso.large{width:100%;max-width:320px;aspect-ratio:3/2}

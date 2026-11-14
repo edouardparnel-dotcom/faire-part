@@ -92,6 +92,7 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
   image(COUPLE, P.photo, 'photo.jpg');
   image('.medaillon-surprise img', P.photoSurprise);
   image('.photo-galerie', P.photoGalerie);
+  image('#lieu img.illus', P.photoLieu);
   if (P.photoPos) racine.style.setProperty('--photo-pos', `${+P.photoPos.x}% ${+P.photoPos.y}%`);
   // Couleurs : le nuancier choisi (seules les couleurs du code changent, jamais les images)
   const nuance = (nuanciers[slug] || []).find(x => x.id === P.nuancier);

@@ -249,6 +249,11 @@ const VUES = {
         <p class="app-note" style="margin-bottom:14px">Laissez une case vide pour garder le texte de la collection. L'aperçu se met à jour à chaque enregistrement.</p>
         <fieldset><legend>Vous</legend>${champ('titre', 'Prénoms', evt.titre, 'Par exemple : Awa & Thomas', 'required maxlength="120"')}
           ${champ('date', 'Date et heure', evt.date, '', 'type="datetime-local" required')}${champ('lieu', 'Lieu', evt.lieu, '', 'required')}</fieldset>
+        <fieldset><legend>Le lieu en image</legend>
+          <label>Lien du lieu<span class="ligne-lien"><input type="url" id="i-lien-lieu" placeholder="https://www.domaine-des-acacias.fr" value="${esc(P.lienLieu || '')}"><button type="button" class="btn petit" data-image-lieu="1">Récupérer la photo</button></span>
+            <small class="aide">Le lien du site de votre salle ou de votre domaine : on reprend sa photo principale. Ou ajoutez la vôtre :</small></label>
+          <label>Photo du lieu<input type="file" data-photo-perso="photoLieu" accept="image/*"></label>
+          ${P.photoLieu ? `<img class="vignette-perso large" src="${esc(P.photoLieu)}" alt="Photo du lieu">` : ''}<p class="app-note" id="m-lieu"></p></fieldset>
         <fieldset><legend>La couverture</legend>${champ('chapeau', 'Phrase d\'invitation', P.chapeau, 'Par défaut : « Ont la joie de vous inviter à leur mariage »', 'maxlength="140"')}
           <label>Photo du couple<input type="file" data-photo-perso="photo" accept="image/*"><small class="aide">${P.photo ? 'Votre photo est en place. Choisissez-en une autre pour la remplacer.' : 'Sans photo, aucune photo de couple n’apparaît sur votre faire-part (jamais celle d’un autre couple).'}</small></label>
           ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo" style="object-position:${+(P.photoPos?.x ?? 50)}% ${+(P.photoPos?.y ?? 50)}%">` : ''}
@@ -659,6 +664,14 @@ document.addEventListener('click', async ev => {
   if (img && E && photoPour) { const id = photoPour; photoPour = null; return updateDoc(doc(db, `events/${E}/invites/${id}`), { 'merci.photo': img.dataset.photoMerci }); }
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
+  if (d.imageLieu) {
+    const lien = ($('#i-lien-lieu')?.value || '').trim(), m = $('#m-lieu');
+    if (!/^https?:\/\//i.test(lien)) { if (m) m.textContent = 'Collez un lien qui commence par https://'; return; }
+    if (m) m.textContent = 'Recherche de la photo…'; t.disabled = true;
+    try { await httpsCallable(fonctions, 'imageLieu')({ eventId: E, lien }); if ($('#m-lieu')) $('#m-lieu').textContent = 'Photo du lieu ajoutée.'; }
+    catch (err) { if ($('#m-lieu')) $('#m-lieu').textContent = err.message || 'Photo introuvable sur cette page.'; t.disabled = false; }
+    return;
+  }
   if (d.apercu) return apercu(d.apercu);
   if (d.nuancier) return updateDoc(doc(db, 'events', E), { 'perso.nuancier': d.nuancier === '-' ? '' : d.nuancier });
   if (d.personnaliser) { if (!COLLECTIONS.some(x => x.slug === evt.modele)) { location.href = `editeur.html?e=${E}`; return; } onglet = 'fairepart'; rendre(); scrollTo(0, 0); return; }
