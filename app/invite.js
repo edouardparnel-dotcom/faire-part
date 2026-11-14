@@ -6,12 +6,12 @@ import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } fro
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue } from './langues.js?v=3';
+import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue } from './langues.js?v=4';
 import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'), T = p.get('g');
-let covoit = [], msgCovoit = '', cadeaux = [], msgMot = '', evt, inv, live = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
+let covoit = [], msgCovoit = '', cadeaux = [], msgMot = '', evt, inv, live = '', salle = '', rediffusion = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
 const a = o => evt?.options?.includes(o);
 const t = x => traduire(L, x);
 const dateLongue = d => { if (!d) return ''; try { return new Date(d).toLocaleDateString(LOCALES[L] || 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch { return new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } };
@@ -38,7 +38,7 @@ async function demarrer() {
   onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
   onSnapshot(collection(db, `events/${E}/cadeaux`), s => { cadeaux = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.creeLe?.seconds || 0) - (y.creeLe?.seconds || 0)); rendre(); }, () => {});
   if (a('covoiturage')) onSnapshot(collection(db, `events/${E}/covoiturage`), s => { covoit = s.docs.map(d => ({ id: d.id, ...d.data() })); rendre(); }, () => {});
-  if (a('direct')) live = (await getDoc(doc(db, `events/${E}/prive/config`))).data()?.live || '';
+  if (a('direct')) { const c = (await getDoc(doc(db, `events/${E}/prive/config`))).data() || {}; live = c.live || ''; salle = c.salle || ''; rediffusion = c.rediffusion || ''; }
   if (a('murphoto')) onSnapshot(query(collection(db, `events/${E}/photos`), where('visible', '==', true)), s => { photos = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreGalerie(); });
   if (a('livredor')) onSnapshot(query(collection(db, `events/${E}/livre`), where('visible', '==', true)), s => { mots = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreMots(); });
   if (a('album')) onSnapshot(query(collection(db, `events/${E}/album`), where('visible', '==', true)), s => { album = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreAlbum(); });
@@ -95,6 +95,8 @@ function rendre() {
         ${!c.reservePar ? `<button class="btn petit" data-reserver="${c.id}">${t("Je l'offre")}</button>` : c.reservePar === T ? `<button class="btn petit clair" data-liberer="${c.id}">${t('Annuler')}</button>` : `<span class="app-note">${t('Déjà offert')}</span>`}</li>`).join('')}</ul>
         <p class="app-note" style="margin-top:10px">${t("Réservez le cadeau que vous offrez : les autres invités le verront pris. Vous l'achetez où vous voulez.")}</p>` : ''}</div>` : ''}
     ${a('jeux') ? `<div class="app-carte" id="jeux"></div>` : ''}
+    ${a('direct') && salle && !live ? `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Des proches filment la fête : suivez-la ici, en direct.')}</p><a class="btn" target="_blank" rel="noopener" href="${esc(`https://meet.jit.si/${salle}#config.prejoinConfig.enabled=false&config.startWithAudioMuted=true&config.startWithVideoMuted=true&userInfo.displayName=${encodeURIComponent(JSON.stringify(prenom))}`)}">${t('Regarder le direct')}</a>${rediffusion ? `<p class="app-note" style="margin-top:12px">${t('Personne ne filme en ce moment ?')} <a href="${esc(rediffusion)}" target="_blank" rel="noopener">${t('Voir la rediffusion')}</a></p>` : ''}</div>` : ''}
+    ${a('direct') && !salle && !live && rediffusion ? `<div class="app-carte"><h2>${t('La rediffusion')}</h2><div class="video"><iframe src="${esc(embed(rediffusion))}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Rediffusion"></iframe></div></div>` : ''}
     ${a('direct') && live ? `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.')}</p><div class="video"><iframe src="${esc(embed(live))}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Direct"></iframe></div></div>` : ''}
     ${a('murphoto') ? `<div class="app-carte"><h2>${t('Le mur photo')}</h2><p class="app-note" style="margin-bottom:12px">${t("Partagez vos photos de la fête : elles s'affichent sur le mur.")}</p>
       <label class="btn clair" style="display:inline-block;cursor:pointer">${t('Ajouter des photos')}<input type="file" accept="image/*" multiple id="i-photo" hidden></label><p class="ok-msg" id="m-photo"></p><div class="galerie" id="galerie" style="margin-top:14px"></div></div>` : ''}
