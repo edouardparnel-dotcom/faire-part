@@ -56,7 +56,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     const essai = l => { if (!l.length) return; const i = new Image(); i.onload = () => { aff.style.backgroundImage = `url("${l[0]}")`; }; i.onerror = () => essai(l.slice(1)); i.src = l[0]; };
     essai(affiche.images || []);
   }
-  const montrerAffiche = (oui, msg = '') => { if (!aff) return; aff.hidden = !oui; aff.querySelector('.direct-affiche-msg').textContent = msg; etatEl.hidden = oui; };
+  const montrerAffiche = (oui, msg = '') => { if (!aff) return; aff.style.display = oui ? 'flex' : 'none'; aff.querySelector('.direct-affiche-msg').textContent = msg; etatEl.hidden = oui; };
   montrerAffiche(true, t('Le direct commencera bientôt'));
 
   onSnapshot(collection(db, `events/${E}/cameras`), s => { cameras = s.docs.map(d => ({ id: d.id, ...d.data() })); regler(); }, () => afficher(t('Direct indisponible')));
