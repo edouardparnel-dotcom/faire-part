@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Régie du direct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=11">
+<link rel="stylesheet" href="app.css?v=4">
+<style>
+  body{background:#15120f;color:#f7f3ec}
+  .regie{max-width:1100px;margin:auto;padding:16px}
+  .regie h1{font-size:28px;margin:4px 0 4px}
+  .regie .app-note{color:#cfc6b8}
+  .mode{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .cams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+  .cam{background:#221e1a;border-radius:12px;padding:10px;border:2px solid transparent}
+  .cam.antenne{border-color:#c9302c}
+  .cam h3{font:600 15px system-ui,sans-serif;margin:8px 0 4px}
+  .cam .direct-lecteur{max-height:40vh}
+  .ecran{max-width:360px}
+</style>
+</head>
+<body>
+<main class="regie" id="vue"><p class="app-note">Ouverture de la régie…</p></main>
+<script type="module">
+// Régie du direct (organisateurs) : voir chaque caméra, choisir celle qui passe à l'antenne, ou laisser l'automatique
+// (la plus stable). Ce que voient les invités s'affiche à côté, comme sur leur page.
+import { auth, db, esc } from './commun.js?v=4';
+import { doc, getDoc, setDoc, collection, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { lecteur, enDirect, note } from './direct.js?v=1';
+
+const E = new URLSearchParams(location.search).get('e'), vue = document.getElementById('vue');
+let cameras = [], etat = {}, montees = new Set();
+
+async function demarrer() {
+  await auth.authStateReady();
+  const u = auth.currentUser;
+  if (!E || !u || u.isAnonymous) { vue.innerHTML = '<p class="app-note">Connectez-vous d\'abord à <a href="organisateur.html">votre espace</a>, puis rouvrez la régie.</p>'; return; }
+  const evt = (await getDoc(doc(db, 'events', E))).data();
+  vue.innerHTML = `<p class="app-note"><a href="organisateur.html?e=${encodeURIComponent(E)}&onglet=direct">← Votre espace</a></p>
+    <h1 class="serif">Régie du direct</h1><p class="app-note">${esc(evt?.titre || '')}</p>
+    <div class="mode"><button class="btn petit" id="b-auto">Automatique : la caméra la plus stable</button><span class="app-note" id="m-mode"></span></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+      <section style="flex:2;min-width:280px"><h2 class="serif" style="font-size:20px">Les caméras</h2><div class="cams" id="cams"></div></section>
+      <section class="ecran" style="flex:1;min-width:240px"><h2 class="serif" style="font-size:20px">Ce que voient les invités</h2><div id="ecran"></div></section>
+    </div>`;
+  lecteur(document.getElementById('ecran'), E, { muet: true });
+  document.getElementById('b-auto').onclick = () => setDoc(doc(db, `events/${E}/direct/etat`), { mode: 'auto', depuis: serverTimestamp() });
+  onSnapshot(collection(db, `events/${E}/cameras`), s => { cameras = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.nom || '').localeCompare(b.nom || '', 'fr', { numeric: true })); dessiner(); });
+  onSnapshot(doc(db, `events/${E}/direct/etat`), s => { etat = s.data() || {}; dessiner(); });
+  setInterval(dessiner, 5000);
+}
+
+// Chaque caméra a son lecteur (muet), monté une seule fois ; on ne met à jour que les textes et le cadre rouge.
+function dessiner() {
+  const z = document.getElementById('cams'); if (!z) return;
+  document.getElementById('m-mode').textContent = etat.mode === 'manuel' ? 'Mode manuel : vous choisissez' : 'Mode automatique';
+  for (const c of cameras) {
+    if (!montees.has(c.id)) {
+      montees.add(c.id);
+      z.insertAdjacentHTML('beforeend', `<div class="cam" id="cam-${c.id}"><div class="lect"></div><h3></h3><p class="app-note info"></p><button class="btn petit" data-antenne="${c.id}">À l'antenne</button></div>`);
+      lecteur(z.querySelector(`#cam-${c.id} .lect`), E, { muet: true, camFixe: c.id });
+    }
+    const el = z.querySelector(`#cam-${c.id}`);
+    el.querySelector('h3').textContent = c.nom || c.id;
+    el.querySelector('.info').textContent = enDirect(c) ? `● En direct · stabilité ${Math.round((c.stab ?? 0) * 100)} % · réseau ${Math.round((c.reseau ?? 0) * 100)} % · note ${Math.round(note(c) * 100)}` : 'Hors ligne';
+    el.classList.toggle('antenne', etat.mode === 'manuel' && etat.antenne === c.id);
+  }
+  if (!cameras.length) z.innerHTML = '<p class="app-note">Aucune caméra : ajoutez-en dans votre espace, « Le jour J › Le direct ».</p>';
+}
+vue.addEventListener('click', e => {
+  const b = e.target.closest('[data-antenne]');
+  if (b) setDoc(doc(db, `events/${E}/direct/etat`), { mode: 'manuel', antenne: b.dataset.antenne, depuis: serverTimestamp() });
+});
+demarrer().catch(e => { console.error(e); vue.innerHTML = '<p class="app-note">Régie indisponible. Vérifiez votre connexion et rechargez.</p>'; });
+</script>
+</body>
+</html>

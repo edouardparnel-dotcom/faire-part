@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Filmer le direct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/maison.css?v=11">
+<link rel="stylesheet" href="app.css?v=4">
+<style>
+  body{background:#111;color:#f7f3ec}
+  .filmer{max-width:520px;margin:auto;padding:16px}
+  .filmer video{width:100%;max-height:62vh;background:#000;border-radius:10px;object-fit:contain}
+  .filmer .etat{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;font:500 14px system-ui,sans-serif}
+  .filmer .etat span{padding:4px 10px;border-radius:20px;background:#2a2622}
+  .filmer .rec{background:#a3241b!important}
+  .filmer .btn{width:100%;margin-top:8px}
+  .filmer .app-note{color:#cfc6b8}
+</style>
+</head>
+<body>
+<main class="filmer" id="vue"><p class="app-note">Préparation de la caméra…</p></main>
+<script type="module">
+// Téléphone qui filme le direct : lien secret de la caméra (?e=événement&k=secret), sans application.
+// Il filme en continu et envoie un morceau autonome toutes les 4 secondes ; il note sa stabilité (capteur de mouvement)
+// et la régularité de ses envois, pour que le lecteur choisisse la meilleure caméra.
+import { auth, db, storage, esc } from './commun.js?v=4';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { ref, uploadBytes } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
+import { signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+
+const q = new URLSearchParams(location.search), E = q.get('e'), K = q.get('k'), vue = document.getElementById('vue');
+const DUREE = 4000;
+const TYPES = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp8,opus', 'video/webm'];
+let cam, nom, flux, type, n = 0, enCours = false, verrou = null, mouvements = [], envoisOk = 0, envoisTotal = 0, enAttente = 0;
+
+async function demarrer() {
+  if (!E || !K) { vue.innerHTML = '<p class="app-note">Ce lien de caméra est incomplet. Ouvrez le lien reçu en entier.</p>'; return; }
+  await auth.authStateReady();
+  const u = auth.currentUser || (await signInAnonymously(auth)).user;
+  const cle = await getDoc(doc(db, `events/${E}/camerasCles/${K}`));
+  if (!cle.exists()) { vue.innerHTML = '<p class="app-note">Ce lien de caméra n\'est plus valable. Demandez-en un nouveau aux mariés.</p>'; return; }
+  ({ cam, nom } = cle.data());
+  const m = doc(db, `events/${E}/camMembres/${u.uid}`);
+  if (!(await getDoc(m).catch(() => null))?.exists()) await setDoc(m, { secret: K, cam });
+  type = TYPES.find(x => window.MediaRecorder?.isTypeSupported?.(x));
+  if (!type) { vue.innerHTML = '<p class="app-note">Ce navigateur ne sait pas filmer. Ouvrez le lien avec Chrome (Android) ou Safari (iPhone).</p>'; return; }
+  vue.innerHTML = `<p class="app-note" style="margin-bottom:10px">${esc(nom)} · le direct des mariés</p>
+    <video id="apercu" playsinline muted autoplay></video>
+    <div class="etat"><span id="e-rec">Prêt</span><span id="e-stab">Stabilité —</span><span id="e-reseau">Réseau —</span></div>
+    <button class="btn" id="b-go">Commencer à filmer</button>
+    <p class="app-note" style="margin-top:12px">Tenez le téléphone bien droit, appuyé si possible : la caméra la plus stable passe en priorité. Gardez cette page ouverte et l'écran allumé ; branchez le téléphone si vous filmez longtemps.${type.includes('webm') ? ' Ce navigateur filme dans un format que certains iPhone ne lisent pas : préférez Safari ou un Chrome à jour.' : ''}</p>`;
+  document.getElementById('b-go').onclick = basculer;
+}
+
+async function basculer() {
+  const b = document.getElementById('b-go');
+  if (enCours) { enCours = false; flux?.getTracks().forEach(x => x.stop()); verrou?.release?.(); b.textContent = 'Reprendre'; etat('e-rec', 'Arrêté'); return; }
+  try {
+    if (window.DeviceMotionEvent?.requestPermission) await DeviceMotionEvent.requestPermission().catch(() => {});
+    flux = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }, audio: true });
+  } catch { vue.insertAdjacentHTML('beforeend', '<p class="app-note">Autorisez la caméra et le micro pour ce site, puis réessayez.</p>'); return; }
+  document.getElementById('apercu').srcObject = flux;
+  try { verrou = await navigator.wakeLock?.request('screen'); } catch {}
+  addEventListener('devicemotion', e => { const r = e.rotationRate; if (r) mouvements.push(Math.abs(r.alpha || 0) + Math.abs(r.beta || 0) + Math.abs(r.gamma || 0)); });
+  enCours = true; b.textContent = 'Arrêter'; etat('e-rec', '● En direct', true);
+  boucle();
+}
+
+// Un enregistreur par morceau : chaque fichier se lit seul. Le suivant démarre dès que le précédent s'arrête.
+function boucle() {
+  if (!enCours) return;
+  const morceaux = [], rec = new MediaRecorder(flux, { mimeType: type, videoBitsPerSecond: 1_500_000, audioBitsPerSecond: 96_000 }), debut = Date.now();
+  rec.ondataavailable = e => e.data.size && morceaux.push(e.data);
+  rec.onstop = () => { boucle(); envoyer(new Blob(morceaux, { type: type.split(';')[0] }), debut, (Date.now() - debut) / 1000); };
+  rec.start();
+  setTimeout(() => rec.state === 'recording' && rec.stop(), DUREE);
+}
+
+// Stabilité : moins le téléphone tourne pendant le morceau, plus la note approche de 1.
+function stabilite() {
+  if (!mouvements.length) return 0.5;
+  const moy = mouvements.reduce((a, b) => a + b, 0) / mouvements.length; mouvements = [];
+  return Math.round(100 / (1 + moy / 25)) / 100;
+}
+
+async function envoyer(blob, t, d) {
+  const num = n++, stab = stabilite(), ext = blob.type.includes('mp4') ? 'mp4' : 'webm', chemin = `events/${E}/direct/${cam}/${String(num).padStart(6, '0')}.${ext}`;
+  envoisTotal++; enAttente++;
+  const avant = Date.now();
+  try {
+    await uploadBytes(ref(storage, chemin), blob, { contentType: blob.type });
+    await setDoc(doc(db, `events/${E}/cameras/${cam}/segments/${String(num).padStart(6, '0')}`), { n: num, t, d, stab, chemin, mime: blob.type });
+    if (Date.now() - avant < DUREE) envoisOk++;
+    const reseau = Math.round(100 * envoisOk / envoisTotal) / 100;
+    await updateDoc(doc(db, `events/${E}/cameras/${cam}`), { dernier: serverTimestamp(), n: num, stab, reseau, mime: blob.type, enDirect: true });
+    etat('e-stab', `Stabilité ${Math.round(stab * 100)} %`); etat('e-reseau', `Réseau ${Math.round(reseau * 100)} %`);
+  } catch (e) { console.error('Envoi du morceau', e); etat('e-reseau', 'Réseau : envoi en échec'); }
+  enAttente--;
+  if (enAttente > 3) etat('e-reseau', 'Réseau lent : rapprochez-vous du Wi-Fi');
+}
+
+const etat = (id, txt, rouge) => { const el = document.getElementById(id); if (el) { el.textContent = txt; if (rouge !== undefined) el.classList.toggle('rec', !!rouge); } };
+demarrer().catch(e => { console.error(e); vue.innerHTML = '<p class="app-note">Impossible d\'ouvrir la caméra pour le moment. Vérifiez votre connexion et rechargez la page.</p>'; });
+</script>
+</body>
+</html>

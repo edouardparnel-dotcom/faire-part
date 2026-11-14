@@ -6,7 +6,7 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES } from './langues.js?v=4';
+import { LANGUES } from './langues.js?v=5';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -15,7 +15,8 @@ const TYPES = { mariage: 'Mariage', anniversaire: 'Anniversaire', bapteme: 'Bapt
 const ROLES = { coorganisateur: 'Co-organisateur', planner: 'Wedding planner' };
 let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'accueil', abonnements = [];
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
-let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '';
+let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '', cameras = [], camerasCles = [];
+const lienCamera = k => new URL(`filmer.html?e=${encodeURIComponent(E)}&k=${encodeURIComponent(k)}`, location.href).href;
 let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
 let COLLECTIONS = [], choisirCollection = false, NUANCIERS = {};
 fetch('../_commun/nuanciers.json?v=3').then(r => r.json()).then(l => { NUANCIERS = l; rendre(); }).catch(() => {});
@@ -27,20 +28,6 @@ const lienInvite = t => new URL(`fp.html?e=${encodeURIComponent(E)}&g=${encodeUR
 const lienPage = t => new URL(`invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(t)}`, location.href).href;
 const lienEquipe = c => new URL(`organisateur.html?rejoindre=${encodeURIComponent(E)}&code=${encodeURIComponent(c)}`, location.href).href;
 const a = o => evt?.options?.includes(o);
-// Direct filmé par les invités : une salle Jitsi publique (meet.jit.si), ouverte dans un onglet (intégrée, elle couperait au bout de 5 minutes).
-// La régie (le couple ou un proche) s'y connecte en hôte ; les caméras et les invités entrent par leurs liens.
-const JITSI = 'https://meet.jit.si/';
-const lienJitsi = (salle, nom, camera) => `${JITSI}${salle}#config.prejoinConfig.enabled=false&config.startWithAudioMuted=${camera ? 'false' : 'true'}&config.startWithVideoMuted=${camera ? 'false' : 'true'}&userInfo.displayName=${encodeURIComponent(JSON.stringify(nom))}`;
-function afficherSalle(salle) {
-  const z = $('#direct-salle'); if (!z) return;
-  if (!salle) { z.innerHTML = `<button type="button" class="btn petit" data-creer-salle>Créer la salle du direct</button>`; return; }
-  const cam = n => lienJitsi(salle, 'Caméra ' + n, true);
-  z.innerHTML = `<div class="app-note" style="line-height:1.7">
-    <b>1. La régie, le jour J</b> : ouvrez <a href="${esc(JITSI + salle)}" target="_blank" rel="noopener">la salle du direct</a> en premier, touchez « Je suis l'hôte » et connectez-vous (Google, par exemple). Épinglez la caméra à montrer, puis dans les paramètres activez « Tout le monde me suit » : les invités voient ce que vous choisissez.<br>
-    <b>2. Les caméras</b> : envoyez à chaque proche qui filme son lien, à ouvrir sur son téléphone : <a href="${esc(cam(1))}" target="_blank" rel="noopener">caméra 1</a> · <a href="${esc(cam(2))}" target="_blank" rel="noopener">caméra 2</a> · <a href="${esc(cam(3))}" target="_blank" rel="noopener">caméra 3</a> <button type="button" class="lien-btn" data-copier-texte="${esc(cam(1))}">copier le lien caméra 1</button><br>
-    <b>3. Les invités</b> : le bouton « Regarder le direct » apparaît sur leur page, micro et caméra coupés.<br>
-    Pour la rediffusion : depuis la salle, l'hôte peut enregistrer (menu « … » › Enregistrer) ; collez ensuite le lien de la vidéo ci-dessous.</div>`;
-}
 // Prix de lancement (formule Faire-part) : affiché ici, décidé par le serveur (date et nombre de places).
 const palierF = f => f.lancement ? (f.lancement.paliers || [f.lancement]).find(p => Date.now() < Date.parse(p.jusqu)) : null;
 const prixF = f => palierF(f)?.prix ?? f.prix;
@@ -116,6 +103,8 @@ function ouvrir(id) {
       suivre('prestataires', l => prestataires = l.sort((x, y) => METIERS.indexOf(x.metier) - METIERS.indexOf(y.metier)));
       suivre('taches', l => taches = l.sort((x, y) => (x.echeance || '').localeCompare(y.echeance || '') || (x.ordre ?? 0) - (y.ordre ?? 0)));
       suivre('equipe', l => equipe = l);
+      abonnements.push(onSnapshot(collection(db, `events/${E}/cameras`), x => { cameras = x.docs.map(d => ({ id: d.id, ...d.data() })); if (onglet === 'direct') rendre(); }, () => {}));
+      abonnements.push(onSnapshot(collection(db, `events/${E}/camerasCles`), x => { camerasCles = x.docs.map(d => ({ id: d.id, ...d.data() })).sort((p, q) => p.nom.localeCompare(q.nom, 'fr', { numeric: true })); if (onglet === 'direct') rendre(); }, () => {}));
       suivre('cadeaux', l => cadeaux = recents(l).reverse());
       suivre('album', l => album = recents(l)); suivre('jeuxReponses', l => jeuxRep = l);
       suivre('partage', l => partage = Object.fromEntries(l.map(d => [d.id, d])));
@@ -139,7 +128,7 @@ function rendre() {
   const entrees = invites.filter(i => i.entree).length, repondu = invites.filter(i => i.reponduLe).length;
   const onglets = { accueil: 'Vue d\'ensemble', fairepart: 'Mon faire-part', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
     budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', cadeaux: 'Liste et cagnotte', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
-    ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
+    ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('direct') ? { direct: 'Le direct' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
     paiement: evt.formule === 'essai' ? 'Valider ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
   if (evt.formule === 'faire-part') { const garder = [...FAIRE_PART, 'fairepart']; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à Signature ou Prestige'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
@@ -160,7 +149,7 @@ function rendre() {
 }
 
 // Navigation en rubriques : on ne montre que la rubrique ouverte et ses pages (les informations arrivent quand on en a besoin).
-const RUBRIQUES = [['accueil', 'Accueil', ['accueil']], ['fairepart', 'Mon faire-part', ['fairepart']], ['invites', 'Invités', ['invites', 'envois', 'table']], ['jour', 'Le jour J', ['ceremonies', 'souvenirs', 'jeux']],
+const RUBRIQUES = [['accueil', 'Accueil', ['accueil']], ['fairepart', 'Mon faire-part', ['fairepart']], ['invites', 'Invités', ['invites', 'envois', 'table']], ['jour', 'Le jour J', ['ceremonies', 'souvenirs', 'jeux', 'direct']],
   ['organisation', 'Organisation', ['planning', 'budget', 'prestataires', 'cadeaux', 'tenues', 'merci']], ['compte', 'Formule et compte', ['paiement', 'equipe', 'reglages']]];
 function navigation(onglets) {
   const rubs = RUBRIQUES.map(([k, nom, pages]) => [k, nom, pages.filter(p => onglets[p])]).filter(([, , p]) => p.length);
@@ -221,6 +210,21 @@ const barre = (x, total, alerte) => `<div class="barre${alerte ? ' alerte' : ''}
 const champ = (chemin, v, attrs = '') => `<input data-maj="${chemin}" value="${esc(v ?? '')}" ${attrs}>`;
 
 const VUES = {
+  direct() {
+    if (!a('direct')) return `<div class="app-carte"><h2>Le direct</h2><p class="app-note">Avec l'option « Direct privé », un ou plusieurs proches filment la fête avec leur téléphone, sans application, et les invités qui ne peuvent pas venir la suivent depuis leur page. Tout est enregistré : la rediffusion se fait toute seule.</p></div>`;
+    const vivante = c => c && Date.now() - (c.dernier?.toMillis?.() || 0) < 20e3;
+    const lignes = camerasCles.map(k => { const c = cameras.find(x => x.id === k.cam) || {}; return `<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 0;border-bottom:1px solid var(--filet)">
+      <b style="min-width:90px">${esc(k.nom)}</b><span class="${vivante(c) ? 'ok' : 'attente'}">${vivante(c) ? '● En direct' : c.n !== undefined ? 'Arrêtée' : 'Pas encore utilisée'}</span>
+      ${c.stab !== undefined ? `<span class="app-note">stabilité ${Math.round(c.stab * 100)} % · réseau ${Math.round((c.reseau ?? 0) * 100)} %</span>` : ''}
+      <span style="margin-left:auto" class="puces"><button type="button" class="btn petit clair" data-copier-camera="${esc(k.id)}">Copier le lien</button><button type="button" class="lien-btn" data-retirer-camera="${esc(k.id)}">Retirer</button></span></div>`; }).join('');
+    return `<div class="app-carte"><h2>Le direct, filmé par vos proches</h2>
+      <p class="app-note">1. Ajoutez une caméra par proche qui filmera, et envoyez-lui son lien : il l'ouvre sur son téléphone (Chrome ou Safari) et touche « Commencer à filmer ». Aucune application.<br>
+      2. Vos invités regardent depuis leur page, dans « Le direct », avec environ 15 secondes de décalage.<br>
+      3. Le jour J, la régie choisit la caméra montrée ; sans régie, la caméra la plus stable passe automatiquement.<br>
+      Tout est enregistré : quand personne ne filme, vos invités voient la rediffusion.</p>
+      ${lignes || '<p class="app-note" style="margin-top:12px">Aucune caméra pour l\'instant.</p>'}
+      <div class="puces" style="margin-top:14px"><button type="button" class="btn petit" data-ajouter-camera>Ajouter une caméra</button><a class="btn petit clair" href="regie.html?e=${encodeURIComponent(E)}" target="_blank" rel="noopener">Ouvrir la régie</a></div></div>`;
+  },
   // ── Vue d'ensemble : où en est-on, et quoi faire maintenant ────────────────
   accueil() {
     const j = jours(evt.date), attendus = invites.filter(i => !declineTout(i)), nbAttendus = attendus.reduce((s, i) => s + personnes(i), 0);
@@ -572,11 +576,8 @@ const VUES = {
         <p class="app-note">Avec un code, le faire-part, le save-the-date, le site, le mur photo, le livre d'or et le plan de table ne s'ouvrent qu'aux personnes qui le connaissent : utile si le lien général circule. Les liens personnels envoyés à vos invités s'ouvrent toujours directement.</p>` : `<p class="app-note" style="margin-top:10px">Avec l'option « Accès par code », votre faire-part, votre site, le mur photo et le livre d'or ne s'ouvrent qu'avec le code que vous donnez à vos invités.</p>`}
         <label class="coche" style="margin-top:6px"><input type="checkbox" name="notifReponses" ${evt.notifReponses === false ? '' : 'checked'}> Recevoir un courriel à chaque réponse d'invité</label>
         <p class="app-note">Les invités dont vous avez l'adresse e-mail reçoivent un rappel 7 jours puis 1 jour avant la date limite s'ils n'ont pas répondu, et la veille de l'événement s'ils viennent.</p>
-        ${a('direct') ? `<h3 style="margin-top:16px">Le direct, filmé par vos invités</h3>
-        <p class="app-note">Un ou plusieurs proches filment avec leur téléphone, sans application ; les invités qui ont leur lien regardent depuis leur page. Gratuit, sur Jitsi.</p>
-        <div id="direct-salle"></div>
-        <label style="margin-top:12px">Ou un lien YouTube non répertorié, si un vidéaste diffuse<input name="live" id="i-live" placeholder="https://www.youtube.com/watch?v=…"></label>
-        <label style="margin-top:12px">Lien de la rediffusion (montré quand personne ne filme)<input name="rediffusion" id="i-rediffusion" placeholder="Lien YouTube ou vidéo de la cérémonie"></label>` : ''}
+        ${a('direct') ? `<p class="app-note" style="margin-top:16px">Le direct filmé par vos proches se prépare dans « Le jour J › Le direct ».</p>
+        <label style="margin-top:12px">Un vidéaste diffuse sur YouTube ? Son lien (non répertorié) remplace alors le direct de vos proches<input name="live" id="i-live" placeholder="https://www.youtube.com/watch?v=…"></label>` : ''}
         <button class="btn" style="margin-top:14px">Enregistrer</button><p class="ok-msg" id="m-reglages"></p></form>
       <div class="app-carte"><h2>Exporter vos données</h2><p class="app-note" style="margin-bottom:12px">Des fichiers qui s'ouvrent dans Excel, Numbers ou Google Sheets : pour le traiteur, le lieu, le wedding planner, ou vos archives.</p>
         <div class="puces">${Object.entries({ invites: 'Invités et réponses', plan: 'Plan de table', budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning' }).map(([k, v]) => `<button class="btn petit clair" data-export="${k}">${v}</button>`).join('')}</div></div>`;
@@ -704,9 +705,17 @@ document.addEventListener('click', async ev => {
   if (d.changerCollection) { choisirCollection = !choisirCollection; return rendre(); }
   if (d.collection) { choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: d.collection }); return; }
   if (d.retirerCollection) { if (!confirm('Retirer cette collection ? Votre personnalisation est conservée ; vous en choisirez une autre.')) return; choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: '' }); return; }
-  if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; msgOption = ''; avantPlacement = null; photoPour = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; if ($('#i-rediffusion')) $('#i-rediffusion').value = c.data()?.rediffusion || ''; afficherSalle(c.data()?.salle); } return; }
+  if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; msgOption = ''; avantPlacement = null; photoPour = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
   if (d.copierTexte) { await navigator.clipboard?.writeText(d.copierTexte).catch(() => {}); t.textContent = 'Lien copié'; return; }
-  if (d.creerSalle !== undefined) { const salle = 'MaisonVivat-' + jeton().slice(0, 16); await setDoc(doc(db, `events/${E}/prive/config`), { salle }, { merge: true }); afficherSalle(salle); return; }
+  // Direct : une caméra = un lien secret (camerasCles) et une fiche publique pour les invités (cameras)
+  if (d.ajouterCamera !== undefined) {
+    const cam = 'c' + Date.now().toString(36), secret = jeton() + jeton(), nomCam = `Caméra ${camerasCles.length + 1}`;
+    await setDoc(doc(db, `events/${E}/cameras/${cam}`), { nom: nomCam, creeLe: serverTimestamp() });
+    await setDoc(doc(db, `events/${E}/camerasCles/${secret}`), { cam, nom: nomCam });
+    return;
+  }
+  if (d.copierCamera) { const l = lienCamera(d.copierCamera); await navigator.clipboard?.writeText(l).catch(() => {}); t.textContent = 'Lien copié'; return; }
+  if (d.retirerCamera) { await deleteDoc(doc(db, `events/${E}/camerasCles/${d.retirerCamera}`)); return; }
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
   if ((d.copier || d.copierMessage || d.envoi) && evt.formule === 'essai') {   // gratuit jusqu'à la publication : l'envoi aux invités se débloque au paiement
     ev.preventDefault(); onglet = 'paiement';
@@ -931,7 +940,7 @@ document.addEventListener('submit', async ev => {
     const langues = ['fr', ...Object.keys(LANGUES).filter(l => l !== 'fr' && ('lg_' + l) in f)], maxL = a('langue') ? 3 : 2;
     if (langues.length > maxL) { if ($('#m-reglages')) $('#m-reglages').textContent = `${maxL} langues au plus avec votre formule : décochez-en une.`; return; }
     await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f, 'design.langues': langues });
-    if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim(), rediffusion: (f.rediffusion || '').trim() }, { merge: true });
+    if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim() }, { merge: true });
     const code = a('code') ? (f.code || '').trim() : '';
     if (code) await updateDoc(doc(db, 'events', E), { codeAcces: code.toLowerCase() === 'aucun' ? '' : await empreinte(E, code) });
     if ($('#m-reglages')) $('#m-reglages').textContent = 'Enregistré.';
