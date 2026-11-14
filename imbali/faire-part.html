@@ -43,21 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-09-25T14:00:00+02:00" data-evenement="Mariage Zanele &amp; Sipho" data-ville="Durban" data-titre-std="Zanele &amp; Sipho — Save the date (démonstration)" data-profondeur="decor-3d/perle-zoulou" data-profondeur-n="5" data-profondeur-mouvement="chute" data-blocs="decale" data-titres="grand" data-images="pleine" data-revele="flou" data-paral="vertical" data-cadre="plein" data-prog="zigzag" data-lieu="plein" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="plein" data-teinte="clair" data-collection="imbali" data-particules="or" data-trame="centree">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/871;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 3%,50% 96%,0 3%);--devant:polygon(0 3%,50% 96%,100% 3%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 97%,50% 4%,0 97%);--doublure:linear-gradient(0deg,#8E5C14,#F2CE85 55%,#D9962F);">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini"><img class="mini-deco" src="collier.webp" alt=""><small>Mariage</small><b>Zanele</b><i>&amp;</i><b>Sipho</b><small>25 · 09 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:86%;width:17%;transform:translate(-50%,-50%)"></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Ouvrez l’enveloppe perlée</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte">
