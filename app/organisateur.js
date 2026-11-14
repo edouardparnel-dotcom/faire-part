@@ -250,11 +250,15 @@ const VUES = {
         <fieldset><legend>Vous</legend>${champ('titre', 'Prénoms', evt.titre, 'Par exemple : Awa & Thomas', 'required maxlength="120"')}
           ${champ('date', 'Date et heure', evt.date, '', 'type="datetime-local" required')}${champ('lieu', 'Lieu', evt.lieu, '', 'required')}</fieldset>
         <fieldset><legend>La couverture</legend>${champ('chapeau', 'Phrase d\'invitation', P.chapeau, 'Par défaut : « Ont la joie de vous inviter à leur mariage »', 'maxlength="140"')}
-          <label>Photo du couple<input type="file" id="i-photo-couple" accept="image/*"><small class="aide">${P.photo ? 'Votre photo est en place. Choisissez-en une autre pour la remplacer.' : 'Elle remplace la photo de démonstration (format portrait de préférence).'}</small></label>
+          <label>Photo du couple<input type="file" data-photo-perso="photo" accept="image/*"><small class="aide">${P.photo ? 'Votre photo est en place. Choisissez-en une autre pour la remplacer.' : 'Sans photo, aucune photo de couple n’apparaît sur votre faire-part (jamais celle d’un autre couple).'}</small></label>
           ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo" style="object-position:${+(P.photoPos?.x ?? 50)}% ${+(P.photoPos?.y ?? 50)}%">` : ''}
           <div class="cadrage"><span class="app-note">Cadrage de la photo : déplacez-la pour bien centrer les visages.</span>
             <label>Gauche ↔ droite<input type="range" min="0" max="100" step="1" data-cadrage="x" value="${+(P.photoPos?.x ?? 50)}"></label>
-            <label>Haut ↕ bas<input type="range" min="0" max="100" step="1" data-cadrage="y" value="${+(P.photoPos?.y ?? 50)}"></label></div></fieldset>
+            <label>Haut ↕ bas<input type="range" min="0" max="100" step="1" data-cadrage="y" value="${+(P.photoPos?.y ?? 50)}"></label></div>
+          <div class="photos-plus">${[['photoSurprise', 'Photo à gratter', 'Révélée quand vos invités grattent le médaillon « Une surprise » : une autre photo de vous, un lieu, un souvenir.'],
+            ['photoGalerie', 'Photo de la galerie', 'La grande photo de la mosaïque, à côté du lieu et de la table.']]
+            .map(([k, lib, aide]) => `<label>${lib}<input type="file" data-photo-perso="${k}" accept="image/*"><small class="aide">${P[k] ? 'Votre photo est en place.' : aide}</small>${P[k] ? `<img class="vignette-perso" src="${esc(P[k])}" alt="">` : ''}</label>`).join('')}</div></fieldset>
+        <fieldset><legend>Votre phrase</legend>${zone('citation', 'Citation', P.citation, 'Une phrase sur votre histoire, signée de vos prénoms. Vide : pas de citation.')}</fieldset>
         ${NUANCIERS[c.slug] ? `<fieldset><legend>Couleurs</legend><p class="app-note">Les couleurs des textes, des filets et du fond changent ; les images (enveloppe, décors, fleurs) gardent les leurs.</p>
           <div class="nuanciers">${[{ id: '', nom: 'Couleurs d’origine', c: {} }, ...NUANCIERS[c.slug]].map(n => `<button type="button" class="nuancier ${(P.nuancier || '') === n.id ? 'choisi' : ''}" data-nuancier="${n.id || '-'}"><span class="pastilles">${['fond', 'accent', 'or1'].filter(k => n.c[k]).map(k => `<i style="background:${n.c[k]}"></i>`).join('') || '<i class="origine"></i>'}</span>${esc(n.nom)}</button>`).join('')}</div></fieldset>` : ''}
         <fieldset><legend>Musique</legend>${(() => {
@@ -792,10 +796,10 @@ document.addEventListener('change', async ev => {
     const url = await getDownloadURL(r);
     return updateDoc(doc(db, 'events', E), { 'perso.musique': { ...(evt.perso?.musique || {}), source: 'perso', fichier: url, url, nom: f.name.slice(0, 80) } });
   }
-  if (t.id === 'i-photo-couple' && t.files[0]) {
-    const r = ref(storage, `events/${E}/design/couple-${Date.now()}.jpg`);
+  if (t.dataset.photoPerso && t.files[0]) {
+    const k = t.dataset.photoPerso, r = ref(storage, `events/${E}/design/${k}-${Date.now()}.jpg`);
     await uploadBytes(r, t.files[0], { contentType: t.files[0].type || 'image/jpeg' });
-    return updateDoc(doc(db, 'events', E), { 'perso.photo': await getDownloadURL(r) });
+    return updateDoc(doc(db, 'events', E), { ['perso.' + k]: await getDownloadURL(r) });
   }
   if (t.dataset.fait) return updateDoc(doc(db, `events/${E}/taches/${t.dataset.fait}`), { fait: t.checked, faitLe: t.checked ? aujourdhui() : '' });
   if (t.dataset.placer !== undefined) return placer(t.dataset.placer, t.value);
@@ -808,6 +812,11 @@ document.addEventListener('change', async ev => {
 });
 document.addEventListener('input', ev => {
   if (ev.target.id === 'recherche') { recherche = ev.target.value; appliquerRecherche(); }
+  if (ev.target.closest?.('#f-perso') && !ev.target.dataset.cadrage) {
+    const f = Object.fromEntries(new FormData(ev.target.form)), w = document.querySelector('.fp-perso-apercu iframe')?.contentWindow;
+    const perso = { ...(evt.perso || {}), ...Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci', 'citation'].map(k => [k, (f[k] || '').trim()])) };
+    w?.persoAppliquer?.({ ...evt, titre: f.titre || evt.titre, date: f.date || evt.date, lieu: f.lieu ?? evt.lieu, perso });
+  }
   if (ev.target.dataset.cadrage) {   // le cadrage suit le curseur dans l'aperçu et sur la vignette, avant même l'enregistrement
     const v = k => (document.querySelector(`[data-cadrage=${k}]`) || {}).value ?? 50, pos = `${v('x')}% ${v('y')}%`;
     document.querySelector('.photo-couple')?.style.setProperty('object-position', pos);
@@ -863,7 +872,7 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-merci') { await updateDoc(doc(db, 'events', E), { merci: { ...(evt.merci || {}), texte: f.texte.trim(), actif: 'actif' in f } }); }
   if (id === 'f-acces') { ev.target.reset(); await setDoc(doc(db, `events/${E}/acces/${jeton()}`), { role: f.role, nom: f.nom.trim(), creeLe: serverTimestamp() }); }
   if (id === 'f-perso') {
-    const perso = Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci'].map(k => [k, (f[k] || '').trim()]));
+    const perso = { ...(evt.perso || {}), ...Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci', 'citation'].map(k => [k, (f[k] || '').trim()])) };
     if (evt.perso?.photo) perso.photo = evt.perso.photo;
     if (evt.perso?.nuancier) perso.nuancier = evt.perso.nuancier;
     if (evt.perso?.musique) perso.musique = evt.perso.musique;

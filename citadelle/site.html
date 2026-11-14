@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Pinyon+Script&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#EDE6DA;--carte:#F8F2E7;--encre:#221E1C;--doux:#625A52;--or1:#A8874F;--or2:#D9C08A;--or3:#6E5530;--accent:#5B1E24;
@@ -30,7 +30,7 @@
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#cadeaux">Cadeaux</a><a href="#reponse">Réponse</a></nav>
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés lors d&#x27;une fête médiévale, lui en luthier, elle en archère. Dix ans de sagas lues à deux, de châteaux visités et de soirées au coin du feu : il fallait bien un château pour se dire oui.</p></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="decor-ensemble.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 25 septembre 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Échange des alliances dans la cour du château</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>15 h 30</b><span>Nouage des mains, le ruban des deux familles</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Hydromel et vin chaud sur les remparts</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Ménestrels et danses dans la grande salle</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>20 h 30</b><span>Banquet aux chandelles</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Château de Montbrume<br>Périgord</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Périgord" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Robes longues, velours et costumes sombres. Une cape ou une touche médiévale est la bienvenue pour celles et ceux qui le souhaitent, sans aucun costume obligatoire.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#221E1C"></span><span style="background:#625A52"></span><span style="background:#F8F2E7"></span></p></div><div><b>Mesdames</b><p><span style="background:#5B1E24"></span><span style="background:#A8874F"></span><span style="background:#D9C08A"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
@@ -53,6 +53,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

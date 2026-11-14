@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Tangerine:wght@700&family=Mukta:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#FBF3EE;--carte:#FFFCF8;--encre:#3D1430;--doux:#7A5A6B;--or1:#C29A3C;--or2:#EFD592;--or3:#8E6B22;--accent:#A3155E;
@@ -33,7 +33,7 @@
   <blockquote class="inter inter-citation apparait"><p>Ils se sont rencontrés à Chennai, chez une tante commune, un matin de Pongal où toute la famille dessinait le kolam devant la maison.</p><cite class="script">Meenakshi <span class="esp">&amp;</span> Arjun</cite></blockquote>
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés à Chennai, chez une tante commune, un matin de Pongal où toute la famille dessinait le kolam devant la maison. Quelques années d&#x27;appels entre Paris et Chennai plus tard, ils se marient au son du nadaswaram, entourés des deux familles.</p></section>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Dimanche 14 février 2027</p><ol class="frise"><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>8 h 00</b><span>Accueil des familles, kolam à l&#x27;entrée</span></div></li><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>9 h 30</b><span>Échange des guirlandes</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>10 h 15</b><span>La mariée en sari kanchipuram</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>10 h 45</b><span>Le thali, au son du nadaswaram</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>12 h 30</b><span>Repas sur feuille de bananier</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>19 h 00</b><span>Réception et gâteau</span></div></li></ol></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="decor-ensemble.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Salle des Jasmins<br>Chennai</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Chennai" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de fête</p><p>Saris de soie, kurtas, veshtis ou tenues de jour élégantes. Les couleurs vives sont les bienvenues, sans aucune obligation.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#3D1430"></span><span style="background:#7A5A6B"></span><span style="background:#FFFCF8"></span></p></div><div><b>Mesdames</b><p><span style="background:#A3155E"></span><span style="background:#C29A3C"></span><span style="background:#EFD592"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
   <figure class="inter inter-matiere apparait"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail bord-haut" src="haut.webp" alt="" loading="lazy"><figcaption>Tenue de fête</figcaption></figure>
@@ -55,6 +55,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

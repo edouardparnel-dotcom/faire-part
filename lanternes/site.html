@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#0F1733;--carte:#FBF7EF;--encre:#1A2240;--doux:#5D6380;--or1:#D4A44C;--or2:#F1D79A;--or3:#8C6A24;--accent:#1F2E63;
@@ -49,7 +49,7 @@
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Domaine du Lac<br>Talloires</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Talloires" target="_blank" rel="noopener">Voir le plan</a></section>
   <figure class="inter inter-table apparait"><img src="bas.webp" alt="" loading="lazy"></figure>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Soirée au bord de l’eau</p><p>Bleu nuit, champagne, or. Prévoyez une étole ou une veste pour la fraîcheur du lac après le coucher du soleil.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#1A2240"></span><span style="background:#5D6380"></span><span style="background:#FBF7EF"></span></p></div><div><b>Mesdames</b><p><span style="background:#1F2E63"></span><span style="background:#D4A44C"></span><span style="background:#F1D79A"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="photo.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel de la Baie</b><span>À 5 minutes · tarif invité sur demande</span></div><div class="hotel"><b>Les Chalets du Lac</b><span>Navette vers le domaine à 16 h 15 et à 1 h</span></div></div></section>
   <section class="bloc apparait"><h2>Le compte à rebours</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
   <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p><a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
@@ -68,6 +68,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

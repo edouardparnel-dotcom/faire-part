@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Mrs+Saint+Delafield&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#F3EEE7;--carte:#FFFDF9;--encre:#141414;--doux:#5D5852;--or1:#B08D57;--or2:#E8D2A6;--or3:#7E6334;--accent:#141414;
@@ -36,7 +36,7 @@
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Hôtel de Valmont<br>Paris 7e</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Paris 7e" target="_blank" rel="noopener">Voir le plan</a></section>
   <figure class="inter inter-table apparait"><img src="bas.webp" alt="" loading="lazy"></figure>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Noir et blanc parisien</p><p>Smoking, robe longue ou tailleur : le noir, le blanc et une touche de laiton. La cour est pavée : talons larges conseillés.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#141414"></span><span style="background:#5D5852"></span><span style="background:#FFFDF9"></span></p></div><div><b>Mesdames</b><p><span style="background:#141414"></span><span style="background:#B08D57"></span><span style="background:#E8D2A6"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="photo.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="hebergement"><h2>Hébergement</h2><div class="hotels"><div class="hotel"><b>Hôtel du Faubourg</b><span>À 5 minutes à pied · tarif invité sur demande</span></div><div class="hotel"><b>Résidence Saint-Dominique</b><span>Voitures prévues à 1 h et à 3 h</span></div></div></section>
   <section class="bloc apparait"><h2>Le compte à rebours</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
   <section class="bloc apparait"><h2>Votre place</h2><img class="table-mini" src="table-ronde.webp" alt="" loading="lazy"><p>Le jour venu, trouvez votre table en un instant.</p><a class="bouton" href="plan-de-table.html">Voir le plan de table</a></section>
@@ -55,6 +55,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

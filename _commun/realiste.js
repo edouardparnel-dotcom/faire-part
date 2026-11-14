@@ -116,6 +116,19 @@
       audio.src = URL.createObjectURL(f); _musique(true); marque();
     });
   }
+  // Programme en cartes côte à côte : il défile tout seul, carte après carte, tant qu'il est à l'écran ; un geste de l'invité le met
+  // en pause quelques secondes (Parnel 14/11).
+  document.querySelectorAll('.frise').forEach(fr => {
+    let pause = 0, vue = false;
+    new IntersectionObserver(es => es.forEach(x => { vue = x.isIntersecting; }), { threshold: .4 }).observe(fr);
+    ['pointerdown', 'wheel', 'touchstart'].forEach(t => fr.addEventListener(t, () => { pause = Date.now() + 8000; }, { passive: true }));
+    setInterval(() => {
+      if (!vue || Date.now() < pause || fr.scrollWidth <= fr.clientWidth + 4) return;
+      const carte = fr.querySelector('li'), pas = carte ? carte.getBoundingClientRect().width + parseFloat(getComputedStyle(fr).columnGap || 14) : fr.clientWidth * .8;
+      const fin = fr.scrollLeft + fr.clientWidth >= fr.scrollWidth - 4;
+      fr.scrollTo({ left: fin ? 0 : fr.scrollLeft + pas, behavior: 'smooth' });
+    }, 2800);
+  });
   // Animations, profondeur et particules (chargées aussi sur les faire-part écrits à la main).
   if (!document.querySelector('script[src*="vivant.js"]')) {
     const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '../_commun/vivant.css?v=9'; document.head.appendChild(l);

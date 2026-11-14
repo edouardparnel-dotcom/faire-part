@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Homemade+Apple&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#F2EEE4;--carte:#FCFAF5;--encre:#2F3326;--doux:#6B6E5E;--or1:#8A7AA8;--or2:#C9BEDD;--or3:#5E6B3E;--accent:#5E6B3E;
@@ -30,7 +30,7 @@
 <nav class="sommaire"><a href="#histoire">Notre histoire</a><a href="#programme">Programme</a><a href="#lieu">Lieu</a><a href="#hebergement">Hébergement</a><a href="#tenue">Tenue</a><a href="#cadeaux">Cadeaux</a><a href="#reponse">Réponse</a></nav>
 <main class="suite-main">
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés aux vendanges, un automne en Bourgogne, entre deux rangs de pinot. Depuis, chaque été les ramène au moulin, et c&#x27;est au bord de la rivière qu&#x27;ils ont choisi de se dire oui.</p></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="decor-ensemble.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 12 juin 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 30</b><span>Échange des alliances au bord de l’eau</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>16 h 30</b><span>Bouquet et photos dans le pré</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 30</b><span>Vin d’honneur à la grange</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Grande tablée champêtre</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>21 h 30</b><span>Bal dans la grange</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Gâteau aux fruits rouges</span></div></li></ol></section>
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Domaine du Moulin<br>Bourgogne</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Bourgogne" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Chic champêtre</p><p>Lin, coton et couleurs douces. Talons fins déconseillés : la cérémonie a lieu dans le pré.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#2F3326"></span><span style="background:#6B6E5E"></span><span style="background:#FCFAF5"></span></p></div><div><b>Mesdames</b><p><span style="background:#5E6B3E"></span><span style="background:#8A7AA8"></span><span style="background:#C9BEDD"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
@@ -53,6 +53,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

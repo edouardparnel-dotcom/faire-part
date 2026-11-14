@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#EEF3F8;--carte:#FCFDFE;--encre:#23324A;--doux:#5F6E84;--or1:#C2A15A;--or2:#E8D49E;--or3:#937537;--accent:#3E5A86;
@@ -33,7 +33,7 @@
   <blockquote class="inter inter-citation apparait"><p>Ils se sont rencontrés lors d&#x27;un concert de musique baroque, dans une chapelle royale, assis côte à côte par hasard.</p><cite class="script">Joséphine <span class="esp">&amp;</span> Arthur</cite></blockquote>
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés lors d&#x27;un concert de musique baroque, dans une chapelle royale, assis côte à côte par hasard. Depuis, ils n&#x27;ont manqué aucune saison. C&#x27;est dans les jardins d&#x27;un château qu&#x27;ils réunissent ceux qu&#x27;ils aiment.</p></section>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 3 juillet 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Vin d’honneur aux fontaines</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>18 h 00</b><span>Macarons et rafraîchissements</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Concert de harpe</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Dîner dans la galerie</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Pièce montée</span></div></li></ol></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="photo.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Château de Montclair<br>Yvelines</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Yvelines" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Robe longue ou midi, costume ou smoking. Le bleu poudré, l&#x27;ivoire et l&#x27;or sont les couleurs de la journée.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#23324A"></span><span style="background:#5F6E84"></span><span style="background:#FCFDFE"></span></p></div><div><b>Mesdames</b><p><span style="background:#3E5A86"></span><span style="background:#C2A15A"></span><span style="background:#E8D49E"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
   <figure class="inter inter-matiere apparait"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail bord-haut" src="haut.webp" alt="" loading="lazy"><figcaption>Tenue de soirée</figcaption></figure>
@@ -55,6 +55,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

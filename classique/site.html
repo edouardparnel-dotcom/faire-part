@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <style>
 :root{--fond:#F5F0E6;--carte:#FFFDF8;--encre:#2B2620;--doux:#6E665B;--or1:#B8975A;--or2:#E2CD9C;--or3:#8C6E36;--accent:#8C6E36;
@@ -33,7 +33,7 @@
   <blockquote class="inter inter-citation apparait"><p>Ils se sont rencontrés sur les bancs de la faculté de droit, à Tours, et ne se sont jamais vraiment quittés.</p><cite class="script">Sarah <span class="esp">&amp;</span> Thomas</cite></blockquote>
   <section class="bloc apparait" id="histoire"><h2>Notre histoire</h2><p>Ils se sont rencontrés sur les bancs de la faculté de droit, à Tours, et ne se sont jamais vraiment quittés. Dix ans plus tard, c&#x27;est dans le parc d&#x27;un château de la Loire qu&#x27;ils réunissent ceux qu&#x27;ils aiment.</p></section>
   <section class="bloc apparait" id="programme"><h2>Le programme</h2><p class="sous">Samedi 26 juin 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>15 h 30</b><span>Cérémonie à la chapelle</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>17 h 00</b><span>Vin d’honneur dans le parc</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Dîner au château</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>22 h 00</b><span>Ouverture du bal</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 30</b><span>Pièce montée</span></div></li></ol></section>
-  <div class="inter inter-galerie apparait"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait"><img class="photo-galerie" src="decor-ensemble.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait" id="lieu"><div class="bande" style="background-image:url('lieu.webp')"></div><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="Le lieu de la réception" loading="lazy"><p>Château de Valmont<br>Val de Loire</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Val de Loire" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait" id="tenue"><div class="bande" style="background-image:url('invites.webp')"></div><h2>Tenue</h2><p class="titre-tenue">Tenue de soirée</p><p>Smoking ou costume sombre pour les messieurs, robe longue pour les dames. Les couleurs pastel sont bienvenues, le blanc est réservé à la mariée.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#2B2620"></span><span style="background:#6E665B"></span><span style="background:#FFFDF8"></span></p></div><div><b>Mesdames</b><p><span style="background:#8C6E36"></span><span style="background:#B8975A"></span><span style="background:#E2CD9C"></span></p></div></div><img class="illus large" src="invites.webp" alt="Invités en tenue" loading="lazy"></section>
   <figure class="inter inter-matiere apparait"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail bord-haut" src="haut.webp" alt="" loading="lazy"><figcaption>Tenue de soirée</figcaption></figure>
@@ -55,6 +55,6 @@ document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.ge
 if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

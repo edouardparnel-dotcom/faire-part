@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=16">
 <style>
@@ -42,7 +42,7 @@ body.ferme{overflow:hidden}
 
 </style>
 </head>
-<body class="ferme" data-date="2027-07-10T16:00:00-04:00" data-evenement="Mariage Maëlle &amp; Kévin" data-ville="Le François" data-titre-std="Maëlle &amp; Kévin — Save the date (démonstration)" data-blocs="grappe" data-titres="script" data-images="flotte" data-revele="zoom" data-paral="incline" data-cadre="decale" data-prog="cartes" data-lieu="rond" data-tenue="classique" data-compte="tuiles" data-rep="ticket" data-btn="souligne" data-teinte="papier" data-collection="madras" data-particules="petales" data-trame="centree">
+<body class="ferme" data-date="2027-07-10T16:00:00-04:00" data-evenement="Mariage Maëlle &amp; Kévin" data-ville="Le François" data-titre-std="Maëlle &amp; Kévin — Save the date (démonstration)" data-profondeur="decor-3d/madras" data-profondeur-n="5" data-profondeur-mouvement="chute" data-blocs="grappe" data-titres="script" data-images="flotte" data-revele="zoom" data-paral="incline" data-cadre="decale" data-prog="cartes" data-lieu="rond" data-tenue="classique" data-compte="tuiles" data-rep="ticket" data-btn="souligne" data-teinte="papier" data-collection="madras" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
 <div class="ouverture attente" id="ouverture" style="--ratio:1000/668;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 20%,50% 72%,0 18%);--devant:polygon(0 18%,50% 72%,100% 20%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 80%,50% 28%,0 82%);--doublure:linear-gradient(0deg,#D9A23A,#F6D27A 60%,#E6B347);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
@@ -78,13 +78,14 @@ body.ferme{overflow:hidden}
   <section class="bloc apparait fp-seul" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Habitation des Alizés<br>Le François</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Le François" target="_blank" rel="noopener">Voir le plan</a></section>
   <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail bord-haut" src="haut.webp" alt="" loading="lazy"><figcaption>Élégance créole</figcaption></figure>
   <section class="bloc apparait fp-seul" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Élégance créole</p><p>Madras, dentelle blanche et lin bienvenus. Les dames qui le souhaitent peuvent porter la tête attachée.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#2E2620"></span><span style="background:#7C6F62"></span><span style="background:#FFFCF6"></span></p></div><div><b>Mesdames</b><p><span style="background:#B3121E"></span><span style="background:#D2691E"></span><span style="background:#F2B705"></span></p></div></div><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
-  <section class="bloc apparait fp-seul" id="surprise"><h2>Une surprise</h2><p class="sous">Grattez le médaillon du bout du doigt</p><div class="medaillon-surprise"><img src="couple.jpg" alt="Les mariés" loading="lazy"><canvas class="gratte-surprise" aria-label="Zone à gratter"></canvas></div></section>
+  <section class="bloc apparait fp-seul" id="surprise"><h2>Une surprise</h2><p class="sous">Grattez le médaillon du bout du doigt</p><div class="medaillon-surprise"><img src="decor-detail.jpg" alt="" loading="lazy"><canvas class="gratte-surprise" aria-label="Zone à gratter"></canvas></div></section>
   <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
   <section class="bloc apparait fp-seul" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 1er juin 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
 </main>
 <footer class="suite-pied"><p class="script">Maëlle <span class="esp">&amp;</span> Kévin</p><p>Mèsi anpil, nou ka atann zot</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
-<script src="../_commun/realiste.js?v=14"></script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script src="../_commun/realiste.js?v=15"></script>
+<script src="../_commun/profondeur.js?v=7"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

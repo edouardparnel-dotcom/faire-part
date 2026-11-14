@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../_commun/suite.css?v=9">
 <link rel="stylesheet" href="../_commun/vivant.css?v=16">
-<link rel="stylesheet" href="../_commun/trames.css?v=49">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
 <script src="../_commun/vivant.js?v=25" defer></script>
 <link rel="stylesheet" href="../_commun/realiste.css?v=16">
 <style>
@@ -42,7 +42,7 @@ body.ferme{overflow:hidden}
 .script{font-style:italic}
 </style>
 </head>
-<body class="ferme" data-date="2027-11-13T16:00:00+00:00" data-evenement="Mariage Fatoumata &amp; Moussa" data-ville="Bamako" data-titre-std="Fatoumata &amp; Moussa — Save the date (démonstration)" data-blocs="cartes" data-titres="capitales" data-images="deborde" data-revele="glisse" data-paral="derive" data-cadre="losange" data-prog="cartes" data-lieu="rond" data-tenue="nuancier" data-compte="chiffres" data-rep="sombre" data-btn="souligne" data-teinte="sombre" data-collection="bogolan" data-particules="or" data-trame="carnet">
+<body class="ferme" data-date="2027-11-13T16:00:00+00:00" data-evenement="Mariage Fatoumata &amp; Moussa" data-ville="Bamako" data-titre-std="Fatoumata &amp; Moussa — Save the date (démonstration)" data-profondeur="decor-3d/feuille-ocre" data-profondeur-n="5" data-profondeur-mouvement="chute" data-blocs="cartes" data-titres="capitales" data-images="deborde" data-revele="glisse" data-paral="derive" data-cadre="losange" data-prog="cartes" data-lieu="rond" data-tenue="nuancier" data-compte="chiffres" data-rep="sombre" data-btn="souligne" data-teinte="sombre" data-collection="bogolan" data-particules="or" data-trame="carnet">
 <link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
 <div class="ouverture attente" id="ouverture" style="--ratio:1000/1853;--masque:url('ouverture.webp');--dos:#4b3f3b;">
   <div class="portail" role="button" aria-label="Ouvrir l'invitation">
@@ -65,18 +65,19 @@ body.ferme{overflow:hidden}
 </header>
 
 <main class="suite-main">
-  <div class="inter inter-galerie apparait fp-seul"><img src="couple.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
+  <div class="inter inter-galerie apparait fp-seul"><img class="photo-galerie" src="decor-ensemble.jpg" alt="" loading="lazy"><img src="lieu.webp" alt="" loading="lazy"><img src="table-ronde.webp" alt="" loading="lazy"></div>
   <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 13 novembre 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>14 h 00</b><span>Accueil et cola des familles</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>15 h 00</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Griots et bénédictions</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>18 h 00</b><span>Tô, riz gras et grand repas</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>20 h 00</b><span>Kora et danses</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>22 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
   <section class="bloc apparait fp-seul" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Domaine du Niger<br>Bamako</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Bamako" target="_blank" rel="noopener">Voir le plan</a></section>
   <section class="bloc apparait fp-seul" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Bogolan et bazin</p><p>Bogolan, bazin et tons de terre. Les familles porteront le bogolan aux motifs choisis par les mariés.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#2D1D12"></span><span style="background:#6E5A48"></span><span style="background:#FBF6EC"></span></p></div><div><b>Mesdames</b><p><span style="background:#7A3E1A"></span><span style="background:#A86B32"></span><span style="background:#D9A86A"></span></p></div></div><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
   <blockquote class="inter inter-citation apparait fp-seul"><p>Ils se sont rencontrés au festival sur le Niger, à Ségou, entre deux concerts de kora.</p><cite class="script">Fatoumata <span class="esp">&amp;</span> Moussa</cite></blockquote>
-  <section class="bloc apparait fp-seul" id="surprise"><h2>Une surprise</h2><p class="sous">Grattez le médaillon du bout du doigt</p><div class="medaillon-surprise"><img src="couple.jpg" alt="Les mariés" loading="lazy"><canvas class="gratte-surprise" aria-label="Zone à gratter"></canvas></div></section>
+  <section class="bloc apparait fp-seul" id="surprise"><h2>Une surprise</h2><p class="sous">Grattez le médaillon du bout du doigt</p><div class="medaillon-surprise"><img src="decor-detail.jpg" alt="" loading="lazy"><canvas class="gratte-surprise" aria-label="Zone à gratter"></canvas></div></section>
   <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
   <section class="bloc apparait fp-seul" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 15 octobre 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
 </main>
 <footer class="suite-pied"><p class="script">Fatoumata <span class="esp">&amp;</span> Moussa</p><p>I ni ce : merci d’être avec nous</p>
 <small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
-<script src="../_commun/realiste.js?v=14"></script>
-<script type="module" src="../_commun/perso.js?v=10"></script>
+<script src="../_commun/realiste.js?v=15"></script>
+<script src="../_commun/profondeur.js?v=7"></script>
+<script type="module" src="../_commun/perso.js?v=12"></script>
 </body>
 </html>

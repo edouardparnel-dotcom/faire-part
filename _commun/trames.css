@@ -36,7 +36,7 @@
 [data-trame=edito] .bloc{counter-increment:sec;text-align:left;background:color-mix(in srgb,var(--carte) 94%,transparent);box-shadow:none;border-top:2px solid var(--encre);padding:30px 22px 34px;margin:40px 0}
 [data-trame=edito] .bloc h2{display:flex;align-items:baseline;gap:14px;font-size:15px;letter-spacing:.2em}
 [data-trame=edito] .bloc h2::before{content:counter(sec,decimal-leading-zero);font-family:var(--f-titre);font-size:54px;line-height:.8;letter-spacing:0;color:transparent;-webkit-text-stroke:1px var(--accent)}
-[data-trame=edito] .bloc>p:first-of-type::first-letter{float:left;font-family:var(--f-titre);font-size:3.6em;line-height:.8;padding:6px 8px 0 0;color:var(--accent)}
+[data-trame=edito] #histoire>p:first-of-type::first-letter{float:left;font-family:var(--f-titre);font-size:3.6em;line-height:.8;padding:6px 8px 0 0;color:var(--accent)}
 [data-trame=edito] .bande{display:block;height:220px;margin:-30px -22px 24px;background-size:cover;background-position:center}
 [data-trame=edito] .frise{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin:0 -22px;padding-inline:22px;scrollbar-width:none}
 [data-trame=edito] .frise::before{display:none}
@@ -760,3 +760,5 @@ body.ferme .verriere path,body.ferme .verriere .citronnier{animation-play-state:
 .suite-titre .verriere{width:150px}
 .mood-matieres .verriere{display:inline-block;width:160px;vertical-align:middle}
 @media (prefers-reduced-motion:reduce){.verriere path{animation:none;stroke-dashoffset:0}.verriere .citronnier{animation:none}}
+/* Cadrage du couple aussi dans les couvertures (curseurs de l espace) ; sans réglage, chaque couverture garde le sien */
+html[style*="--photo-pos"] .arche img,html[style*="--photo-pos"] .edito-une img,html[style*="--photo-pos"] .affiche-portrait,html[style*="--photo-pos"] .polaroid img,html[style*="--photo-pos"] .plein-photo{object-position:var(--photo-pos)!important}
