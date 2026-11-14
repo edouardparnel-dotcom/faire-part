@@ -173,7 +173,7 @@
   const d = document.body.dataset;
   if (d.date) {
     const cible = new Date(d.date);
-    const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; };
+    const tic = () => { const r = Math.max(0, new Date(d.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; };
     tic(); setInterval(tic, 30000);
     const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
     const ag = document.getElementById('agenda');

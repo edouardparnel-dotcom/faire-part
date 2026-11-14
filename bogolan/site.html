@@ -50,8 +50,9 @@ document.querySelectorAll('[data-demo-cagnotte]').forEach(b => b.addEventListene
 if (location.search.includes('long')) document.querySelectorAll('.suite-couv').forEach(x => x.style.minHeight = '1000px');
 const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('vu')), { threshold: .12 });
 document.querySelectorAll('.apparait').forEach(el => { io.observe(el); if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vu'); });
-if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, cible - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
+if (window.j) { const cible = new Date(document.body.dataset.date); const tic = () => { const r = Math.max(0, new Date(document.body.dataset.date) - Date.now()); j.textContent = Math.floor(r / 864e5); h.textContent = Math.floor(r / 36e5) % 24; m.textContent = Math.floor(r / 6e4) % 60; }; tic(); setInterval(tic, 30000);
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
+<script type="module" src="../_commun/perso.js?v=1"></script>
 </body>
 </html>

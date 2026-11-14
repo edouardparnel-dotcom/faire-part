@@ -169,7 +169,8 @@ function parcours() {
 // Aperçu de l'invitation dans l'espace, dans un téléphone (hors de #vue : il survit aux mises à jour en direct).
 function apercu(f) {
   document.querySelector('.apercu-fond')?.remove();
-  const url = `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`, d = document.createElement('div');
+  const c = COLLECTIONS.find(x => x.slug === evt.modele), d = document.createElement('div');   // collection réelle : sa page, à vos prénoms
+  const url = c ? `../${c.slug}/${f === 'site' ? 'site' : 'faire-part'}.html?e=${E}` : `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`;
   d.className = 'apercu-fond';
   d.innerHTML = `<div class="apercu-boite"><div class="puces apercu-barre"><button class="btn petit ${f === 'fp' ? '' : 'clair'}" data-ap="fp">Faire-part</button><button class="btn petit ${f === 'site' ? '' : 'clair'}" data-ap="site">Site</button>
     <a class="btn petit clair" href="${url}" target="_blank" rel="noopener">Ouvrir en grand</a><button class="btn petit clair" data-ap="fermer">Fermer</button></div>
@@ -234,7 +235,7 @@ const VUES = {
         ${autres.length ? `<details style="margin-top:8px"><summary class="app-note" style="cursor:pointer">Voir ${autres.length} autre${autres.length > 1 ? 's' : ''} étape${autres.length > 1 ? 's' : ''}</summary>${autres.map(([t, o, b]) => `<div class="ligne-conseil"><span>${esc(t)}</span><button class="btn petit clair" data-onglet="${o}">${esc(b)}</button></div>`).join('')}</details>` : ''}</div>` : ''}
       ${restantes.length ? `<div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 4).map(ligneTache).join('')}</div>` : ''}
       <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${actives.map(([, v]) => `<span class="puce-o">${esc(v)}</span>`).join('') || '<span class="app-note">Aucune option pour l\'instant.</span>'}<button class="btn petit clair" data-onglet="paiement">${evt.formule === 'essai' ? 'Valider ma formule' : 'Ajouter une option'}</button></div>
-        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit jusqu'à la publication : préparez tout, l'envoi à vos invités se débloque quand vous publiez.</p>` : ''}</div>`;
+        ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit tant que vous préparez${choixFormule ? ` (formule choisie : ${esc(choixFormule)})` : ''} : l'envoi à vos invités se débloque quand vous validez votre formule.</p>` : ''}</div>`;
   },
 
   // ── Invités : ajout, import, liste ─────────────────────────────────────────
