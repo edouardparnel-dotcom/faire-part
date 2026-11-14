@@ -37,7 +37,7 @@ async function monterDirect() {
   bloc.className = 'app'; bloc.style.cssText = 'max-width:720px;margin:0 auto';
   bloc.innerHTML = `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Des proches filment la fête : suivez-la ici, en direct.')}</p><div id="direct-lecteur"></div></div>`;
   vue.after(bloc);
-  const { lecteur } = await import('./direct.js?v=2');
+  const { lecteur } = await import('./direct.js?v=3');
   lecteur(bloc.querySelector('#direct-lecteur'), E, { t });
 }
 

@@ -82,9 +82,10 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
 
   async function suivant() {
     if (mode === 'direct') {
-      const s = segs.find(x => x.n === prochain);
+      // un trou (nouvelle prise, morceau perdu) : on passe au morceau suivant disponible
+      const s = segs.find(x => x.n === prochain) || segs.find(x => x.n > prochain + 1);
       if (!s) return null;
-      prochain++;
+      prochain = s.n + 1;
       return s;
     }
     if (mode === 'rediffusion') return fileRediff.shift() || null;

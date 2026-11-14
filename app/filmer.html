@@ -34,7 +34,7 @@ import { signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.10.0/fi
 const q = new URLSearchParams(location.search), E = q.get('e'), K = q.get('k'), vue = document.getElementById('vue');
 const DUREE = 4000;
 const TYPES = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp8,opus', 'video/webm'];
-let cam, nom, flux, type, n = 0, enCours = false, verrou = null, mouvements = [], envoisOk = 0, envoisTotal = 0, enAttente = 0;
+let cam, nom, flux, type, n = 0, base = 0, enCours = false, verrou = null, mouvements = [], envoisOk = 0, envoisTotal = 0, enAttente = 0;
 
 async function demarrer() {
   if (!E || !K) { vue.innerHTML = '<p class="app-note">Ce lien de caméra est incomplet. Ouvrez le lien reçu en entier.</p>'; return; }
@@ -65,6 +65,8 @@ async function basculer() {
   document.getElementById('apercu').srcObject = flux;
   try { verrou = await navigator.wakeLock?.request('screen'); } catch {}
   addEventListener('devicemotion', e => { const r = e.rotationRate; if (r) mouvements.push(Math.abs(r.alpha || 0) + Math.abs(r.beta || 0) + Math.abs(r.gamma || 0)); });
+  // Numéros des morceaux : à partir de l'heure de départ, pour qu'une nouvelle prise ne réécrive jamais la précédente
+  base = Math.floor(Date.now() / 1000); n = 0;
   enCours = true; b.textContent = 'Arrêter'; etat('e-rec', '● En direct', true);
   boucle();
 }
@@ -87,12 +89,12 @@ function stabilite() {
 }
 
 async function envoyer(blob, t, d) {
-  const num = n++, stab = stabilite(), ext = blob.type.includes('mp4') ? 'mp4' : 'webm', chemin = `events/${E}/direct/${cam}/${String(num).padStart(6, '0')}.${ext}`;
+  const num = base + n++, stab = stabilite(), ext = blob.type.includes('mp4') ? 'mp4' : 'webm', chemin = `events/${E}/direct/${cam}/${String(num).padStart(10, '0')}.${ext}`;
   envoisTotal++; enAttente++;
   const avant = Date.now();
   try {
     await uploadBytes(ref(storage, chemin), blob, { contentType: blob.type });
-    await setDoc(doc(db, `events/${E}/cameras/${cam}/segments/${String(num).padStart(6, '0')}`), { n: num, t, d, stab, chemin, mime: blob.type });
+    await setDoc(doc(db, `events/${E}/cameras/${cam}/segments/${String(num).padStart(10, '0')}`), { n: num, t, d, stab, chemin, mime: blob.type });
     if (Date.now() - avant < DUREE) envoisOk++;
     const reseau = Math.round(100 * envoisOk / envoisTotal) / 100;
     await updateDoc(doc(db, `events/${E}/cameras/${cam}`), { dernier: serverTimestamp(), n: num, stab, reseau, mime: blob.type, enDirect: true });
