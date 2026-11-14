@@ -19,7 +19,7 @@ if (E) {
       // Nuancier choisi dans « Mon faire-part » : seules les couleurs du code changent, jamais les images.
       const n = s.data().perso?.nuancier, slug = location.pathname.split('/').slice(-2)[0];
       if (n) {
-        const l = await fetch('../_commun/nuanciers.json?v=1').then(r => r.json()).catch(() => ({}));
+        const l = await fetch('../_commun/nuanciers.json?v=2').then(r => r.json()).catch(() => ({}));
         Object.entries((l[slug] || []).find(x => x.id === n)?.c || {}).forEach(([k, v]) => document.documentElement.style.setProperty('--' + k, v));
       }
       appliquer(s.data(), { esc, dateLongue, heure, majuscule });

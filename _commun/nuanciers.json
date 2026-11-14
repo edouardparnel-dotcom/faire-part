@@ -1,42 +1,364 @@
 {
  "marine": [
-  {"id": "or-sable", "nom": "Or et sable", "c": {"fond": "#F3ECDF", "carte": "#FFFBF3", "encre": "#1D3557", "doux": "#7A6F60", "or1": "#B8924F", "or2": "#E9D3A0", "or3": "#8C6A33", "accent": "#9C7536"}},
-  {"id": "blanc", "nom": "Marine et blanc", "c": {"fond": "#FFFFFF", "carte": "#FFFFFF", "encre": "#0F2442", "doux": "#4F6177", "or1": "#0F2442", "or2": "#C9D6E3", "or3": "#0F2442", "accent": "#0F2442"}}
+  {
+   "id": "or-sable",
+   "nom": "Or et sable",
+   "c": {
+    "fond": "#F3ECDF",
+    "carte": "#FFFBF3",
+    "encre": "#1D3557",
+    "doux": "#7A6F60",
+    "or1": "#B8924F",
+    "or2": "#E9D3A0",
+    "or3": "#8C6A33",
+    "accent": "#9C7536"
+   }
+  },
+  {
+   "id": "blanc",
+   "nom": "Marine et blanc",
+   "c": {
+    "fond": "#FFFFFF",
+    "carte": "#FFFFFF",
+    "encre": "#0F2442",
+    "doux": "#4F6177",
+    "or1": "#0F2442",
+    "or2": "#C9D6E3",
+    "or3": "#0F2442",
+    "accent": "#0F2442"
+   }
+  }
  ],
  "grand-hotel": [
-  {"id": "vert-anglais", "nom": "Vert anglais", "c": {"bordeaux": "#1F4D3A", "encre": "#22302A"}},
-  {"id": "bleu-nuit", "nom": "Bleu nuit", "c": {"bordeaux": "#1E2E5A", "encre": "#232A3A"}}
+  {
+   "id": "vert-anglais",
+   "nom": "Vert anglais",
+   "c": {
+    "bordeaux": "#1F4D3A",
+    "encre": "#22302A"
+   }
+  },
+  {
+   "id": "bleu-nuit",
+   "nom": "Bleu nuit",
+   "c": {
+    "bordeaux": "#1E2E5A",
+    "encre": "#232A3A"
+   }
+  }
  ],
  "lanternes": [
-  {"id": "rose", "nom": "Nuit et rose poudré", "c": {"or1": "#D9A5A0", "or2": "#F2D3CF", "or3": "#8E4A55", "accent": "#9C4A5E"}},
-  {"id": "argent", "nom": "Nuit et argent", "c": {"or1": "#B9C2CF", "or2": "#E6EBF1", "or3": "#6F7A8A"}}
+  {
+   "id": "rose",
+   "nom": "Nuit et rose poudré",
+   "c": {
+    "or1": "#D9A5A0",
+    "or2": "#F2D3CF",
+    "or3": "#8E4A55",
+    "accent": "#9C4A5E"
+   }
+  },
+  {
+   "id": "argent",
+   "nom": "Nuit et argent",
+   "c": {
+    "or1": "#B9C2CF",
+    "or2": "#E6EBF1",
+    "or3": "#6F7A8A"
+   }
+  }
  ],
  "kreyol": [
-  {"id": "bananier", "nom": "Vert bananier", "c": {"accent": "#2F6B3A"}},
-  {"id": "lagon", "nom": "Bleu lagon", "c": {"accent": "#1F6E8C"}}
+  {
+   "id": "bananier",
+   "nom": "Vert bananier",
+   "c": {
+    "accent": "#2F6B3A"
+   }
+  },
+  {
+   "id": "lagon",
+   "nom": "Bleu lagon",
+   "c": {
+    "accent": "#1F6E8C"
+   }
+  }
  ],
  "kanaval": [
-  {"id": "turquoise", "nom": "Turquoise", "c": {"accent": "#138A8A"}},
-  {"id": "or", "nom": "Tout en or", "c": {"accent": "#A0782A"}}
+  {
+   "id": "turquoise",
+   "nom": "Turquoise",
+   "c": {
+    "accent": "#138A8A"
+   }
+  },
+  {
+   "id": "or",
+   "nom": "Tout en or",
+   "c": {
+    "accent": "#A0782A"
+   }
+  }
  ],
  "karakou": [
-  {"id": "emeraude", "nom": "Émeraude", "c": {"accent": "#1F5E4F", "or3": "#1F5E4F", "encre": "#1E2B26"}},
-  {"id": "bleu-nuit", "nom": "Bleu nuit", "c": {"accent": "#1E2E5A", "or3": "#1E2E5A", "encre": "#1C2236"}}
+  {
+   "id": "emeraude",
+   "nom": "Émeraude",
+   "c": {
+    "accent": "#1F5E4F",
+    "or3": "#1F5E4F",
+    "encre": "#1E2B26"
+   }
+  },
+  {
+   "id": "bleu-nuit",
+   "nom": "Bleu nuit",
+   "c": {
+    "accent": "#1E2E5A",
+    "or3": "#1E2E5A",
+    "encre": "#1C2236"
+   }
+  }
  ],
  "takchita": [
-  {"id": "rose", "nom": "Rose poudré", "c": {"accent": "#A55A6A"}},
-  {"id": "bordeaux", "nom": "Bordeaux", "c": {"accent": "#7A1F2B"}}
+  {
+   "id": "rose",
+   "nom": "Rose poudré",
+   "c": {
+    "accent": "#A55A6A"
+   }
+  },
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "accent": "#7A1F2B"
+   }
+  }
  ],
  "teranga": [
-  {"id": "vert", "nom": "Bazin vert", "c": {"accent": "#1F5E3F", "encre": "#16261E", "doux": "#5C6B62"}},
-  {"id": "bordeaux", "nom": "Bordeaux", "c": {"accent": "#7A1F2B", "encre": "#2A1A1E", "doux": "#6E5C5F"}}
+  {
+   "id": "vert",
+   "nom": "Bazin vert",
+   "c": {
+    "accent": "#1F5E3F",
+    "encre": "#16261E",
+    "doux": "#5C6B62"
+   }
+  },
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "accent": "#7A1F2B",
+    "encre": "#2A1A1E",
+    "doux": "#6E5C5F"
+   }
+  }
  ],
  "kente": [
-  {"id": "vert", "nom": "Vert kente", "c": {"accent": "#3FA56B"}},
-  {"id": "rouge", "nom": "Rouge kente", "c": {"accent": "#D0473A"}}
+  {
+   "id": "vert",
+   "nom": "Vert kente",
+   "c": {
+    "accent": "#3FA56B"
+   }
+  },
+  {
+   "id": "rouge",
+   "nom": "Rouge kente",
+   "c": {
+    "accent": "#D0473A"
+   }
+  }
  ],
  "owambe": [
-  {"id": "bordeaux", "nom": "Aso oke bordeaux", "c": {"fond": "#4A1520", "accent": "#7A1F2B", "encre": "#24161A"}},
-  {"id": "bleu", "nom": "Bleu royal", "c": {"fond": "#14234F", "accent": "#24337A", "encre": "#161C33"}}
+  {
+   "id": "bordeaux",
+   "nom": "Aso oke bordeaux",
+   "c": {
+    "fond": "#4A1520",
+    "accent": "#7A1F2B",
+    "encre": "#24161A"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu royal",
+   "c": {
+    "fond": "#14234F",
+    "accent": "#24337A",
+    "encre": "#161C33"
+   }
+  }
+ ],
+ "keswa": [
+  {
+   "id": "or",
+   "nom": "Ivoire et or",
+   "c": {
+    "accent": "#9C7536",
+    "encre": "#2E2A22"
+   }
+  },
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "accent": "#7A1F2B",
+    "encre": "#2A1A1E"
+   }
+  }
+ ],
+ "lehenga": [
+  {
+   "id": "rouge",
+   "nom": "Rouge mariée",
+   "c": {
+    "accent": "#B3121E"
+   }
+  },
+  {
+   "id": "emeraude",
+   "nom": "Émeraude",
+   "c": {
+    "accent": "#1F6E55",
+    "encre": "#1B2A24"
+   }
+  }
+ ],
+ "kanchipuram": [
+  {
+   "id": "vert",
+   "nom": "Vert perroquet",
+   "c": {
+    "accent": "#2E7D32"
+   }
+  },
+  {
+   "id": "or",
+   "nom": "Tout en or",
+   "c": {
+    "accent": "#9C7536"
+   }
+  }
+ ],
+ "huipil": [
+  {
+   "id": "turquoise",
+   "nom": "Turquoise",
+   "c": {
+    "accent": "#138A8A"
+   }
+  },
+  {
+   "id": "orange",
+   "nom": "Orange piment",
+   "c": {
+    "accent": "#D9631E"
+   }
+  }
+ ],
+ "bindalli": [
+  {
+   "id": "violet",
+   "nom": "Velours violet",
+   "c": {
+    "accent": "#5B2A6E",
+    "encre": "#2A1830"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Vert émeraude",
+   "c": {
+    "accent": "#1F5E4F",
+    "encre": "#1E2B26"
+   }
+  }
+ ],
+ "qunkwa": [
+  {
+   "id": "or",
+   "nom": "Or impérial",
+   "c": {
+    "accent": "#9C7536"
+   }
+  },
+  {
+   "id": "rose",
+   "nom": "Rose pivoine",
+   "c": {
+    "accent": "#C2185B"
+   }
+  }
+ ],
+ "aodai": [
+  {
+   "id": "bleu",
+   "nom": "Bleu de soie",
+   "c": {
+    "accent": "#2B5D8C"
+   }
+  },
+  {
+   "id": "jaune",
+   "nom": "Jaune lotus",
+   "c": {
+    "accent": "#B8860B"
+   }
+  }
+ ],
+ "madras": [
+  {
+   "id": "vert",
+   "nom": "Madras vert",
+   "c": {
+    "accent": "#1F7A4A"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Madras bleu",
+   "c": {
+    "accent": "#1F5FA0"
+   }
+  }
+ ],
+ "lakay": [
+  {
+   "id": "corail",
+   "nom": "Corail",
+   "c": {
+    "accent": "#C8553D"
+   }
+  },
+  {
+   "id": "jaune",
+   "nom": "Jaune soleil",
+   "c": {
+    "accent": "#B8860B"
+   }
+  }
+ ],
+ "ndop": [
+  {
+   "id": "or",
+   "nom": "Indigo et or",
+   "c": {
+    "or1": "#C9A24A",
+    "or2": "#EBD49A",
+    "or3": "#8C6A22"
+   }
+  },
+  {
+   "id": "blanc",
+   "nom": "Indigo et blanc",
+   "c": {
+    "fond": "#FFFFFF",
+    "or1": "#22346E",
+    "or3": "#22346E"
+   }
+  }
  ]
 }
