@@ -68,6 +68,36 @@ export const MESSAGES = {
   invitation: "Bonjour {prenom},\n\nNous avons la joie de vous inviter : {titre}, le {date}.\nVotre invitation personnelle, pour découvrir le programme et nous répondre :\n{lien}\n\nAvec toute notre affection",
   relance: "Bonjour {prenom},\n\nPetit rappel avec tendresse : nous attendons votre réponse pour {titre}, le {date}. Elle nous aide à tout préparer.\nC'est ici, en une minute :\n{lien}\n\nMerci !",
 };
+// Les mêmes messages dans les langues des invités (la date s'écrit dans la langue de l'invité, sans article).
+// ht, sw et yo : traduits par machine, à faire relire (comme A_RELIRE dans langues.js).
+export const MESSAGES_LANGUES = {
+  en: { invitation: "Hello {prenom},\n\nWe are delighted to invite you: {titre}, {date}.\nYour personal invitation, to see the programme and reply:\n{lien}\n\nWith all our love",
+    relance: "Hello {prenom},\n\nA gentle reminder: we are waiting for your reply for {titre}, {date}. It helps us prepare everything.\nIt only takes a minute, here:\n{lien}\n\nThank you!" },
+  es: { invitation: "Hola, {prenom}:\n\nCon mucha alegría te invitamos: {titre}, {date}.\nTu invitación personal, para ver el programa y respondernos:\n{lien}\n\nCon todo nuestro cariño",
+    relance: "Hola, {prenom}:\n\nUn recordatorio con cariño: esperamos tu respuesta para {titre}, {date}. Nos ayuda a prepararlo todo.\nEs aquí, en un minuto:\n{lien}\n\n¡Gracias!" },
+  pt: { invitation: "Olá, {prenom}!\n\nÉ com muita alegria que te convidamos: {titre}, {date}.\nO teu convite pessoal, para veres o programa e nos responderes:\n{lien}\n\nCom todo o nosso carinho",
+    relance: "Olá, {prenom}!\n\nUm pequeno lembrete com carinho: aguardamos a tua resposta para {titre}, {date}. Ajuda-nos a preparar tudo.\nÉ aqui, num minuto:\n{lien}\n\nObrigado!" },
+  ht: { invitation: "Bonjou {prenom},\n\nNou kontan anpil envite w: {titre}, {date}.\nMen envitasyon pa w la, pou w wè pwogram nan epi reponn nou:\n{lien}\n\nAk tout afeksyon nou",
+    relance: "Bonjou {prenom},\n\nYon ti rapèl ak tandrès: n ap tann repons ou pou {titre}, {date}. Li ede nou prepare tout bagay.\nSe isit la, nan yon minit:\n{lien}\n\nMèsi!" },
+  it: { invitation: "Ciao {prenom},\n\nSiamo felici di invitarti: {titre}, {date}.\nIl tuo invito personale, per scoprire il programma e risponderci:\n{lien}\n\nCon tutto il nostro affetto",
+    relance: "Ciao {prenom},\n\nUn piccolo promemoria con affetto: aspettiamo la tua risposta per {titre}, {date}. Ci aiuta a preparare tutto.\nÈ qui, in un minuto:\n{lien}\n\nGrazie!" },
+  de: { invitation: "Hallo {prenom},\n\nwir freuen uns sehr, dich einzuladen: {titre}, {date}.\nDeine persönliche Einladung, mit dem Programm und deiner Antwort:\n{lien}\n\nVon Herzen",
+    relance: "Hallo {prenom},\n\neine kleine, herzliche Erinnerung: Wir warten noch auf deine Antwort für {titre}, {date}. Sie hilft uns bei der Vorbereitung.\nHier, in einer Minute:\n{lien}\n\nDanke!" },
+  nl: { invitation: "Hallo {prenom},\n\nMet veel plezier nodigen we je uit: {titre}, {date}.\nJe persoonlijke uitnodiging, met het programma en je antwoord:\n{lien}\n\nMet alle liefde",
+    relance: "Hallo {prenom},\n\nEen lieve herinnering: we wachten nog op je antwoord voor {titre}, {date}. Zo kunnen we alles goed voorbereiden.\nHet kan hier, in een minuutje:\n{lien}\n\nDank je!" },
+  tr: { invitation: "Merhaba {prenom},\n\nSizi davet etmekten büyük mutluluk duyuyoruz: {titre}, {date}.\nProgramı görmek ve bize yanıt vermek için kişisel davetiyeniz:\n{lien}\n\nSevgilerimizle",
+    relance: "Merhaba {prenom},\n\nKüçük bir hatırlatma: {titre} ({date}) için yanıtınızı bekliyoruz. Her şeyi hazırlamamıza yardımcı oluyor.\nBir dakikanızı alır, burada:\n{lien}\n\nTeşekkürler!" },
+  ar: { invitation: "مرحبًا {prenom}،\n\nيسعدنا أن ندعوك: {titre}، {date}.\nدعوتك الشخصية، لتطّلع على البرنامج وتردّ علينا:\n{lien}\n\nمع خالص محبتنا",
+    relance: "مرحبًا {prenom}،\n\nتذكير لطيف: ننتظر ردّك بخصوص {titre}، {date}. فهو يساعدنا على تحضير كل شيء.\nمن هنا، في دقيقة واحدة:\n{lien}\n\nشكرًا!" },
+  zh: { invitation: "{prenom}，您好！\n\n我们诚挚地邀请您：{titre}，{date}。\n这是您的专属请柬，可查看流程并回复我们：\n{lien}\n\n满怀爱意",
+    relance: "{prenom}，您好！\n\n温馨提醒：我们正在等待您关于{titre}（{date}）的回复，这能帮助我们做好准备。\n只需一分钟，请点击：\n{lien}\n\n谢谢！" },
+  vi: { invitation: "Chào {prenom},\n\nChúng tôi rất vui được mời bạn: {titre}, {date}.\nThiệp mời riêng của bạn, để xem chương trình và trả lời chúng tôi:\n{lien}\n\nVới tất cả tình thương",
+    relance: "Chào {prenom},\n\nMột lời nhắc nhỏ: chúng tôi đang chờ hồi âm của bạn cho {titre}, {date}. Điều đó giúp chúng tôi chuẩn bị mọi thứ.\nChỉ mất một phút, tại đây:\n{lien}\n\nCảm ơn bạn!" },
+  sw: { invitation: "Habari {prenom},\n\nTuna furaha kubwa kukualika: {titre}, {date}.\nMwaliko wako binafsi, kuona ratiba na kutujibu:\n{lien}\n\nKwa upendo wetu wote",
+    relance: "Habari {prenom},\n\nUkumbusho mdogo: tunasubiri jibu lako kwa {titre}, {date}. Linatusaidia kuandaa kila kitu.\nNi hapa, kwa dakika moja tu:\n{lien}\n\nAsante!" },
+  yo: { invitation: "Ẹ n lẹ {prenom},\n\nInú wa dùn láti pè yín: {titre}, {date}.\nÌwé ìpè yín, láti wo ètò àti láti fèsì sí wa:\n{lien}\n\nPẹ̀lú ìfẹ́ wa",
+    relance: "Ẹ n lẹ {prenom},\n\nÌrántí kékeré: à ń dúró de èsì yín fún {titre}, {date}. Ó ń ràn wá lọ́wọ́ láti múra sílẹ̀.\nÓ wà níbí, ní ìṣẹ́jú kan:\n{lien}\n\nẸ ṣé!" },
+};
 export const remplir = (modele, v) => modele.replace(/\{(\w+)\}/g, (m, k) => v[k] ?? m);
 
 // ── Planning type ───────────────────────────────────────────────────────────

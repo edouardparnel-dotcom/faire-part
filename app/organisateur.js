@@ -6,8 +6,8 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES } from './langues.js?v=8';
-import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
+import { LANGUES, LOCALES } from './langues.js?v=8';
+import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, MESSAGES_LANGUES, proposerPlacement } from './espace.js?v=4';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), Q = new URLSearchParams(location.search);
@@ -351,13 +351,15 @@ const VUES = {
         ${suivant ? `<div class="envoi-guide"><div><span class="etq">Envoi guidé</span><p>Suivant : <b>${esc(suivant.nom)}</b> · ${liste.filter(i => i.tel).length} avec un numéro</p></div><a class="btn" target="_blank" rel="noopener" data-envoi="${suivant.id}" data-canal="WhatsApp" href="${lienEnvoi(suivant, 'WhatsApp', relance)}">${relance ? 'Relancer' : 'Envoyer'} sur WhatsApp</a></div>` : liste.length ? '' : `<p class="app-note">${relance ? 'Tous les invités relancés ont répondu.' : 'Toutes les invitations sont parties.'}</p>`}
       </div>
       <div class="app-carte table-defile"><table class="app-table"><thead><tr><th>Invité</th><th>État</th><th>Envoyer ${relance ? 'une relance' : 'l\'invitation'}</th></tr></thead><tbody>
-        ${liste.map(i => `<tr><td><b>${esc(i.nom)}</b><br><span class="app-note">${esc([i.tel, i.email].filter(Boolean).join(' · ') || 'ni téléphone ni e-mail')}</span></td><td>${etat(i)}</td>
+        ${liste.map(i => `<tr><td><b>${esc(i.nom)}</b>${(evt.design?.langues || []).length > 1 ? ` <span class="app-note">· ${esc(LANGUES[langueInvite(i)])}</span>` : ''}<br><span class="app-note">${esc([i.tel, i.email].filter(Boolean).join(' · ') || 'ni téléphone ni e-mail')}</span></td><td>${etat(i)}</td>
           <td style="white-space:nowrap">${['WhatsApp', 'SMS', 'E-mail'].filter(c => c !== 'SMS' || i.tel).filter(c => c !== 'E-mail' || i.email).map(c => `<a class="btn petit clair" target="_blank" rel="noopener" data-envoi="${i.id}" data-canal="${c}" href="${lienEnvoi(i, c, relance)}">${c}</a>`).join(' ')}
             <button class="btn petit clair" data-copier-message="${i.id}">Copier le message</button></td></tr>`).join('')}
       </tbody></table><p class="ok-msg" id="m-copie"></p></div>
       <form class="app-carte" id="f-messages"><h2>Vos messages</h2><p class="app-note" style="margin-bottom:10px">Repères remplacés pour chacun : {prenom}, {titre}, {date}, {lien}.</p>
-        <div class="app-grille"><label>Invitation<textarea name="invitation" rows="8">${esc(m.invitation)}</textarea></label><label>Relance<textarea name="relance" rows="8">${esc(m.relance)}</textarea></label></div>
-        <button class="btn">Enregistrer les messages</button><p class="ok-msg" id="m-messages"></p></form>`;
+        <div class="app-grille"><label>Invitation${(evt.design?.langues || []).length > 1 ? ' (français)' : ''}<textarea name="invitation" rows="8">${esc(m.invitation)}</textarea></label><label>Relance${(evt.design?.langues || []).length > 1 ? ' (français)' : ''}<textarea name="relance" rows="8">${esc(m.relance)}</textarea></label></div>
+        ${(evt.design?.langues || []).filter(l => l !== 'fr').map(l => `<details style="margin-top:10px"><summary>${esc(LANGUES[l])} : les invités qui reçoivent dans cette langue</summary>
+          <div class="app-grille" style="margin-top:8px"><label>Invitation<textarea name="invitation@${l}" rows="8">${esc(outils.messages?.[`invitation@${l}`] || MESSAGES_LANGUES[l]?.invitation || '')}</textarea></label><label>Relance<textarea name="relance@${l}" rows="8">${esc(outils.messages?.[`relance@${l}`] || MESSAGES_LANGUES[l]?.relance || '')}</textarea></label></div></details>`).join('')}
+        <button class="btn" style="margin-top:10px">Enregistrer les messages</button><p class="ok-msg" id="m-messages"></p></form>`;
   },
 
   // ── Plan de table : glisser-déposer, ou choisir la table dans la liste ─────
@@ -597,8 +599,22 @@ async function empreinte(e, code) {
   return [...new Uint8Array(o)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
+// Langue d'envoi d'un invité : celle qu'on lui a donnée (ou qu'il a choisie), sinon la langue par défaut des mariés
+function langueInvite(i) {
+  const L = evt.design?.langues || ['fr'];
+  return [i.langue, evt.design?.langueDefaut].find(l => l && L.includes(l)) || 'fr';
+}
+// Le message d'un invité dans sa langue : celui que les mariés ont écrit pour cette langue, sinon notre traduction
+function messageInvite(i, relance) {
+  const lg = langueInvite(i), cle = relance ? 'relance' : 'invitation', perso = outils.messages || {};
+  const modele = lg === 'fr' ? perso[cle] || MESSAGES[cle] : perso[`${cle}@${lg}`] || MESSAGES_LANGUES[lg]?.[cle] || perso[cle] || MESSAGES[cle];
+  let date = dateLongue(evt.date);
+  if (lg !== 'fr') { try { date = new Date(evt.date).toLocaleDateString(LOCALES[lg] || lg, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch {} }
+  return remplir(modele, { prenom: prenom(i.nom), titre: evt.titre, date, lien: lienInvite(i.id) });
+}
+
 function lienEnvoi(i, canal, relance) {
-  const m = { ...MESSAGES, ...outils.messages }, texte = remplir(relance ? m.relance : m.invitation, { prenom: prenom(i.nom), titre: evt.titre, date: dateLongue(evt.date), lien: lienInvite(i.id) });
+  const texte = messageInvite(i, relance);
   if (canal === 'WhatsApp') return `https://wa.me/${(i.tel || '').replace('+', '')}?text=${encodeURIComponent(texte)}`;
   if (canal === 'SMS') return `sms:${i.tel}?&body=${encodeURIComponent(texte)}`;
   return `mailto:${encodeURIComponent(i.email || '')}?subject=${encodeURIComponent(evt.titre)}&body=${encodeURIComponent(texte)}`;
@@ -728,8 +744,8 @@ document.addEventListener('click', async ev => {
     rendre(); scrollTo(0, 0); return;
   }
   if (d.copier) { await navigator.clipboard?.writeText(lienInvite(d.copier)).catch(() => {}); $('#m-copie').textContent = 'Lien copié : ' + lienInvite(d.copier); return; }
-  if (d.copierMessage) { const i = invites.find(x => x.id === d.copierMessage), m = { ...MESSAGES, ...outils.messages };
-    await navigator.clipboard?.writeText(remplir(filtreEnvoi === 'relance' ? m.relance : m.invitation, { prenom: prenom(i.nom), titre: evt.titre, date: dateLongue(evt.date), lien: lienInvite(i.id) })).catch(() => {});
+  if (d.copierMessage) { const i = invites.find(x => x.id === d.copierMessage);
+    await navigator.clipboard?.writeText(messageInvite(i, filtreEnvoi === 'relance')).catch(() => {});
     $('#m-copie').textContent = `Message de ${i.nom} copié.`; return; }
   if (d.copierAcces) { await navigator.clipboard?.writeText(lienEquipe(d.copierAcces)).catch(() => {}); $('#m-copie').textContent = 'Lien copié : ' + lienEquipe(d.copierAcces); return; }
   if (d.envoi) {   // le lien s'ouvre normalement (WhatsApp, SMS, messagerie) ; on note l'envoi ou la relance
@@ -893,7 +909,7 @@ document.addEventListener('submit', async ev => {
     await setDoc(doc(db, `events/${E}/invites/${jeton()}`), { nom: f.nom.trim(), max: Math.max(0, +f.max || 0), tel: telephone(f.tel), email: f.email.trim(), groupe: f.groupe.trim(), ceremonies: choisies, reponses: {}, ...(f.langue ? { langue: f.langue } : {}), creeLe: serverTimestamp() });
   }
   if (id === 'f-import') { apercuImport = invitesDepuisCSV(lireCSV(f.texte || ''), C); if (!apercuImport.length) apercuImport = null; msgImport = apercuImport ? '' : 'Aucun invité reconnu : vérifiez qu\'il y a au moins une colonne de noms.'; document.activeElement?.blur(); rendre(); }
-  if (id === 'f-messages') { await setDoc(doc(db, `events/${E}/outils/messages`), { invitation: f.invitation, relance: f.relance }); if ($('#m-messages')) $('#m-messages').textContent = 'Messages enregistrés.'; }
+  if (id === 'f-messages') { await setDoc(doc(db, `events/${E}/outils/messages`), Object.fromEntries(Object.entries(f).filter(([k]) => /^(invitation|relance)(@[a-z]{2})?$/.test(k)))); if ($('#m-messages')) $('#m-messages').textContent = 'Messages enregistrés.'; }
   if (id === 'f-lien') {
     if (!f.a || !f.b || f.a === f.b) { msgPlacement = '⚠ Choisissez deux invités différents.'; return rendre(); }
     const L = (outils.placement?.liens || []).filter(l => !((l.a === f.a && l.b === f.b) || (l.a === f.b && l.b === f.a)));
