@@ -32,16 +32,32 @@ const urls = new Map();
 const url = chemin => urls.get(chemin) || urls.set(chemin, getDownloadURL(ref(storage, chemin))).get(chemin);
 
 // Lecteur : conteneur → deux vidéos qui se relaient, un bandeau d'état, un bouton son.
-export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x } = {}) {
+// affiche : { images: [chemins à essayer dans l'ordre], titre, date } = l'invitation du mariage, montrée tant que rien ne joue.
+export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x, affiche = null } = {}) {
   conteneur.innerHTML = `<div class="direct-lecteur" style="position:relative;background:#000;aspect-ratio:9/16;max-height:70vh;margin:auto;border-radius:10px;overflow:hidden">
     <video playsinline ${muet ? 'muted' : ''} style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain"></video>
     <video playsinline ${muet ? 'muted' : ''} style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;visibility:hidden"></video>
+    ${affiche ? `<div class="direct-affiche" style="position:absolute;inset:0;background:#1e1b18 center/cover no-repeat;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;color:#fff;padding:24px 16px 70px">
+      <div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.75))"></div>
+      <p style="position:relative;margin:0;font:500 30px/1.15 'Cormorant Garamond',Georgia,serif"></p>
+      <p class="direct-affiche-date" style="position:relative;margin:6px 0 0;font:400 14px system-ui,sans-serif;opacity:.9"></p>
+      <p class="direct-affiche-msg" style="position:relative;margin:10px 0 0;font:600 13px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase"></p></div>` : ''}
     <p class="direct-etat" style="position:absolute;left:10px;top:10px;margin:0;padding:4px 10px;border-radius:20px;background:rgba(0,0,0,.6);color:#fff;font:600 12px/1.4 system-ui,sans-serif"></p>
     ${muet ? '' : `<button type="button" class="direct-son" style="position:absolute;inset:0;margin:auto;width:max-content;height:max-content;padding:12px 20px;border:0;border-radius:30px;background:rgba(255,255,255,.92);font:600 15px system-ui,sans-serif;cursor:pointer">${t('Lancer le direct')}</button>`}
   </div>`;
   const [A, B] = conteneur.querySelectorAll('video'), etatEl = conteneur.querySelector('.direct-etat'), son = conteneur.querySelector('.direct-son');
-  let devant = A, derriere = B, cameras = [], etat = {}, cam = null, depuis = 0, prochain = null, segs = [], arret = () => {}, mode = 'attente', fileRediff = [], pret = muet;
+  let devant = A, derriere = B, cameras = [], etat = {}, cam = null, depuis = 0, prochain = null, segs = [], arret = () => {}, mode = 'attente', fileRediff = [], pret = muet, rediffVue = false, chargeRediff = false;
   const afficher = x => { etatEl.textContent = x; };
+  // L'affiche de l'invitation : première image qui existe, aux prénoms et à la date du couple
+  const aff = conteneur.querySelector('.direct-affiche');
+  if (aff) {
+    aff.querySelector('p').textContent = affiche.titre || '';
+    aff.querySelector('.direct-affiche-date').textContent = affiche.date || '';
+    const essai = l => { if (!l.length) return; const i = new Image(); i.onload = () => { aff.style.backgroundImage = `url("${l[0]}")`; }; i.onerror = () => essai(l.slice(1)); i.src = l[0]; };
+    essai(affiche.images || []);
+  }
+  const montrerAffiche = (oui, msg = '') => { if (!aff) return; aff.hidden = !oui; aff.querySelector('.direct-affiche-msg').textContent = msg; etatEl.hidden = oui; };
+  montrerAffiche(true, t('Le direct commencera bientôt'));
 
   onSnapshot(collection(db, `events/${E}/cameras`), s => { cameras = s.docs.map(d => ({ id: d.id, ...d.data() })); regler(); }, () => afficher(t('Direct indisponible')));
   if (!camFixe) onSnapshot(doc(db, `events/${E}/direct/etat`), s => { etat = s.data() || {}; regler(); }, () => {});
@@ -54,29 +70,33 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       cam = choix; depuis = Date.now(); arret();
       arret = onSnapshot(query(collection(db, `events/${E}/cameras/${cam}/segments`), orderBy('n', 'desc'), limit(8)), s => {
         segs = s.docs.map(d => d.data()).sort((a, b) => a.n - b.n);
+        if (!segs.length) return;
         if (prochain === null || prochain > segs.at(-1).n + 1 || prochain < segs[0].n) prochain = segs.length > RETARD ? segs.at(-1 - RETARD).n : segs[0]?.n ?? null;
         if (mode !== 'direct') { mode = 'direct'; if (pret) lancer(); }
       });
     }
-    if (!choix && mode === 'direct' && !cameras.some(enDirect)) { mode = 'attente'; cam = null; arret(); setTimeout(() => { if (!cameras.some(enDirect)) rediffusion(); }, 6000); }
-    if (!choix && mode === 'attente' && !fileRediff.length) rediffusion();
+    if (!choix && mode === 'direct' && !cameras.some(enDirect)) { mode = 'attente'; cam = null; prochain = null; arret(); rediffVue = false; setTimeout(() => { if (!cameras.some(enDirect)) rediffusion(); }, 6000); }
+    if (!choix && mode === 'attente' && !rediffVue) rediffusion();
     const c = cameras.find(x => x.id === cam);
-    if (mode === 'direct') afficher(`● ${t('En direct')}${c?.nom ? ' · ' + c.nom : ''}`);
+    if (mode === 'direct') { afficher(`● ${t('En direct')}${c?.nom ? ' · ' + c.nom : ''}`); if (!pret) montrerAffiche(true, '● ' + t('En direct')); }
   }
 
   // Rediffusion : tous les morceaux, dans l'ordre du temps ; à chaque instant la caméra la plus stable.
   async function rediffusion() {
-    if (mode === 'rediffusion' || !cameras.length) { if (!cameras.length) afficher(t('Le direct commencera bientôt')); return; }
-    mode = 'rediffusion';
+    if (mode === 'rediffusion' || rediffVue || !cameras.length) return;
+    mode = 'rediffusion'; rediffVue = true; chargeRediff = true;
     const tous = (await Promise.all(cameras.map(c => getDocs(query(collection(db, `events/${E}/cameras/${c.id}/segments`), orderBy('n')))
       .then(s => s.docs.map(d => ({ cam: c.id, ...d.data() })))))).flat().sort((a, b) => a.t - b.t);
+    chargeRediff = false;
+    if (mode !== 'rediffusion') return;   // une caméra a repris pendant le chargement : le direct passe avant
     fileRediff = [];
     for (const s of tous) {   // un morceau par tranche de 4 s : le plus stable de ceux qui se chevauchent
       const der = fileRediff.at(-1);
       if (der && s.t < der.t + DUREE * 1000 * 0.75) { if (s.stab > der.stab + 0.2) fileRediff[fileRediff.length - 1] = s; } else fileRediff.push(s);
     }
-    if (!fileRediff.length) { mode = 'attente'; afficher(t('Le direct commencera bientôt')); return; }
+    if (!fileRediff.length) { mode = 'attente'; montrerAffiche(true, t('Le direct commencera bientôt')); return; }
     afficher(t('Rediffusion'));
+    montrerAffiche(!pret, t('Rediffusion'));
     if (pret) lancer();
   }
 
@@ -103,12 +123,19 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     derriere.load();
   }
   async function permuter() {
-    if (!charge) { await preparer(); if (!charge) { setTimeout(permuter, 500); return; } }
+    if (!charge) {
+      await preparer();
+      if (!charge) {
+        // fin de la rediffusion : l'affiche revient, avec de quoi la revoir
+        if (mode === 'rediffusion' && !chargeRediff && !fileRediff.length) { mode = 'attente'; finRediff(); return; }
+        setTimeout(permuter, 500); return;
+      }
+    }
     [devant, derriere] = [derriere, devant];
     devant.style.visibility = 'visible'; derriere.style.visibility = 'hidden';
     if (devant.videoWidth) cadre.style.aspectRatio = `${devant.videoWidth}/${devant.videoHeight}`;
     charge = null;
-    try { await devant.play(); } catch { if (son) son.hidden = false; }
+    try { await devant.play(); montrerAffiche(false); } catch { if (son) son.hidden = false; }
     derriere.pause();
     preparer();
   }
@@ -118,6 +145,11 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   A.onended = B.onended = e => { if (e.target === devant) permuter(); };
   A.onerror = B.onerror = e => { if (e.target === devant) permuter(); else { charge = null; preparer(); } };
   function lancer() { pret = true; if (son) son.hidden = true; if (!devant.src || devant.ended) permuter(); }
+  function finRediff() {
+    devant.pause(); devant.style.visibility = 'hidden';
+    montrerAffiche(true, t('Rediffusion terminée'));
+    if (son) { son.textContent = t('Revoir la rediffusion'); son.hidden = false; son.onclick = () => { son.onclick = lancer; son.hidden = true; rediffVue = false; devant.removeAttribute('src'); rediffusion(); }; }
+  }
   if (son) son.onclick = lancer;
   if (muet) setTimeout(lancer, 500);
   return { camera: () => cam };

@@ -6,7 +6,7 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES } from './langues.js?v=5';
+import { LANGUES } from './langues.js?v=6';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');

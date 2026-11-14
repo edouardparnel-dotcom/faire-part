@@ -16,7 +16,8 @@
   .filmer .etat{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;font:500 14px system-ui,sans-serif}
   .filmer .etat span{padding:4px 10px;border-radius:20px;background:#2a2622}
   .filmer .rec{background:#a3241b!important}
-  .filmer .btn{width:100%;margin-top:8px}
+  .filmer .btn{width:100%;margin-top:8px;background:#f7f3ec;color:#1e1b18;border:0}
+  .filmer .btn.arret{background:#a3241b;color:#fff}
   .filmer .app-note{color:#cfc6b8}
 </style>
 </head>
@@ -57,7 +58,7 @@ async function demarrer() {
 
 async function basculer() {
   const b = document.getElementById('b-go');
-  if (enCours) { enCours = false; flux?.getTracks().forEach(x => x.stop()); verrou?.release?.(); b.textContent = 'Reprendre'; etat('e-rec', 'Arrêté'); return; }
+  if (enCours) { enCours = false; flux?.getTracks().forEach(x => x.stop()); verrou?.release?.(); b.textContent = 'Reprendre'; b.classList.remove('arret'); etat('e-rec', 'Arrêté'); return; }
   try {
     if (window.DeviceMotionEvent?.requestPermission) await DeviceMotionEvent.requestPermission().catch(() => {});
     flux = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }, audio: true });
@@ -67,7 +68,7 @@ async function basculer() {
   addEventListener('devicemotion', e => { const r = e.rotationRate; if (r) mouvements.push(Math.abs(r.alpha || 0) + Math.abs(r.beta || 0) + Math.abs(r.gamma || 0)); });
   // Numéros des morceaux : à partir de l'heure de départ, pour qu'une nouvelle prise ne réécrive jamais la précédente
   base = Math.floor(Date.now() / 1000); n = 0;
-  enCours = true; b.textContent = 'Arrêter'; etat('e-rec', '● En direct', true);
+  enCours = true; b.textContent = 'Arrêter'; b.classList.add('arret'); etat('e-rec', '● En direct', true);
   boucle();
 }
 
