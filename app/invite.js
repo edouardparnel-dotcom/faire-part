@@ -66,7 +66,7 @@ function rendre() {
     ${merci ? `<div class="carte-merci" style="--accent-carte:${esc(carteCouleur())}">${inv.merci?.photo ? `<img src="${esc(inv.merci.photo)}" alt="">` : ''}<div><span class="etq">${t('Merci')}</span><h2 class="serif">${esc(prenom)},</h2>
       ${(champ(merci, 'texte', L) || '').split(/\n{2,}/).map(x => `<p>${esc(x)}</p>`).join('')}${inv.merci?.mot ? `<p class="mot-perso">« ${esc(inv.merci.mot)} »</p>` : ''}<p class="signature">${esc(evt.titre)}</p></div></div>` : ''}
     <div style="text-align:center;margin:20px 0 30px"><span class="etq">${t('Votre invitation')}</span><h1 class="serif">${esc(evt.titre)}</h1>
-      <p class="app-note">${esc(majuscule(dateLongue(evt.date)))}</p>
+      <p class="app-note">${esc(majuscule(dateLongue(mesC.length && mesC.length < (evt.ceremonies || []).length && mesC[0].date ? mesC[0].date : evt.date)))}</p>
       <a class="btn clair" style="margin-top:18px" href="fp.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}">${t('Ouvrir le faire-part')}</a></div>
     <form class="app-carte" id="f-reponse"><h2>${t('Bonjour')} ${esc(prenom)}</h2><p class="app-note">${mesC.length > 1 ? t('Vous êtes invité(e) aux moments suivants. Merci de répondre pour chacun.') : t('Merci de nous dire si vous serez présent(e).')}</p>
       ${mesC.map(c => `<div class="ceremonie"><div><h3>${esc(champ(c, 'nom', L))}</h3><p>${esc(majuscule(dateLongue(c.date)))} ${t('à')} ${heure(c.date)}<br>${esc(c.lieu)} · <a class="lien-or" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.lieu)}">${t('plan')}</a></p></div>

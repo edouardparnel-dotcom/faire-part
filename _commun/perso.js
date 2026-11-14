@@ -44,7 +44,8 @@ async function programmeInvite(evt, outils, { db, auth, doc, getDoc, u }) {
     if (!inv?.ceremonies?.length) return;
     const miennes = C.filter(c => inv.ceremonies.includes(c.cle));
     if (miennes.length === C.length) return;
-    appliquer({ ...evt, ceremonies: miennes, deroulePublic: [] }, outils);
+    // la date et le lieu de couverture : ceux de sa première cérémonie
+    appliquer({ ...evt, ceremonies: miennes, deroulePublic: [], date: miennes[0].date || evt.date, lieu: miennes[0].lieu || evt.lieu }, outils);
   } catch (err) { console.warn('Programme de l’invité', err); }
 }
 
