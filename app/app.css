@@ -236,3 +236,9 @@
 .fp-perso-apercu .telephone{width:100%;height:680px}
 .lien-btn{font:inherit;background:none;border:0;padding:0;color:var(--rub,#A8834A);text-decoration:underline;cursor:pointer}
 @media(max-width:900px){.fp-perso{grid-template-columns:1fr}.fp-perso-apercu{position:static}.fp-perso-apercu .telephone{max-width:360px;margin:0 auto}}
+.nuanciers{display:flex;flex-wrap:wrap;gap:8px}
+.nuancier{font:inherit;font-size:14px;display:flex;align-items:center;gap:8px;border:1px solid var(--filet);background:#fff;padding:8px 12px;cursor:pointer;color:var(--encre)}
+.nuancier.choisi{border:2px solid var(--rub);background:var(--rub-clair)}
+.nuancier .pastilles{display:flex}
+.nuancier .pastilles i{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.15);margin-right:-5px}
+.nuancier .pastilles i.origine{background:conic-gradient(#C9A24A,#1D3557,#C2442E,#C9A24A)}

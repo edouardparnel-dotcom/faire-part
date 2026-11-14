@@ -16,7 +16,8 @@ let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'ac
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
 let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '';
 let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
-let COLLECTIONS = [], choisirCollection = false;
+let COLLECTIONS = [], choisirCollection = false, NUANCIERS = {};
+fetch('../_commun/nuanciers.json?v=1').then(r => r.json()).then(l => { NUANCIERS = l; rendre(); }).catch(() => {});
 fetch('collections.json?v=2').then(r => r.json()).then(l => { COLLECTIONS = l; rendre(); }).catch(() => {});
 let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
@@ -251,6 +252,8 @@ const VUES = {
         <fieldset><legend>La couverture</legend>${champ('chapeau', 'Phrase d\'invitation', P.chapeau, 'Par défaut : « Ont la joie de vous inviter à leur mariage »', 'maxlength="140"')}
           <label>Photo du couple<input type="file" id="i-photo-couple" accept="image/*"><small class="aide">${P.photo ? 'Votre photo est en place. Choisissez-en une autre pour la remplacer.' : 'Elle remplace la photo de démonstration (format portrait de préférence).'}</small></label>
           ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo">` : ''}</fieldset>
+        ${NUANCIERS[c.slug] ? `<fieldset><legend>Couleurs</legend><p class="app-note">Les couleurs des textes, des filets et du fond changent ; les images (enveloppe, décors, fleurs) gardent les leurs.</p>
+          <div class="nuanciers">${[{ id: '', nom: 'Couleurs d'origine', c: {} }, ...NUANCIERS[c.slug]].map(n => `<button type="button" class="nuancier ${(P.nuancier || '') === n.id ? 'choisi' : ''}" data-nuancier="${n.id || '-'}"><span class="pastilles">${['fond', 'accent', 'or1'].filter(k => n.c[k]).map(k => `<i style="background:${n.c[k]}"></i>`).join('') || '<i class="origine"></i>'}</span>${esc(n.nom)}</button>`).join('')}</div></fieldset>` : ''}
         <fieldset><legend>Pour vos invités</legend>${champ('tenueTitre', 'Tenue : titre', P.tenueTitre, 'Par exemple : Chic et coloré', 'maxlength="60"')}${zone('tenue', 'Tenue : conseils', P.tenue)}
           ${champ('reponse', 'Répondre avant le', P.reponse, 'Par défaut : un mois avant', 'type="date"')}${zone('merci', 'Mot de la fin', P.merci, 'En bas du faire-part')}</fieldset>
         <p class="app-note">Le programme reprend vos cérémonies et les moments « invités » du déroulé. <button type="button" class="lien-btn" data-onglet="ceremonies">Modifier le programme</button></p>
@@ -636,6 +639,7 @@ document.addEventListener('click', async ev => {
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
   if (d.apercu) return apercu(d.apercu);
+  if (d.nuancier) return updateDoc(doc(db, 'events', E), { 'perso.nuancier': d.nuancier === '-' ? '' : d.nuancier });
   if (d.personnaliser) { if (!COLLECTIONS.some(x => x.slug === evt.modele)) { location.href = `editeur.html?e=${E}`; return; } onglet = 'fairepart'; rendre(); scrollTo(0, 0); return; }
   if (d.lien) { location.href = d.lien; return; }
   if (d.changerCollection) { choisirCollection = !choisirCollection; return rendre(); }
@@ -813,6 +817,7 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-perso') {
     const perso = Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci'].map(k => [k, (f[k] || '').trim()]));
     if (evt.perso?.photo) perso.photo = evt.perso.photo;
+    if (evt.perso?.nuancier) perso.nuancier = evt.perso.nuancier;
     const C2 = C.map((c, k) => k === 0 ? { ...c, date: f.date, lieu: f.lieu.trim() } : c);
     await updateDoc(doc(db, 'events', E), { titre: f.titre.trim(), date: f.date, lieu: f.lieu.trim(), ceremonies: C2, perso });
     const m = $('#m-perso'); if (m) m.textContent = 'Enregistré : votre faire-part est à jour.';

@@ -15,7 +15,15 @@ if (E) {
     await new Promise(r => { const f = onAuthStateChanged(auth, () => { f(); r(); }); });
     const s = await getDoc(doc(db, 'events', E)), u = auth.currentUser;
     // Invitation pas encore publiée : seuls les organisateurs (connectés avec un compte) la voient à leurs prénoms.
-    if (s.exists() && (s.data().formule !== 'essai' || (u && !u.isAnonymous))) appliquer(s.data(), { esc, dateLongue, heure, majuscule });
+    if (s.exists() && (s.data().formule !== 'essai' || (u && !u.isAnonymous))) {
+      // Nuancier choisi dans « Mon faire-part » : seules les couleurs du code changent, jamais les images.
+      const n = s.data().perso?.nuancier, slug = location.pathname.split('/').slice(-2)[0];
+      if (n) {
+        const l = await fetch('../_commun/nuanciers.json?v=1').then(r => r.json()).catch(() => ({}));
+        Object.entries((l[slug] || []).find(x => x.id === n)?.c || {}).forEach(([k, v]) => document.documentElement.style.setProperty('--' + k, v));
+      }
+      appliquer(s.data(), { esc, dateLongue, heure, majuscule });
+    }
   } catch (err) { console.warn('Personnalisation', err); }
   document.documentElement.classList.remove('perso-attente');
 }
