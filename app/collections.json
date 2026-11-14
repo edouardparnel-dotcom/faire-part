@@ -1,21 +1,21 @@
 [
  {
-  "slug": "grand-hotel",
-  "nom": "Grand Hôtel",
-  "culture": "Signature · palace parisien",
-  "img": "../grand-hotel/apercus/vignette.webp"
+  "slug": "takchita",
+  "nom": "Takchita",
+  "culture": "Takchita · sfifa et mdamma",
+  "img": "../takchita/apercus/vignette.webp"
  },
  {
-  "slug": "marine",
-  "nom": "Marine",
-  "culture": "Intemporel · aquarelle",
-  "img": "../marine/apercus/vignette.webp"
+  "slug": "kreyol",
+  "nom": "Kreyòl",
+  "culture": "Kreyòl · « Krik ? Krak ! »",
+  "img": "../kreyol/apercus/vignette.webp"
  },
  {
-  "slug": "lanternes",
-  "nom": "Lanternes",
-  "culture": "Intemporel · nuit au bord de l’eau",
-  "img": "../lanternes/apercus/vignette.webp"
+  "slug": "ndop",
+  "nom": "Ndop",
+  "culture": "Ndop · indigo royal",
+  "img": "../ndop/apercus/vignette.webp"
  },
  {
   "slug": "lakay",
@@ -96,12 +96,6 @@
   "img": "../karakou/apercus/vignette.webp"
  },
  {
-  "slug": "takchita",
-  "nom": "Takchita",
-  "culture": "Takchita · sfifa et mdamma",
-  "img": "../takchita/apercus/vignette.webp"
- },
- {
   "slug": "bindalli",
   "nom": "Bindallı",
   "culture": "Bindallı · soirée du henné",
@@ -130,18 +124,6 @@
   "nom": "Bazin",
   "culture": "Bazin riche · grand boubou",
   "img": "../bazin/apercus/vignette.webp"
- },
- {
-  "slug": "kreyol",
-  "nom": "Kreyòl",
-  "culture": "Kreyòl · « Krik ? Krak ! »",
-  "img": "../kreyol/apercus/vignette.webp"
- },
- {
-  "slug": "ndop",
-  "nom": "Ndop",
-  "culture": "Ndop · indigo royal",
-  "img": "../ndop/apercus/vignette.webp"
  },
  {
   "slug": "liputa",
@@ -210,6 +192,12 @@
   "img": "../classique/apercus/vignette.webp"
  },
  {
+  "slug": "grand-hotel",
+  "nom": "Grand Hôtel",
+  "culture": "Signature · palace parisien",
+  "img": "../grand-hotel/apercus/vignette.webp"
+ },
+ {
   "slug": "gatsby",
   "nom": "Gatsby",
   "culture": "Intemporel · années folles",
@@ -252,6 +240,12 @@
   "img": "../porcelaine/apercus/vignette.webp"
  },
  {
+  "slug": "marine",
+  "nom": "Marine",
+  "culture": "Intemporel · aquarelle",
+  "img": "../marine/apercus/vignette.webp"
+ },
+ {
   "slug": "soie",
   "nom": "Soie",
   "culture": "Intemporel · dessin à l’encre",
@@ -268,6 +262,12 @@
   "nom": "Orangerie",
   "culture": "Intemporel · jardin d’hiver",
   "img": "../orangerie/apercus/vignette.webp"
+ },
+ {
+  "slug": "lanternes",
+  "nom": "Lanternes",
+  "culture": "Intemporel · nuit au bord de l’eau",
+  "img": "../lanternes/apercus/vignette.webp"
  },
  {
   "slug": "opera",

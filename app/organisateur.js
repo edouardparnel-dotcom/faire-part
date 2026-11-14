@@ -27,9 +27,10 @@ const lienPage = t => new URL(`invite.html?e=${encodeURIComponent(E)}&g=${encode
 const lienEquipe = c => new URL(`organisateur.html?rejoindre=${encodeURIComponent(E)}&code=${encodeURIComponent(c)}`, location.href).href;
 const a = o => evt?.options?.includes(o);
 // Prix de lancement (formule Faire-part) : affiché ici, décidé par le serveur (date et nombre de places).
-const prixF = f => f.lancement && Date.now() < Date.parse(f.lancement.jusqu) ? f.lancement.prix : f.prix;
+const palierF = f => f.lancement ? (f.lancement.paliers || [f.lancement]).find(p => Date.now() < Date.parse(p.jusqu)) : null;
+const prixF = f => palierF(f)?.prix ?? f.prix;
 // Options prises avec une formule au prix de lancement : même remise (premier paiement seulement, comme le serveur).
-const prixO = (o, f, actuelle) => !actuelle && prixF(f) < f.prix && f.lancement.options ? Math.ceil(o.prix * f.lancement.options) : o.prix;
+const prixO = (o, f, actuelle) => !actuelle && prixF(f) < f.prix && palierF(f)?.options ? Math.ceil(o.prix * palierF(f).options - 1e-9) : o.prix;
 // Formule Faire-part : l'invitation, les invités, les envois et les réponses ; le reste de l'espace s'ouvre en passant à une formule complète.
 const FAIRE_PART = ['accueil', 'invites', 'envois', 'paiement', 'equipe', 'reglages'];
 const jours = d => Math.ceil((new Date(d) - Date.now()) / 864e5);

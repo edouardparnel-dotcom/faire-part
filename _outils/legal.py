@@ -122,7 +122,7 @@ def cgv(sites):
 <p>Options à l'unité (mariage) :</p>
 <table><thead><tr><th>Option</th><th>Prix</th></tr></thead><tbody>{options}</tbody></table>
 <p>Une option « sur devis » fait l'objet d'une proposition écrite, acceptée par le client avant toute réalisation.</p>
-<p><b>Offre de lancement (mariage)</b> : pour les {sites.LANCEMENT['places']} premiers couples dont le paiement est confirmé, et au plus tard jusqu'au 30 novembre 2026 inclus, les trois formules mariage sont à moitié prix ({', '.join(f"{n} {p} €" for n, p in sites.LANCEMENT['prix'].items())}), ainsi que les options à l'unité payées avec la formule lors de la première commande (prix arrondi à l'euro supérieur). Les options ajoutées plus tard et les passages à une formule supérieure sont au prix normal.</p>
+<p><b>Offre de lancement (mariage)</b> : pour les {sites.LANCEMENT['places']} premiers couples dont le paiement est confirmé, les trois formules mariage ({', '.join(f"{n} {p} €" for n, p, *_ in sites.FORMULES_MARIAGE)}) bénéficient d'une remise de {sites.LANCEMENT['paliers'][0]['remise']} % jusqu'au 31 décembre 2026 inclus, puis de {sites.LANCEMENT['paliers'][1]['remise']} % jusqu'au 31 mars 2027 inclus, ainsi que les options à l'unité payées avec la formule lors de la première commande (prix arrondi à l'euro supérieur). Les options ajoutées plus tard et les passages à une formule supérieure sont au prix normal.</p>
 
 <h2>4. Commande</h2>
 <ol>

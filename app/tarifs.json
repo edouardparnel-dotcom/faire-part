@@ -4,34 +4,58 @@
   "formules": {
    "faire-part": {
     "nom": "Faire-part",
-    "prix": 79,
+    "prix": 125,
     "inclus": [],
     "lancement": {
-     "prix": 39,
-     "jusqu": "2026-12-01T00:00:00+01:00",
+     "prix": 88,
+     "jusqu": "2027-01-01T00:00:00+01:00",
      "places": 50,
-     "options": 0.5,
-     "texte": "39 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 79 €"
+     "options": 0.7,
+     "paliers": [
+      {
+       "jusqu": "2027-01-01T00:00:00+01:00",
+       "prix": 88,
+       "options": 0.7
+      },
+      {
+       "jusqu": "2027-04-01T00:00:00+02:00",
+       "prix": 107,
+       "options": 0.85
+      }
+     ],
+     "texte": "88 € pour les 50 premiers couples, jusqu’au 31 décembre, puis 125 €"
     }
    },
    "signature": {
     "nom": "Signature",
-    "prix": 190,
+    "prix": 199,
     "inclus": [
      "ceremonies",
      "savethedate"
     ],
     "lancement": {
-     "prix": 95,
-     "jusqu": "2026-12-01T00:00:00+01:00",
+     "prix": 140,
+     "jusqu": "2027-01-01T00:00:00+01:00",
      "places": 50,
-     "options": 0.5,
-     "texte": "95 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 190 €"
+     "options": 0.7,
+     "paliers": [
+      {
+       "jusqu": "2027-01-01T00:00:00+01:00",
+       "prix": 140,
+       "options": 0.7
+      },
+      {
+       "jusqu": "2027-04-01T00:00:00+02:00",
+       "prix": 170,
+       "options": 0.85
+      }
+     ],
+     "texte": "140 € pour les 50 premiers couples, jusqu’au 31 décembre, puis 199 €"
     }
    },
    "prestige": {
     "nom": "Prestige",
-    "prix": 390,
+    "prix": 399,
     "inclus": [
      "ceremonies",
      "savethedate",
@@ -45,11 +69,23 @@
      "musique"
     ],
     "lancement": {
-     "prix": 195,
-     "jusqu": "2026-12-01T00:00:00+01:00",
+     "prix": 280,
+     "jusqu": "2027-01-01T00:00:00+01:00",
      "places": 50,
-     "options": 0.5,
-     "texte": "195 € pour les 50 premiers couples, jusqu’au 30 novembre, puis 390 €"
+     "options": 0.7,
+     "paliers": [
+      {
+       "jusqu": "2027-01-01T00:00:00+01:00",
+       "prix": 280,
+       "options": 0.7
+      },
+      {
+       "jusqu": "2027-04-01T00:00:00+02:00",
+       "prix": 340,
+       "options": 0.85
+      }
+     ],
+     "texte": "280 € pour les 50 premiers couples, jusqu’au 31 décembre, puis 399 €"
     }
    }
   },

@@ -230,6 +230,11 @@
 "nom": "Grand Hôtel"
 },
 {
+"src": "../grand-hotel/fond.jpg",
+"cat": "Matières et fonds",
+"nom": "Grand Hôtel"
+},
+{
 "src": "../grand-hotel/photo.jpg",
 "cat": "Ambiances",
 "nom": "Grand Hôtel"
@@ -237,6 +242,11 @@
 {
 "src": "../heritage/lieu.webp",
 "cat": "Lieux",
+"nom": "Héritage"
+},
+{
+"src": "../heritage/fond.jpg",
+"cat": "Matières et fonds",
 "nom": "Héritage"
 },
 {

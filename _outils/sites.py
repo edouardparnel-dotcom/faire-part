@@ -49,21 +49,40 @@ OPTIONS_EVENEMENT = [
 ]
 
 # Formules : nom, prix, options incluses, lignes affichées
-# Prix de lancement de la formule Faire-part : 39 € pour les 50 premiers couples, jusqu'au 30 novembre 2026 inclus, puis 79 €.
-# On annonce le prix à venir (« puis 79 € »), jamais un faux prix barré : la formule n'a encore jamais été vendue 79 €.
-# Lancement : moitié prix sur les trois formules mariage pour les 50 premiers couples, jusqu'au 30 novembre 2026 inclus.
-# On annonce le prix qui suivra (« puis 190 € »), jamais un faux prix barré : ces prix n'ont encore jamais été pratiqués.
-# Les options suivent la même remise (choix de Parnel, 12/11) : -50 % sur les options prises avec la formule au prix de lancement.
-LANCEMENT = dict(jusqu='2026-12-01T00:00:00+01:00', places=50, prix={'Faire-part': 39, 'Signature': 95, 'Prestige': 195}, options=0.5)
+# Lancement (Parnel 14/11) : les 50 premiers couples, par paliers pour garder une date proche pendant toute la saison d'achat
+# (les couples achètent surtout de janvier à avril) : -30 % jusqu'au 31 décembre 2026, puis -15 % jusqu'au 31 mars 2027 inclus.
+# Formules ET options payées avec la formule (premier paiement), arrondi à l'euro supérieur. Le serveur choisit le palier à la date du paiement.
+# On annonce le prix qui suivra (« puis 199 € »), jamais un faux prix barré : ces prix n'ont encore jamais été pratiqués.
+# ⚠️ Le 01/01/2027 puis le 01/04/2027 : relancer construire.py pour mettre à jour les textes et prix des pages statiques.
+LANCEMENT = dict(places=50, paliers=[dict(jusqu='2027-01-01T00:00:00+01:00', remise=30, fin='31 décembre'),
+                                      dict(jusqu='2027-04-01T00:00:00+02:00', remise=15, fin='31 mars')])
+def palier():
+    """Le palier en cours au moment de la construction des pages (None une fois le lancement fini)."""
+    import datetime
+    maintenant = datetime.datetime.now(datetime.timezone.utc)
+    return next((x for x in LANCEMENT['paliers'] if maintenant < datetime.datetime.fromisoformat(x['jusqu'])), None)
+def avec_remise(p, remise):
+    return math.ceil(p * (100 - remise) / 100 - 1e-9)
 def opt_lancement(p):
-    return math.ceil(p * LANCEMENT['options'])
+    pl = palier()
+    return avec_remise(p, pl['remise']) if pl else p
+def texte_lancement():
+    pl = palier()
+    if not pl:
+        return ''
+    suite = [x for x in LANCEMENT['paliers'] if x['jusqu'] > pl['jusqu']]
+    return f"-{pl['remise']} % jusqu’au {pl['fin']}" + (f", puis -{suite[0]['remise']} % jusqu’au {suite[0]['fin']}" if suite else '')
 def lancement(n, p):
-    return dict(prix=LANCEMENT['prix'][n], jusqu=LANCEMENT['jusqu'], places=LANCEMENT['places'], options=LANCEMENT['options'],
-                texte=f"{LANCEMENT['prix'][n]} € pour les 50 premiers couples, jusqu’au 30 novembre, puis {p} €") if n in LANCEMENT['prix'] else None
+    pl = palier()
+    if not pl or n not in ('Faire-part', 'Signature', 'Prestige'):
+        return None
+    return dict(prix=avec_remise(p, pl['remise']), jusqu=pl['jusqu'], places=LANCEMENT['places'], options=(100 - pl['remise']) / 100,
+                paliers=[dict(jusqu=x['jusqu'], prix=avec_remise(p, x['remise']), options=(100 - x['remise']) / 100) for x in LANCEMENT['paliers']],
+                texte=f"{avec_remise(p, pl['remise'])} € pour les 50 premiers couples, jusqu’au {pl['fin']}, puis {p} €")
 FORMULES_MARIAGE = [
-  ('Faire-part', 79, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à une formule supérieure à tout moment, en payant la différence"]),
-  ('Signature', 190, ['ceremonies', 'savethedate'], ["Tout le Faire-part", "Le site du mariage, liste de cadeaux et cagnotte", "Save-the-date et invitations par cérémonie", "Plan de table, budget, planning et prestataires", "Deux langues"]),
-  ('Prestige', 390, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Direct privé pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
+  ('Faire-part', 125, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à une formule supérieure à tout moment, en payant la différence"]),
+  ('Signature', 199, ['ceremonies', 'savethedate'], ["Tout le Faire-part", "Le site du mariage, liste de cadeaux et cagnotte", "Save-the-date et invitations par cérémonie", "Plan de table, budget, planning et prestataires", "Deux langues"]),
+  ('Prestige', 399, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Direct privé pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
 ]
 FORMULES_EVENEMENT = [
   ('Essentiel', 49, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),
@@ -73,10 +92,10 @@ FORMULES_EVENEMENT = [
 
 SITES = [
   dict(cle='mariage', dossier='', nom='Mariage', accent='#A8834A', evenements=('mariage',),
-    image='lanternes/photo.jpg', video='lanternes/ouverture.mp4', image2='orangerie/photo.jpg',
+    image='kreyol/photo.jpg', video='kreyol/ouverture.mp4', image2='orangerie/photo.jpg',
     titre_page="L'espace de votre mariage",
     h1="Plusieurs cérémonies, des invités venus de partout : <em>un seul lien</em>",
-    sous="Une invitation qui s'ouvre comme une vraie enveloppe, en musique. Chaque invité ne reçoit que les cérémonies auxquelles il est convié, dans sa langue, et répond en un geste. Sans publicité.",
+    sous="Pour les mariages afro, antillais, maghrébins, asiatiques et mixtes : une invitation aux codes de votre culture, qui s'ouvre en musique. Envoyée sur WhatsApp, chaque invité ne reçoit que les cérémonies auxquelles il est convié, dans sa langue. Sans publicité.",
     cta='Créer mon espace', essai=('espace/#tableau', "Essayer l'espace"),
     manifeste="Recevoir, c'est penser à chacun, qu'il vienne de la rue d'à côté ou de l'autre bout du monde. Votre espace s'occupe d'eux ; vous profitez de votre journée.",
     titre_espace="Pensé pour les mariages qui rassemblent",
@@ -90,12 +109,23 @@ SITES = [
     options=OPTIONS_MARIAGE, formules=FORMULES_MARIAGE,
     intro_collections="L'invitation donne le ton de votre réception. Chaque collection a sa direction artistique ; nous la reprenons à vos couleurs, à vos prénoms, à votre langue.",
     titre_collections='Cinquante collections, autant de façons de recevoir',
+    # le package de la niche (Parnel 14/11) : ce qu'un mariage entre plusieurs cultures demande, tout compris dans Prestige
+    package=('Le package Héritage', "Tout ce qu'un mariage entre deux cultures demande",
+             "Pour les familles qui viennent de plusieurs pays et les mariages en plusieurs cérémonies.",
+             [('Dans la langue de chacun', "Jusqu'à trois langues parmi quatorze, dont l'arabe, le créole haïtien, le yoruba, le swahili et le vietnamien."),
+              ('Envoyé sur WhatsApp', "Chaque invité reçoit son lien à son prénom et ouvre l'enveloppe sur son téléphone, sans rien installer."),
+              ('Chaque cérémonie, ses invités', "Dot, coutumier, henné, mairie, église, soirée : chacun ne reçoit que ce à quoi il est convié."),
+              ('Le plan de table', "Vous placez vos invités par table ; chacun retrouve la sienne sur son téléphone."),
+              ("Le QR code à l'entrée", "Le jour J, votre équipe scanne les invitations : vous savez qui est arrivé, sans liste papier."),
+              ('Le mur photo', "Les photos de vos invités s'affichent en direct sur grand écran, puis restent dans votre album.")],
+             'Prestige'),
     # ordre alterné : deux collections voisines ne s'ouvrent pas de la même façon (livre, enveloppe, portes, papillon…)
-    groupes=[('À la une', "Nos collections signatures : le faste d'un palace parisien, des lanternes qui s'envolent au-dessus d'un lac, et la douceur d'une aquarelle au bord de la mer.", ['grand-hotel', 'lanternes', 'marine']),
+    # la niche à la une (Parnel 14/11) : les Héritages d'abord, les signatures intemporelles ensuite
+    groupes=[('À la une', "Nos Héritages : le « Krik ? Krak ! » d'Haïti, la takchita du Maroc, l'indigo royal du Cameroun. Chaque tenue, chaque motif est vérifié.", ['kreyol', 'takchita', 'ndop']),
              ('Héritages', "Les codes des cultures d'Afrique, d'Orient, des Antilles et des Amériques, travaillés avec finesse.",
-              ['kreyol', 'karakou', 'ndop', 'kanaval', 'takchita', 'keswa', 'huipil', 'kente', 'bindalli', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'owambe', 'toghu', 'teranga', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'adinkra']),
+              ['karakou', 'kente', 'teranga', 'kanaval', 'keswa', 'owambe', 'huipil', 'bindalli', 'lakay', 'bazin', 'heritage', 'karabela', 'madras', 'toghu', 'sape', 'kita', 'tibeb', 'imbali', 'liputa', 'adinkra']),
              ('Asie', "Les tenues de mariage d'Asie, leurs couleurs et leurs gestes, vérifiés avec soin.", ['qunkwa', 'aodai', 'lehenga', 'hanbok', 'kanchipuram', 'shiromuku']),
-             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['gatsby', 'porcelaine', 'chapelle', 'versailles', 'faubourg', 'opera', 'orangerie', 'classique', 'emeraude', 'bordeaux', 'ivoire', 'soie', 'monogramme', 'boheme', 'champetre']),
+             ('Intemporels', "Des lignes classiques, pour un mariage hors du temps.", ['grand-hotel', 'lanternes', 'marine', 'gatsby', 'porcelaine', 'chapelle', 'versailles', 'faubourg', 'opera', 'orangerie', 'classique', 'emeraude', 'bordeaux', 'ivoire', 'soie', 'monogramme', 'boheme', 'champetre']),
              ('Univers', "Pour les passionnés : une saga au château, une nuit gothique, un mariage sous les étoiles.", ['citadelle', 'nocturne', 'celeste'])]),
   dict(cle='anniversaire', dossier='anniversaires', nom='Anniversaires', accent='#8E4A52', evenements=('anniversaire',),
     image='anniversaire-gala/decor-detail.jpg', image2='anniversaire-disco/decor-detail.jpg',
@@ -355,6 +385,26 @@ def page(site, modeles):
         groupes.append(f'      <div class="groupe{" une" if une else ""}">{tg}\n      <div class="oeuvres">\n' + '\n'.join(oeuvre(s, k, une) for k, s in enumerate(slugs)) + '\n      </div></div>')
 
     espace = '\n'.join(f'      <article class="revele"><h3>{e(t)}</h3><p>{e(p)}</p></article>' for t, p in site['espace'])
+
+    def bloc_package():
+        # le package de la niche, juste après l'ouverture, avec le prix de la formule qui contient tout
+        if not site.get('package'):
+            return ''
+        etq, titre, intro, points, formule = site['package']
+        f = next(x for x in site['formules'] if x[0] == formule)
+        l = lancement(formule, f[1]) if site['cle'] == 'mariage' else None
+        prix_txt = f"{prix(l['prix'])} au lancement, puis {prix(f[1])}" if l else prix(f[1])
+        cartes = '\n'.join(f'      <article class="revele"><h3>{e(t)}</h3><p>{e(p)}</p></article>' for t, p in points)
+        return f"""  <section id="package" class="package"><div class="conteneur">
+    <div class="titre-section revele"><span class="etq">{e(etq)}</span><h2>{e(titre)}</h2><p>{e(intro)}</p></div>
+    <div class="fonctions">
+{cartes}
+    </div>
+    <p class="note revele package-prix">Tout est inclus dans la formule <b>{e(formule)}</b> : {prix_txt}.</p>
+    <p class="note revele"><a class="btn" href="{creer}">{e(site['cta'])}</a> <a class="lien-or" href="#formules">Comparer les formules →</a></p>
+  </div></section>
+
+"""
     # Directions du moteur pour cet événement (le mariage renvoie au catalogue complet, trop long pour cette page).
     miennes = [t for t in THEMES if t['evt'] == site['cle']]
     catalogue = '' if site['cle'] == 'mariage' else f"""      <div class="groupe">{'<div class="groupe-tete"><h3>Directions artistiques</h3><p>Chacune a sa couverture, son programme et son rythme ; toutes existent en invitation, en annonce et en site.</p></div>' if site['groupes'] else ''}
@@ -363,9 +413,9 @@ def page(site, modeles):
           <span class="etq">{e(t['culture'])}</span><b>{e(t['nom'])}</b>
           <span class="liens-cat"><a href="{pre}app/fp.html?demo={t['id']}">Invitation</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=std">Annonce</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=site">Site</a></span></div>""" for t in miennes) + """
       </div></div>"""
-    # Mariage, pendant le lancement : l'option à moitié prix, puis son prix normal (jamais de faux prix barré).
+    # Mariage, pendant le lancement : l'option à prix de lancement, puis son prix normal (jamais de faux prix barré).
     def tarif(p):
-        if site['cle'] == 'mariage' and isinstance(p, int):
+        if site['cle'] == 'mariage' and isinstance(p, int) and palier():
             return f'{prix(opt_lancement(p))}<small class="puis"> puis {prix(p)}</small>'
         return prix(p)
     moments = []
@@ -404,7 +454,7 @@ def page(site, modeles):
     return tete(site, pre, f"{MARQUE} · {site['nom']}", site['sous']) + f"""
 <header class="entete"><div class="conteneur">
   <a class="marque" href="#haut"><b>{e(MARQUE)}</b><span>{e(site['nom'])}</span></a>
-  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a><a href="#espace">L'espace</a><a href="#formules">Formules</a><a href="#options">Options</a>{nav_essai}<a class="espace" href="{pre}app/organisateur.html">Mon espace</a>{'<a class="langue" href="en/" lang="en" aria-label="English version">EN</a>' if site['cle'] == 'mariage' else ''}<a class="rdv" href="{creer}">{e(site['cta'])}</a></nav>
+  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a>{'<a href="#package">Le package</a>' if site.get('package') else ''}<a href="#espace">L'espace</a><a href="#formules">Formules</a><a href="#options">Options</a>{nav_essai}<a class="espace" href="{pre}app/organisateur.html">Mon espace</a>{'<a class="langue" href="en/" lang="en" aria-label="English version">EN</a>' if site['cle'] == 'mariage' else ''}<a class="rdv" href="{creer}">{e(site['cta'])}</a></nav>
 </div></header>
 
 <main id="haut">
@@ -415,12 +465,12 @@ def page(site, modeles):
       <p>{e(site['sous'])}</p>
       <div class="actions"><a class="btn" href="{creer}">{e(site['cta'])}</a>{essai}</div>
       <p class="rassure">Gratuit jusqu'à la publication : vous préparez tout, vous ne payez qu'au moment d'envoyer le lien à vos invités.</p>
-      {f'<p class="lancement-accueil"><a href="#formules">Lancement : -50 % sur toutes les formules et les options pour les 50 premiers couples, jusqu’au 30 novembre.</a></p>' if site['cle'] == 'mariage' else ''}
+      {f'<p class="lancement-accueil"><a href="#formules">Lancement, pour les 50 premiers couples : {texte_lancement()} sur toutes les formules et les options.</a></p>' if site['cle'] == 'mariage' and palier() else ''}
     </div>
     <div class="arche revele">{f'<video src="{pre}{site["video"]}" poster="{pre}{site["image"]}" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>' if site.get('video') else f'<img src="{pre}{site["image"]}" alt="" fetchpriority="high">'}</div>
   </div>
 
-  <section class="manifeste">{decor_paral(pre, [('lanternes/ouverture.webp', 'left:-50px;top:14%;width:260px', -12, .18), ('takchita/sceau.webp', 'right:9%;top:16%;width:104px', 10, -.14),
+{bloc_package()}  <section class="manifeste">{decor_paral(pre, [('lanternes/ouverture.webp', 'left:-50px;top:14%;width:260px', -12, .18), ('takchita/sceau.webp', 'right:9%;top:16%;width:104px', 10, -.14),
                                     ('kanaval/papillon.webp', 'right:4%;bottom:10%;width:92px', 16, .32), ('grand-hotel/cachet.webp', 'left:12%;bottom:8%;width:74px', -6, -.24)]) if site['cle'] == 'mariage' else ''}<div class="conteneur revele">
     <span class="etq">L'art de recevoir</span>
     <div style="height:22px"></div>
@@ -566,9 +616,10 @@ def page_creer(modeles):
 const D = """ + js + """;
 const q = new URLSearchParams(location.search);
 let evt = D[q.get('evt')] ? q.get('evt') : 'mariage', choix = { modele: 0, formule: q.has('formule') ? +q.get('formule') : -1, options: new Set() };
-const prixF = f => f.lancement && Date.now() < Date.parse(f.lancement.jusqu) ? f.lancement.prix : f.prix;
+const palierF = f => f.lancement ? (f.lancement.paliers || [f.lancement]).find(p => Date.now() < Date.parse(p.jusqu)) : null;
+const prixF = f => palierF(f)?.prix ?? f.prix;
 // Options : même remise que la formule pendant le lancement (le serveur recalcule le montant).
-const prixO = (o, f) => prixF(f) < f.prix && f.lancement.options ? Math.ceil(o.prix * f.lancement.options) : o.prix;
+const prixO = (o, f) => prixF(f) < f.prix && palierF(f)?.options ? Math.ceil(o.prix * palierF(f).options - 1e-9) : o.prix;
 const $ = id => document.getElementById(id), eur = n => n.toLocaleString('fr-FR') + ' €';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
@@ -643,11 +694,11 @@ history.replaceState(null, '', `?evt=${evt}` + (choix.formule ? `&formule=${choi
 
 
 def page_partenaires():
-    """Page des wedding planners : vos couples ont 10 % de remise avec votre code, vous touchez 10 % de ce qu'ils paient."""
+    """Page des wedding planners : vos couples ont 10 % de remise avec votre code, vous touchez 20 % de ce qu'ils paient."""
     site, pre, e = SITES[0], '../', escape
     exemples = [(n, p) for n, p, inc, l in site['formules'] if p]
-    lignes = ''.join(f'<tr><td>{e(n)}</td><td>{prix(p)}</td><td>{prix(p - round(p * .1))}</td><td><b>{prix(round((p - round(p * .1)) * .1))}</b></td></tr>' for n, p in exemples)
-    return tete(site, pre, f"{MARQUE} · Partenaires wedding planners", "Wedding planners : vos couples ont 10 % de remise sur leur espace mariage, vous touchez 10 % de ce qu'ils paient.") + f"""
+    lignes = ''.join(f'<tr><td>{e(n)}</td><td>{prix(p)}</td><td>{prix(p - round(p * .1))}</td><td><b>{prix(round((p - round(p * .1)) * .2))}</b></td></tr>' for n, p in exemples)
+    return tete(site, pre, f"{MARQUE} · Partenaires wedding planners", "Wedding planners : vos couples ont 10 % de remise sur leur espace mariage, vous touchez 20 % de ce qu'ils paient.") + f"""
 <header class="entete"><div class="conteneur">
   <a class="marque" href="{pre}index.html"><b>{e(MARQUE)}</b><span>Partenaires</span></a>
   <nav class="nav" aria-label="Sections"><a href="#principe">Le principe</a><a href="#exemples">Exemples</a><a href="#rejoindre">Nous rejoindre</a><a class="rdv" href="mailto:contact@maisonvivat.com?subject=Partenariat%20wedding%20planner">Demander mon code</a></nav>
@@ -656,7 +707,7 @@ def page_partenaires():
   <section><div class="conteneur mesure-texte revele">
     <span class="etq">Wedding planners, lieux de réception</span>
     <h1 class="serif" style="font-weight:500;font-size:clamp(36px,5vw,58px);line-height:1.06;margin:16px 0 20px">Offrez à vos couples<br><em>l'espace de leur mariage</em></h1>
-    <p>Invitation animée, site du mariage, réponses par cérémonie, plan de table, entrée des invités, photos : tout se pilote depuis un seul espace, que vous pouvez suivre avec eux. Vos couples ont <b>10 % de remise</b> avec votre code ; vous recevez <b>10 % de ce qu'ils paient</b>.</p>
+    <p>Invitation animée, site du mariage, réponses par cérémonie, plan de table, entrée des invités, photos : tout se pilote depuis un seul espace, que vous pouvez suivre avec eux. Vos couples ont <b>10 % de remise</b> avec votre code ; vous recevez <b>20 % de ce qu'ils paient</b>.</p>
   </div></section>
 
   <section id="principe"><div class="conteneur">
@@ -664,7 +715,7 @@ def page_partenaires():
     <div class="fonctions">
       <article class="revele"><h3>Votre code</h3><p>Nous vous remettons un code et un lien personnels. Vous les transmettez à vos couples, rien d'autre à installer.</p></article>
       <article class="revele"><h3>10 % pour vos couples</h3><p>La remise s'applique toute seule au paiement, sur la formule comme sur les options.</p></article>
-      <article class="revele"><h3>10 % pour vous</h3><p>Calculés sur ce que le couple a réellement payé, versés chaque mois sur votre facture d'apport d'affaires.</p></article>
+      <article class="revele"><h3>20 % pour vous</h3><p>Calculés sur ce que le couple a réellement payé, versés chaque mois sur votre facture d'apport d'affaires.</p></article>
       <article class="revele"><h3>Vous gardez la main</h3><p>Le couple peut vous inviter dans son espace au rôle de wedding planner : réponses, plan de table, déroulé du jour J.</p></article>
     </div>
   </div></section>
