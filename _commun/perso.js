@@ -91,7 +91,10 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule }) {
   document.getElementById('histoire')?.setAttribute('hidden', '');
   // L'ouverture 3D est dorée aux prénoms de la démonstration : on le dit, les vôtres y sont posés à la validation.
   const film = document.querySelector('.ouv-film-cadre');
-  if (film) {
+  // Formule validée : la vidéo dorée à leurs prénoms (backend/outils/videos-couples.cjs) remplace celle de la démonstration.
+  const v = film?.querySelector('video.ouv-film');
+  if (v && P.video?.url) { v.src = P.video.url; v.removeAttribute('poster'); v.load(); }
+  else if (film) {
     const m = document.createElement('p');
     m.className = 'perso-mention';
     m.textContent = 'Aperçu : vos prénoms seront dorés sur la carte de cette ouverture à la validation de votre formule.';
