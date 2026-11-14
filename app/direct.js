@@ -31,6 +31,8 @@ export function choisir(cameras, etat, actuelle, depuis) {
 const urls = new Map();
 const url = chemin => urls.get(chemin) || urls.set(chemin, getDownloadURL(ref(storage, chemin))).get(chemin);
 
+const BTN = 'border:0;border-radius:16px;padding:6px 10px;background:rgba(255,255,255,.2);color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer';
+
 // Lecteur : conteneur → deux vidéos qui se relaient, un bandeau d'état, un bouton son.
 // affiche : { images: [chemins à essayer dans l'ordre], titre, date } = l'invitation du mariage, montrée tant que rien ne joue.
 export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x, affiche = null } = {}) {
@@ -43,10 +45,17 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       <p class="direct-affiche-date" style="position:relative;margin:6px 0 0;font:400 14px system-ui,sans-serif;opacity:.9"></p>
       <p class="direct-affiche-msg" style="position:relative;margin:10px 0 0;font:600 13px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase"></p></div>` : ''}
     <p class="direct-etat" style="position:absolute;left:10px;top:10px;margin:0;padding:4px 10px;border-radius:20px;background:rgba(0,0,0,.6);color:#fff;font:600 12px/1.4 system-ui,sans-serif"></p>
+    ${muet ? '' : `<div class="direct-cmd" style="position:absolute;left:0;right:0;bottom:0;display:none;gap:6px;align-items:center;padding:16px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font:600 12px system-ui,sans-serif">
+      <button type="button" data-c="-10" class="rd" title="${t('Reculer de 10 secondes')}" style="${BTN}">−10</button><button type="button" data-c="pp" class="rd" title="${t('Lecture ou pause')}" style="${BTN}">❚❚</button><button type="button" data-c="10" class="rd" title="${t('Avancer de 10 secondes')}" style="${BTN}">+10</button>
+      <input type="range" data-c="pos" class="rd" min="0" max="1" step="0.5" value="0" style="flex:1;min-width:40px;accent-color:#fff">
+      <span class="rd direct-temps" style="white-space:nowrap">0:00</span>
+      <button type="button" data-c="son" title="${t('Couper ou remettre le son')}" style="${BTN};margin-left:auto">🔊</button></div>`}
     ${muet ? '' : `<button type="button" class="direct-son" style="position:absolute;inset:0;margin:auto;width:max-content;height:max-content;padding:12px 20px;border:0;border-radius:30px;background:rgba(255,255,255,.92);font:600 15px system-ui,sans-serif;cursor:pointer">${t('Lancer le direct')}</button>`}
   </div>`;
-  const [A, B] = conteneur.querySelectorAll('video'), etatEl = conteneur.querySelector('.direct-etat'), son = conteneur.querySelector('.direct-son');
-  let devant = A, derriere = B, cameras = [], etat = {}, cam = null, depuis = 0, prochain = null, segs = [], arret = () => {}, mode = 'attente', fileRediff = [], pret = muet, rediffVue = false, chargeRediff = false;
+  const [A, B] = conteneur.querySelectorAll('video'), etatEl = conteneur.querySelector('.direct-etat'), son = conteneur.querySelector('.direct-son'), cmd = conteneur.querySelector('.direct-cmd');
+  let devant = A, derriere = B, cameras = [], etat = {}, cam = null, depuis = 0, prochain = null, segs = [], arret = () => {}, mode = 'attente', pret = muet, rediffVue = false, chargeRediff = false;
+  // Rediffusion : la liste complète, le rang du prochain morceau à charger, le début de chaque morceau (secondes) et la durée totale
+  let rediff = [], kSuivant = 0, debuts = [], total = 0, enCours = null, gen = 0;
   const afficher = x => { etatEl.textContent = x; };
   // L'affiche de l'invitation : première image qui existe, aux prénoms et à la date du couple
   const aff = conteneur.querySelector('.direct-affiche');
@@ -78,7 +87,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     if (!choix && mode === 'direct' && !cameras.some(enDirect)) { mode = 'attente'; cam = null; prochain = null; arret(); rediffVue = false; setTimeout(() => { if (!cameras.some(enDirect)) rediffusion(); }, 6000); }
     if (!choix && mode === 'attente' && !rediffVue) rediffusion();
     const c = cameras.find(x => x.id === cam);
-    if (mode === 'direct') { afficher(`● ${t('En direct')}${c?.nom ? ' · ' + c.nom : ''}`); if (!pret) montrerAffiche(true, '● ' + t('En direct')); }
+    if (mode === 'direct') { if (cmd && cmd.style.display === 'flex') commandes(); afficher(`● ${t('En direct')}${c?.nom ? ' · ' + c.nom : ''}`); if (!pret) montrerAffiche(true, '● ' + t('En direct')); }
   }
 
   // Rediffusion : tous les morceaux, dans l'ordre du temps ; à chaque instant la caméra la plus stable.
@@ -89,12 +98,16 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       .then(s => s.docs.map(d => ({ cam: c.id, ...d.data() })))))).flat().sort((a, b) => a.t - b.t);
     chargeRediff = false;
     if (mode !== 'rediffusion') return;   // une caméra a repris pendant le chargement : le direct passe avant
-    fileRediff = [];
+    rediff = [];
     for (const s of tous) {   // un morceau par tranche de 4 s : le plus stable de ceux qui se chevauchent
-      const der = fileRediff.at(-1);
-      if (der && s.t < der.t + DUREE * 1000 * 0.75) { if (s.stab > der.stab + 0.2) fileRediff[fileRediff.length - 1] = s; } else fileRediff.push(s);
+      const der = rediff.at(-1);
+      if (der && s.t < der.t + DUREE * 1000 * 0.75) { if (s.stab > der.stab + 0.2) rediff[rediff.length - 1] = s; } else rediff.push(s);
     }
-    if (!fileRediff.length) { mode = 'attente'; montrerAffiche(true, t('Le direct commencera bientôt')); return; }
+    rediff.forEach((s, k) => { s.k = k; });
+    debuts = []; total = 0; for (const s of rediff) { debuts.push(total); total += s.d || DUREE; }
+    kSuivant = 0;
+    if (cmd) { const pos = cmd.querySelector('[data-c=pos]'); pos.max = Math.max(1, total); pos.value = 0; }
+    if (!rediff.length) { mode = 'attente'; montrerAffiche(true, t('Le direct commencera bientôt')); return; }
     afficher(t('Rediffusion'));
     montrerAffiche(!pret, t('Rediffusion'));
     if (pret) lancer();
@@ -108,7 +121,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       prochain = s.n + 1;
       return s;
     }
-    if (mode === 'rediffusion') return fileRediff.shift() || null;
+    if (mode === 'rediffusion') return kSuivant < rediff.length ? rediff[kSuivant++] : null;
     return null;
   }
 
@@ -116,10 +129,12 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   let charge = null;
   async function preparer() {
     if (charge) return;
-    const s = await suivant();
-    if (!s) { setTimeout(preparer, 1000); return; }
+    const g = gen, s = await suivant();
+    if (!s) { setTimeout(() => g === gen && preparer(), 1000); return; }
+    const u = await url(s.chemin);
+    if (g !== gen) return;   // on a sauté ailleurs entre-temps
     charge = s;
-    derriere.src = await url(s.chemin);
+    derriere.src = u;
     derriere.load();
   }
   async function permuter() {
@@ -127,15 +142,15 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       await preparer();
       if (!charge) {
         // fin de la rediffusion : l'affiche revient, avec de quoi la revoir
-        if (mode === 'rediffusion' && !chargeRediff && !fileRediff.length) { mode = 'attente'; finRediff(); return; }
+        if (mode === 'rediffusion' && !chargeRediff && kSuivant >= rediff.length) { mode = 'attente'; finRediff(); return; }
         setTimeout(permuter, 500); return;
       }
     }
     [devant, derriere] = [derriere, devant];
     devant.style.visibility = 'visible'; derriere.style.visibility = 'hidden';
     if (devant.videoWidth) cadre.style.aspectRatio = `${devant.videoWidth}/${devant.videoHeight}`;
-    charge = null;
-    try { await devant.play(); montrerAffiche(false); } catch { if (son) son.hidden = false; }
+    enCours = charge; charge = null;
+    try { await devant.play(); montrerAffiche(false); commandes(); } catch { if (son) son.hidden = false; }
     derriere.pause();
     preparer();
   }
@@ -144,9 +159,46 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   A.onloadedmetadata = B.onloadedmetadata = e => { if (e.target === devant || !devant.videoWidth) { const v = e.target; if (v.videoWidth) cadre.style.aspectRatio = `${v.videoWidth}/${v.videoHeight}`; } };
   A.onended = B.onended = e => { if (e.target === devant) permuter(); };
   A.onerror = B.onerror = e => { if (e.target === devant) permuter(); else { charge = null; preparer(); } };
+  // Commandes : visibles quand une vidéo joue ; lecture, avance, recul et position seulement en rediffusion
+  const mmss = x => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
+  function commandes() {
+    if (!cmd) return;
+    cmd.style.display = 'flex';
+    cmd.querySelectorAll('.rd').forEach(el => { el.style.display = mode === 'rediffusion' ? '' : 'none'; });
+    cmd.querySelector('[data-c=pp]').textContent = devant.paused ? '▶' : '❚❚';
+    cmd.querySelector('[data-c=son]').textContent = A.muted ? '🔇' : '🔊';
+  }
+  function temps() {
+    if (!cmd || mode !== 'rediffusion' || enCours?.k === undefined) return;
+    const x = debuts[enCours.k] + devant.currentTime, pos = cmd.querySelector('[data-c=pos]');
+    if (document.activeElement !== pos) pos.value = x;
+    cmd.querySelector('.direct-temps').textContent = `${mmss(x)} / ${mmss(total)}`;
+  }
+  A.ontimeupdate = B.ontimeupdate = e => { if (e.target === devant) temps(); };
+  A.onplay = B.onplay = A.onpause = B.onpause = e => { if (e.target === devant) commandes(); };
+  // Aller à un instant de la rediffusion : le bon morceau directement devant, au bon endroit, puis la suite derrière
+  async function aller(x) {
+    if (mode !== 'rediffusion' || !rediff.length) return;
+    x = Math.max(0, Math.min(total - 0.5, x));
+    let k = debuts.findIndex((d, i) => x < d + (rediff[i].d || DUREE)); if (k < 0) k = rediff.length - 1;
+    gen++; charge = null; kSuivant = k + 1; enCours = rediff[k];
+    const enPause = devant.paused, v = devant;
+    v.src = await url(rediff[k].chemin);
+    v.addEventListener('loadedmetadata', () => { v.currentTime = x - debuts[k]; if (!enPause) v.play().catch(() => {}); temps(); }, { once: true });
+    preparer();
+  }
+  if (cmd) cmd.addEventListener('click', e => {
+    const c = e.target.closest('[data-c]')?.dataset.c;
+    if (c === 'son') { A.muted = B.muted = !A.muted; commandes(); }
+    if (c === 'pp') { if (devant.paused) devant.play().catch(() => {}); else devant.pause(); }
+    if (c === '-10' || c === '10') aller(debuts[enCours?.k ?? 0] + devant.currentTime + Number(c));
+  });
+  if (cmd) cmd.querySelector('[data-c=pos]').addEventListener('change', e => aller(Number(e.target.value)));
+
   function lancer() { pret = true; if (son) son.hidden = true; if (!devant.src || devant.ended) permuter(); }
   function finRediff() {
     devant.pause(); devant.style.visibility = 'hidden';
+    if (cmd) cmd.style.display = 'none';
     montrerAffiche(true, t('Rediffusion terminée'));
     if (son) { son.textContent = t('Revoir la rediffusion'); son.hidden = false; son.onclick = () => { son.onclick = lancer; son.hidden = true; rediffVue = false; devant.removeAttribute('src'); rediffusion(); }; }
   }
