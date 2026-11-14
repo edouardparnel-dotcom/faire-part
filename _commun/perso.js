@@ -21,9 +21,31 @@ if (E) {
       const outils = { esc, dateLongue, heure, majuscule, nuanciers: await fetch('../_commun/nuanciers.json?v=3').then(r => r.json()).catch(() => ({})) };
       window.persoAppliquer = ev => appliquer(ev, outils);
       appliquer(s.data(), outils);
+      await programmeInvite(s.data(), outils, { db, auth, doc, getDoc, u });
     }
   } catch (err) { console.warn('Personnalisation', err); }
   document.documentElement.classList.remove('perso-attente');
+}
+
+// Lien personnel d'un invité, quand il y a plusieurs cérémonies : le programme ne montre que celles où il est convié
+// (le déroulé détaillé seulement s'il est convié à toutes). Le téléphone est relié à la fiche comme sur la page de réponse.
+async function programmeInvite(evt, outils, { db, auth, doc, getDoc, u }) {
+  const G = new URLSearchParams(location.search).get('g'), C = evt.ceremonies || [];
+  if (!G || C.length < 2) return;
+  try {
+    if (!u || u.isAnonymous) {
+      const { signInAnonymously, signOut } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js');
+      const { setDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
+      let moi = auth.currentUser || (await signInAnonymously(auth)).user, m = await getDoc(doc(db, `events/${E}/membres/${moi.uid}`));
+      if (m.exists() && m.data().token !== G) { await signOut(auth); moi = (await signInAnonymously(auth)).user; m = await getDoc(doc(db, `events/${E}/membres/${moi.uid}`)); }
+      if (!m.exists()) await setDoc(doc(db, `events/${E}/membres/${moi.uid}`), { token: G });
+    }
+    const inv = (await getDoc(doc(db, `events/${E}/invites/${G}`))).data();
+    if (!inv?.ceremonies?.length) return;
+    const miennes = C.filter(c => inv.ceremonies.includes(c.cle));
+    if (miennes.length === C.length) return;
+    appliquer({ ...evt, ceremonies: miennes, deroulePublic: [] }, outils);
+  } catch (err) { console.warn('Programme de l’invité', err); }
 }
 
 // Texte d'un élément : celui du couple, ou celui de la collection si la case est vide

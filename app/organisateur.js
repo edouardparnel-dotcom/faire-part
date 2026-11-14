@@ -6,6 +6,7 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
+import { LANGUES } from './langues.js?v=3';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -550,6 +551,9 @@ const VUES = {
         <label>Lieu<input name="lieu" value="${esc(evt.lieu)}" required></label>
         <label>Collection du faire-part<input name="modele" value="${esc(evt.modele || '')}" placeholder="lakay"></label>
         <label>Date limite de réponse<input name="dateLimiteReponse" type="date" value="${esc(evt.dateLimiteReponse || '')}"></label></div>
+        <h3 style="margin-top:16px">Langues de vos invités</h3>
+        <div class="coches">${Object.entries(LANGUES).map(([l, n]) => `<label><input type="checkbox" name="lg_${l}" ${l === 'fr' ? 'checked disabled' : (evt.design?.langues || []).includes(l) ? 'checked' : ''}>${esc(n)}</label>`).join('')}</div>
+        <p class="app-note">Français et ${a('langue') ? 'deux autres langues' : 'une autre langue'} au choix${a('langue') ? '' : ' (une troisième avec l’option « Langue supplémentaire »)'}. Chaque invité choisit sa langue sur sa page de réponse : réponses, programme, table et messages sont traduits. Le faire-part et le site gardent les textes que vous écrivez. Le créole haïtien, le swahili et le yoruba sont traduits par machine et pas encore relus : faites-les vérifier par un proche qui les parle.</p>
         <label style="margin-top:6px">Code d'accès du site (facultatif)<input name="code" maxlength="20" autocomplete="off" placeholder="${evt.codeAcces ? 'Un code est en place : tapez-en un nouveau, ou « aucun » pour le retirer' : 'Par exemple : NAIKA2027'}"></label>
         <p class="app-note">Avec un code, la page générale de l'invitation n'est visible qu'aux personnes qui le connaissent. Les liens personnels envoyés à vos invités s'ouvrent toujours directement.</p>
         <label class="coche" style="margin-top:6px"><input type="checkbox" name="notifReponses" ${evt.notifReponses === false ? '' : 'checked'}> Recevoir un courriel à chaque réponse d'invité</label>
@@ -904,7 +908,9 @@ document.addEventListener('submit', async ev => {
     await updateDoc(doc(db, 'events', E), { ceremonies: [...C, { cle: C.some(c => c.cle === cle) ? cle + '-' + C.length : cle, nom: f.nom, date: f.date, lieu: f.lieu }] });
   }
   if (id === 'f-reglages') {
-    await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f });
+    const langues = ['fr', ...Object.keys(LANGUES).filter(l => l !== 'fr' && ('lg_' + l) in f)], maxL = a('langue') ? 3 : 2;
+    if (langues.length > maxL) { if ($('#m-reglages')) $('#m-reglages').textContent = `${maxL} langues au plus avec votre formule : décochez-en une.`; return; }
+    await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f, 'design.langues': langues });
     if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim() }, { merge: true });
     const code = (f.code || '').trim();
     if (code) await updateDoc(doc(db, 'events', E), { codeAcces: code.toLowerCase() === 'aucun' ? '' : await empreinte(E, code) });
