@@ -163,7 +163,7 @@ function siteDuCouple(evt, P, esc, G) {
   if (c) {
     const aCagnotte = /^https:\/\//.test(cg.lien || '');
     c.hidden = !aCagnotte && !G;
-    c.querySelectorAll('ul, [data-demo-cagnotte], .bouton').forEach(x => x.remove());
+    c.querySelectorAll('ul, [data-demo-cagnotte], .bouton, .note-cadeaux').forEach(x => x.remove());
     const p = c.querySelector('p'); if (p && cg.texte) p.textContent = cg.texte;
     if (aCagnotte) c.insertAdjacentHTML('beforeend', `<a class="bouton plein" href="${esc(cg.lien)}" target="_blank" rel="noopener">${esc(cg.libelle || 'Participer à la cagnotte')}</a>`);
     if (G) c.insertAdjacentHTML('beforeend', `<a class="bouton" href="${lien}#cadeaux">Voir la liste et réserver un cadeau</a>`);
