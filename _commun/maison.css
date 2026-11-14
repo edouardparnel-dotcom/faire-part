@@ -1,7 +1,10 @@
 /* Maison : feuille commune aux quatre sites (mariage, anniversaires, baptêmes, gender reveal).
    Même direction artistique partout : ivoire, encre, filets fins, typographie à empattements.
    Chaque site ne change que --accent (posé dans sa page). */
-:root{--ivoire:#F7F3EC;--papier:#FFFDF9;--encre:#1E1B18;--doux:#6E665C;--filet:#DCD1BF;--accent:#A8834A}
+:root{--ivoire:#F7F3EC;--papier:#FFFDF9;--encre:#1E1B18;--doux:#6E665C;--filet:#DCD1BF;--accent:#A8834A;
+  /* Couleurs secondaires de la charte (les mêmes que les rubriques de l'espace client) : terracotta, prune, sauge, bleu nuit, framboise */
+  --terracotta:#C0603F;--terracotta-clair:#FBEAE3;--prune:#7A4E8C;--prune-clair:#F1E8F5;--sauge:#2E7A72;--sauge-clair:#E3F2EF;
+  --bleu:#3B5B8F;--bleu-clair:#E6EDF7;--framboise:#B5175A;--framboise-clair:#FBE6EE}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,sans-serif;font-weight:300;font-size:16px;line-height:1.7;color:var(--encre);background:var(--ivoire);-webkit-font-smoothing:antialiased}
@@ -22,7 +25,13 @@ a{color:inherit}
 .nav a:hover{color:var(--encre)}
 .nav .rdv{color:var(--encre);border:1px solid var(--encre);padding:9px 16px}
 .nav .rdv:hover{background:var(--encre);color:var(--ivoire)}
-@media (max-width:860px){.nav a:not(.rdv){display:none}.marque span{display:none}}
+.nav a{white-space:nowrap}
+.nav a.espace{background:var(--terracotta);color:#fff;padding:9px 16px;border-radius:999px;font-weight:400}
+.nav a.espace:hover{background:#A84E30;color:#fff}
+.nav a.langue{border:1px solid var(--bleu);color:var(--bleu);padding:6px 11px;border-radius:999px;font-weight:500;font-size:12px}
+.nav a.langue:hover{background:var(--bleu);color:#fff}
+@media (max-width:860px){.nav a:not(.rdv):not(.espace):not(.langue){display:none}.nav{gap:8px}.nav a.espace,.nav .rdv{padding:8px 11px;font-size:12px}}
+@media (max-width:520px){.nav .rdv{display:none}.marque{font-size:15px;letter-spacing:.2em}.marque span{display:none}}
 
 /* Ouverture */
 .ouverture{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding-top:72px;padding-bottom:56px}

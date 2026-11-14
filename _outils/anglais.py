@@ -95,7 +95,7 @@ def page():
 <body>
 <header class="entete"><div class="conteneur">
   <a class="marque" href="#haut"><b>Maison Vivat</b><span>Weddings</span></a>
-  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a><a href="#space">Your space</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="../">Français</a><a class="rdv" href="../creer/?evt=mariage">Start for free</a></nav>
+  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a><a href="#space">Your space</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a class="espace" href="../app/organisateur.html">My space</a><a class="langue" href="../" lang="fr" aria-label="Version française">FR</a><a class="rdv" href="../creer/?evt=mariage">Start for free</a></nav>
 </div></header>
 <main id="haut">
   <div class="conteneur ouverture">

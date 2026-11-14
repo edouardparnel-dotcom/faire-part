@@ -10,7 +10,7 @@ from html import escape
 from emotions import EMOTIONS
 
 MARQUE = 'Maison Vivat'   # domaine maisonvivat.com (acheté le 08/11/2026)
-CSS_V = 18               # augmenter à chaque modification de _commun/maison.css (cache GitHub Pages)
+CSS_V = 20               # augmenter à chaque modification de _commun/maison.css (cache GitHub Pages)
 
 ORN = '<svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50M70 7h50" stroke="currentColor" stroke-width=".8"/><path d="M60 1l6 6-6 6-6-6z" fill="none" stroke="currentColor" stroke-width=".8"/></svg>'
 
@@ -404,7 +404,7 @@ def page(site, modeles):
     return tete(site, pre, f"{MARQUE} · {site['nom']}", site['sous']) + f"""
 <header class="entete"><div class="conteneur">
   <a class="marque" href="#haut"><b>{e(MARQUE)}</b><span>{e(site['nom'])}</span></a>
-  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a><a href="#espace">L'espace</a><a href="#formules">Formules</a><a href="#options">Options</a>{nav_essai}<a href="{pre}app/organisateur.html">Mon espace</a>{'<a href="en/" lang="en">EN</a>' if site['cle'] == 'mariage' else ''}<a class="rdv" href="{creer}">{e(site['cta'])}</a></nav>
+  <nav class="nav" aria-label="Sections"><a href="#collections">Collections</a><a href="#espace">L'espace</a><a href="#formules">Formules</a><a href="#options">Options</a>{nav_essai}<a class="espace" href="{pre}app/organisateur.html">Mon espace</a>{'<a class="langue" href="en/" lang="en" aria-label="English version">EN</a>' if site['cle'] == 'mariage' else ''}<a class="rdv" href="{creer}">{e(site['cta'])}</a></nav>
 </div></header>
 
 <main id="haut">
