@@ -17,7 +17,7 @@ let invites = [], photos = [], livre = [], tables = [], budget = [], prestataire
 let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '';
 let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
 let COLLECTIONS = [], choisirCollection = false;
-fetch('collections.json?v=1').then(r => r.json()).then(l => { COLLECTIONS = l; rendre(); }).catch(() => {});
+fetch('collections.json?v=2').then(r => r.json()).then(l => { COLLECTIONS = l; rendre(); }).catch(() => {});
 let filtreEnvoi = 'aenvoyer', apercuImport = null, msgImport = '', avantPlacement = null, msgPlacement = '', recherche = '', enAttente = false;
 
 // Le lien partagé ouvre le faire-part personnel (fp.html) ; son bouton « Répondre » mène à la page invité.

@@ -3,300 +3,300 @@
   "slug": "grand-hotel",
   "nom": "Grand Hôtel",
   "culture": "Signature · palace parisien",
-  "img": "../grand-hotel/apercus/faire-part.webp"
+  "img": "../grand-hotel/apercus/vignette.webp"
  },
  {
   "slug": "marine",
   "nom": "Marine",
   "culture": "Intemporel · aquarelle",
-  "img": "../marine/apercus/faire-part.webp"
+  "img": "../marine/apercus/vignette.webp"
  },
  {
   "slug": "lanternes",
   "nom": "Lanternes",
   "culture": "Intemporel · nuit au bord de l’eau",
-  "img": "../lanternes/apercus/faire-part.webp"
+  "img": "../lanternes/apercus/vignette.webp"
  },
  {
   "slug": "lakay",
   "nom": "Lakay",
   "culture": "Lakou · maisons gingerbread",
-  "img": "../lakay/apercus/faire-part.webp"
+  "img": "../lakay/apercus/vignette.webp"
  },
  {
   "slug": "madras",
   "nom": "Madras",
   "culture": "Madras · tèt maré",
-  "img": "../madras/apercus/faire-part.webp"
+  "img": "../madras/apercus/vignette.webp"
  },
  {
   "slug": "kente",
   "nom": "Kente",
   "culture": "Kente · symboles adinkra",
-  "img": "../kente/apercus/faire-part.webp"
+  "img": "../kente/apercus/vignette.webp"
  },
  {
   "slug": "owambe",
   "nom": "Owambe",
   "culture": "Aso-ebi · gele",
-  "img": "../owambe/apercus/faire-part.webp"
+  "img": "../owambe/apercus/vignette.webp"
  },
  {
   "slug": "toghu",
   "nom": "Toghu",
   "culture": "Toghu · Grassfields",
-  "img": "../toghu/apercus/faire-part.webp"
+  "img": "../toghu/apercus/vignette.webp"
  },
  {
   "slug": "teranga",
   "nom": "Teranga",
   "culture": "Grand boubou · bazin",
-  "img": "../teranga/apercus/faire-part.webp"
+  "img": "../teranga/apercus/vignette.webp"
  },
  {
   "slug": "sape",
   "nom": "Sape",
   "culture": "La Sape · élégance",
-  "img": "../sape/apercus/faire-part.webp"
+  "img": "../sape/apercus/vignette.webp"
  },
  {
   "slug": "kita",
   "nom": "Kita",
   "culture": "Pagne kita · tissage baoulé",
-  "img": "../kita/apercus/faire-part.webp"
+  "img": "../kita/apercus/vignette.webp"
  },
  {
   "slug": "tibeb",
   "nom": "Tibeb",
   "culture": "Habesha kemis · tibeb",
-  "img": "../tibeb/apercus/faire-part.webp"
+  "img": "../tibeb/apercus/vignette.webp"
  },
  {
   "slug": "heritage",
   "nom": "Héritage",
   "culture": "Signature · Afrique de l’Ouest",
-  "img": "../heritage/apercus/faire-part.webp"
+  "img": "../heritage/apercus/vignette.webp"
  },
  {
   "slug": "karabela",
   "nom": "Karabela",
   "culture": "Karabela · robe quadrille",
-  "img": "../karabela/apercus/faire-part.webp"
+  "img": "../karabela/apercus/vignette.webp"
  },
  {
   "slug": "kanaval",
   "nom": "Kanaval",
   "culture": "Kanaval · Jacmel",
-  "img": "../kanaval/apercus/faire-part.webp"
+  "img": "../kanaval/apercus/vignette.webp"
  },
  {
   "slug": "karakou",
   "nom": "Karakou",
   "culture": "Karakou · khit errouh",
-  "img": "../karakou/apercus/faire-part.webp"
+  "img": "../karakou/apercus/vignette.webp"
  },
  {
   "slug": "takchita",
   "nom": "Takchita",
   "culture": "Takchita · sfifa et mdamma",
-  "img": "../takchita/apercus/faire-part.webp"
+  "img": "../takchita/apercus/vignette.webp"
  },
  {
   "slug": "bindalli",
   "nom": "Bindallı",
   "culture": "Bindallı · soirée du henné",
-  "img": "../bindalli/apercus/faire-part.webp"
+  "img": "../bindalli/apercus/vignette.webp"
  },
  {
   "slug": "huipil",
   "nom": "Huipil",
   "culture": "Huipil · lazo et arras",
-  "img": "../huipil/apercus/faire-part.webp"
+  "img": "../huipil/apercus/vignette.webp"
  },
  {
   "slug": "keswa",
   "nom": "Keswa",
   "culture": "Keswa · fouta et blouza",
-  "img": "../keswa/apercus/faire-part.webp"
+  "img": "../keswa/apercus/vignette.webp"
  },
  {
   "slug": "adinkra",
   "nom": "Adinkra",
   "culture": "Adinkra · symboles akan",
-  "img": "../adinkra/apercus/faire-part.webp"
+  "img": "../adinkra/apercus/vignette.webp"
  },
  {
   "slug": "bazin",
   "nom": "Bazin",
   "culture": "Bazin riche · grand boubou",
-  "img": "../bazin/apercus/faire-part.webp"
+  "img": "../bazin/apercus/vignette.webp"
  },
  {
   "slug": "kreyol",
   "nom": "Kreyòl",
   "culture": "Kreyòl · « Krik ? Krak ! »",
-  "img": "../kreyol/apercus/faire-part.webp"
+  "img": "../kreyol/apercus/vignette.webp"
  },
  {
   "slug": "ndop",
   "nom": "Ndop",
   "culture": "Ndop · indigo royal",
-  "img": "../ndop/apercus/faire-part.webp"
+  "img": "../ndop/apercus/vignette.webp"
  },
  {
   "slug": "liputa",
   "nom": "Liputa",
   "culture": "Liputa · pagne et rumba",
-  "img": "../liputa/apercus/faire-part.webp"
+  "img": "../liputa/apercus/vignette.webp"
  },
  {
   "slug": "imbali",
   "nom": "Imbali",
   "culture": "Perlage zoulou · umabo",
-  "img": "../imbali/apercus/faire-part.webp"
+  "img": "../imbali/apercus/vignette.webp"
  },
  {
   "slug": "qunkwa",
   "nom": "Qun kwa",
   "culture": "Qun kwa · cérémonie du thé",
-  "img": "../qunkwa/apercus/faire-part.webp"
+  "img": "../qunkwa/apercus/vignette.webp"
  },
  {
   "slug": "kanchipuram",
   "nom": "Kanchipuram",
   "culture": "Kanchipuram · sari de soie et zari",
-  "img": "../kanchipuram/apercus/faire-part.webp"
+  "img": "../kanchipuram/apercus/vignette.webp"
  },
  {
   "slug": "lehenga",
   "nom": "Lehenga",
   "culture": "Lehenga · varmala et mandap",
-  "img": "../lehenga/apercus/faire-part.webp"
+  "img": "../lehenga/apercus/vignette.webp"
  },
  {
   "slug": "shiromuku",
   "nom": "Shiromuku",
   "culture": "Shiromuku · cérémonie shintō",
-  "img": "../shiromuku/apercus/faire-part.webp"
+  "img": "../shiromuku/apercus/vignette.webp"
  },
  {
   "slug": "aodai",
   "nom": "Áo dài",
   "culture": "Áo dài · lotus",
-  "img": "../aodai/apercus/faire-part.webp"
+  "img": "../aodai/apercus/vignette.webp"
  },
  {
   "slug": "hanbok",
   "nom": "Hanbok",
   "culture": "Hanbok · pyebaek",
-  "img": "../hanbok/apercus/faire-part.webp"
+  "img": "../hanbok/apercus/vignette.webp"
  },
  {
   "slug": "champetre",
   "nom": "Champêtre",
   "culture": "Classique · campagne",
-  "img": "../champetre/apercus/faire-part.webp"
+  "img": "../champetre/apercus/vignette.webp"
  },
  {
   "slug": "boheme",
   "nom": "Bohème chic",
   "culture": "Classique · bohème",
-  "img": "../boheme/apercus/faire-part.webp"
+  "img": "../boheme/apercus/vignette.webp"
  },
  {
   "slug": "classique",
   "nom": "Classique",
   "culture": "Classique · intemporel",
-  "img": "../classique/apercus/faire-part.webp"
+  "img": "../classique/apercus/vignette.webp"
  },
  {
   "slug": "gatsby",
   "nom": "Gatsby",
   "culture": "Intemporel · années folles",
-  "img": "../gatsby/apercus/faire-part.webp"
+  "img": "../gatsby/apercus/vignette.webp"
  },
  {
   "slug": "emeraude",
   "nom": "Émeraude",
   "culture": "Intemporel · soirée précieuse",
-  "img": "../emeraude/apercus/faire-part.webp"
+  "img": "../emeraude/apercus/vignette.webp"
  },
  {
   "slug": "bordeaux",
   "nom": "Bordeaux",
   "culture": "Intemporel · vignoble",
-  "img": "../bordeaux/apercus/faire-part.webp"
+  "img": "../bordeaux/apercus/vignette.webp"
  },
  {
   "slug": "chapelle",
   "nom": "Chapelle",
   "culture": "Intemporel · bord de mer",
-  "img": "../chapelle/apercus/faire-part.webp"
+  "img": "../chapelle/apercus/vignette.webp"
  },
  {
   "slug": "faubourg",
   "nom": "Faubourg",
   "culture": "Intemporel · Paris",
-  "img": "../faubourg/apercus/faire-part.webp"
+  "img": "../faubourg/apercus/vignette.webp"
  },
  {
   "slug": "ivoire",
   "nom": "Ivoire",
   "culture": "Intemporel · broderie",
-  "img": "../ivoire/apercus/faire-part.webp"
+  "img": "../ivoire/apercus/vignette.webp"
  },
  {
   "slug": "porcelaine",
   "nom": "Porcelaine",
   "culture": "Intemporel · faïence",
-  "img": "../porcelaine/apercus/faire-part.webp"
+  "img": "../porcelaine/apercus/vignette.webp"
  },
  {
   "slug": "soie",
   "nom": "Soie",
   "culture": "Intemporel · dessin à l’encre",
-  "img": "../soie/apercus/faire-part.webp"
+  "img": "../soie/apercus/vignette.webp"
  },
  {
   "slug": "monogramme",
   "nom": "Monogramme",
   "culture": "Intemporel · papier découpé",
-  "img": "../monogramme/apercus/faire-part.webp"
+  "img": "../monogramme/apercus/vignette.webp"
  },
  {
   "slug": "orangerie",
   "nom": "Orangerie",
   "culture": "Intemporel · jardin d’hiver",
-  "img": "../orangerie/apercus/faire-part.webp"
+  "img": "../orangerie/apercus/vignette.webp"
  },
  {
   "slug": "opera",
   "nom": "Opéra",
   "culture": "Intemporel · grand soir",
-  "img": "../opera/apercus/faire-part.webp"
+  "img": "../opera/apercus/vignette.webp"
  },
  {
   "slug": "versailles",
   "nom": "Versailles",
   "culture": "Intemporel · royal",
-  "img": "../versailles/apercus/faire-part.webp"
+  "img": "../versailles/apercus/vignette.webp"
  },
  {
   "slug": "celeste",
   "nom": "Céleste",
   "culture": "Univers · sous les étoiles",
-  "img": "../celeste/apercus/faire-part.webp"
+  "img": "../celeste/apercus/vignette.webp"
  },
  {
   "slug": "citadelle",
   "nom": "Citadelle",
   "culture": "Univers · fantasy médiévale",
-  "img": "../citadelle/apercus/faire-part.webp"
+  "img": "../citadelle/apercus/vignette.webp"
  },
  {
   "slug": "nocturne",
   "nom": "Nocturne",
   "culture": "Univers · gothique romantique",
-  "img": "../nocturne/apercus/faire-part.webp"
+  "img": "../nocturne/apercus/vignette.webp"
  }
 ]

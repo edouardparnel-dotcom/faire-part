@@ -124,7 +124,7 @@ if (q.get('demo')) {
         try { await relier(); invite = (await getDoc(doc(db, `events/${E}/invites/${T}`))).data() || null; } catch { invite = null; }
       }
       // Collection réelle choisie : l'invité voit sa page, à vos prénoms (perso.js), avec son lien de réponse.
-      const reelles = await fetch('collections.json?v=1').then(r => r.json()).catch(() => []);
+      const reelles = await fetch('collections.json?v=2').then(r => r.json()).catch(() => []);
       if (evt.modele && reelles.some(x => x.slug === evt.modele)) {
         location.replace(`../${evt.modele}/${format === 'site' ? 'site' : 'faire-part'}.html?e=${encodeURIComponent(E)}${T ? '&g=' + encodeURIComponent(T) : ''}`);
         await new Promise(() => {});

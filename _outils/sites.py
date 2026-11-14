@@ -705,8 +705,8 @@ def page_collections(modeles=()):
         film = 'ouverture-3d.mp4' if os.path.exists(os.path.join(RACINE_MINI, slug, 'ouverture-3d.mp4')) else 'ouverture.mp4'
         return (f"""      <a class="vignette-cat main reelle" data-groupe="{e(groupe)}" href="../{slug}/faire-part.html" target="_blank" rel="noopener" """
                 f"""data-fp="../{slug}/faire-part.html" data-std="../{slug}/faire-part.html?f=std" data-site="../{slug}/{'site.html' if site_ok else 'index.html'}" """
-                f"""data-img-fp="{aper(slug, 'faire-part.webp')}" data-img-std="{aper(slug, 'save-the-date.webp')}" data-img-site="{aper(slug, 'site.webp')}">{badge}
-        <span class="cadre-cat"><img src="{aper(slug, 'faire-part.webp')}" alt="Collection {e(m['modele'])}" loading="lazy"><video class="survol" data-src="../{slug}/{film}" muted loop playsinline preload="none" aria-hidden="true"></video></span>
+                f"""data-img-fp="{aper(slug, 'vignette.webp')}" data-img-std="{aper(slug, 'save-the-date.webp')}" data-img-site="{aper(slug, 'site.webp')}">{badge}
+        <span class="cadre-cat"><img src="{aper(slug, 'vignette.webp')}" alt="Collection {e(m['modele'])}" loading="lazy"><video class="survol" data-src="../{slug}/{film}" muted loop playsinline preload="none" aria-hidden="true"></video></span>
         <span class="etq">{e(m['culture'])}</span><b>{e(m['modele'])}</b><small>{e(m['da'])}</small></a>""")
 
     vus, cartes, groupes_vus = set(), [], []
@@ -846,7 +846,7 @@ def construire_sites(modeles, racine):
     (racine / 'app' / 'tarifs.json').write_text(grille, encoding='utf-8')
     # Collections proposées dans l'espace du couple (choisir, changer de collection) : nom, culture, aperçu.
     cols = [dict(slug=m['slug'], nom=m['modele'], culture=m['culture'],
-                 img=f"../{m['slug']}/apercus/faire-part.webp" if (racine / m['slug'] / 'apercus' / 'faire-part.webp').exists() else f"../{m['slug']}/photo.jpg")
+                 img=next((f"../{m['slug']}/apercus/{n}" for n in ('vignette.webp', 'faire-part.webp') if (racine / m['slug'] / 'apercus' / n).exists()), f"../{m['slug']}/photo.jpg"))
             for _, _, slugs in SITES[0]['groupes'] for m in visibles if m['slug'] in slugs]
     vus = set(); cols = [c for c in cols if not (c['slug'] in vus or vus.add(c['slug']))]
     (racine / 'app' / 'collections.json').write_text(json.dumps(cols, ensure_ascii=False, indent=1), encoding='utf-8')
