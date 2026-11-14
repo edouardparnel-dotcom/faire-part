@@ -105,11 +105,15 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     if (!charge) { await preparer(); if (!charge) { setTimeout(permuter, 500); return; } }
     [devant, derriere] = [derriere, devant];
     devant.style.visibility = 'visible'; derriere.style.visibility = 'hidden';
+    if (devant.videoWidth) cadre.style.aspectRatio = `${devant.videoWidth}/${devant.videoHeight}`;
     charge = null;
     try { await devant.play(); } catch { if (son) son.hidden = false; }
     derriere.pause();
     preparer();
   }
+  // Le cadre prend la forme de la vidéo (téléphone tenu en largeur ou en hauteur)
+  const cadre = conteneur.querySelector('.direct-lecteur');
+  A.onloadedmetadata = B.onloadedmetadata = e => { if (e.target === devant || !devant.videoWidth) { const v = e.target; if (v.videoWidth) cadre.style.aspectRatio = `${v.videoWidth}/${v.videoHeight}`; } };
   A.onended = B.onended = e => { if (e.target === devant) permuter(); };
   A.onerror = B.onerror = e => { if (e.target === devant) permuter(); else { charge = null; preparer(); } };
   function lancer() { pret = true; if (son) son.hidden = true; if (!devant.src || devant.ended) permuter(); }
