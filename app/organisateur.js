@@ -16,6 +16,7 @@ const ROLES = { coorganisateur: 'Co-organisateur', planner: 'Wedding planner' };
 let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'accueil', abonnements = [];
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
 let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '', cameras = [], camerasCles = [];
+const MAX_CAMERAS = 3;   // direct : trois téléphones au plus par mariage
 const lienCamera = k => new URL(`filmer.html?e=${encodeURIComponent(E)}&k=${encodeURIComponent(k)}`, location.href).href;
 let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
 let COLLECTIONS = [], choisirCollection = false, NUANCIERS = {};
@@ -223,7 +224,7 @@ const VUES = {
       3. Le jour J, la régie choisit la caméra montrée ; sans régie, la caméra la plus stable passe automatiquement.<br>
       Tout est enregistré : quand personne ne filme, vos invités voient la rediffusion.</p>
       ${lignes || '<p class="app-note" style="margin-top:12px">Aucune caméra pour l\'instant.</p>'}
-      <div class="puces" style="margin-top:14px"><button type="button" class="btn petit" data-ajouter-camera>Ajouter une caméra</button><a class="btn petit clair" href="regie.html?e=${encodeURIComponent(E)}" target="_blank" rel="noopener">Ouvrir la régie</a></div></div>`;
+      <div class="puces" style="margin-top:14px">${camerasCles.length < MAX_CAMERAS ? '<button type="button" class="btn petit" data-ajouter-camera>Ajouter une caméra</button>' : `<span class="app-note">${MAX_CAMERAS} caméras au plus : retirez-en une pour en ajouter une autre.</span>`}<a class="btn petit clair" href="regie.html?e=${encodeURIComponent(E)}" target="_blank" rel="noopener">Ouvrir la régie</a></div></div>`;
   },
   // ── Vue d'ensemble : où en est-on, et quoi faire maintenant ────────────────
   accueil() {
@@ -709,6 +710,7 @@ document.addEventListener('click', async ev => {
   if (d.copierTexte) { await navigator.clipboard?.writeText(d.copierTexte).catch(() => {}); t.textContent = 'Lien copié'; return; }
   // Direct : une caméra = un lien secret (camerasCles) et une fiche publique pour les invités (cameras)
   if (d.ajouterCamera !== undefined) {
+    if (camerasCles.length >= MAX_CAMERAS) return;
     const cam = 'c' + Date.now().toString(36), secret = jeton() + jeton(), nomCam = `Caméra ${camerasCles.length + 1}`;
     await setDoc(doc(db, `events/${E}/cameras/${cam}`), { nom: nomCam, creeLe: serverTimestamp() });
     await setDoc(doc(db, `events/${E}/camerasCles/${secret}`), { cam, nom: nomCam });
