@@ -4,163 +4,88 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Efua & Kojo — Mariage (démonstration)</title>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Efua & Kojo vous invitent à célébrer leur union">
-<meta property="og:description" content="Samedi 21 août 2027 · Domaine des Acacias, Lyon.">
-<meta property="og:image" content="https://maisonvivat.com/heritage/apercu.jpg">
-<meta name="theme-color" content="#0F3B2E">
+<title>Efua &amp; Kojo — Mariage (démonstration)</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_commun/suite.css?v=9">
+<link rel="stylesheet" href="../_commun/vivant.css?v=16">
+<link rel="stylesheet" href="../_commun/trames.css?v=50">
+<script src="../_commun/vivant.js?v=25" defer></script>
+<link rel="stylesheet" href="../_commun/realiste.css?v=16">
 <style>
-/* Direction « Héritage » (collection réaliste) : enveloppe en kente tissé à fermoir doré, fond de wax,
-   carte ivoire bordée d'or, fleurs tropicales et table de réception. Photos détourées posées en couches. */
-:root{--fond-carte:#FBF6EC;--wax:#0F3B2E;--carte:#FBF6EC;--encre:#2B2A22;--doux:#6F6656;--or1:#B98A3E;--or2:#F0D58F;--or3:#7E5A1F;--emeraude:#0F4D3A}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--wax);color:var(--encre);font-family:'Cormorant Garamond',Georgia,serif;-webkit-font-smoothing:antialiased}
-body{background:radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),linear-gradient(rgba(13,52,40,.9),rgba(13,52,40,.9)),url('wax-tuile.jpg') center top/520px auto repeat fixed,var(--wax)}
+:root{--fond:#0F3B2E;--carte:#FBF6EC;--encre:#2B2A22;--doux:#6F6656;--or1:#B98A3E;--or2:#F0D58F;--or3:#7E5A1F;--accent:#0F4D3A;
+  --f-titre:'Cinzel',serif;--f-script:'Pinyon Script',cursive;--f-texte:'Cormorant Garamond',Georgia,serif;--decor:radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),url('wax.jpg') center/cover fixed;--couv:var(--carte);--sur-fond:#F3E6C4;}
+.env-dos,.env-devant,.env-face,.env-rabat::before,.env-rabat::after{background-image:url('ouverture.webp')}
+.ouverture>.portail,.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
+.ouverture.attente>.portail,.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
+.ouverture{background:var(--decor),var(--fond)}
+.ouverture .consigne{color:var(--sur-fond)}
+.mini{background:linear-gradient(color-mix(in srgb,var(--carte) 82%,transparent),color-mix(in srgb,var(--carte) 82%,transparent)),url('fond.jpg') center/cover,var(--carte);
+  outline:1px solid var(--or1);outline-offset:-7px;box-shadow:inset 0 0 0 11px var(--carte),inset 0 0 0 12px var(--or2);overflow:hidden}
+/* Carte élastique : tout se cale sur sa taille réelle (enveloppe large ou portail haut), jamais de texte qui déborde ni qui touche le bord. */
+.mini{container-type:size;justify-content:center!important;padding:5% 7%!important;gap:0;line-height:1.05}
+.mini .mini-deco{width:auto;max-width:72%;max-height:24cqh;object-fit:contain;margin:0 auto 2.5cqh;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.mini b{font-family:var(--f-titre);font-weight:400;font-size:min(10.5cqh,8.5cqw,26px);letter-spacing:.08em;color:var(--accent);max-width:100%;overflow-wrap:anywhere}
+.mini i{font-family:var(--f-script);font-style:normal;color:var(--or1);font-size:min(9cqh,7cqw,24px);line-height:1;margin:.5cqh 0}
+.mini small{font-size:min(4.6cqh,3.4cqw,11px);letter-spacing:.24em;text-transform:uppercase;color:var(--doux);margin:1.6cqh 0}
+/* Dans l'enveloppe, seule la moitié haute de la carte sort : tout y tient, en plus grand, sans le motif. */
+.env-carte.mini{justify-content:flex-start!important;padding:4% 6% 2%!important}
+.env-carte.mini .mini-deco{display:none}
+.env-carte.mini b{font-size:min(19cqh,12cqw,36px)}
+.env-carte.mini i{font-size:min(12cqh,8cqw,28px)}
+.env-carte.mini small{font-size:min(7.5cqh,4.8cqw,14px);margin:1.6cqh 0}
+.ouvert .env-carte{transform:translateY(-66%)}
 body.ferme{overflow:hidden}
-img{display:block;max-width:100%;height:auto}
-.or{background:linear-gradient(100deg,var(--or3) 0%,var(--or1) 30%,var(--or2) 48%,var(--or1) 66%,var(--or3) 100%);background-size:250% 100%;
-  -webkit-background-clip:text;background-clip:text;color:transparent;animation:reflet 6s ease-in-out infinite}
-@keyframes reflet{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+.std-seul{display:none} body.std .fp-seul{display:none} body.std .std-seul{display:block}
+.suite-couv{min-height:100svh}
 
-.mini-he{background:var(--carte);outline:1px solid rgba(185,138,62,.7);outline-offset:-6px}
-.mini-he b{font-family:'Cinzel',serif;font-weight:400;font-size:clamp(17px,5vw,24px);letter-spacing:.1em;color:var(--emeraude)}
-.mini-he i{font-family:'Pinyon Script',cursive;font-style:normal;color:var(--or1);font-size:clamp(16px,4.6vw,22px);line-height:1}
-.mini-he small{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);margin:4px 0}
-.ouverture{background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),linear-gradient(rgba(13,52,40,.9),rgba(13,52,40,.9)),url('wax-tuile.jpg') center/520px auto repeat,var(--wax)}
-.ouverture .consigne{color:#F3E6C4;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.enveloppe{filter:drop-shadow(0 22px 26px rgba(0,0,0,.5))}
-.fermoir{position:absolute;left:50%;top:64%;width:15%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:30%;backface-visibility:hidden;
-  background:radial-gradient(circle,rgba(255,244,200,.9) 0,rgba(255,230,150,.35) 30%,rgba(255,230,150,0) 65%);mix-blend-mode:screen;animation:lueur 2.4s ease-in-out infinite}
-@keyframes lueur{0%,100%{opacity:.15}50%{opacity:.9}}
-
-.env-dos,.env-devant,.env-face{background-image:url('enveloppe.webp')}
-.ouverture>.enveloppe,.ouverture>.consigne{transition:opacity .6s ease}
-.ouverture.attente>.enveloppe,.ouverture.attente>.consigne{opacity:0;pointer-events:none}
-
-/* ── Carte ivoire bordée d'or, posée sur le wax ── */
-.carte{position:relative;margin:max(14px,env(safe-area-inset-top)) 12px 0;min-height:calc(100svh - 14px);background:var(--carte);overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px;
-  box-shadow:0 0 0 1px rgba(185,138,62,.6),0 0 0 5px var(--carte),0 0 0 6px rgba(185,138,62,.8),0 30px 50px -20px rgba(0,0,0,.6)}
-.carte::before{content:"";position:absolute;inset:0;background:url('../grand-hotel/papier.jpg') center/cover;opacity:.35;mix-blend-mode:multiply;pointer-events:none}
-.fleurs{position:absolute;width:min(78vw,430px);max-width:none;pointer-events:none;z-index:2;filter:drop-shadow(0 8px 10px rgba(40,30,10,.25))}
-.fleurs.haut{top:0;left:0;transform:scaleY(-1);-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 40%);mask-image:linear-gradient(to bottom,transparent 0,#000 40%);animation:brise 9s ease-in-out infinite}
-@keyframes brise{50%{translate:0 3px;rotate:.6deg}}
-.chapeau{position:relative;margin-top:auto;padding-top:min(52vw,250px);font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--doux);line-height:2}
-.noms{position:relative;margin-top:10px;font-family:'Cinzel',serif;font-weight:400;font-size:clamp(38px,11.5vw,60px);letter-spacing:.1em;line-height:1.08;color:var(--emeraude)}
-.noms i{display:block;font-family:'Pinyon Script',cursive;font-style:normal;font-size:.75em;letter-spacing:0;margin:2px 0}
-.invite{position:relative;margin-top:10px;font-style:italic;font-size:19px;color:var(--doux)}
-.filet{position:relative;display:flex;align-items:center;gap:12px;margin:20px auto 14px;width:min(70%,280px);color:var(--or1)}
-.filet::before,.filet::after{content:"";flex:1;height:1px;background:currentColor;opacity:.7}
-.date{position:relative;font-family:'Cinzel',serif;font-size:clamp(18px,5.2vw,24px);letter-spacing:.22em}
-.lieu{position:relative;margin-top:8px;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--doux);line-height:1.9}
-.table{position:relative;margin-top:auto;padding-top:24px;width:112%;max-width:none;margin-left:-6%;margin-bottom:-4px;z-index:1}
-.defiler{position:absolute;bottom:calc(min(54vw,300px) + 6px);left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--doux);text-decoration:none;animation:flotte 2.4s ease-in-out infinite;z-index:3}
-@keyframes flotte{50%{transform:translate(-50%,6px)}}
-
-/* ── Sections ── */
-main{max-width:520px;margin:0 auto;padding:16px 12px 70px}
-.bloc{position:relative;margin:26px 0;padding:34px 24px;background:var(--carte);text-align:center;
-  box-shadow:0 0 0 1px rgba(185,138,62,.55),0 0 0 4px var(--carte),0 0 0 5px rgba(185,138,62,.7),0 20px 36px -18px rgba(0,0,0,.6)}
-.bloc h2{font-family:'Cinzel',serif;font-weight:400;font-size:20px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:18px;color:var(--emeraude)}
-.bloc p{font-size:19px;line-height:1.6}
-.prog{list-style:none;display:grid;gap:14px;font-size:19px}
-.prog b{display:block;font-family:'Cinzel',serif;font-weight:400;font-size:14px;letter-spacing:.28em;color:var(--or1)}
-.rebours{display:flex;justify-content:center;gap:18px;margin-top:6px}
-.rebours div{display:grid;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--doux)}
-.rebours b{font-family:'Cinzel',serif;font-weight:400;font-size:30px;color:var(--emeraude)}
-.bouton{display:inline-block;margin-top:18px;padding:13px 26px;border:1px solid var(--or1);color:var(--encre);text-decoration:none;font-size:14px;letter-spacing:.22em;text-transform:uppercase;
-  background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(240,213,143,.3))}
-.bouton.plein{background:var(--emeraude);color:var(--carte);border-color:var(--emeraude)}
-.bouquet{width:72%;margin:0 auto -10px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.45))}
-.pied{text-align:center;font-style:italic;color:#F3E6C4;font-size:17px;padding:14px 0 30px;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.pied small{display:block;font-style:normal;font-size:12px;letter-spacing:.08em;margin-top:8px;opacity:.85}
-.apparait{opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s ease}
-.apparait.vu{opacity:1;transform:none}
-.std-seul{display:none}
-body.std .fp-seul{display:none} body.std .std-seul{display:block}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-/* voile grand écran */@media (min-width:900px){body{background:linear-gradient(rgba(18,12,6,.42),rgba(18,12,6,.42)),radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.55) 100%),linear-gradient(rgba(13,52,40,.9),rgba(13,52,40,.9)),url('wax-tuile.jpg') center top/520px auto repeat fixed,var(--wax)!important}.ouverture{background:linear-gradient(rgba(18,12,6,.45),rgba(18,12,6,.45)),radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.05) 25%,rgba(0,0,0,.6) 100%),linear-gradient(rgba(13,52,40,.9),rgba(13,52,40,.9)),url('wax-tuile.jpg') center/520px auto repeat,var(--wax)!important}}
 </style>
-<link rel="stylesheet" href="../_commun/realiste.css?v=4">
 </head>
-<body class="ferme" data-date="2027-08-21T11:00:00+02:00" data-evenement="Mariage Efua &amp; Kojo" data-ville="Lyon" data-titre-std="Efua &amp; Kojo — Save the date (démonstration)" data-profondeur="decor-3d/kente-or" data-profondeur-n="5" data-profondeur-mouvement="chute">
-
-<link rel="preload" as="image" href="enveloppe.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/586;
-  --rabat:polygon(0 0,100% 0,100% 10%,59% 60%,59% 70%,41% 70%,41% 60%,0 10%);--devant:polygon(0 10%,41% 60%,41% 70%,59% 70%,59% 60%,100% 10%,100% 100%,0 100%);
-  --verso:polygon(0 100%,100% 100%,100% 90%,59% 40%,59% 30%,41% 30%,41% 40%,0 90%);--doublure:linear-gradient(0deg,#9C7428,#E2C27A 55%,#B88E3E)">
+<body class="ferme" data-date="2027-08-21T11:00:00+02:00" data-evenement="Mariage Efua &amp; Kojo" data-ville="Lyon" data-titre-std="Efua &amp; Kojo — Save the date (démonstration)" data-profondeur="decor-3d/kente-or" data-profondeur-n="5" data-profondeur-mouvement="chute" data-collection="heritage" data-particules="or" data-trame="centree">
+<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
+<div class="ouverture attente" id="ouverture" style="--ratio:1000/586;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 10%,59% 60%,59% 70%,41% 70%,41% 60%,0 10%);--devant:polygon(0 10%,41% 60%,41% 70%,59% 70%,59% 60%,100% 10%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 90%,59% 40%,59% 30%,41% 30%,41% 40%,0 90%);--doublure:linear-gradient(0deg,#9C7428,#E2C27A 55%,#B88E3E);">
   <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
     <div class="env-dos"></div>
-    <div class="env-carte mini-he"><small>Mariage</small><b>Efua</b><i>&amp;</i><b>Kojo</b><small>21 · 08 · 2027</small></div>
+    <div class="env-carte mini"><img class="mini-deco" src="fleurs.webp" alt=""><small>Mariage</small><b>Efua</b><i>&amp;</i><b>Kojo</b><small>21 · 08 · 2027</small></div>
     <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><span class="fermoir"></span></div>
+    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
   </div>
   <p class="consigne">Ouvrez le fermoir</p>
 </div>
 <script>(() => {
   const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'enveloppe.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
+  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
   setTimeout(pret, 5000);
 })();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
-
-<header class="carte">
-  <img class="fleurs haut" src="fleurs.webp" alt="" width="1100" height="792">
-  <p class="chapeau fp-seul">Avec la bénédiction<br>de nos familles</p>
-  <p class="chapeau std-seul">Réservez la date</p>
+<header class="suite-couv carte">
+  <img class="deco-coin" src="fleurs.webp" alt="" width="1100" height="792">
+  
+  <p class="chapeau"><span class="fp-seul">Ont la joie de vous inviter<br>à leur mariage</span><span class="std-seul">Réservez la date</span></p>
   <h1 class="noms">Efua<i class="or">&amp;</i>Kojo</h1>
-  <p class="invite fp-seul">vous invitent à célébrer leur union</p>
   <div class="filet">✦</div>
   <p class="date">21 · 08 · 2027</p>
   <p class="lieu">Domaine des Acacias<br>Lyon</p>
-  <p class="invite std-seul">Invitation à suivre</p>
-  <img class="table" src="table.webp" alt="" width="1400" height="679">
-  <a class="defiler" href="#contenu">Défiler</a>
+  <p class="lieu std-seul" style="font-style:italic;text-transform:none;letter-spacing:.06em;font-size:17px;margin-top:12px">Invitation à suivre</p>
+  <img class="deco-bas" src="table.webp" alt="" width="1400" height="679">
 </header>
 
-<main id="contenu">
-  <section class="bloc apparait fp-seul">
-    <h2>Le programme</h2>
-    <ul class="prog">
-      <li><b>11 H 00</b>Cérémonie traditionnelle</li>
-      <li><b>14 H 30</b>Mariage civil</li>
-      <li><b>16 H 00</b>Bénédiction</li>
-      <li><b>19 H 30</b>Réception et danses</li>
-    </ul>
-  </section>
-  <section class="bloc apparait fp-seul">
-    <h2>Le lieu</h2>
-    <p>Domaine des Acacias<br>Lyon</p>
-    <a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Lyon" target="_blank" rel="noopener">Voir le plan</a>
-  </section>
-  <section class="bloc apparait fp-seul">
-    <h2>Tenue</h2>
-    <p>Kente et tenues traditionnelles bienvenus. Couleurs de la famille : émeraude et or.</p>
-  </section>
-  <section class="bloc apparait">
-    <h2>Il reste</h2>
-    <div class="rebours"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>min</div></div>
-    <a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a>
-  </section>
-  <section class="bloc apparait fp-seul">
-    <h2>Votre réponse</h2>
-    <p>Merci de répondre avant le 15 juillet 2027.</p>
-    <a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br>
-    <a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a>
-    <p id="demo" style="display:none;margin-top:14px;font-size:15px;color:var(--doux)">Démonstration : sur votre invitation, la réponse arrive directement dans votre espace.</p>
-  </section>
-  <p class="pied">Akwaaba : soyez les bienvenus<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><a href="index.html" style="display:inline-block;margin-top:14px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:inherit">✦ Voir toute la collection</a></p>
+<main class="suite-main">
+  <figure class="inter inter-couple apparait"><img src="couple.jpg" alt="Efua et Kojo" loading="lazy"><figcaption class="script">Efua <span class="esp">&amp;</span> Kojo</figcaption></figure>
+  <section class="bloc apparait fp-seul"><h2>Le programme</h2><p class="sous">Samedi 21 août 2027</p><ol class="frise"><li class="apparait"><img src="icone-1.webp" alt="" loading="lazy"><div><b>11 h 00</b><span>Cérémonie traditionnelle</span></div></li><li class="apparait"><img src="icone-2.webp" alt="" loading="lazy"><div><b>12 h 30</b><span>Échange des alliances</span></div></li><li class="apparait"><img src="icone-3.webp" alt="" loading="lazy"><div><b>14 h 30</b><span>Mariage civil</span></div></li><li class="apparait"><img src="icone-4.webp" alt="" loading="lazy"><div><b>16 h 00</b><span>Bénédiction</span></div></li><li class="apparait"><img src="icone-5.webp" alt="" loading="lazy"><div><b>19 h 30</b><span>Réception et tambours</span></div></li><li class="apparait"><img src="icone-6.webp" alt="" loading="lazy"><div><b>23 h 00</b><span>Gâteau des mariés</span></div></li></ol></section>
+  <section class="bloc apparait fp-seul" id="lieu"><h2>Le lieu</h2><img class="illus" src="lieu.webp" alt="" loading="lazy"><p>Domaine des Acacias<br>Lyon</p><a class="bouton" href="https://www.google.com/maps/search/?api=1&query=Lyon" target="_blank" rel="noopener">Voir le plan</a></section>
+  <figure class="inter inter-matiere apparait fp-seul"><div class="matiere-fond" style="background-image:url('fond.jpg')"></div><img class="matiere-detail bord-haut" src="fleurs.webp" alt="" loading="lazy"><figcaption>Kente et tenues traditionnelles</figcaption></figure>
+  <section class="bloc apparait fp-seul" id="tenue"><h2>Tenue</h2><p class="titre-tenue">Kente et tenues traditionnelles</p><p>Kente, wax, agbada, gele : venez dans vos plus belles tenues. Couleurs de la famille : émeraude et or.</p><div class="nuancier-tenue" aria-label="Couleurs suggérées"><div><b>Messieurs</b><p><span style="background:#2B2A22"></span><span style="background:#6F6656"></span><span style="background:#FBF6EC"></span></p></div><div><b>Mesdames</b><p><span style="background:#0F4D3A"></span><span style="background:#B98A3E"></span><span style="background:#F0D58F"></span></p></div></div><img class="illus large" src="invites.webp" alt="" loading="lazy"></section>
+  <section class="bloc apparait fp-seul" id="surprise"><h2>Une surprise</h2><p class="sous">Grattez le médaillon du bout du doigt</p><div class="medaillon-surprise"><img src="photo.jpg" alt="" loading="lazy"><canvas class="gratte-surprise" aria-label="Zone à gratter"></canvas></div></section>
+  <section class="bloc apparait"><h2>Il reste</h2><div class="medaillons"><div><b id="j">--</b>jours</div><div><b id="h">--</b>heures</div><div><b id="m">--</b>minutes</div></div><a class="bouton" id="agenda" href="#">Ajouter à mon agenda</a></section>
+  <section class="bloc apparait fp-seul" id="reponse"><h2>Votre réponse</h2><p>Merci de répondre avant le 15 juillet 2027.</p><a class="bouton plein" href="#" data-demo>Je serai présent·e</a><br><a class="bouton" href="#" data-demo>Je ne pourrai pas venir</a><p id="demo" style="display:none;margin-top:14px">Démonstration : la réponse arrive directement dans l'espace des mariés.</p></section>
 </main>
-
-<script src="../_commun/realiste.js?v=7"></script>
+<footer class="suite-pied"><p class="script">Efua <span class="esp">&amp;</span> Kojo</p><p>Akwaaba : soyez les bienvenus</p>
+<small>Invitation de démonstration · couple et lieu fictifs · Maison Vivat</small><br><a href="index.html" style="display:inline-block;margin-top:12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase">✦ Voir toute la collection</a></footer>
+<script src="../_commun/realiste.js?v=15"></script>
+<script src="../_commun/profondeur.js?v=7"></script>
 <script type="module" src="../_commun/perso.js?v=12"></script>
-<script src="../_commun/profondeur.js?v=7" defer></script>
 </body>
 </html>
