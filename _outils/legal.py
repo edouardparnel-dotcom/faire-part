@@ -157,7 +157,7 @@ def cgv(sites):
 <p>Maison Vivat fournit un service conforme à sa description. Le client bénéficie de la garantie légale de conformité des contenus et services numériques (articles L224-25-1 et suivants du Code de la consommation) pendant toute la durée de fourniture du service. En cas de défaut, écrivez-nous : nous mettons le service en conformité sans frais, ou, à défaut, nous réduisons le prix ou remboursons.</p>
 
 <h2>9. Contenus du client</h2>
-<p>Le client garantit disposer des droits sur les textes et photos qu'il fournit, et informer ses invités de l'utilisation de leurs données (nom, réponses) dans l'espace de l'événement. Il reste responsable des informations qu'il publie. Maison Vivat peut retirer un contenu manifestement illicite.</p>
+<p>Le client garantit disposer des droits sur les textes, photos et musiques qu'il fournit (pour une musique : en être l'auteur, en avoir l'autorisation, ou qu'elle soit libre de droits), et garantit Maison Vivat contre toute réclamation à ce sujet. Sur simple demande d'un ayant droit, Maison Vivat retire sans délai le contenu concerné. Le client s'engage aussi à informer ses invités de l'utilisation de leurs données (nom, réponses) dans l'espace de l'événement. Il reste responsable des informations qu'il publie. Maison Vivat peut retirer un contenu manifestement illicite.</p>
 
 <h2>10. Propriété intellectuelle</h2>
 <p>Les collections, mises en page, animations et le code restent la propriété de Maison Vivat. Le client reçoit le droit d'utiliser son invitation et son espace pour son événement, pendant la durée du service. Toute reproduction ou réutilisation pour un autre usage est interdite sans accord écrit.</p>

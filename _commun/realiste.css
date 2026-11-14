@@ -33,6 +33,10 @@
 .musique i:nth-child(2){animation-delay:.2s}.musique i:nth-child(3){animation-delay:.4s}
 @keyframes egaliseur{0%,100%{height:4px}50%{height:16px}}
 .musique.coupe i{animation:none;height:4px}
+.musique .barre{display:none}.musique.coupe .barre{display:inline}.musique.coupe .ondes{display:none}
+.choisir-musique{position:fixed;z-index:60;right:calc(68px + env(safe-area-inset-right));bottom:calc(22px + env(safe-area-inset-bottom));font:12px/1 Inter,system-ui,sans-serif;letter-spacing:.04em;
+  border:1px solid rgba(185,138,62,.6);background:rgba(255,252,246,.9);color:#7E5A1F;border-radius:20px;padding:8px 12px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .6s 2.8s}
+.choisir-musique.visible{opacity:1;pointer-events:auto}
 @media (prefers-reduced-motion:reduce){.env-rabat,.env-carte,.env-sceau{transition-duration:.01s!important;transition-delay:0s!important}}
 
 /* Ordinateur : la carte garde son format de téléphone, centrée, le décor autour */

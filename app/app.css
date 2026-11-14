@@ -242,3 +242,8 @@
 .nuancier .pastilles{display:flex}
 .nuancier .pastilles i{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.15);margin-right:-5px}
 .nuancier .pastilles i.origine{background:conic-gradient(#C9A24A,#1D3557,#C2442E,#C9A24A)}
+.choix-ligne{display:flex;flex-wrap:wrap;gap:8px 18px}
+.choix-ligne .coche{text-transform:none;letter-spacing:0;font-size:15px;color:var(--encre)}
+.depot-musique{display:grid;gap:10px;background:var(--rub-clair);padding:12px}
+.depot-musique .coche{text-transform:none;letter-spacing:0;font-size:14px;color:var(--encre);align-items:flex-start}
+.fp-perso audio.ecoute{width:100%;max-width:420px}

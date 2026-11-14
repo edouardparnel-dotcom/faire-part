@@ -75,6 +75,16 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule }) {
   txt('.suite-pied p:not(.script)', P.merci);
   if (P.reponse) txt('#reponse > p:not([id])', `Merci de répondre avant le ${new Date(P.reponse + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}.`);
   if (P.photo) document.querySelectorAll('.inter-couple img, .medaillon-surprise img').forEach(i => { i.src = P.photo; i.loading = 'eager'; });
+  // Musique choisie dans l'espace : celle de la collection, une autre de la bibliothèque, son propre morceau, ou aucune ;
+  // coupée au départ (l'invité l'active avec le haut-parleur barré) ou lancée à l'ouverture de l'enveloppe.
+  const M = P.musique || {}, audio = document.getElementById('audio'), hp = document.getElementById('musique');
+  if (M.source === 'aucune') { hp?.remove(); if (audio) { audio.pause(); audio.removeAttribute('src'); } }
+  else if (audio) {
+    if (M.url) audio.src = M.url;
+    if (M.depart === 'ouverte') document.getElementById('ouverture')?.addEventListener('click', () => {
+      audio.volume = 0.6; audio.play().then(() => hp?.classList.remove('coupe')).catch(() => {});
+    }, { once: true });
+  }
   // Textes de démonstration propres au couple fictif : masqués plutôt que faux.
   document.getElementById('histoire')?.setAttribute('hidden', '');
   // L'ouverture 3D est dorée aux prénoms de la démonstration : on le dit, les vôtres y sont posés à la validation.

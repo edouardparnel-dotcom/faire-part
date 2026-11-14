@@ -254,6 +254,20 @@ const VUES = {
           ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo">` : ''}</fieldset>
         ${NUANCIERS[c.slug] ? `<fieldset><legend>Couleurs</legend><p class="app-note">Les couleurs des textes, des filets et du fond changent ; les images (enveloppe, décors, fleurs) gardent les leurs.</p>
           <div class="nuanciers">${[{ id: '', nom: 'Couleurs d’origine', c: {} }, ...NUANCIERS[c.slug]].map(n => `<button type="button" class="nuancier ${(P.nuancier || '') === n.id ? 'choisi' : ''}" data-nuancier="${n.id || '-'}"><span class="pastilles">${['fond', 'accent', 'or1'].filter(k => n.c[k]).map(k => `<i style="background:${n.c[k]}"></i>`).join('') || '<i class="origine"></i>'}</span>${esc(n.nom)}</button>`).join('')}</div></fieldset>` : ''}
+        <fieldset><legend>Musique</legend>${(() => {
+          const M = P.musique || {}, src = M.source || 'collection', autre = COLLECTIONS.filter(x => x.slug !== c.slug);
+          const ecoute = src === 'aucune' ? '' : src === 'perso' ? M.url : src === 'piste' ? `../${M.piste}/musique.mp3` : `../${c.slug}/musique.mp3`;
+          return `<p class="app-note">Incluse dans toutes les formules. Vos invités l'activent ou la coupent avec le haut-parleur de l'invitation.</p>
+          <div class="choix-ligne">${[['collection', `La musique de la collection ${esc(c.nom)}`], ['piste', 'Une autre musique de notre bibliothèque'], ['perso', 'Votre propre morceau'], ['aucune', 'Sans musique']]
+            .map(([k, v]) => `<label class="coche"><input type="radio" name="m-source" data-musique-source="${k}" ${src === k ? 'checked' : ''}> ${v}</label>`).join('')}</div>
+          ${src === 'piste' ? `<label>Musique de la bibliothèque<select data-musique-piste>${autre.map(x => `<option value="${esc(x.slug)}" ${M.piste === x.slug ? 'selected' : ''}>${esc(x.nom)}</option>`).join('')}</select></label>` : ''}
+          ${src === 'perso' ? `<div class="depot-musique"><label class="coche"><input type="checkbox" id="c-droits-musique" ${M.attestation ? 'checked' : ''}> Je détiens les droits de ce morceau, ou il est libre de droits (composition, enregistrement de famille, musique libre de droits).</label>
+            <label>Votre fichier (MP3, 15 Mo au plus)<input type="file" id="i-musique" accept="audio/*" ${M.attestation ? '' : 'disabled'}></label>
+            <p class="app-note" id="m-musique">${M.url ? 'Votre morceau est en place.' : 'Cochez la case pour choisir votre fichier.'}</p></div>` : ''}
+          ${ecoute ? `<audio controls preload="none" src="${esc(ecoute)}" class="ecoute"></audio>` : ''}
+          ${src !== 'aucune' ? `<div class="choix-ligne"><label class="coche"><input type="radio" name="m-depart" data-musique-depart="coupee" ${M.depart !== 'ouverte' ? 'checked' : ''}> Coupée au départ : vos invités l'activent</label>
+            <label class="coche"><input type="radio" name="m-depart" data-musique-depart="ouverte" ${M.depart === 'ouverte' ? 'checked' : ''}> Lancée à l'ouverture de l'enveloppe</label></div>` : ''}`;
+        })()}</fieldset>
         <fieldset><legend>Pour vos invités</legend>${champ('tenueTitre', 'Tenue : titre', P.tenueTitre, 'Par exemple : Chic et coloré', 'maxlength="60"')}${zone('tenue', 'Tenue : conseils', P.tenue)}
           ${champ('reponse', 'Répondre avant le', P.reponse, 'Par défaut : un mois avant', 'type="date"')}${zone('merci', 'Mot de la fin', P.merci, 'En bas du faire-part')}</fieldset>
         <p class="app-note">Le programme reprend vos cérémonies et les moments « invités » du déroulé. <button type="button" class="lien-btn" data-onglet="ceremonies">Modifier le programme</button></p>
@@ -751,6 +765,26 @@ document.addEventListener('change', async ev => {
   if (t.dataset.paye) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.paye}`), { 'tenue.paye': t.checked });
   if (t.dataset.motMerci) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.motMerci}`), { 'merci.mot': t.value.slice(0, 300) });
   if (t.id === 'i-album-photographe' && t.files.length) return deposerAlbum([...t.files]);
+  if (t.dataset.musiqueSource || t.dataset.musiquePiste !== undefined || t.dataset.musiqueDepart || t.id === 'c-droits-musique') {
+    const M = { ...(evt.perso?.musique || {}) };
+    if (t.dataset.musiqueSource) { M.source = t.dataset.musiqueSource; if (M.source === 'piste' && !M.piste) M.piste = COLLECTIONS.find(x => x.slug !== evt.modele)?.slug; }
+    if (t.dataset.musiquePiste !== undefined) M.piste = t.value;
+    if (t.dataset.musiqueDepart) M.depart = t.dataset.musiqueDepart;
+    if (t.id === 'c-droits-musique') M.attestation = t.checked ? new Date().toISOString() : '';
+    // l'adresse jouée par la page de l'invitation (vide : la musique de la collection)
+    M.url = M.source === 'piste' ? `../${M.piste}/musique.mp3` : M.source === 'perso' ? (M.fichier || '') : '';
+    return updateDoc(doc(db, 'events', E), { 'perso.musique': M });
+  }
+  if (t.id === 'i-musique' && t.files[0]) {
+    const f = t.files[0], m = $('#m-musique');
+    if (!evt.perso?.musique?.attestation) { if (m) m.textContent = 'Cochez d’abord la case sur les droits du morceau.'; return; }
+    if (f.size > 15 * 1024 * 1024) { if (m) m.textContent = 'Fichier trop lourd : 15 Mo au plus.'; return; }
+    if (m) m.textContent = 'Envoi en cours…';
+    const r = ref(storage, `events/${E}/musique/${Date.now()}.${(f.name.split('.').pop() || 'mp3').toLowerCase().replace(/[^a-z0-9]/g, '')}`);
+    await uploadBytes(r, f, { contentType: f.type || 'audio/mpeg' });
+    const url = await getDownloadURL(r);
+    return updateDoc(doc(db, 'events', E), { 'perso.musique': { ...(evt.perso?.musique || {}), source: 'perso', fichier: url, url, nom: f.name.slice(0, 80) } });
+  }
   if (t.id === 'i-photo-couple' && t.files[0]) {
     const r = ref(storage, `events/${E}/design/couple-${Date.now()}.jpg`);
     await uploadBytes(r, t.files[0], { contentType: t.files[0].type || 'image/jpeg' });
@@ -818,6 +852,7 @@ document.addEventListener('submit', async ev => {
     const perso = Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci'].map(k => [k, (f[k] || '').trim()]));
     if (evt.perso?.photo) perso.photo = evt.perso.photo;
     if (evt.perso?.nuancier) perso.nuancier = evt.perso.nuancier;
+    if (evt.perso?.musique) perso.musique = evt.perso.musique;
     const C2 = C.map((c, k) => k === 0 ? { ...c, date: f.date, lieu: f.lieu.trim() } : c);
     await updateDoc(doc(db, 'events', E), { titre: f.titre.trim(), date: f.date, lieu: f.lieu.trim(), ceremonies: C2, perso });
     const m = $('#m-perso'); if (m) m.textContent = 'Enregistré : votre faire-part est à jour.';

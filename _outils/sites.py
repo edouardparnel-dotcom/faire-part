@@ -18,7 +18,7 @@ ORN = '<svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h50
 OPTIONS_MARIAGE = [
   ('fairepart', 'Avant', "L'invitation", "Cinquante collections réalistes, chacune avec son ouverture, sa mise en page et sa musique : invitation, save-the-date et site, à vos couleurs.", None, False),
   ('savethedate', 'Avant', 'Save-the-date animé', "L'annonce envoyée des mois avant, pour que chacun bloque la date.", 30, False),
-  ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 15, False),
+  ('musique', 'Avant', 'Musique au choix', "Incluse dans toutes les formules : la musique de la collection, une autre de notre bibliothèque, ou votre propre morceau (composition, enregistrement de famille, musique libre de droits). Vos invités l'activent d'un geste.", None, False),
   ('ceremonies', 'Avant', 'Invitations par cérémonie', "Coutumier ou dot, mairie, église, soirée : chaque invité ne reçoit que ce à quoi il est convié.", 40, True),
   ('guide', 'Avant', 'Guide de la cérémonie', "La dot, le coutumier, les rites expliqués aux invités d'une autre culture.", 30, True),
   ('covoiturage', 'Avant', 'Covoiturage entre invités', "Qui a de la place, qui en cherche : chaque invité indique son point de départ et voit d'abord les trajets qui partent près de chez lui.", 15, False),
@@ -38,7 +38,7 @@ OPTIONS_MARIAGE = [
 ]
 OPTIONS_EVENEMENT = [
   ('fairepart', 'Avant', "L'invitation", "Au moins dix directions artistiques, chacune avec sa propre ouverture et sa propre mise en page, reprise à vos couleurs.", None, False),
-  ('musique', 'Avant', 'Musique au choix', "La musique démarre à l'ouverture de l'invitation : celle de la collection, une autre de notre bibliothèque ou la vôtre.", 15, False),
+  ('musique', 'Avant', 'Musique au choix', "Incluse dans toutes les formules : la musique de la collection, une autre de notre bibliothèque, ou votre propre morceau (composition, enregistrement de famille, musique libre de droits). Vos invités l'activent d'un geste.", None, False),
   ('langue', 'Avant', 'Langue supplémentaire', "L'invitation et la page dans la langue de chacun.", 20, False),
   ('direct', 'Le jour J', 'Direct privé pour les proches', "Le moment en direct, sur un lien réservé à vos invités.", 40, True),
   ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application.", 30, False),

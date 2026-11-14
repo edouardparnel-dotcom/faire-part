@@ -25,7 +25,7 @@
     if (ouv.classList.contains('ouvert')) return;
     ouv.classList.add('ouvert');
     // Musique coupée par défaut : l’invité la lance depuis le bouton.
-    if (bouton) bouton.classList.add('coupe');
+    if (bouton) bouton.classList.toggle('coupe', !audio || audio.paused);   // déjà lancée par le couple (« à l'ouverture ») : non barrée
     if (bouton) bouton.classList.add('visible');
     // enveloppe animée en CSS : on attend la fin de son animation ; vidéo 3D : la page apparaît aussitôt (la vidéo a déjà tout montré)
     setTimeout(() => document.body.classList.remove('ferme'), ouv.querySelector('video.ouv-film') ? 250 : 3200);
@@ -80,7 +80,18 @@
   const sansMusique = () => audio && !audio.getAttribute('src');
   const _musique = musique;
   musique = j => { if (j && sansMusique()) { bouton.classList.add('coupe'); return; } _musique(j); };
-  if (bouton && audio) {
+  if (bouton) {
+    // Haut-parleur classique : barré quand le son est coupé, pour que l'invité sache qu'il peut l'activer.
+    bouton.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+      + '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/><path class="ondes" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="barre" d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></svg>';
+    bouton.setAttribute('aria-label', 'Activer ou couper la musique');
+    if (audio) bouton.addEventListener('click', e => { e.stopPropagation(); musique(audio.paused); });
+  }
+  // Démonstration seulement : choisir une autre musique (sur l'invitation d'un couple, c'est réglé dans son espace).
+  if (bouton && audio && !q.has('e')) {
+    const choisir = document.createElement('button'); choisir.type = 'button'; choisir.className = 'choisir-musique'; choisir.textContent = 'Changer la musique';
+    document.body.appendChild(choisir);
+    new MutationObserver(() => choisir.classList.toggle('visible', bouton.classList.contains('visible'))).observe(bouton, { attributes: true });
     const panneau = document.createElement('div');
     panneau.className = 'choix-musique';
     const ici = location.pathname.split('/').slice(-2, -1)[0];
@@ -91,7 +102,7 @@
     document.body.appendChild(panneau);
     const marque = () => panneau.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.piste ? new URL(x.dataset.piste, location.href).href === audio.src : !audio.getAttribute('src'))));
     marque();
-    bouton.addEventListener('click', e => { e.stopPropagation(); panneau.classList.toggle('ouvert'); });
+    choisir.addEventListener('click', e => { e.stopPropagation(); panneau.classList.toggle('ouvert'); });
     document.addEventListener('click', e => { if (!panneau.contains(e.target)) panneau.classList.remove('ouvert'); });
     panneau.addEventListener('click', e => {
       const x = e.target.closest('button'); if (!x) return;

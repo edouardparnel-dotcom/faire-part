@@ -58,10 +58,6 @@
     "nom": "Save-the-date animé",
     "prix": 30
    },
-   "musique": {
-    "nom": "Musique au choix",
-    "prix": 15
-   },
    "ceremonies": {
     "nom": "Invitations par cérémonie",
     "prix": 40
@@ -155,10 +151,6 @@
    }
   },
   "options": {
-   "musique": {
-    "nom": "Musique au choix",
-    "prix": 15
-   },
    "langue": {
     "nom": "Langue supplémentaire",
     "prix": 20
