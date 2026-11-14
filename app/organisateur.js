@@ -120,16 +120,16 @@ function rendre() {
   if (enSaisie()) { enAttente = true; return; }
   const C = evt.ceremonies || [], oui = c => invites.filter(i => i.reponses?.[c.cle] === 'oui').reduce((s, i) => s + 1 + (i.accompagnants || 0), 0);
   const entrees = invites.filter(i => i.entree).length, repondu = invites.filter(i => i.reponduLe).length;
-  const onglets = { accueil: 'Vue d\'ensemble', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
+  const onglets = { accueil: 'Vue d\'ensemble', fairepart: 'Mon faire-part', invites: 'Invités', envois: 'Envois et relances', table: 'Plan de table', ceremonies: C.length > 1 ? 'Cérémonies et déroulé' : 'Programme et déroulé',
     budget: 'Budget', prestataires: 'Prestataires', planning: 'Planning', cadeaux: 'Liste et cagnotte', souvenirs: a('album') ? "Photos, livre d'or et album" : "Photos et livre d'or",
     ...(voirOption('jeux') ? { jeux: 'Jeux' } : {}), ...(voirOption('tenues') ? { tenues: 'Tenues' } : {}), ...(voirOption('merci') ? { merci: 'Remerciements' } : {}),
     paiement: evt.formule === 'essai' ? 'Valider ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
-  if (evt.formule === 'faire-part') { const garder = FAIRE_PART; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à Signature ou Prestige'; if (!onglets[onglet]) onglet = 'accueil'; }
+  if (evt.formule === 'faire-part') { const garder = [...FAIRE_PART, 'fairepart']; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à Signature ou Prestige'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))} · ${esc(evt.lieu)}</p></div>
-    <div class="puces"><button class="btn petit voir" data-apercu="fp">Voir mon faire-part</button><a class="btn petit clair" href="editeur.html?e=${E}">Personnaliser</a><a class="btn petit clair" href="imprimer.html?e=${E}" target="_blank" rel="noopener">Version à imprimer</a><button class="btn petit clair" data-apercu="site">Voir le site</button>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
+    <div class="puces"><button class="btn petit voir" data-apercu="fp">Voir mon faire-part</button><button class="btn petit clair" data-personnaliser="1">Personnaliser</button><a class="btn petit clair" href="imprimer.html?e=${E}" target="_blank" rel="noopener">Version à imprimer</a><button class="btn petit clair" data-apercu="site">Voir le site</button>${a('qr') ? `<a class="btn petit clair" href="entree.html?e=${E}">Contrôle d'entrée</a>` : ''}${a('murphoto') ? `<a class="btn petit clair" href="mur.html?e=${E}" target="_blank">Mur photo</a>` : ''}</div></div>
     ${onglet === 'invites' ? `<div class="app-grille">
       <div class="app-stat"><b>${invites.length}</b><span>Invitations</span></div>
       <div class="app-stat"><b>${repondu}</b><span>Ont répondu</span></div>
@@ -143,7 +143,7 @@ function rendre() {
 }
 
 // Navigation en rubriques : on ne montre que la rubrique ouverte et ses pages (les informations arrivent quand on en a besoin).
-const RUBRIQUES = [['accueil', 'Accueil', ['accueil']], ['invites', 'Invités', ['invites', 'envois', 'table']], ['jour', 'Le jour J', ['ceremonies', 'souvenirs', 'jeux']],
+const RUBRIQUES = [['accueil', 'Accueil', ['accueil']], ['fairepart', 'Mon faire-part', ['fairepart']], ['invites', 'Invités', ['invites', 'envois', 'table']], ['jour', 'Le jour J', ['ceremonies', 'souvenirs', 'jeux']],
   ['organisation', 'Organisation', ['planning', 'budget', 'prestataires', 'cadeaux', 'tenues', 'merci']], ['compte', 'Formule et compte', ['paiement', 'equipe', 'reglages']]];
 function navigation(onglets) {
   const rubs = RUBRIQUES.map(([k, nom, pages]) => [k, nom, pages.filter(p => onglets[p])]).filter(([, , p]) => p.length);
@@ -157,8 +157,8 @@ const rubriqueDe = o => (RUBRIQUES.find(([, , p]) => p.includes(o)) || RUBRIQUES
 function parcours() {
   const etapes = [
     ['Choisir la collection', !!evt.modele, 'Choisir', 'data-changer-collection="1"'],
-    ['Personnaliser', !!evt.design, 'Personnaliser', `data-lien="editeur.html?e=${E}"`],
-    ['Voir mon faire-part', !!evt.design, 'Voir', 'data-apercu="fp"'],
+    ['Personnaliser', !!(evt.design || evt.perso), 'Personnaliser', 'data-personnaliser="1"'],
+    ['Voir mon faire-part', !!(evt.design || evt.perso), 'Voir', 'data-apercu="fp"'],
     ['Valider ma formule', evt.formule !== 'essai', 'Valider', 'data-onglet="paiement"'],
     ['Partager avec un message', invites.some(i => i.envoi), 'Partager', 'data-onglet="envois"'],
   ], ici = etapes.findIndex(e => !e[1]);
@@ -187,7 +187,7 @@ function carteCollection() {
   if (!COLLECTIONS.length) return '';
   if (!c) return `<div class="app-carte"><h2>Choisissez votre collection</h2><p class="app-note" style="margin-bottom:14px">Elle donne son ouverture, sa musique et sa mise en page à votre invitation ; vous pourrez en changer à tout moment.</p>${choix}</div>`;
   return `<div class="app-carte carte-collection"><img src="${esc(c.img)}" alt=""><div><span class="etq">Votre collection</span><h2>${esc(c.nom)}</h2><p class="app-note">${esc(c.culture)}</p>
-    <div class="puces" style="margin-top:12px"><a class="btn petit" href="editeur.html?e=${E}">Personnaliser</a><a class="btn petit clair" href="../${esc(c.slug)}/faire-part.html" target="_blank" rel="noopener">Voir la démonstration</a>
+    <div class="puces" style="margin-top:12px"><button class="btn petit" data-personnaliser="1">Personnaliser</button><a class="btn petit clair" href="../${esc(c.slug)}/faire-part.html" target="_blank" rel="noopener">Voir la démonstration</a>
     <button class="btn petit clair" data-changer-collection="1">${choisirCollection ? 'Fermer' : 'Changer de collection'}</button><button class="btn petit clair" data-retirer-collection="1">Retirer</button></div></div></div>${choix ? `<div class="app-carte">${choix}</div>` : ''}`;
 }
 
@@ -236,6 +236,27 @@ const VUES = {
       ${restantes.length ? `<div class="app-carte"><h2>Prochaines tâches</h2>${restantes.slice(0, 4).map(ligneTache).join('')}</div>` : ''}
       <div class="app-carte"><span class="etq">Vos options</span><div class="puces" style="margin-top:10px">${actives.map(([, v]) => `<span class="puce-o">${esc(v)}</span>`).join('') || '<span class="app-note">Aucune option pour l\'instant.</span>'}<button class="btn petit clair" data-onglet="paiement">${evt.formule === 'essai' ? 'Valider ma formule' : 'Ajouter une option'}</button></div>
         ${evt.formule === 'essai' ? `<p class="app-note" style="margin-top:12px">Gratuit tant que vous préparez${choixFormule ? ` (formule choisie : ${esc(choixFormule)})` : ''} : l'envoi à vos invités se débloque quand vous validez votre formule.</p>` : ''}</div>`;
+  },
+
+  // ── Mon faire-part : les textes et la photo du couple, sur la collection choisie, avec l'aperçu à côté ──
+  fairepart() {
+    const c = COLLECTIONS.find(x => x.slug === evt.modele), P = evt.perso || {};
+    if (!c) return `<div class="app-carte"><h2>Votre faire-part</h2><p class="app-note" style="margin-bottom:12px">Choisissez d'abord une collection dans l'accueil, ou composez le vôtre dans l'éditeur.</p><a class="btn petit" href="editeur.html?e=${E}">Ouvrir l'éditeur</a></div>`;
+    const champ = (n, lib, v, aide = '', attrs = '') => `<label>${lib}<input name="${n}" value="${esc(v || '')}" ${attrs}>${aide ? `<small class="aide">${aide}</small>` : ''}</label>`;
+    const zone = (n, lib, v, aide = '') => `<label>${lib}<textarea name="${n}" rows="3">${esc(v || '')}</textarea>${aide ? `<small class="aide">${aide}</small>` : ''}</label>`;
+    return `<div class="fp-perso"><form class="app-carte" id="f-perso"><span class="etq">Collection ${esc(c.nom)}</span><h2>Vos textes et votre photo</h2>
+        <p class="app-note" style="margin-bottom:14px">Laissez une case vide pour garder le texte de la collection. L'aperçu se met à jour à chaque enregistrement.</p>
+        <fieldset><legend>Vous</legend>${champ('titre', 'Prénoms', evt.titre, 'Par exemple : Awa & Thomas', 'required maxlength="120"')}
+          ${champ('date', 'Date et heure', evt.date, '', 'type="datetime-local" required')}${champ('lieu', 'Lieu', evt.lieu, '', 'required')}</fieldset>
+        <fieldset><legend>La couverture</legend>${champ('chapeau', 'Phrase d\'invitation', P.chapeau, 'Par défaut : « Ont la joie de vous inviter à leur mariage »', 'maxlength="140"')}
+          <label>Photo du couple<input type="file" id="i-photo-couple" accept="image/*"><small class="aide">${P.photo ? 'Votre photo est en place. Choisissez-en une autre pour la remplacer.' : 'Elle remplace la photo de démonstration (format portrait de préférence).'}</small></label>
+          ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo">` : ''}</fieldset>
+        <fieldset><legend>Pour vos invités</legend>${champ('tenueTitre', 'Tenue : titre', P.tenueTitre, 'Par exemple : Chic et coloré', 'maxlength="60"')}${zone('tenue', 'Tenue : conseils', P.tenue)}
+          ${champ('reponse', 'Répondre avant le', P.reponse, 'Par défaut : un mois avant', 'type="date"')}${zone('merci', 'Mot de la fin', P.merci, 'En bas du faire-part')}</fieldset>
+        <p class="app-note">Le programme reprend vos cérémonies et les moments « invités » du déroulé. <button type="button" class="lien-btn" data-onglet="ceremonies">Modifier le programme</button></p>
+        <button class="btn">Enregistrer</button><p class="ok-msg" id="m-perso"></p></form>
+      <div class="fp-perso-apercu"><div class="telephone"><iframe src="../${esc(c.slug)}/faire-part.html?e=${E}&ouvert&v=${encodeURIComponent(JSON.stringify(P).length + (evt.titre || '') + evt.date + evt.lieu)}" title="Aperçu"></iframe></div>
+        <div class="puces" style="justify-content:center;margin-top:10px"><button class="btn petit voir" data-apercu="fp">Voir en grand</button><button class="btn petit clair" data-apercu="site">Voir le site</button></div></div></div>`;
   },
 
   // ── Invités : ajout, import, liste ─────────────────────────────────────────
@@ -615,6 +636,7 @@ document.addEventListener('click', async ev => {
   const t = ev.target.closest('button, a'); if (!t || !E) return;
   const d = t.dataset, C = evt.ceremonies || [];
   if (d.apercu) return apercu(d.apercu);
+  if (d.personnaliser) { if (!COLLECTIONS.some(x => x.slug === evt.modele)) { location.href = `editeur.html?e=${E}`; return; } onglet = 'fairepart'; rendre(); scrollTo(0, 0); return; }
   if (d.lien) { location.href = d.lien; return; }
   if (d.changerCollection) { choisirCollection = !choisirCollection; return rendre(); }
   if (d.collection) { choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: d.collection }); return; }
@@ -725,6 +747,11 @@ document.addEventListener('change', async ev => {
   if (t.dataset.paye) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.paye}`), { 'tenue.paye': t.checked });
   if (t.dataset.motMerci) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.motMerci}`), { 'merci.mot': t.value.slice(0, 300) });
   if (t.id === 'i-album-photographe' && t.files.length) return deposerAlbum([...t.files]);
+  if (t.id === 'i-photo-couple' && t.files[0]) {
+    const r = ref(storage, `events/${E}/design/couple-${Date.now()}.jpg`);
+    await uploadBytes(r, t.files[0], { contentType: t.files[0].type || 'image/jpeg' });
+    return updateDoc(doc(db, 'events', E), { 'perso.photo': await getDownloadURL(r) });
+  }
   if (t.dataset.fait) return updateDoc(doc(db, `events/${E}/taches/${t.dataset.fait}`), { fait: t.checked, faitLe: t.checked ? aujourdhui() : '' });
   if (t.dataset.placer !== undefined) return placer(t.dataset.placer, t.value);
   if ('tablesVisibles' in t.dataset) return updateDoc(doc(db, 'events', E), { tablesVisibles: t.checked });
@@ -783,6 +810,14 @@ document.addEventListener('submit', async ev => {
   }
   if (id === 'f-merci') { await updateDoc(doc(db, 'events', E), { merci: { ...(evt.merci || {}), texte: f.texte.trim(), actif: 'actif' in f } }); }
   if (id === 'f-acces') { ev.target.reset(); await setDoc(doc(db, `events/${E}/acces/${jeton()}`), { role: f.role, nom: f.nom.trim(), creeLe: serverTimestamp() }); }
+  if (id === 'f-perso') {
+    const perso = Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci'].map(k => [k, (f[k] || '').trim()]));
+    if (evt.perso?.photo) perso.photo = evt.perso.photo;
+    const C2 = C.map((c, k) => k === 0 ? { ...c, date: f.date, lieu: f.lieu.trim() } : c);
+    await updateDoc(doc(db, 'events', E), { titre: f.titre.trim(), date: f.date, lieu: f.lieu.trim(), ceremonies: C2, perso });
+    const m = $('#m-perso'); if (m) m.textContent = 'Enregistré : votre faire-part est à jour.';
+    return;
+  }
   if (id === 'f-cer') {
     const cle = f.nom.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'ceremonie';
     ev.target.reset();

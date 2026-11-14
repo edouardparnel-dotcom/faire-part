@@ -48,12 +48,24 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule }) {
     const l = blocLieu.querySelector('a.bouton'); if (l) l.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(lieu);
   }
   // Programme : les cérémonies saisies dans l'espace, avec les pictogrammes de la collection.
-  const frise = document.querySelector('.frise'), C = (evt.ceremonies || []).filter(c => c.date);
-  if (frise && C.length) {
+  const frise = document.querySelector('.frise'), C = (evt.ceremonies || []).filter(c => c.date), D = evt.deroulePublic || [];
+  if (frise && D.length) {
+    const icones = [...frise.querySelectorAll('img')].map(i => i.getAttribute('src'));
+    frise.innerHTML = D.map((x, k) => `<li class="apparait vu">${icones.length ? `<img src="${icones[k % icones.length]}" alt="" loading="lazy">` : ''}<div><b>${esc((x.heure || '').replace(':', ' h '))}</b><span>${esc(x.titre)}${x.lieu ? ` · ${esc(x.lieu)}` : ''}</span></div></li>`).join('');
+    const sous = frise.closest('section')?.querySelector('.sous'); if (sous && d) sous.textContent = majuscule(dateLongue(evt.date));
+  } else if (frise && C.length) {
     const icones = [...frise.querySelectorAll('img')].map(i => i.getAttribute('src'));
     frise.innerHTML = C.map((c, k) => `<li class="apparait vu">${icones.length ? `<img src="${icones[k % icones.length]}" alt="" loading="lazy">` : ''}<div><b>${heure(c.date).replace(':', ' h ')}</b><span>${esc(c.nom)}${c.lieu && c.lieu !== lieu ? ` · ${esc(c.lieu)}` : ''}</span></div></li>`).join('');
     const sous = frise.closest('section')?.querySelector('.sous'); if (sous) sous.textContent = majuscule(dateLongue(C[0].date));
   }
+  // Textes et photo choisis dans « Mon faire-part » (vide = texte de la collection).
+  const P = evt.perso || {}, txt = (sel, v) => v && document.querySelectorAll(sel).forEach(x => x.textContent = v);
+  txt('.chapeau .fp-seul', P.chapeau);
+  txt('#tenue .titre-tenue', P.tenueTitre); txt('.inter-matiere figcaption', P.tenueTitre);
+  txt('#tenue .titre-tenue + p', P.tenue);
+  txt('.suite-pied p:not(.script)', P.merci);
+  if (P.reponse) txt('#reponse > p:not([id])', `Merci de répondre avant le ${new Date(P.reponse + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}.`);
+  if (P.photo) document.querySelectorAll('.inter-couple img, .medaillon-surprise img').forEach(i => { i.src = P.photo; i.loading = 'eager'; });
   // Textes de démonstration propres au couple fictif : masqués plutôt que faux.
   document.getElementById('histoire')?.setAttribute('hidden', '');
   // L'ouverture 3D est dorée aux prénoms de la démonstration : on le dit, les vôtres y sont posés à la validation.
