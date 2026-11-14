@@ -5,7 +5,7 @@ if (E) {
   document.documentElement.classList.add('perso-attente');
   document.head.insertAdjacentHTML('beforeend', `<style>
     .perso-attente .noms,.perso-attente .suite-couv .date,.perso-attente .suite-couv .lieu{visibility:hidden}
-    .perso-bandeau{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#1E1B18;color:#F7F3EC;font:13px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:8px 12px}
+    .perso-bandeau{position:fixed;left:0;right:0;top:0;z-index:999;background:#1E1B18;color:#F7F3EC;font:13px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:8px 12px}
     .perso-mention{position:absolute;left:12px;right:12px;bottom:56px;z-index:5;margin:0;background:rgba(20,16,12,.72);color:#F7F3EC;font:12px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:7px 10px;border-radius:4px}
   </style>`);
   try {
