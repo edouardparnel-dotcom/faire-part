@@ -4,7 +4,7 @@
 // Langues (option « Langue supplémentaire ») : textes fixes traduits dans langues.js, textes des organisateurs
 // traduits dans l'éditeur (« titre@en »…). Une partie liée à une option payante ne s'affiche que si l'option est active.
 import { theme as themeDe, POLICES } from './themes.js?v=3';
-import { traduire, champ as enLangue, LOCALES, memoriserLangue, LANGUES, RTL } from './langues.js?v=3';
+import { traduire, champ as enLangue, LOCALES, memoriserLangue, LANGUES, RTL } from './langues.js?v=8';
 import { GUIDES } from './guides.js?v=1';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);

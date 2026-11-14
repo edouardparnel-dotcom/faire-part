@@ -6,7 +6,7 @@ import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } fro
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue } from './langues.js?v=7';
+import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue } from './langues.js?v=8';
 import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -48,7 +48,7 @@ async function demarrer() {
   await rattacher();
   evt = (await getDoc(doc(db, 'events', E))).data();
   if (evt?.formule === 'essai') { vue.innerHTML = '<div class="app-carte" style="text-align:center"><h2 class="serif">Cette invitation se prépare</h2><p class="app-note">Les hôtes mettent la dernière main à leur invitation. Revenez très vite.</p></div>'; return; }
-  onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
+  onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue, evt.design?.langueDefaut); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
   onSnapshot(collection(db, `events/${E}/cadeaux`), s => { cadeaux = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.creeLe?.seconds || 0) - (y.creeLe?.seconds || 0)); rendre(); }, () => {});
   if (a('covoiturage')) onSnapshot(collection(db, `events/${E}/covoiturage`), s => { covoit = s.docs.map(d => ({ id: d.id, ...d.data() })); rendre(); }, () => {});
   if (a('direct')) { live = (await getDoc(doc(db, `events/${E}/prive/config`))).data()?.live || ''; rendre(); if (!live) monterDirect(); }

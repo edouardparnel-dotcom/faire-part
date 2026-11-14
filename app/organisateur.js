@@ -6,7 +6,7 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES } from './langues.js?v=7';
+import { LANGUES } from './langues.js?v=8';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, proposerPlacement } from './espace.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -319,6 +319,7 @@ const VUES = {
         <label>E-mail<input name="email" type="email"></label><label>Groupe<input name="groupe" maxlength="60" placeholder="Famille de Naïka" list="groupes"></label><label>Accompagnants autorisés<input name="max" type="number" min="0" max="10" value="0"></label></div>
       <datalist id="groupes">${[...new Set(invites.map(i => i.groupe).filter(Boolean))].map(g => `<option value="${esc(g)}">`).join('')}</datalist>
       ${C.length > 1 ? `<div class="coches">${a('ceremonies') ? C.map(c => `<label><input type="checkbox" name="c_${esc(c.cle)}" checked>${esc(c.nom)}</label>`).join('') : '<span class="app-note">Invité à toutes les cérémonies. Avec l\'option « Invitations par cérémonie », vous choisissez pour chacun.</span>'}</div>` : ''}
+      ${(evt.design?.langues || []).length > 1 ? `<label style="max-width:320px;margin-bottom:10px">Langue de l'invité<select name="langue"><option value="">Langue par défaut (${esc(LANGUES[evt.design.langueDefaut || 'fr'])})</option>${evt.design.langues.map(l => `<option value="${l}">${esc(LANGUES[l])}</option>`).join('')}</select></label>` : ''}
       <button class="btn">Ajouter</button></form>
     <details class="app-carte" ${apercuImport || msgImport ? 'open' : ''}><summary><h2 style="display:inline">Importer une liste</h2></summary>
       <p class="app-note" style="margin:10px 0">Collez les colonnes depuis Excel ou Google Sheets, ou choisissez un fichier .csv. Colonnes reconnues : nom, prénom, téléphone, e-mail, accompagnants, groupe, cérémonies. Sans en-tête : le nom d'abord.</p>
@@ -334,7 +335,7 @@ const VUES = {
         <td>${esc(i.regime || '')}${i.message ? `<br><span class="app-note">« ${esc(i.message)} »</span>` : ''}</td>
         ${a('etranger') ? `<td>${i.arrivee ? esc([i.arrivee.date, i.arrivee.vol, i.arrivee.hebergement ? 'hébergement demandé' : ''].filter(Boolean).join(' · ')) : ''}</td>` : ''}
         ${a('qr') ? `<td>${i.entree ? `<span class="ok">${heure(i.entree.toDate())}</span>` : ''}</td>` : ''}
-        <td style="white-space:nowrap"><button class="btn petit clair" data-copier="${i.id}">Copier le lien</button> <button class="btn petit clair" data-suppr-invite="${i.id}" title="Supprimer">✕</button></td></tr>`).join('')}
+        <td style="white-space:nowrap">${(evt.design?.langues || []).length > 1 ? `<select data-maj="invites/${i.id}/langue" title="Langue de l'invité" style="margin-right:6px">${['', ...evt.design.langues].map(l => `<option value="${l}" ${(i.langue || '') === l ? 'selected' : ''}>${l ? esc(LANGUES[l]) : 'Langue par défaut'}</option>`).join('')}</select>` : ''}<button class="btn petit clair" data-copier="${i.id}">Copier le lien</button> <button class="btn petit clair" data-suppr-invite="${i.id}" title="Supprimer">✕</button></td></tr>`).join('')}
     </tbody></table>${invites.length ? '' : '<p class="app-note">Ajoutez vos premiers invités : chacun reçoit un lien personnel.</p>'}<p class="ok-msg" id="m-copie"></p></div>`;
   },
 
@@ -571,6 +572,8 @@ const VUES = {
         <label>Collection du faire-part<input name="modele" value="${esc(evt.modele || '')}" placeholder="lakay"></label>
         <label>Date limite de réponse<input name="dateLimiteReponse" type="date" value="${esc(evt.dateLimiteReponse || '')}"></label></div>
         <h3 style="margin-top:16px">Langues de vos invités</h3>
+        ${(evt.design?.langues || []).length > 1 ? `<label style="max-width:320px">Langue par défaut de vos invités<select name="langueDefaut">${evt.design.langues.map(l => `<option value="${l}" ${l === (evt.design.langueDefaut || 'fr') ? 'selected' : ''}>${esc(LANGUES[l])}</option>`).join('')}</select></label>
+        <p class="app-note">Vos invités reçoivent leur page dans cette langue, sauf ceux à qui vous en donnez une autre dans la liste des invités. Chacun peut ensuite changer sur sa page.</p>` : ''}
         <div class="coches">${Object.entries(LANGUES).map(([l, n]) => `<label><input type="checkbox" name="lg_${l}" ${l === 'fr' ? 'checked disabled' : (evt.design?.langues || []).includes(l) ? 'checked' : ''}>${esc(n)}</label>`).join('')}</div>
         <p class="app-note">Français et ${a('langue') ? 'deux autres langues' : 'une autre langue'} au choix${a('langue') ? '' : ' (une troisième avec l’option « Langue supplémentaire »)'}. Chaque invité choisit sa langue sur sa page de réponse : réponses, programme, table et messages sont traduits. Le faire-part et le site gardent les textes que vous écrivez. Le créole haïtien, le swahili et le yoruba sont traduits par machine et pas encore relus : faites-les vérifier par un proche qui les parle.</p>
         ${a('code') ? `<label style="margin-top:6px">Code d'accès (facultatif)<input name="code" maxlength="20" autocomplete="off" placeholder="${evt.codeAcces ? 'Un code est en place : tapez-en un nouveau, ou « aucun » pour le retirer' : 'Par exemple : NAIKA2027'}"></label>
@@ -887,7 +890,7 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-invite') {
     const choisies = C.length > 1 && a('ceremonies') ? C.filter(c => f['c_' + c.cle]).map(c => c.cle) : C.map(c => c.cle);
     ev.target.reset();
-    await setDoc(doc(db, `events/${E}/invites/${jeton()}`), { nom: f.nom.trim(), max: Math.max(0, +f.max || 0), tel: telephone(f.tel), email: f.email.trim(), groupe: f.groupe.trim(), ceremonies: choisies, reponses: {}, creeLe: serverTimestamp() });
+    await setDoc(doc(db, `events/${E}/invites/${jeton()}`), { nom: f.nom.trim(), max: Math.max(0, +f.max || 0), tel: telephone(f.tel), email: f.email.trim(), groupe: f.groupe.trim(), ceremonies: choisies, reponses: {}, ...(f.langue ? { langue: f.langue } : {}), creeLe: serverTimestamp() });
   }
   if (id === 'f-import') { apercuImport = invitesDepuisCSV(lireCSV(f.texte || ''), C); if (!apercuImport.length) apercuImport = null; msgImport = apercuImport ? '' : 'Aucun invité reconnu : vérifiez qu\'il y a au moins une colonne de noms.'; document.activeElement?.blur(); rendre(); }
   if (id === 'f-messages') { await setDoc(doc(db, `events/${E}/outils/messages`), { invitation: f.invitation, relance: f.relance }); if ($('#m-messages')) $('#m-messages').textContent = 'Messages enregistrés.'; }
@@ -941,7 +944,7 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-reglages') {
     const langues = ['fr', ...Object.keys(LANGUES).filter(l => l !== 'fr' && ('lg_' + l) in f)], maxL = a('langue') ? 3 : 2;
     if (langues.length > maxL) { if ($('#m-reglages')) $('#m-reglages').textContent = `${maxL} langues au plus avec votre formule : décochez-en une.`; return; }
-    await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f, 'design.langues': langues });
+    await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f, 'design.langues': langues, 'design.langueDefaut': langues.includes(f.langueDefaut) ? f.langueDefaut : 'fr' });
     if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim() }, { merge: true });
     const code = a('code') ? (f.code || '').trim() : '';
     if (code) await updateDoc(doc(db, 'events', E), { codeAcces: code.toLowerCase() === 'aucun' ? '' : await empreinte(E, code) });

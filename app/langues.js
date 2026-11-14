@@ -1425,9 +1425,9 @@ export const traduire = (langue, texte) => T[langue]?.[texte] ?? texte;
 // Texte écrit par les organisateurs : la version de la langue si elle existe (« texte@en »), sinon l'original.
 export const champ = (objet, nom, langue) => (langue && langue !== 'fr' && objet?.[`${nom}@${langue}`]) || objet?.[nom] || '';
 // Langue à afficher : choix mémorisé du visiteur, sinon celle du téléphone si l'événement la propose, sinon la première.
-export function langueChoisie(proposees = ['fr'], fixee = '') {
+export function langueChoisie(proposees = ['fr'], fixee = '', defaut = '') {
   let memo = ''; try { memo = localStorage.getItem('mv-langue') || ''; } catch {}
   const tel = (navigator.language || 'fr').slice(0, 2);
-  return [fixee, memo, tel].find(l => l && proposees.includes(l)) || proposees[0] || 'fr';
+  return [fixee, memo, defaut, tel].find(l => l && proposees.includes(l)) || proposees[0] || 'fr';
 }
 export function memoriserLangue(l) { try { localStorage.setItem('mv-langue', l); } catch {} }
