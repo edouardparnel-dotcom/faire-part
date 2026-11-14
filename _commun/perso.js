@@ -13,8 +13,9 @@ if (E) {
     const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
     const { onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js');
     await new Promise(r => { const f = onAuthStateChanged(auth, () => { f(); r(); }); });
-    const s = await getDoc(doc(db, 'events', E));
-    if (s.exists()) appliquer(s.data(), { esc, dateLongue, heure, majuscule });
+    const s = await getDoc(doc(db, 'events', E)), u = auth.currentUser;
+    // Invitation pas encore publiée : seuls les organisateurs (connectés avec un compte) la voient à leurs prénoms.
+    if (s.exists() && (s.data().formule !== 'essai' || (u && !u.isAnonymous))) appliquer(s.data(), { esc, dateLongue, heure, majuscule });
   } catch (err) { console.warn('Personnalisation', err); }
   document.documentElement.classList.remove('perso-attente');
 }
@@ -76,6 +77,13 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule }) {
     m.textContent = 'Aperçu : vos prénoms seront dorés sur la carte de cette ouverture à la validation de votre formule.';
     film.appendChild(m);
   }
+  // Lien personnel de l'invité : la réponse part dans l'espace des mariés.
+  const G = new URLSearchParams(location.search).get('g'), rep = document.getElementById('reponse');
+  if (G && rep) {
+    rep.querySelectorAll('[data-demo], br, #demo').forEach(x => x.remove());
+    rep.insertAdjacentHTML('beforeend', `<a class="bouton plein" href="../app/invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(G)}">Répondre à l'invitation</a>`);
+  }
+  if (G) return;
   const bd = document.createElement('div');
   bd.className = 'perso-bandeau';
   bd.textContent = evt.formule === 'essai' ? 'Aperçu de votre faire-part · visible par vous seuls tant que la formule n\'est pas validée' : 'Votre faire-part';
