@@ -43,19 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-09-18T15:00:00+01:00" data-evenement="Mariage Grâce &amp; Dieudonné" data-ville="Gombe, Kinshasa" data-titre-std="Grâce &amp; Dieudonné — Save the date (démonstration)" data-blocs="decale" data-titres="grand" data-images="pleine" data-revele="flou" data-paral="vertical" data-cadre="plein" data-prog="ligne" data-lieu="cote" data-tenue="image" data-compte="ligne" data-rep="classique" data-btn="carre" data-teinte="clair" data-collection="sape" data-particules="petales" data-trame="arche">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/2119;--masque:url('ouverture.webp');--dos:#d1d0c0;">
-  <div class="portail" role="button" aria-label="Ouvrir l'invitation">
-    <div class="derriere mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Grâce</b><i>&amp;</i><b>Dieudonné</b><small>18 · 09 · 2027</small></div>
-    <div class="battant g" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div><div class="battant d" style="background-image:url('ouverture.webp')"><i class="tranche"></i><i class="dos"></i></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Ouvrez la garde-robe, la fête commence</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-arche">
