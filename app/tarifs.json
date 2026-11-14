@@ -66,7 +66,8 @@
      "langue",
      "direct",
      "covoiturage",
-     "musique"
+     "musique",
+     "code"
     ],
     "lancement": {
      "prix": 280,
@@ -117,6 +118,10 @@
    "tenues": {
     "nom": "Tenues coordonnées",
     "prix": 40
+   },
+   "code": {
+    "nom": "Accès par code",
+    "prix": 15
    },
    "langue": {
     "nom": "Langue supplémentaire",
@@ -187,6 +192,10 @@
    }
   },
   "options": {
+   "code": {
+    "nom": "Accès par code",
+    "prix": 15
+   },
    "langue": {
     "nom": "Langue supplémentaire",
     "prix": 20

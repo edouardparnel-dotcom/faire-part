@@ -32,7 +32,7 @@ if (E) {
 // qu'avec le code (une fois par téléphone). Les liens personnels des invités (?g=) et les organisateurs connectés passent directement.
 async function codeAcces(E, evt, u) {
   const G = new URLSearchParams(location.search).get('g');
-  if (!evt.codeAcces || G || (u && !u.isAnonymous)) return;
+  if (!evt.codeAcces || !(evt.options || []).includes('code') || G || (u && !u.isAnonymous)) return;
   try { if (localStorage.getItem('mv-code-' + E) === evt.codeAcces) return; } catch {}
   document.documentElement.classList.remove('perso-attente');
   const voile = document.createElement('form');

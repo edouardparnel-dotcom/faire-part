@@ -568,8 +568,8 @@ const VUES = {
         <h3 style="margin-top:16px">Langues de vos invités</h3>
         <div class="coches">${Object.entries(LANGUES).map(([l, n]) => `<label><input type="checkbox" name="lg_${l}" ${l === 'fr' ? 'checked disabled' : (evt.design?.langues || []).includes(l) ? 'checked' : ''}>${esc(n)}</label>`).join('')}</div>
         <p class="app-note">Français et ${a('langue') ? 'deux autres langues' : 'une autre langue'} au choix${a('langue') ? '' : ' (une troisième avec l’option « Langue supplémentaire »)'}. Chaque invité choisit sa langue sur sa page de réponse : réponses, programme, table et messages sont traduits. Le faire-part et le site gardent les textes que vous écrivez. Le créole haïtien, le swahili et le yoruba sont traduits par machine et pas encore relus : faites-les vérifier par un proche qui les parle.</p>
-        <label style="margin-top:6px">Code d'accès (facultatif)<input name="code" maxlength="20" autocomplete="off" placeholder="${evt.codeAcces ? 'Un code est en place : tapez-en un nouveau, ou « aucun » pour le retirer' : 'Par exemple : NAIKA2027'}"></label>
-        <p class="app-note">Avec un code, le faire-part, le save-the-date, le site, le mur photo, le livre d'or et le plan de table ne s'ouvrent qu'aux personnes qui le connaissent : utile si le lien général circule. Les liens personnels envoyés à vos invités s'ouvrent toujours directement.</p>
+        ${a('code') ? `<label style="margin-top:6px">Code d'accès (facultatif)<input name="code" maxlength="20" autocomplete="off" placeholder="${evt.codeAcces ? 'Un code est en place : tapez-en un nouveau, ou « aucun » pour le retirer' : 'Par exemple : NAIKA2027'}"></label>
+        <p class="app-note">Avec un code, le faire-part, le save-the-date, le site, le mur photo, le livre d'or et le plan de table ne s'ouvrent qu'aux personnes qui le connaissent : utile si le lien général circule. Les liens personnels envoyés à vos invités s'ouvrent toujours directement.</p>` : `<p class="app-note" style="margin-top:10px">Avec l'option « Accès par code », votre faire-part, votre site, le mur photo et le livre d'or ne s'ouvrent qu'avec le code que vous donnez à vos invités.</p>`}
         <label class="coche" style="margin-top:6px"><input type="checkbox" name="notifReponses" ${evt.notifReponses === false ? '' : 'checked'}> Recevoir un courriel à chaque réponse d'invité</label>
         <p class="app-note">Les invités dont vous avez l'adresse e-mail reçoivent un rappel 7 jours puis 1 jour avant la date limite s'ils n'ont pas répondu, et la veille de l'événement s'ils viennent.</p>
         ${a('direct') ? `<h3 style="margin-top:16px">Le direct, filmé par vos invités</h3>
@@ -932,7 +932,7 @@ document.addEventListener('submit', async ev => {
     if (langues.length > maxL) { if ($('#m-reglages')) $('#m-reglages').textContent = `${maxL} langues au plus avec votre formule : décochez-en une.`; return; }
     await updateDoc(doc(db, 'events', E), { titre: f.titre, date: f.date, lieu: f.lieu, modele: f.modele.trim(), dateLimiteReponse: f.dateLimiteReponse || '', notifReponses: 'notifReponses' in f, 'design.langues': langues });
     if ('live' in f) await setDoc(doc(db, `events/${E}/prive/config`), { live: f.live.trim(), rediffusion: (f.rediffusion || '').trim() }, { merge: true });
-    const code = (f.code || '').trim();
+    const code = a('code') ? (f.code || '').trim() : '';
     if (code) await updateDoc(doc(db, 'events', E), { codeAcces: code.toLowerCase() === 'aucun' ? '' : await empreinte(E, code) });
     if ($('#m-reglages')) $('#m-reglages').textContent = 'Enregistré.';
   }

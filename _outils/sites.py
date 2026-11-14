@@ -25,6 +25,7 @@ OPTIONS_MARIAGE = [
   ('etranger', 'Avant', "Invités venus de l'étranger", "Dates d'arrivée, hébergement, navettes et lettre d'invitation pour le visa.", 40, True),
   ('portrait', 'Avant', 'Portrait illustré du couple', "À partir de votre photo, vous deux dessinés à l'aquarelle dans l'univers de votre collection, puis repris sur l'invitation, le site et les remerciements. Une retouche incluse.", 60, True),
   ('tenues', 'Avant', 'Tenues coordonnées', "Aso ebi, pagne de famille : qui porte quel tissu, les tailles, qui a réglé.", 40, True),
+  ('code', 'Avant', 'Accès par code', "Le faire-part, le site, le mur photo et le livre d'or ne s'ouvrent qu'avec le code que vous donnez à vos invités : rien ne circule hors de votre cercle.", 15, False),
   ('langue', 'Avant', 'Langue supplémentaire', "Quatorze langues, de l'anglais à l'arabe, au chinois ou au swahili : chaque invité répond dans la sienne.", 20, False),
   ('qr', 'Le jour J', "Contrôle d'entrée par QR code", "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", 50, True),
   ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "La cérémonie en direct, sur un lien réservé à vos invités.", 40, True),
@@ -39,6 +40,7 @@ OPTIONS_MARIAGE = [
 OPTIONS_EVENEMENT = [
   ('fairepart', 'Avant', "L'invitation", "Au moins dix directions artistiques, chacune avec sa propre ouverture et sa propre mise en page, reprise à vos couleurs.", None, False),
   ('musique', 'Avant', 'Musique au choix', "Incluse dans toutes les formules : la musique de la collection, une autre de notre bibliothèque, ou votre propre morceau (composition, enregistrement de famille, musique libre de droits). Vos invités l'activent d'un geste.", None, False),
+  ('code', 'Avant', 'Accès par code', "L'invitation et ses pages ne s'ouvrent qu'avec le code que vous donnez à vos invités.", 15, False),
   ('langue', 'Avant', 'Langue supplémentaire', "Chaque invité répond dans sa langue.", 20, False),
   ('direct', 'Le jour J', 'Direct privé pour les proches', "Le moment en direct, sur un lien réservé à vos invités.", 40, True),
   ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application.", 30, False),
@@ -82,7 +84,7 @@ def lancement(n, p):
 FORMULES_MARIAGE = [
   ('Faire-part', 125, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à une formule supérieure à tout moment, en payant la différence"]),
   ('Signature', 199, ['ceremonies', 'savethedate'], ["Tout le Faire-part", "Le site du mariage, liste de cadeaux et cagnotte", "Save-the-date et invitations par cérémonie", "Plan de table, budget, planning et prestataires", "Deux langues"]),
-  ('Prestige', 399, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Mur photo, livre d'or et album", "Direct privé pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
+  ('Prestige', 399, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique', 'code'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Accès par code", "Mur photo, livre d'or et album", "Direct privé pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
 ]
 FORMULES_EVENEMENT = [
   ('Essentiel', 49, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),
