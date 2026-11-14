@@ -16,6 +16,7 @@ if (E) {
     const { onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js');
     await new Promise(r => { const f = onAuthStateChanged(auth, () => { f(); r(); }); });
     const s = await getDoc(doc(db, 'events', E)), u = auth.currentUser;
+    if (s.exists()) await codeAcces(E, s.data(), u);
     // Invitation pas encore publiée : seuls les organisateurs (connectés avec un compte) la voient à leurs prénoms.
     if (s.exists() && (s.data().formule !== 'essai' || (u && !u.isAnonymous))) {
       const outils = { esc, dateLongue, heure, majuscule, nuanciers: await fetch('../_commun/nuanciers.json?v=3').then(r => r.json()).catch(() => ({})) };
@@ -25,6 +26,33 @@ if (E) {
     }
   } catch (err) { console.warn('Personnalisation', err); }
   document.documentElement.classList.remove('perso-attente');
+}
+
+// Code d'accès choisi par le couple : faire-part, save-the-date, site, mur photo, livre d'or et plan de table ne s'ouvrent
+// qu'avec le code (une fois par téléphone). Les liens personnels des invités (?g=) et les organisateurs connectés passent directement.
+async function codeAcces(E, evt, u) {
+  const G = new URLSearchParams(location.search).get('g');
+  if (!evt.codeAcces || G || (u && !u.isAnonymous)) return;
+  try { if (localStorage.getItem('mv-code-' + E) === evt.codeAcces) return; } catch {}
+  document.documentElement.classList.remove('perso-attente');
+  const voile = document.createElement('form');
+  voile.style.cssText = 'position:fixed;inset:0;z-index:10000;display:grid;place-items:center;text-align:center;padding:30px;background:#f7f2e8;color:#3b3226;font-family:Georgia,serif';
+  voile.innerHTML = `<div style="max-width:340px"><p style="letter-spacing:.3em;text-transform:uppercase;font-size:12px;margin:0 0 14px">Invitation privée</p>
+    <p style="font-size:22px;margin:0 0 18px">Entrez le code reçu avec l'invitation</p>
+    <input name="c" autocomplete="off" autocapitalize="characters" required style="width:100%;box-sizing:border-box;padding:12px;font-size:18px;text-align:center;border:1px solid #c9b99a;border-radius:6px;background:#fff">
+    <button style="margin-top:14px;width:100%;padding:12px;font-size:16px;border:0;border-radius:6px;background:#3b3226;color:#f7f2e8;cursor:pointer">Ouvrir</button>
+    <p id="m-code" style="min-height:1.4em;margin-top:12px;color:#9a3b2e"></p></div>`;
+  document.body.appendChild(voile);
+  document.body.style.overflow = 'hidden';
+  await new Promise(fini => voile.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const o = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(E + ':' + voile.c.value.trim().toUpperCase()));
+    const h = [...new Uint8Array(o)].map(x => x.toString(16).padStart(2, '0')).join('');
+    if (h !== evt.codeAcces) { voile.querySelector('#m-code').textContent = 'Ce code ne correspond pas.'; return; }
+    try { localStorage.setItem('mv-code-' + E, h); } catch {}
+    voile.remove(); document.body.style.overflow = ''; fini();
+  }));
+  document.documentElement.classList.add('perso-attente');
 }
 
 // Lien personnel d'un invité, quand il y a plusieurs cérémonies : le programme ne montre que celles où il est convié
