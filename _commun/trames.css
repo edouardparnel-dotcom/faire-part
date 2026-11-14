@@ -762,3 +762,4 @@ body.ferme .verriere path,body.ferme .verriere .citronnier{animation-play-state:
 @media (prefers-reduced-motion:reduce){.verriere path{animation:none;stroke-dashoffset:0}.verriere .citronnier{animation:none}}
 /* Cadrage du couple aussi dans les couvertures (curseurs de l espace) ; sans réglage, chaque couverture garde le sien */
 html[style*="--photo-pos"] .arche img,html[style*="--photo-pos"] .edito-une img,html[style*="--photo-pos"] .affiche-portrait,html[style*="--photo-pos"] .polaroid img,html[style*="--photo-pos"] .plein-photo{object-position:var(--photo-pos)!important}
+body[data-btn=souligne] #agenda,[data-trame=edito] #agenda{-webkit-mask:none!important;mask:none!important}
