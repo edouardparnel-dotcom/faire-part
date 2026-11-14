@@ -129,7 +129,53 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
     rep.querySelectorAll('[data-demo], br, #demo').forEach(x => x.remove());
     rep.insertAdjacentHTML('beforeend', `<a class="bouton plein repondre-invite" href="../app/invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(G)}">Répondre à l'invitation</a>`);
   }
+  // Pied de page : plus de « démonstration · couple et lieu fictifs »
+  document.querySelectorAll('.suite-pied small').forEach(s => s.innerHTML = 'Faire-part <a href="https://maisonvivat.com/">Maison Vivat</a>');
+  if (location.pathname.endsWith('site.html')) siteDuCouple(evt, P, esc, G);
   if (G) return;
   const bd = document.querySelector('.perso-bandeau') || document.body.appendChild(Object.assign(document.createElement('div'), { className: 'perso-bandeau' }));
   bd.textContent = evt.formule === 'essai' ? 'Aperçu de votre faire-part · visible par vous seuls tant que la formule n\'est pas validée' : 'Votre faire-part';
+}
+
+// Le site du mariage d'un vrai couple : la page « site » de sa collection, avec SES informations (Mon faire-part, cagnotte, réponses) ;
+// tout ce qui n'existe que pour la démonstration est masqué (menu de la collection, hôtels, liste et formulaire fictifs).
+function siteDuCouple(evt, P, esc, G) {
+  const lien = G ? `../app/invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(G)}` : '';
+  const montrer = (sel, oui) => document.querySelectorAll(sel).forEach(x => x.hidden = !oui);
+  montrer('.suite-nav', false);
+  // images d'autres collections (galeries de démonstration) : jamais sur le site d'un couple
+  document.querySelectorAll('img[src^="../"]:not([src^="../_commun"])').forEach(i => (i.closest('figure, .galerie, li') || i).hidden = true);
+  // Notre histoire
+  const h = document.getElementById('histoire');
+  if (h) { h.hidden = !P.histoire; const p = h.querySelector('p'); if (p && P.histoire) p.textContent = P.histoire; }
+  // Hébergement : une adresse par ligne, « Nom — détail »
+  const hb = document.getElementById('hebergement');
+  if (hb) {
+    const lignes = (P.hebergement || '').split('\n').map(l => l.trim()).filter(Boolean);
+    hb.hidden = !lignes.length;
+    const box = hb.querySelector('.hotels');
+    if (box && lignes.length) box.innerHTML = lignes.map(l => { const [n, ...d] = l.split(/\s+[—–-]\s+/); return `<div class="hotel"><b>${esc(n)}</b>${d.length ? `<span>${esc(d.join(' — '))}</span>` : ''}</div>`; }).join('');
+  }
+  // Votre place : la table de l'invité est sur sa page personnelle
+  document.querySelectorAll('a[href="plan-de-table.html"]').forEach(a => { const s = a.closest('section'); if (s) s.hidden = !(G && evt.tablesVisibles); a.href = lien + '#table'; a.textContent = 'Voir ma table'; });
+  // Liste et cagnotte : la cagnotte du couple, sa liste sur la page de l'invité
+  const c = document.getElementById('cadeaux'), cg = evt.cagnotte || {};
+  if (c) {
+    const aCagnotte = /^https:\/\//.test(cg.lien || '');
+    c.hidden = !aCagnotte && !G;
+    c.querySelectorAll('ul, [data-demo-cagnotte], .bouton').forEach(x => x.remove());
+    const p = c.querySelector('p'); if (p && cg.texte) p.textContent = cg.texte;
+    if (aCagnotte) c.insertAdjacentHTML('beforeend', `<a class="bouton plein" href="${esc(cg.lien)}" target="_blank" rel="noopener">${esc(cg.libelle || 'Participer à la cagnotte')}</a>`);
+    if (G) c.insertAdjacentHTML('beforeend', `<a class="bouton" href="${lien}#cadeaux">Voir la liste et réserver un cadeau</a>`);
+  }
+  // Votre réponse : sur la page personnelle de l'invité (le formulaire de la démonstration n'envoie rien)
+  const r = document.getElementById('reponse');
+  if (r) {
+    r.querySelectorAll('form, #demo').forEach(x => x.remove());
+    if (!r.querySelector('.repondre-site')) r.insertAdjacentHTML('beforeend', G
+      ? `<a class="bouton plein repondre-site" href="${lien}">Répondre à l'invitation</a>`
+      : `<p class="repondre-site">Vos invités répondent depuis leur lien personnel.</p>`);
+  }
+  // Sommaire : seulement les parties affichées
+  document.querySelectorAll('.sommaire a[href^="#"]').forEach(a => { const s = document.querySelector(a.getAttribute('href')); a.hidden = !s || s.hidden; });
 }

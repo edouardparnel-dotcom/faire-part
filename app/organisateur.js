@@ -171,7 +171,7 @@ function parcours() {
 function apercu(f) {
   document.querySelector('.apercu-fond')?.remove();
   const c = COLLECTIONS.find(x => x.slug === evt.modele), d = document.createElement('div');   // collection réelle : sa page, à vos prénoms
-  const url = f === 'site' ? `fp.html?e=${E}&f=site` : c ? `../${c.slug}/faire-part.html?e=${E}` : `fp.html?e=${E}`;   // le site du mariage : celui aux vraies infos du couple
+  const url = c ? `../${c.slug}/${f === 'site' ? 'site' : 'faire-part'}.html?e=${E}` : `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`;   // site du couple : la page site de sa collection, à ses informations (perso.js)   // le site du mariage : celui aux vraies infos du couple
   d.className = 'apercu-fond';
   d.innerHTML = `<div class="apercu-boite"><div class="puces apercu-barre"><button class="btn petit ${f === 'fp' ? '' : 'clair'}" data-ap="fp">Faire-part</button><button class="btn petit ${f === 'site' ? '' : 'clair'}" data-ap="site">Site</button>
     <a class="btn petit clair" href="${url}" target="_blank" rel="noopener">Ouvrir en grand</a><button class="btn petit clair" data-ap="fermer">Fermer</button></div>
@@ -263,6 +263,8 @@ const VUES = {
           <div class="photos-plus">${[['photoSurprise', 'Photo à gratter', 'Révélée quand vos invités grattent le médaillon « Une surprise » : une autre photo de vous, un lieu, un souvenir.'],
             ['photoGalerie', 'Photo de la galerie', 'La grande photo de la mosaïque, à côté du lieu et de la table.']]
             .map(([k, lib, aide]) => `<label>${lib}<input type="file" data-photo-perso="${k}" accept="image/*"><small class="aide">${P[k] ? 'Votre photo est en place.' : aide}</small>${P[k] ? `<img class="vignette-perso" src="${esc(P[k])}" alt="">` : ''}</label>`).join('')}</div></fieldset>
+        <fieldset><legend>Votre site du mariage</legend>${zone('histoire', 'Notre histoire', P.histoire, 'Comment vous vous êtes rencontrés. Vide : pas de partie « Notre histoire ».')}
+          ${zone('hebergement', 'Hébergement', P.hebergement, 'Une adresse par ligne, par exemple : Hôtel de la Gare — à 5 minutes, tarif invité. Vide : pas de partie hébergement.')}</fieldset>
         <fieldset><legend>Votre phrase</legend>${zone('citation', 'Citation', P.citation, 'Une phrase sur votre histoire, signée de vos prénoms. Vide : pas de citation.')}</fieldset>
         ${NUANCIERS[c.slug] ? `<fieldset><legend>Couleurs</legend><p class="app-note">Les couleurs des textes, des filets et du fond changent ; les images (enveloppe, décors, fleurs) gardent les leurs.</p>
           <div class="nuanciers">${[{ id: '', nom: 'Couleurs d’origine', c: {} }, ...NUANCIERS[c.slug]].map(n => `<button type="button" class="nuancier ${(P.nuancier || '') === n.id ? 'choisi' : ''}" data-nuancier="${n.id || '-'}"><span class="pastilles">${['fond', 'accent', 'or1'].filter(k => n.c[k]).map(k => `<i style="background:${n.c[k]}"></i>`).join('') || '<i class="origine"></i>'}</span>${esc(n.nom)}</button>`).join('')}</div></fieldset>` : ''}
@@ -827,7 +829,7 @@ document.addEventListener('input', ev => {
   if (ev.target.id === 'recherche') { recherche = ev.target.value; appliquerRecherche(); }
   if (ev.target.closest?.('#f-perso') && !ev.target.dataset.cadrage) {
     const f = Object.fromEntries(new FormData(ev.target.form)), w = document.querySelector('.fp-perso-apercu iframe')?.contentWindow;
-    const perso = { ...(evt.perso || {}), ...Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci', 'citation'].map(k => [k, (f[k] || '').trim()])) };
+    const perso = { ...(evt.perso || {}), ...Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci', 'citation', 'histoire', 'hebergement'].map(k => [k, (f[k] || '').trim()])) };
     w?.persoAppliquer?.({ ...evt, titre: f.titre || evt.titre, date: f.date || evt.date, lieu: f.lieu ?? evt.lieu, perso });
   }
   if (ev.target.dataset.cadrage) {   // le cadrage suit le curseur dans l'aperçu et sur la vignette, avant même l'enregistrement
@@ -885,7 +887,7 @@ document.addEventListener('submit', async ev => {
   if (id === 'f-merci') { await updateDoc(doc(db, 'events', E), { merci: { ...(evt.merci || {}), texte: f.texte.trim(), actif: 'actif' in f } }); }
   if (id === 'f-acces') { ev.target.reset(); await setDoc(doc(db, `events/${E}/acces/${jeton()}`), { role: f.role, nom: f.nom.trim(), creeLe: serverTimestamp() }); }
   if (id === 'f-perso') {
-    const perso = { ...(evt.perso || {}), ...Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci', 'citation'].map(k => [k, (f[k] || '').trim()])) };
+    const perso = { ...(evt.perso || {}), ...Object.fromEntries(['chapeau', 'tenueTitre', 'tenue', 'reponse', 'merci', 'citation', 'histoire', 'hebergement'].map(k => [k, (f[k] || '').trim()])) };
     if (evt.perso?.photo) perso.photo = evt.perso.photo;
     if (evt.perso?.nuancier) perso.nuancier = evt.perso.nuancier;
     if (evt.perso?.musique) perso.musique = evt.perso.musique;
