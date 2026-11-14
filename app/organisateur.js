@@ -608,7 +608,9 @@ function langueInvite(i) {
 function messageInvite(i, relance) {
   const lg = langueInvite(i), cle = relance ? 'relance' : 'invitation', perso = outils.messages || {};
   const modele = lg === 'fr' ? perso[cle] || MESSAGES[cle] : perso[`${cle}@${lg}`] || MESSAGES_LANGUES[lg]?.[cle] || perso[cle] || MESSAGES[cle];
-  const date = lg === 'fr' ? dateLongue(evt.date) : dateLangue(evt.date, lg);
+  // invité à une partie des cérémonies seulement : la date de sa première cérémonie (comme sur sa page)
+  const C = evt.ceremonies || [], siennes = C.filter(c => i.ceremonies?.includes(c.cle) && c.date), quand = siennes.length && siennes.length < C.length ? siennes[0].date : evt.date;
+  const date = lg === 'fr' ? dateLongue(quand) : dateLangue(quand, lg);
   return remplir(modele, { prenom: prenom(i.nom), titre: evt.titre, date, lien: lienInvite(i.id) });
 }
 
