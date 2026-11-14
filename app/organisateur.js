@@ -171,7 +171,7 @@ function parcours() {
 function apercu(f) {
   document.querySelector('.apercu-fond')?.remove();
   const c = COLLECTIONS.find(x => x.slug === evt.modele), d = document.createElement('div');   // collection réelle : sa page, à vos prénoms
-  const url = c ? `../${c.slug}/${f === 'site' ? 'site' : 'faire-part'}.html?e=${E}` : `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`;
+  const url = f === 'site' ? `fp.html?e=${E}&f=site` : c ? `../${c.slug}/faire-part.html?e=${E}` : `fp.html?e=${E}`;   // le site du mariage : celui aux vraies infos du couple
   d.className = 'apercu-fond';
   d.innerHTML = `<div class="apercu-boite"><div class="puces apercu-barre"><button class="btn petit ${f === 'fp' ? '' : 'clair'}" data-ap="fp">Faire-part</button><button class="btn petit ${f === 'site' ? '' : 'clair'}" data-ap="site">Site</button>
     <a class="btn petit clair" href="${url}" target="_blank" rel="noopener">Ouvrir en grand</a><button class="btn petit clair" data-ap="fermer">Fermer</button></div>

@@ -125,8 +125,10 @@ if (q.get('demo')) {
       }
       // Collection réelle choisie : l'invité voit sa page, à vos prénoms (perso.js), avec son lien de réponse.
       const reelles = await fetch('collections.json?v=2').then(r => r.json()).catch(() => []);
-      if (evt.modele && reelles.some(x => x.slug === evt.modele)) {
-        location.replace(`../${evt.modele}/${format === 'site' ? 'site' : 'faire-part'}.html?e=${encodeURIComponent(E)}${T ? '&g=' + encodeURIComponent(T) : ''}`);
+      // Le site du mariage reste ici (vraies infos du couple : cagnotte, hébergement, plan de table) : la page « site » de la collection
+      // est une démonstration (hôtels, liste et galerie fictifs). Le faire-part et le save-the-date vont sur la page de la collection.
+      if (evt.modele && reelles.some(x => x.slug === evt.modele) && format !== 'site') {
+        location.replace(`../${evt.modele}/faire-part.html?e=${encodeURIComponent(E)}${T ? '&g=' + encodeURIComponent(T) : ''}${format === 'std' ? '&f=std' : ''}`);
         await new Promise(() => {});
       }
       document.title = evt.titre;
