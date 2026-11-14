@@ -38,7 +38,7 @@ async function demarrer() {
   onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
   onSnapshot(collection(db, `events/${E}/cadeaux`), s => { cadeaux = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.creeLe?.seconds || 0) - (y.creeLe?.seconds || 0)); rendre(); }, () => {});
   if (a('covoiturage')) onSnapshot(collection(db, `events/${E}/covoiturage`), s => { covoit = s.docs.map(d => ({ id: d.id, ...d.data() })); rendre(); }, () => {});
-  if (a('direct')) { const c = (await getDoc(doc(db, `events/${E}/prive/config`))).data() || {}; live = c.live || ''; salle = c.salle || ''; rediffusion = c.rediffusion || ''; }
+  if (a('direct')) { const c = (await getDoc(doc(db, `events/${E}/prive/config`))).data() || {}; live = c.live || ''; salle = c.salle || ''; rediffusion = c.rediffusion || ''; rendre(); }
   if (a('murphoto')) onSnapshot(query(collection(db, `events/${E}/photos`), where('visible', '==', true)), s => { photos = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreGalerie(); });
   if (a('livredor')) onSnapshot(query(collection(db, `events/${E}/livre`), where('visible', '==', true)), s => { mots = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreMots(); });
   if (a('album')) onSnapshot(query(collection(db, `events/${E}/album`), where('visible', '==', true)), s => { album = recents(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendreAlbum(); });
