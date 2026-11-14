@@ -43,21 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-05-22T17:00:00+00:00" data-evenement="Mariage Awa &amp; Ousmane" data-ville="Les Almadies, Dakar" data-titre-std="Awa &amp; Ousmane — Save the date (démonstration)" data-blocs="grappe" data-titres="grand" data-images="pleine" data-revele="zoom" data-paral="vertical" data-cadre="arche" data-prog="numeros" data-lieu="postale" data-tenue="classique" data-compte="tuiles" data-rep="ticket" data-btn="pilule" data-teinte="papier" data-collection="teranga" data-particules="petales" data-trame="plein">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/645;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 20%,50% 78%,0 20%);--devant:polygon(0 20%,50% 78%,100% 20%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 80%,50% 22%,0 80%);--doublure:linear-gradient(0deg,#9A7A26,#EBD48E 55%,#C9A54A);">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Awa</b><i>&amp;</i><b>Ousmane</b><small>22 · 05 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Ouvrez la broche dorée</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-plein">
