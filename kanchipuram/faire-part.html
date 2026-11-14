@@ -43,21 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-02-14T09:30:00+05:30" data-evenement="Mariage Meenakshi &amp; Arjun" data-ville="Chennai" data-titre-std="Meenakshi &amp; Arjun — Save the date (démonstration)" data-profondeur="decor-3d/jasmin" data-profondeur-n="5" data-profondeur-mouvement="chute" data-profondeur-echelle="0.55" data-blocs="bandes" data-titres="script" data-images="flotte" data-revele="monte" data-paral="incline" data-cadre="decale" data-prog="ligne" data-lieu="cote" data-tenue="sombre" data-compte="cercles" data-rep="accent" data-btn="carre" data-teinte="accent" data-collection="kanchipuram" data-particules="petales" data-trame="arche">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1400/1479;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 1%,50% 55%,0 1%);--devant:polygon(0 1%,50% 55%,100% 1%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 99%,50% 45%,0 99%);--doublure:linear-gradient(0deg,#A3155E,#E79AC1 55%,#EFD592);">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Meenakshi</b><i>&amp;</i><b>Arjun</b><small>14 · 02 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:55%;width:17%;transform:translate(-50%,-50%)"></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Dénouez le fil de jasmin</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-arche">
