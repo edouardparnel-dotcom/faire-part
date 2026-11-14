@@ -337,9 +337,9 @@ def page(site, modeles):
         site_m = SITE_DU_MODELE.get(slug)
         # Le vrai site de la collection (décor, photos, programme illustré) quand il existe ; sinon le site du moteur.
         if os.path.exists(os.path.join(RACINE_MINI, slug, 'site.html')):
-            lien_site = f'<a class="lien-site" href="{pre}{slug}/site.html" target="_blank" rel="noopener">Voir le site de cette collection</a>'
+            lien_site = f'<a class="lien-site" href="{pre}{slug}/site.html">Voir le site de cette collection</a>'
         else:
-            lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site" target="_blank" rel="noopener">Voir le site de cette collection</a>' if site_m else ''
+            lien_site = f'<a class="lien-site" href="{pre}app/fp.html?demo={site_m}&amp;f=site">Voir le site de cette collection</a>' if site_m else ''
         return f"""        <div class="revele{' en-plus' if rang >= 3 and site['cle'] == 'mariage' else ''}"><a class="oeuvre" href="{pre}{slug}/index.html">
           <div class="cadre">{visuel(slug, m, une)}</div>
           <span class="etq">{e(m['culture'])}</span>
@@ -359,9 +359,9 @@ def page(site, modeles):
     miennes = [t for t in THEMES if t['evt'] == site['cle']]
     catalogue = '' if site['cle'] == 'mariage' else f"""      <div class="groupe">{'<div class="groupe-tete"><h3>Directions artistiques</h3><p>Chacune a sa couverture, son programme et son rythme ; toutes existent en invitation, en annonce et en site.</p></div>' if site['groupes'] else ''}
       <div class="catalogue">""" + ''.join(f"""
-        <div class="vignette-cat revele"><a href="{pre}app/fp.html?demo={t['id']}" target="_blank" rel="noopener"><img src="{pre}collections/apercus/{t['id']}-fp.jpg" alt="{e(t['nom'])}" loading="lazy"></a>
+        <div class="vignette-cat revele"><a href="{pre}app/fp.html?demo={t['id']}"><img src="{pre}collections/apercus/{t['id']}-fp.jpg" alt="{e(t['nom'])}" loading="lazy"></a>
           <span class="etq">{e(t['culture'])}</span><b>{e(t['nom'])}</b>
-          <span class="liens-cat"><a href="{pre}app/fp.html?demo={t['id']}" target="_blank" rel="noopener">Invitation</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=std" target="_blank" rel="noopener">Annonce</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=site" target="_blank" rel="noopener">Site</a></span></div>""" for t in miennes) + """
+          <span class="liens-cat"><a href="{pre}app/fp.html?demo={t['id']}">Invitation</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=std">Annonce</a><a href="{pre}app/fp.html?demo={t['id']}&amp;f=site">Site</a></span></div>""" for t in miennes) + """
       </div></div>"""
     # Mariage, pendant le lancement : l'option à moitié prix, puis son prix normal (jamais de faux prix barré).
     def tarif(p):
@@ -546,7 +546,7 @@ def page_creer(modeles):
         <p class="ap-lieu" id="ap-lieu"></p>
       </div>
     </div>
-    <a class="lien-or" id="ap-voir" href="#" target="_blank" rel="noopener">Ouvrir la collection en entier →</a>
+    <a class="lien-or" id="ap-voir" href="#">Ouvrir la collection en entier →</a>
     <div class="total">
       <div class="ligne-total"><span id="t-formule"></span><b id="t-formule-prix"></b></div>
       <div id="t-options"></div>
@@ -703,7 +703,7 @@ def page_collections(modeles=()):
         badge = '<span class="badge-une">À la une</span>' if une else ''
         site_ok = os.path.exists(os.path.join(RACINE_MINI, slug, 'site.html'))
         film = 'ouverture-3d.mp4' if os.path.exists(os.path.join(RACINE_MINI, slug, 'ouverture-3d.mp4')) else 'ouverture.mp4'
-        return (f"""      <a class="vignette-cat main reelle" data-groupe="{e(groupe)}" href="../{slug}/faire-part.html" target="_blank" rel="noopener" """
+        return (f"""      <a class="vignette-cat main reelle" data-groupe="{e(groupe)}" href="../{slug}/faire-part.html" """
                 f"""data-fp="../{slug}/faire-part.html" data-std="../{slug}/faire-part.html?f=std" data-site="../{slug}/{'site.html' if site_ok else 'index.html'}" """
                 f"""data-img-fp="{aper(slug, 'vignette.webp')}" data-img-std="{aper(slug, 'save-the-date.webp')}" data-img-site="{aper(slug, 'site.webp')}">{badge}
         <span class="cadre-cat"><img src="{aper(slug, 'vignette.webp')}" alt="Collection {e(m['modele'])}" loading="lazy"><video class="survol" data-src="../{slug}/{film}" muted loop playsinline preload="none" aria-hidden="true"></video></span>
@@ -771,7 +771,7 @@ def page_collections(modeles=()):
     document.getElementById('filtres').innerHTML = [['tous', 'Toutes (' + AUTRES.length + ')'], ...Object.entries(FAMILLES).filter(([k]) => !FAMILLES_DE.mariage.includes(k)).map(([k, v]) => [k, v + ' (' + AUTRES.filter(t => t.famille === k).length + ')'])]
       .map(([k, v]) => `<button data-famille="${{k}}" class="${{k === famille ? 'actif' : ''}}">${{v}}</button>`).join('');
     document.getElementById('catalogue').innerHTML = AUTRES.filter(t => famille === 'tous' || t.famille === famille).map(t => `
-      <a class="vignette-cat" href="../app/fp.html?demo=${{t.id}}${{format === 'fp' ? '' : '&f=' + format}}" target="_blank" rel="noopener">
+      <a class="vignette-cat" href="../app/fp.html?demo=${{t.id}}${{format === 'fp' ? '' : '&f=' + format}}">
         <img src="apercus/${{t.id}}-${{format === 'std' ? 'std' : 'fp'}}.jpg" alt="${{esc(t.nom)}}" loading="lazy">
         <span class="etq">${{esc(t.culture)}}</span><b>${{esc(t.nom)}}</b><small>${{esc(COUVERTURES[t.couv])}} · programme en ${{esc(PROGRAMMES[t.prog].toLowerCase())}}</small></a>`).join('');
   }}

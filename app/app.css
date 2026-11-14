@@ -247,3 +247,4 @@
 .depot-musique{display:grid;gap:10px;background:var(--rub-clair);padding:12px}
 .depot-musique .coche{text-transform:none;letter-spacing:0;font-size:14px;color:var(--encre);align-items:flex-start}
 .fp-perso audio.ecoute{width:100%;max-width:420px}
+.cadrage{display:grid;gap:8px;background:var(--rub-clair);padding:10px 12px}.cadrage input[type=range]{padding:0;accent-color:var(--rub)}

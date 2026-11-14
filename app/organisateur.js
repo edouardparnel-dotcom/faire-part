@@ -251,7 +251,10 @@ const VUES = {
           ${champ('date', 'Date et heure', evt.date, '', 'type="datetime-local" required')}${champ('lieu', 'Lieu', evt.lieu, '', 'required')}</fieldset>
         <fieldset><legend>La couverture</legend>${champ('chapeau', 'Phrase d\'invitation', P.chapeau, 'Par défaut : « Ont la joie de vous inviter à leur mariage »', 'maxlength="140"')}
           <label>Photo du couple<input type="file" id="i-photo-couple" accept="image/*"><small class="aide">${P.photo ? 'Votre photo est en place. Choisissez-en une autre pour la remplacer.' : 'Elle remplace la photo de démonstration (format portrait de préférence).'}</small></label>
-          ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo">` : ''}</fieldset>
+          ${P.photo ? `<img class="photo-couple" src="${esc(P.photo)}" alt="Votre photo" style="object-position:${+(P.photoPos?.x ?? 50)}% ${+(P.photoPos?.y ?? 50)}%">` : ''}
+          <div class="cadrage"><span class="app-note">Cadrage de la photo : déplacez-la pour bien centrer les visages.</span>
+            <label>Gauche ↔ droite<input type="range" min="0" max="100" step="1" data-cadrage="x" value="${+(P.photoPos?.x ?? 50)}"></label>
+            <label>Haut ↕ bas<input type="range" min="0" max="100" step="1" data-cadrage="y" value="${+(P.photoPos?.y ?? 50)}"></label></div></fieldset>
         ${NUANCIERS[c.slug] ? `<fieldset><legend>Couleurs</legend><p class="app-note">Les couleurs des textes, des filets et du fond changent ; les images (enveloppe, décors, fleurs) gardent les leurs.</p>
           <div class="nuanciers">${[{ id: '', nom: 'Couleurs d’origine', c: {} }, ...NUANCIERS[c.slug]].map(n => `<button type="button" class="nuancier ${(P.nuancier || '') === n.id ? 'choisi' : ''}" data-nuancier="${n.id || '-'}"><span class="pastilles">${['fond', 'accent', 'or1'].filter(k => n.c[k]).map(k => `<i style="background:${n.c[k]}"></i>`).join('') || '<i class="origine"></i>'}</span>${esc(n.nom)}</button>`).join('')}</div></fieldset>` : ''}
         <fieldset><legend>Musique</legend>${(() => {
@@ -765,6 +768,10 @@ document.addEventListener('change', async ev => {
   if (t.dataset.paye) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.paye}`), { 'tenue.paye': t.checked });
   if (t.dataset.motMerci) return updateDoc(doc(db, `events/${E}/invites/${t.dataset.motMerci}`), { 'merci.mot': t.value.slice(0, 300) });
   if (t.id === 'i-album-photographe' && t.files.length) return deposerAlbum([...t.files]);
+  if (t.dataset.cadrage) {
+    const pos = { x: 50, y: 50, ...(evt.perso?.photoPos || {}) }; pos[t.dataset.cadrage] = +t.value;
+    return updateDoc(doc(db, 'events', E), { 'perso.photoPos': pos });
+  }
   if (t.dataset.musiqueSource || t.dataset.musiquePiste !== undefined || t.dataset.musiqueDepart || t.id === 'c-droits-musique') {
     const M = { ...(evt.perso?.musique || {}) };
     if (t.dataset.musiqueSource) { M.source = t.dataset.musiqueSource; if (M.source === 'piste' && !M.piste) M.piste = COLLECTIONS.find(x => x.slug !== evt.modele)?.slug; }
@@ -799,7 +806,14 @@ document.addEventListener('change', async ev => {
   if (t.dataset.deroule) { const [k, champ] = t.dataset.deroule.split(':'), L = (outils.deroule?.items || []).map(x => ({ ...x })); L[+k][champ] = t.type === 'checkbox' ? t.checked : t.value; return majDeroule(L); }
   if (t.id === 'i-csv' && t.files[0]) { const f = $('#f-import'); f.texte.value = await t.files[0].text(); f.requestSubmit(); }
 });
-document.addEventListener('input', ev => { if (ev.target.id === 'recherche') { recherche = ev.target.value; appliquerRecherche(); } });
+document.addEventListener('input', ev => {
+  if (ev.target.id === 'recherche') { recherche = ev.target.value; appliquerRecherche(); }
+  if (ev.target.dataset.cadrage) {   // le cadrage suit le curseur dans l'aperçu et sur la vignette, avant même l'enregistrement
+    const v = k => (document.querySelector(`[data-cadrage=${k}]`) || {}).value ?? 50, pos = `${v('x')}% ${v('y')}%`;
+    document.querySelector('.photo-couple')?.style.setProperty('object-position', pos);
+    document.querySelector('.fp-perso-apercu iframe')?.contentDocument?.documentElement.style.setProperty('--photo-pos', pos);
+  }
+});
 
 // Glisser-déposer des convives d'une table à l'autre.
 document.addEventListener('dragstart', ev => { const c = ev.target.closest?.('[data-glisser]'); if (c) { ev.dataTransfer.setData('text/plain', c.dataset.glisser); ev.dataTransfer.effectAllowed = 'move'; } });
@@ -853,6 +867,7 @@ document.addEventListener('submit', async ev => {
     if (evt.perso?.photo) perso.photo = evt.perso.photo;
     if (evt.perso?.nuancier) perso.nuancier = evt.perso.nuancier;
     if (evt.perso?.musique) perso.musique = evt.perso.musique;
+    if (evt.perso?.photoPos) perso.photoPos = evt.perso.photoPos;
     const C2 = C.map((c, k) => k === 0 ? { ...c, date: f.date, lieu: f.lieu.trim() } : c);
     await updateDoc(doc(db, 'events', E), { titre: f.titre.trim(), date: f.date, lieu: f.lieu.trim(), ceremonies: C2, perso });
     const m = $('#m-perso'); if (m) m.textContent = 'Enregistré : votre faire-part est à jour.';

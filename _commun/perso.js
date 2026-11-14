@@ -75,6 +75,8 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule }) {
   txt('.suite-pied p:not(.script)', P.merci);
   if (P.reponse) txt('#reponse > p:not([id])', `Merci de répondre avant le ${new Date(P.reponse + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}.`);
   if (P.photo) document.querySelectorAll('.inter-couple img, .medaillon-surprise img').forEach(i => { i.src = P.photo; i.loading = 'eager'; });
+  // Cadrage choisi par le couple (curseurs de l'espace) : le centre de la photo, en %
+  if (P.photoPos) document.documentElement.style.setProperty('--photo-pos', `${+P.photoPos.x}% ${+P.photoPos.y}%`);
   // Musique choisie dans l'espace : celle de la collection, une autre de la bibliothèque, son propre morceau, ou aucune ;
   // coupée au départ (l'invité l'active avec le haut-parleur barré) ou lancée à l'ouverture de l'enveloppe.
   const M = P.musique || {}, audio = document.getElementById('audio'), hp = document.getElementById('musique');

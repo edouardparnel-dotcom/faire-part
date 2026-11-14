@@ -121,7 +121,7 @@
 /* ═════════ Intermèdes entre les blocs (photo du couple, matière, citation, galerie, table) ═════════ */
 .inter{position:relative;margin:46px -14px}
 .inter img{display:block}
-.inter-couple img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.inter-couple img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:var(--photo-pos,50% 50%)}
 .inter-couple figcaption{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:#fff;font-size:44px;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,.55)}
 .inter-matiere{height:min(64vh,520px);overflow:hidden;display:grid;place-items:center}
 .matiere-fond{position:absolute;inset:-12%;background-size:cover;background-position:center;scale:1.5;filter:saturate(1.08) contrast(1.05)}
@@ -704,7 +704,9 @@ body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #reponse
 body[data-btn]:not([data-btn=pilule]) #reponse .bouton.plein{width:auto!important;height:auto!important;padding:14px 26px!important;display:inline-block!important;line-height:1.4!important;box-shadow:none!important}
 /* Les visages sont dans le haut des photos : le cadrage part du haut, quel que soit le cadre. */
 body[data-cadre] .inter-couple img{object-position:50% 12%!important}
-body[data-cadre=losange] .inter-couple img{object-position:50% 0!important}
+body[data-cadre=losange] .inter-couple img{object-position:var(--photo-pos,50% 0)!important}
+/* Cadrage réglé par collection (visages) ; le couple règle le sien dans son espace (perso.js pose --photo-pos) */
+body[data-collection=shiromuku]{--photo-pos:50% 29%}
 body[data-cadre=rond] .inter-couple img{object-position:50% 8%!important}
 
 /* Photos de couple : les visages sont en haut, le cadrage part toujours du haut (couverture, polaroid, galerie). */
