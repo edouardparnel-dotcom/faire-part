@@ -703,11 +703,11 @@ body[data-teinte=papier] .suite-main>section.bloc:nth-of-type(odd){background:li
 body:not([data-collection=grand-hotel]):not([data-collection=heritage]) #reponse .bouton.plein{margin:16px auto 0}
 body[data-btn]:not([data-btn=pilule]) #reponse .bouton.plein{width:auto!important;height:auto!important;padding:14px 26px!important;display:inline-block!important;line-height:1.4!important;box-shadow:none!important}
 /* Les visages sont dans le haut des photos : le cadrage part du haut, quel que soit le cadre. */
-body[data-cadre] .inter-couple img{object-position:50% 12%!important}
+body[data-cadre] .inter-couple img{object-position:var(--photo-pos,50% 12%)!important}
 body[data-cadre=losange] .inter-couple img{object-position:var(--photo-pos,50% 0)!important}
 /* Cadrage réglé par collection (visages) ; le couple règle le sien dans son espace (perso.js pose --photo-pos) */
 body[data-collection=shiromuku]{--photo-pos:50% 29%}
-body[data-cadre=rond] .inter-couple img{object-position:50% 8%!important}
+body[data-cadre=rond] .inter-couple img{object-position:var(--photo-pos,50% 8%)!important}
 
 /* Photos de couple : les visages sont en haut, le cadrage part toujours du haut (couverture, polaroid, galerie). */
 img[src$="couple.jpg"]{object-position:50% 15%}
