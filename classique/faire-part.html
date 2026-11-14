@@ -43,21 +43,12 @@ body.ferme{overflow:hidden}
 </style>
 </head>
 <body class="ferme" data-date="2027-06-26T15:00:00+02:00" data-evenement="Mariage Sarah &amp; Thomas" data-ville="Val de Loire" data-titre-std="Sarah &amp; Thomas — Save the date (démonstration)" data-profondeur="decor-3d/rose-blanche" data-profondeur-n="5" data-profondeur-mouvement="chute" data-blocs="cartes" data-titres="script" data-images="flotte" data-revele="glisse" data-paral="incline" data-cadre="rond" data-prog="numeros" data-lieu="postale" data-tenue="nuancier" data-compte="chiffres" data-rep="sombre" data-btn="pilule" data-teinte="sombre" data-collection="classique" data-particules="petales" data-trame="arche">
-<link rel="preload" as="image" href="ouverture.webp" fetchpriority="high">
-<div class="ouverture attente" id="ouverture" style="--ratio:1000/711;--masque:url('ouverture.webp');--rabat:polygon(0 0,100% 0,100% 9%,50% 77%,0 10%);--devant:polygon(0 10%,50% 77%,100% 9%,100% 100%,0 100%);--verso:polygon(0 100%,100% 100%,100% 91%,50% 23%,0 90%);--doublure:linear-gradient(0deg,#8C6E36,#E2CD9C 55%,#B8975A);">
-  <div class="enveloppe" role="button" aria-label="Ouvrir l'invitation">
-    <div class="env-dos"></div>
-    <div class="env-carte mini"><img class="mini-deco" src="haut.webp" alt=""><small>Mariage</small><b>Sarah</b><i>&amp;</i><b>Thomas</b><small>26 · 06 · 2027</small></div>
-    <div class="env-devant"></div>
-    <div class="env-rabat"><div class="env-face"></div><div class="env-verso"></div><img class="env-sceau" src="sceau.webp" alt="" style="left:50%;top:74%;width:21%;transform:translate(-50%,-50%)"></div>
-  </div>
+<link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
+<div class="ouverture ouv-video" id="ouverture" role="button" aria-label="Ouvrir l'invitation">
+  <div class="ouv-film-cadre"><img class="ouv-film-fond" src="ouverture-3d.jpg" alt=""><video class="ouv-film" src="ouverture-3d.mp4" poster="ouverture-3d.jpg" muted playsinline preload="auto"></video></div>
+  
   <p class="consigne">Brisez le sceau</p>
 </div>
-<script>(() => {
-  const o = document.getElementById('ouverture'), pret = () => o.classList.remove('attente'), im = new Image();
-  im.src = 'ouverture.webp'; (im.decode ? im.decode() : Promise.reject()).then(pret, () => im.complete ? pret() : (im.onload = im.onerror = pret));
-  setTimeout(pret, 5000);
-})();</script>
 <button class="musique" id="musique" aria-label="Musique"><span><i></i><i></i><i></i></span></button>
 <audio id="audio" src="musique.mp3" loop preload="auto"></audio>
 <header class="suite-couv carte couv-arche">
