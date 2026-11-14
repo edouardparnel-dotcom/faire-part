@@ -51,15 +51,23 @@ exigerOrganisateur(vue, async user => {
   $('#f-code').addEventListener('submit', ev => { ev.preventDefault(); verifier(ev.target.code.value.trim()); });
 });
 
+const FORCER = 'forcer:';   // entrée confirmée par l'accueil malgré une réponse négative
 async function verifier(code) {
   if (enCours) return; enCours = true;
   // Pass = lien personnel de l'invité (…/invite.html?e=…&g=…) ; les anciens codes « LAKOU:e:g » restent acceptés.
   let e = '', t = '';
-  if (/^https?:\/\//i.test(code)) { try { const u = new URL(code); e = u.searchParams.get('e') || ''; t = u.searchParams.get('g') || ''; } catch {} }
-  else { const p = code.split(':'); if (p.length === 3) [, e, t] = p; }
+  if (code.startsWith(FORCER)) { e = E; t = code.slice(FORCER.length); }
+  else if (/^https?:\/\//i.test(code)) { try { const u = new URL(code); e = u.searchParams.get('e') || ''; t = u.searchParams.get('g') || ''; } catch {} }
+  else if (!code.startsWith(FORCER)) { const p = code.split(':'); if (p.length === 3) [, e, t] = p; }
   const zone = $('#verdict'), i = e === E ? invites.find(x => x.id === t) : null;
   if (!i) zone.innerHTML = `<div class="app-carte verdict refus"><h2 class="serif">Code inconnu</h2><p>Ce pass n'appartient pas à cet événement.</p></div>`;
   else if (i.entree) zone.innerHTML = `<div class="app-carte verdict deja"><h2 class="serif">${esc(i.nom)}</h2><p>Déjà entré(e) à ${heure(i.entree.toDate())}.</p></div>`;
+  else if (i.reponduLe && !Object.values(i.reponses || {}).includes('oui') && code !== FORCER + i.id) {
+    // A répondu qu'il ne viendrait pas : on prévient l'accueil, qui décide (test complet du 14/11 : il était accueilli sans alerte)
+    zone.innerHTML = `<div class="app-carte verdict deja"><h2 class="serif">${esc(i.nom)}</h2><p>A répondu ne pas pouvoir venir : vérifiez avec les mariés.</p>
+      <button class="btn petit" id="b-forcer">Le laisser entrer quand même</button></div>`;
+    $('#b-forcer').addEventListener('click', () => { enCours = false; verifier(FORCER + i.id); });
+  }
   else {
     await updateDoc(doc(db, `events/${E}/invites/${i.id}`), { entree: serverTimestamp() });
     const noms = (evt.ceremonies || []).filter(c => i.ceremonies?.includes(c.cle)).map(c => c.nom).join(', ');
