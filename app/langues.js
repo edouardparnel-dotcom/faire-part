@@ -1430,4 +1430,14 @@ export function langueChoisie(proposees = ['fr'], fixee = '', defaut = '') {
   const tel = (navigator.language || 'fr').slice(0, 2);
   return [fixee, memo, defaut, tel].find(l => l && proposees.includes(l)) || proposees[0] || 'fr';
 }
+// Date longue dans la langue de l'invité ; le créole haïtien a ses propres noms (le navigateur les écrirait en français)
+const JOURS_HT = ['dimanch', 'lendi', 'madi', 'mèkredi', 'jedi', 'vandredi', 'samdi'];
+const MOIS_HT = ['janvye', 'fevriye', 'mas', 'avril', 'me', 'jen', 'jiyè', 'out', 'septanm', 'oktòb', 'novanm', 'desanm'];
+export function dateLangue(d, lg = 'fr') {
+  if (!d) return '';
+  const x = new Date(d);
+  if (lg === 'ht') return `${JOURS_HT[x.getDay()]} ${x.getDate()} ${MOIS_HT[x.getMonth()]} ${x.getFullYear()}`;
+  try { return x.toLocaleDateString(LOCALES[lg] || 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+  catch { return x.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+}
 export function memoriserLangue(l) { try { localStorage.setItem('mv-langue', l); } catch {} }

@@ -6,7 +6,7 @@ import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } fro
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue } from './langues.js?v=8';
+import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue, dateLangue } from './langues.js?v=9';
 import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -14,7 +14,7 @@ const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'),
 let covoit = [], msgCovoit = '', cadeaux = [], msgMot = '', evt, inv, live = '', photos = [], mots = [], album = [], quiz = null, classement = null, mesJeux = null, tenues = null, L = 'fr';
 const a = o => evt?.options?.includes(o);
 const t = x => traduire(L, x);
-const dateLongue = d => { if (!d) return ''; try { return new Date(d).toLocaleDateString(LOCALES[L] || 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch { return new Date(d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } };
+const dateLongue = d => dateLangue(d, L);
 const euros = n => (Number(n) || 0).toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €';
 const recents = l => l.sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
 
