@@ -360,5 +360,506 @@
     "or3": "#22346E"
    }
   }
+ ],
+ "toghu": [
+  {
+   "id": "rouge",
+   "nom": "Noir et rouge",
+   "c": {
+    "accent": "#D0473A",
+    "or1": "#D0473A"
+   }
+  },
+  {
+   "id": "argent",
+   "nom": "Noir et argent",
+   "c": {
+    "accent": "#8E99AA",
+    "or1": "#B9C2CF",
+    "or2": "#E6EBF1",
+    "or3": "#6F7A8A"
+   }
+  }
+ ],
+ "sape": [
+  {
+   "id": "bleu",
+   "nom": "Bleu élégance",
+   "c": {
+    "accent": "#2B4C8C"
+   }
+  },
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "accent": "#7A1F2B"
+   }
+  }
+ ],
+ "kita": [
+  {
+   "id": "vert",
+   "nom": "Vert kita",
+   "c": {
+    "accent": "#2E7D4A"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu indigo",
+   "c": {
+    "accent": "#24337A"
+   }
+  }
+ ],
+ "tibeb": [
+  {
+   "id": "bleu",
+   "nom": "Bleu tibeb",
+   "c": {
+    "accent": "#24508C"
+   }
+  },
+  {
+   "id": "rouge",
+   "nom": "Rouge tibeb",
+   "c": {
+    "accent": "#B3262E"
+   }
+  }
+ ],
+ "heritage": [
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "emeraude": "#7A1F2B"
+   }
+  },
+  {
+   "id": "or",
+   "nom": "Tout en or",
+   "c": {
+    "emeraude": "#8C6A22"
+   }
+  }
+ ],
+ "karabela": [
+  {
+   "id": "rouge",
+   "nom": "Rouge karabela",
+   "c": {
+    "accent": "#C9372C",
+    "or3": "#C9372C"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Vert",
+   "c": {
+    "accent": "#2E7D4A",
+    "or3": "#2E7D4A"
+   }
+  }
+ ],
+ "adinkra": [
+  {
+   "id": "vert",
+   "nom": "Vert forêt",
+   "c": {
+    "accent": "#2F5E3A"
+   }
+  },
+  {
+   "id": "or",
+   "nom": "Tout en or",
+   "c": {
+    "accent": "#8C6A22"
+   }
+  }
+ ],
+ "bazin": [
+  {
+   "id": "bleu",
+   "nom": "Bleu nuit",
+   "c": {
+    "accent": "#1E2E5A"
+   }
+  },
+  {
+   "id": "violet",
+   "nom": "Violet",
+   "c": {
+    "accent": "#5B2A6E"
+   }
+  }
+ ],
+ "liputa": [
+  {
+   "id": "rouge",
+   "nom": "Rouge wax",
+   "c": {
+    "accent": "#B3262E"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu wax",
+   "c": {
+    "accent": "#1F4FA0"
+   }
+  }
+ ],
+ "imbali": [
+  {
+   "id": "rouge",
+   "nom": "Rouge perle",
+   "c": {
+    "accent": "#B3262E"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu perle",
+   "c": {
+    "accent": "#1F5FA0"
+   }
+  }
+ ],
+ "shiromuku": [
+  {
+   "id": "or",
+   "nom": "Blanc et or",
+   "c": {
+    "accent": "#9C7536"
+   }
+  },
+  {
+   "id": "rose",
+   "nom": "Rose sakura",
+   "c": {
+    "accent": "#C2667E"
+   }
+  }
+ ],
+ "hanbok": [
+  {
+   "id": "rose",
+   "nom": "Rose",
+   "c": {
+    "accent": "#C2667E"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu",
+   "c": {
+    "accent": "#2B5D8C"
+   }
+  }
+ ],
+ "champetre": [
+  {
+   "id": "lavande",
+   "nom": "Lavande",
+   "c": {
+    "accent": "#6A5A90"
+   }
+  },
+  {
+   "id": "terre",
+   "nom": "Terracotta",
+   "c": {
+    "accent": "#A0522D"
+   }
+  }
+ ],
+ "boheme": [
+  {
+   "id": "sauge",
+   "nom": "Sauge",
+   "c": {
+    "accent": "#5F7A55"
+   }
+  },
+  {
+   "id": "rose",
+   "nom": "Rose terracotta",
+   "c": {
+    "accent": "#B5655A"
+   }
+  }
+ ],
+ "classique": [
+  {
+   "id": "bleu",
+   "nom": "Bleu nuit",
+   "c": {
+    "accent": "#1E2E5A"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Vert anglais",
+   "c": {
+    "accent": "#1F4D3A"
+   }
+  }
+ ],
+ "gatsby": [
+  {
+   "id": "argent",
+   "nom": "Noir et argent",
+   "c": {
+    "accent": "#8E99AA",
+    "or1": "#B9C2CF",
+    "or2": "#E6EBF1",
+    "or3": "#6F7A8A"
+   }
+  },
+  {
+   "id": "rose",
+   "nom": "Noir et or rose",
+   "c": {
+    "accent": "#D9A5A0",
+    "or1": "#D9A5A0",
+    "or2": "#F2D3CF",
+    "or3": "#A86A6A"
+   }
+  }
+ ],
+ "emeraude": [
+  {
+   "id": "bleu",
+   "nom": "Saphir",
+   "c": {
+    "fond": "#0B1A3A",
+    "accent": "#1E3E7A"
+   }
+  },
+  {
+   "id": "bordeaux",
+   "nom": "Rubis",
+   "c": {
+    "fond": "#2A0A0E",
+    "accent": "#7A1F2B"
+   }
+  }
+ ],
+ "bordeaux": [
+  {
+   "id": "prune",
+   "nom": "Prune",
+   "c": {
+    "accent": "#5E2049"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Vert sapin",
+   "c": {
+    "accent": "#1F4D3A"
+   }
+  }
+ ],
+ "chapelle": [
+  {
+   "id": "or",
+   "nom": "Blanc et or",
+   "c": {
+    "accent": "#9C7536"
+   }
+  },
+  {
+   "id": "sauge",
+   "nom": "Sauge",
+   "c": {
+    "accent": "#5F7A55"
+   }
+  }
+ ],
+ "faubourg": [
+  {
+   "id": "bleu",
+   "nom": "Bleu de Paris",
+   "c": {
+    "accent": "#1E2E5A"
+   }
+  },
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "accent": "#6E1E2C"
+   }
+  }
+ ],
+ "ivoire": [
+  {
+   "id": "bleu",
+   "nom": "Ivoire et bleu",
+   "c": {
+    "accent": "#2B4C8C"
+   }
+  },
+  {
+   "id": "rose",
+   "nom": "Ivoire et rose",
+   "c": {
+    "accent": "#B5657A"
+   }
+  }
+ ],
+ "porcelaine": [
+  {
+   "id": "rose",
+   "nom": "Rose porcelaine",
+   "c": {
+    "accent": "#B5657A"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Vert céladon",
+   "c": {
+    "accent": "#4F7A6A"
+   }
+  }
+ ],
+ "soie": [
+  {
+   "id": "bleu",
+   "nom": "Soie bleue",
+   "c": {
+    "accent": "#2B4C8C"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Soie verte",
+   "c": {
+    "accent": "#3E6B55"
+   }
+  }
+ ],
+ "monogramme": [
+  {
+   "id": "bleu",
+   "nom": "Bleu nuit",
+   "c": {
+    "accent": "#1E2E5A"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Vert anglais",
+   "c": {
+    "accent": "#1F4D3A"
+   }
+  }
+ ],
+ "orangerie": [
+  {
+   "id": "or",
+   "nom": "Or et vert",
+   "c": {
+    "accent": "#8C6A22"
+   }
+  },
+  {
+   "id": "orange",
+   "nom": "Orange amer",
+   "c": {
+    "accent": "#C2601A"
+   }
+  }
+ ],
+ "opera": [
+  {
+   "id": "bleu",
+   "nom": "Velours bleu",
+   "c": {
+    "fond": "#0B1A3A",
+    "accent": "#1E3E7A"
+   }
+  },
+  {
+   "id": "vert",
+   "nom": "Velours vert",
+   "c": {
+    "fond": "#0B2A20",
+    "accent": "#0F5C40"
+   }
+  }
+ ],
+ "versailles": [
+  {
+   "id": "rose",
+   "nom": "Rose Trianon",
+   "c": {
+    "accent": "#B5657A"
+   }
+  },
+  {
+   "id": "or",
+   "nom": "Tout en or",
+   "c": {
+    "accent": "#8C6A22"
+   }
+  }
+ ],
+ "celeste": [
+  {
+   "id": "argent",
+   "nom": "Nuit et argent",
+   "c": {
+    "accent": "#2E3D63",
+    "or1": "#B9C2CF",
+    "or2": "#E6EBF1",
+    "or3": "#6F7A8A"
+   }
+  },
+  {
+   "id": "prune",
+   "nom": "Nuit et prune",
+   "c": {
+    "accent": "#5E2049"
+   }
+  }
+ ],
+ "citadelle": [
+  {
+   "id": "vert",
+   "nom": "Vert forêt",
+   "c": {
+    "accent": "#2F4A35"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu de nuit",
+   "c": {
+    "accent": "#1E2E5A"
+   }
+  }
+ ],
+ "nocturne": [
+  {
+   "id": "bordeaux",
+   "nom": "Bordeaux",
+   "c": {
+    "fond": "#2A0A0E",
+    "accent": "#6E1E2C"
+   }
+  },
+  {
+   "id": "bleu",
+   "nom": "Bleu de minuit",
+   "c": {
+    "fond": "#0E1428",
+    "accent": "#2B3B6E"
+   }
+  }
  ]
 }
