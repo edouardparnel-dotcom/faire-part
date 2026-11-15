@@ -2,7 +2,7 @@
 // ajoute, retire, masque et réordonne les parties ; l'aperçu (fp.html?apercu=1) se met à jour en direct.
 // Langues : deux langues dans toute formule, trois avec l'option « Langue supplémentaire » ; chaque texte se saisit
 // dans la langue choisie en haut de l'éditeur (le français reste l'original).
-import { db, storage, fonctions, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=5';
+import { db, storage, fonctions, $, esc, LOCAL, bandeau, exigerOrganisateur, aLaMain } from './commun.js?v=6';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { THEMES, FAMILLES, FAMILLES_DE, POLICES, COUVERTURES, PROGRAMMES, RYTHMES, OUVERTURES, MISES_EN_PAGE, theme } from './themes.js?v=3';
 import { SECTIONS, designParDefaut, FORMULES } from './moteur.js?v=16';

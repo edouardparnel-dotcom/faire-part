@@ -27,7 +27,7 @@
 // Téléphone qui filme le direct : lien secret de la caméra (?e=événement&k=secret), sans application.
 // Il filme en continu et envoie un morceau autonome toutes les 4 secondes ; il note sa stabilité (capteur de mouvement)
 // et la régularité de ses envois, pour que le lecteur choisisse la meilleure caméra.
-import { auth, db, storage, esc } from './commun.js?v=5';
+import { auth, db, storage, esc } from './commun.js?v=6';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp, runTransaction } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';

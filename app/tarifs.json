@@ -163,6 +163,10 @@
     "nom": "Film souvenir de 5 minutes",
     "prix": 300
    },
+   "conservation": {
+    "nom": "Une année de plus en ligne",
+    "prix": 29
+   },
    "merci": {
     "nom": "Remerciements personnalisés",
     "prix": 30
@@ -227,6 +231,10 @@
    "album": {
     "nom": "Album partagé",
     "prix": 30
+   },
+   "conservation": {
+    "nom": "Une année de plus en ligne",
+    "prix": 29
    },
    "merci": {
     "nom": "Remerciements personnalisés",

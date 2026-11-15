@@ -36,6 +36,7 @@ OPTIONS_MARIAGE = [
   ('jeux', 'Le jour J', 'Jeux des invités', "Quiz sur les mariés et pronostics, depuis le téléphone de chacun, puis révélation et classement.", 20, False),
   ('album', 'Après', 'Album partagé', "Les photos des invités et du photographe, réunies en haute définition.", 30, False),
   ('montage', 'Après', 'Film souvenir de 5 minutes', "Un film monté de votre journée. Avec le direct : les plus beaux plans filmés par vos proches, mis en musique. Sans le direct : vos photos et celles de vos invités prennent vie, avec un effet de profondeur. Livré sous 15 jours après le mariage.", 300, True),
+  ('conservation', 'Après', 'Une année de plus en ligne', "Vos photos, vidéos et votre album restent en ligne 12 mois après la date. Gardez-les une année de plus, autant de fois que vous le souhaitez.", 29, False),
   ('merci', 'Après', 'Remerciements personnalisés', "Une carte pour chaque invité, avec une photo où il apparaît.", 30, False),
   ('livre', 'Après', 'Livre souvenir imprimé', "Les photos et les mots de vos invités, imprimés et reliés.", 'devis', False),
 ]
@@ -49,6 +50,7 @@ OPTIONS_EVENEMENT = [
   ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête.", 30, False),
   ('jeux', 'Le jour J', 'Jeux et pronostics', "Quiz, pronostics, votes : les invités jouent sur leur téléphone.", 20, False),
   ('album', 'Après', 'Album partagé', "Toutes les photos réunies en haute définition.", 30, False),
+  ('conservation', 'Après', 'Une année de plus en ligne', "Vos photos, vidéos et votre album restent en ligne 12 mois après la date. Gardez-les une année de plus, autant de fois que vous le souhaitez.", 29, False),
   ('merci', 'Après', 'Remerciements personnalisés', "Une carte pour chaque invité, avec une photo où il apparaît.", 30, False),
 ]
 

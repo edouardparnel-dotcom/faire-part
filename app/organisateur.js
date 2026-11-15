@@ -2,7 +2,7 @@
 // le budget, les prestataires, le planning, le déroulé du jour J, l'équipe (co-organisateur, wedding planner),
 // les réponses en direct, les entrées, la modération des photos et du livre d'or, le lien du direct, les exports ;
 // et les options : jeux (quiz, pronostics, classement), tenues coordonnées, remerciements, album en haute définition.
-import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=5';
+import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=6';
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
@@ -470,7 +470,12 @@ const VUES = {
     // Film souvenir (option montage) : monté à la main par Maison Vivat, à partir du direct, ou des photos avec un effet de profondeur
     const film = a('montage') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Votre film souvenir</h2>
         <p class="app-note">Un film de 5 minutes, livré ici sous 15 jours après le mariage. ${a('direct') ? 'Nous le montons avec les plus beaux plans filmés par vos proches pendant le direct, mis en musique.' : 'Nous le montons avec vos photos et celles de vos invités : chacune prend vie, avec un effet de profondeur.'} Ajoutez dans l'album les photos que vous tenez à y voir, et dites-nous votre musique préférée en répondant à notre courriel.</p></div>` : '';
-    return `${film}${a('murphoto') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Le mur photo sur grand écran</h2>
+    // Durée en ligne : 12 mois après la date, plus une année par option « conservation » (même calcul que la suppression automatique)
+    const fin = new Date(evt.date); fin.setMonth(fin.getMonth() + 12 * (1 + (evt.conservationAnnees || 0)));
+    const duree = evt.date ? `<div class="app-carte"><h2>Combien de temps vos souvenirs restent en ligne</h2>
+        <p class="app-note" style="margin-bottom:12px">Photos, album, livre d'or et vidéos restent en ligne jusqu'au <b>${esc(fin.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }))}</b>, puis ils sont supprimés. Nous vous prévenons par courriel un mois avant. Pensez à tout télécharger, ou gardez-les une année de plus.</p>
+        <button class="btn petit clair" data-prolonger="1">Garder une année de plus (29 €)</button></div>` : '';
+    return `${film}${duree}${a('murphoto') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Le mur photo sur grand écran</h2>
         <p class="app-note" style="margin-bottom:12px">Le jour J, branchez un ordinateur sur un écran ou un vidéoprojecteur, ouvrez le mur et passez-le en plein écran : les photos de vos invités défilent en grand, et chaque nouvelle photo apparaît aussitôt. Vos invités le voient aussi sur leur téléphone, depuis leur page.</p>
         <a class="btn" href="mur.html?e=${E}" target="_blank" rel="noopener">Ouvrir le mur photo</a></div>` : ''}<div class="app-carte"><h2>Photos des invités</h2>${a('murphoto') ? '<p class="app-note" style="margin-bottom:10px">« Masquer » retire la photo du mur et de la galerie des invités, réversible ; « Supprimer » l\'efface définitivement.</p>' : '<p class="app-note">Option « Mur photo » non activée.</p>'}
       <div class="galerie">${photos.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.auteur)}${p.visible ? '' : ' · masquée'}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-photo="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-photo="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>
@@ -758,6 +763,7 @@ document.addEventListener('click', async ev => {
   if (d.changerCollection) { choisirCollection = !choisirCollection; return rendre(); }
   if (d.collection) { choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: d.collection }); return; }
   if (d.retirerCollection) { if (!confirm('Retirer cette collection ? Votre personnalisation est conservée ; vous en choisirez une autre.')) return; choisirCollection = false; await updateDoc(doc(db, 'events', E), { modele: '' }); return; }
+  if (d.prolonger) { choixOptions.add('conservation'); onglet = 'paiement'; msgPaiement = ''; rendre(); scrollTo(0, 0); return; }
   if (d.onglet) { onglet = d.onglet; msgImport = ''; msgPlacement = ''; msgOption = ''; avantPlacement = null; photoPour = null; rendre(); scrollTo(0, 0); if (onglet === 'reglages' && a('direct')) { const c = await getDoc(doc(db, `events/${E}/prive/config`)); if ($('#i-live')) $('#i-live').value = c.data()?.live || ''; } return; }
   if (d.copierTexte) { await navigator.clipboard?.writeText(d.copierTexte).catch(() => {}); t.textContent = 'Lien copié'; return; }
   // Direct : une caméra = un lien secret (camerasCles) et une fiche publique pour les invités (cameras)

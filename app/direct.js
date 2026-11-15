@@ -3,7 +3,7 @@
 // events/{e}/cameras/{cam}/segments/{n} → Storage events/{e}/direct/{cam}/{n}.mp4. Le lecteur les joue à la suite,
 // avec deux balises vidéo qui se relaient (la suivante se charge pendant que l'autre joue), environ 15 secondes après le direct.
 // Sans personne qui filme, il rejoue tout depuis le début : la rediffusion.
-import { auth, db, storage } from './commun.js?v=5';
+import { auth, db, storage } from './commun.js?v=6';
 import { collection, doc, query, orderBy, limit, onSnapshot, getDocs, getDoc, writeBatch, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 

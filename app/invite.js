@@ -2,7 +2,7 @@
 // puis selon les options payées : pass d'entrée QR, infos de voyage, guide de la cérémonie, déroulé, direct, mur photo,
 // livre d'or écrit, vocal ou vidéo, album en haute définition, jeux, tenues coordonnées, carte de remerciement ;
 // sa table, si les organisateurs ont choisi de la montrer. Le tout dans la langue de l'invité (option langue).
-import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } from './commun.js?v=5';
+import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } from './commun.js?v=6';
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
@@ -37,7 +37,7 @@ async function monterDirect() {
   bloc.className = 'app'; bloc.style.cssText = 'max-width:720px;margin:0 auto';
   bloc.innerHTML = `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Des proches filment la fête : suivez-la ici, en direct.')}</p><div id="direct-lecteur"></div></div>`;
   vue.after(bloc);
-  const { lecteur } = await import('./direct.js?v=12');
+  const { lecteur } = await import('./direct.js?v=13');
   // tant que rien ne joue : l'affiche de l'invitation (le visuel de la collection, aux prénoms et à la date du couple)
   const m = evt.modele ? `../${evt.modele}/` : '';
   lecteur(bloc.querySelector('#direct-lecteur'), E, { t, affiche: { images: [m && m + 'ouverture-3d.jpg', m && m + 'ouverture.webp', evt.perso?.photo, m && m + 'photo.jpg'].filter(Boolean), titre: evt.titre, date: majuscule(dateLongue(evt.date)) } });
