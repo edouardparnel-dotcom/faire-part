@@ -335,7 +335,7 @@ const VUES = {
             <label>Haut ↕ bas<input type="range" min="0" max="100" step="1" data-cadrage="y" value="${+(P.photoPos?.y ?? 50)}"></label></div>
           <div class="photos-plus">${[['photoSurprise', 'Photo à gratter', 'Révélée quand vos invités grattent le médaillon « Une surprise » : une autre photo de vous, un lieu, un souvenir.'],
             ['photoGalerie', 'Photo de la galerie', 'La grande photo de la mosaïque, à côté du lieu et de la table.'],
-            ['photoTenue', 'Image de la tenue', 'Remplace l'illustration des invités en tenue : vos tissus, une inspiration, une photo de vos tenues.']]
+            ['photoTenue', 'Image de la tenue', "Remplace l'illustration des invités en tenue : vos tissus, une inspiration, une photo de vos tenues."]]
             .map(([k, lib, aide]) => `<label>${lib}<input type="file" data-photo-perso="${k}" accept="image/*"><small class="aide">${P[k] ? 'Votre photo est en place.' : aide}</small>${P[k] ? `<img class="vignette-perso" src="${esc(P[k])}" alt="">` : ''}</label>`).join('')}</div></fieldset>
         <fieldset><legend>Votre site du mariage</legend>${zone('histoire', 'Notre histoire', P.histoire, 'Comment vous vous êtes rencontrés. Vide : pas de partie « Notre histoire ».')}
           ${zone('hebergement', 'Hébergement', P.hebergement, 'Une adresse par ligne, par exemple : Hôtel de la Gare — à 5 minutes, tarif invité. Vide : pas de partie hébergement.')}</fieldset>
