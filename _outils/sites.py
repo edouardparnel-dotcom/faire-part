@@ -312,7 +312,7 @@ def pied(site, pre):
   <div><h4>Nos maisons</h4><ul>
 {maisons}
   </ul></div>
-  {'<div><h4>Par tradition</h4><ul>' + ''.join(f'<li><a href="{pre}{p["dossier"]}/">{e(p["titre"].replace("Faire-part de mariage ", "Mariage ").replace("Invitation pour la dot et le mariage coutumier", "Dot et coutumier"))}</a></li>' for p in __import__('recherches').PAGES) + '</ul></div>' if site['cle'] == 'mariage' else ''}
+  {'<div><h4>Par tradition</h4><ul>' + ''.join(f'<li><a href="{pre}{p["dossier"]}/">{e(p["titre"].replace("Faire-part de mariage ", "Mariage ").replace("Invitation pour la dot et le mariage coutumier", "Dot et coutumier"))}</a></li>' for p in __import__('recherches').PAGES if not p.get('pays')) + '</ul></div>' if site['cle'] == 'mariage' else ''}
   <div><h4>Pour vous</h4><ul><li><a href="{pre}creer/?evt={site['cle']}">{e(site['cta'])}</a></li>{espace}<li><a href="{pre}app/organisateur.html">Mon espace (déjà client)</a></li><li><a href="{accueil}#formules">Formules</a></li><li><a href="{accueil}#assistance">Assistance</a></li><li><a href="{pre}partenaires/index.html">Wedding planners</a></li></ul></div>
   <p class="mention"><a href="{pre}mentions-legales/index.html">Mentions légales</a> · <a href="{pre}confidentialite/index.html">Confidentialité</a> · <a href="{pre}cgv/index.html">CGV</a> · démonstrations : personnes et lieux fictifs, photos Pexels</p>
 </div></footer>
