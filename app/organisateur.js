@@ -3,7 +3,7 @@
 // les réponses en direct, les entrées, la modération des photos et du livre d'or, le lien du direct, les exports ;
 // et les options : jeux (quiz, pronostics, classement), tenues coordonnées, remerciements, album en haute définition.
 import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=6';
-import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment, deleteField } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { LANGUES, dateLangue } from './langues.js?v=14';
@@ -193,6 +193,31 @@ function parcours() {
 }
 
 // Aperçu de l'invitation dans l'espace, dans un téléphone (hors de #vue : il survit aux mises à jour en direct).
+// Couleurs de tenue suggérées (Messieurs, Mesdames) : celles de la collection, lues une fois dans sa page, ou celles du couple
+const TENUES = {};
+function couleursTenue(slug, P) {
+  if (!(slug in TENUES)) {
+    TENUES[slug] = null;
+    fetch(`../${slug}/faire-part.html`).then(r => r.text()).then(h => {
+      const m = h.match(/class="nuancier-tenue"[\s\S]*?<\/div><\/div>/);
+      const blocs = m ? m[0].split('<b>').slice(1).map(b => [...b.matchAll(/background:(#[0-9a-fA-F]{6})/g)].map(x => x[1])) : [];
+      TENUES[slug] = blocs.length === 2 ? { h: blocs[0], f: blocs[1] } : false; rendre();
+    }).catch(() => { TENUES[slug] = false; });
+  }
+  const T = TENUES[slug];
+  if (!T) return '';
+  const C = P.tenueCouleurs || {}, ligne = (k, lib) => `<div class="couleurs-tenue"><b>${lib}</b>${T[k].map((def, j) => `<input type="color" data-tenue-couleur="${k}:${j}" value="${esc(C[k]?.[j] || def)}" aria-label="${lib}, couleur ${j + 1}">`).join('')}</div>`;
+  return `<div class="tenue-couleurs"><span class="app-note">Couleurs suggérées à vos invités (la pastille change dès que vous choisissez) :</span>${ligne('h', 'Messieurs')}${ligne('f', 'Mesdames')}
+    ${P.tenueCouleurs ? '<button type="button" class="lien-btn" data-tenue-origine="1">Reprendre les couleurs de la collection</button>' : ''}<small class="aide">L'illustration des invités garde ses couleurs.</small></div>`;
+}
+// Photo réduite à « bord » px au plus, en JPEG : envoi et affichage rapides
+async function reduirePhoto(f, bord) {
+  const img = await createImageBitmap(f), k = Math.min(1, bord / Math.max(img.width, img.height));
+  if (k === 1 && f.size < 900000) return f;
+  const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return new Promise((ok, ko) => c.toBlob(b => b ? ok(b) : ko(new Error('réduction')), 'image/jpeg', 0.87));
+}
 let apercuCer = '';   // aperçu « vu par un invité de telle cérémonie » (vide : invité à toutes)
 function apercu(f) {
   document.querySelector('.apercu-fond')?.remove();
@@ -331,6 +356,7 @@ const VUES = {
             <label class="coche"><input type="radio" name="m-depart" data-musique-depart="ouverte" ${M.depart === 'ouverte' ? 'checked' : ''}> Lancée à l'ouverture de l'enveloppe</label></div>` : ''}`;
         })()}</fieldset>
         <fieldset><legend>Pour vos invités</legend>${champ('tenueTitre', 'Tenue : titre', P.tenueTitre, 'Par exemple : Chic et coloré', 'maxlength="60"')}${zone('tenue', 'Tenue : conseils', P.tenue)}
+          ${couleursTenue(c.slug, P)}
           ${champ('reponse', 'Répondre avant le', P.reponse, 'Par défaut : un mois avant', 'type="date"')}${zone('merci', 'Mot de la fin', P.merci, 'En bas du faire-part')}</fieldset>
         <p class="app-note">Le programme reprend vos cérémonies et les moments « invités » du déroulé. <button type="button" class="lien-btn" data-onglet="ceremonies">Modifier le programme</button></p>
         <button class="btn">Enregistrer</button><p class="ok-msg" id="m-perso"></p></form>
@@ -777,6 +803,7 @@ document.addEventListener('click', async ev => {
     return;
   }
   if (d.apercu) return apercu(d.apercu);
+  if (d.tenueOrigine) return updateDoc(doc(db, 'events', E), { 'perso.tenueCouleurs': deleteField() });
   if (d.nuancier) return updateDoc(doc(db, 'events', E), { 'perso.nuancier': d.nuancier === '-' ? '' : d.nuancier });
   if (d.personnaliser) { if (!COLLECTIONS.some(x => x.slug === evt.modele)) { location.href = `editeur.html?e=${E}`; return; } onglet = 'fairepart'; rendre(); scrollTo(0, 0); return; }
   if (d.lien) { location.href = d.lien; return; }
@@ -925,9 +952,17 @@ document.addEventListener('change', async ev => {
     const url = await getDownloadURL(r);
     return updateDoc(doc(db, 'events', E), { 'perso.musique': { ...(evt.perso?.musique || {}), source: 'perso', fichier: url, url, nom: f.name.slice(0, 80) } });
   }
+  if (t.dataset.tenueCouleur) {
+    const [k, j] = t.dataset.tenueCouleur.split(':'), T = TENUES[evt.modele] || { h: [], f: [] }, C = { h: [...(evt.perso?.tenueCouleurs?.h || T.h)], f: [...(evt.perso?.tenueCouleurs?.f || T.f)] };
+    C[k][+j] = t.value; return updateDoc(doc(db, 'events', E), { 'perso.tenueCouleurs': C });
+  }
   if (t.dataset.photoPerso && t.files[0]) {
-    const k = t.dataset.photoPerso, r = ref(storage, `events/${E}/design/${k}-${Date.now()}.jpg`);
-    await uploadBytes(r, t.files[0], { contentType: t.files[0].type || 'image/jpeg' });
+    // réduite avant l'envoi (une photo de téléphone fait souvent 4 à 8 Mo) : elle s'affiche tout de suite sur le faire-part
+    const k = t.dataset.photoPerso, r = ref(storage, `events/${E}/design/${k}-${Date.now()}.jpg`), m = $('#m-lieu');
+    t.disabled = true;
+    const fichier = await reduirePhoto(t.files[0], 1800).catch(() => t.files[0]);
+    await uploadBytes(r, fichier, { contentType: fichier.type || 'image/jpeg' });
+    t.disabled = false;
     return updateDoc(doc(db, 'events', E), { ['perso.' + k]: await getDownloadURL(r) });
   }
   if (t.dataset.fait) return updateDoc(doc(db, `events/${E}/taches/${t.dataset.fait}`), { fait: t.checked, faitLe: t.checked ? aujourdhui() : '' });

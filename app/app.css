@@ -252,3 +252,8 @@
 .cadrage{display:grid;gap:8px;background:var(--rub-clair);padding:10px 12px}.cadrage input[type=range]{padding:0;accent-color:var(--rub)}
 .photos-plus{display:grid;gap:12px}.vignette-perso{width:90px;aspect-ratio:1;object-fit:cover;margin-top:6px;border:1px solid var(--filet)}
 .ligne-lien{display:flex;gap:8px}.ligne-lien input{flex:1}.vignette-perso.large{width:100%;max-width:320px;aspect-ratio:3/2}
+.tenue-couleurs{display:grid;gap:8px;margin:6px 0 4px}
+.couleurs-tenue{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.couleurs-tenue b{min-width:90px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.couleurs-tenue input[type=color]{width:44px;height:44px;padding:0;border:1px solid var(--filet);border-radius:50%;background:none;cursor:pointer}
+.couleurs-tenue input[type=color]::-webkit-color-swatch-wrapper{padding:3px}.couleurs-tenue input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}

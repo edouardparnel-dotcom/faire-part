@@ -140,6 +140,12 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
   texte('.chapeau .fp-seul', P.chapeau);
   texte('#tenue .titre-tenue', P.tenueTitre); texte('.inter-matiere figcaption', P.tenueTitre);
   texte('#tenue .titre-tenue + p', P.tenue);
+  // Couleurs de tenue choisies par le couple (Messieurs, Mesdames : trois pastilles chacun) ; case vide = couleur de la collection
+  document.querySelectorAll('.nuancier-tenue > div').forEach((bloc, i) => bloc.querySelectorAll('span').forEach((s, j) => {
+    if (!ORIG.has(s)) ORIG.set(s, s.style.background);
+    const c = (i ? P.tenueCouleurs?.f : P.tenueCouleurs?.h)?.[j];
+    s.style.background = /^#[0-9a-f]{6}$/i.test(c || '') ? c : ORIG.get(s);
+  }));
   texte('.suite-pied p:not(.script)', P.merci);
   const avant = P.reponse ? new Date(P.reponse + 'T12:00') : d ? new Date(+d - 30 * 864e5) : null;
   if (avant && !isNaN(avant)) document.querySelectorAll('#reponse > p:not([id])').forEach(p => p.textContent = `Merci de répondre avant le ${avant.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}.`);
