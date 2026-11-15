@@ -62,7 +62,8 @@ function arreter(msg) {
   if (b) { b.textContent = 'Reprendre'; b.classList.remove('arret'); }
   etat('e-rec', msg || 'Arrêté');
 }
-const fini = () => { arreter('2 h atteintes'); const b = document.getElementById('b-go'); if (b) b.disabled = true; vue.insertAdjacentHTML('beforeend', '<p class="app-note" style="color:#f0b8a8">Les 2 heures de direct de ce mariage sont utilisées : la caméra s\'arrête. La rediffusion reste disponible pour les invités.</p>'); };
+let finiVu = false;
+const fini = () => { if (finiVu) return; finiVu = true; arreter('2 h atteintes'); const b = document.getElementById('b-go'); if (b) b.disabled = true; vue.insertAdjacentHTML('beforeend', '<p class="app-note" style="color:#f0b8a8">Les 2 heures de direct de ce mariage sont utilisées : la caméra s\'arrête. La rediffusion reste disponible pour les invités.</p>'); };
 
 async function basculer() {
   const b = document.getElementById('b-go');
