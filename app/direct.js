@@ -32,7 +32,7 @@ export function choisir(cameras, etat, actuelle, depuis) {
 const urls = new Map();
 const url = chemin => urls.get(chemin) || urls.set(chemin, getDownloadURL(ref(storage, chemin))).get(chemin);
 
-const BTN = 'border:0;border-radius:16px;padding:6px 10px;background:rgba(255,255,255,.2);color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer';
+const BTN = 'border:0;border-radius:16px;padding:5px 7px;background:rgba(255,255,255,.2);color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer';
 
 // Lecteur : conteneur → deux vidéos qui se relaient, un bandeau d'état, un bouton son.
 // affiche : { images: [chemins à essayer dans l'ordre], titre, date } = l'invitation du mariage, montrée tant que rien ne joue.
@@ -47,10 +47,10 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       <p class="direct-affiche-msg" style="position:relative;margin:10px 0 0;font:600 13px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase"></p></div>` : ''}
     <p class="direct-st" style="position:absolute;left:8%;right:8%;bottom:58px;margin:0;text-align:center;pointer-events:none;display:none"><span style="background:rgba(0,0,0,.72);color:#fff;font:500 15px/1.45 system-ui,sans-serif;padding:3px 8px;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone"></span></p>
     <p class="direct-etat" style="position:absolute;left:10px;top:10px;margin:0;padding:4px 10px;border-radius:20px;background:rgba(0,0,0,.6);color:#fff;font:600 12px/1.4 system-ui,sans-serif"></p>
-    ${muet ? '' : `<div class="direct-cmd" style="position:absolute;left:0;right:0;bottom:0;display:none;gap:6px;align-items:center;padding:16px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font:600 12px system-ui,sans-serif">
+    ${muet ? '' : `<div class="direct-cmd" style="position:absolute;left:0;right:0;bottom:0;display:none;gap:4px;align-items:center;padding:16px 8px 8px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font:600 12px system-ui,sans-serif">
       <button type="button" data-c="-10" class="rd" title="${t('Reculer de 10 secondes')}" style="${BTN}">−10</button><button type="button" data-c="pp" class="rd" title="${t('Lecture ou pause')}" style="${BTN}">❚❚</button><button type="button" data-c="10" class="rd" title="${t('Avancer de 10 secondes')}" style="${BTN}">+10</button>
-      <input type="range" data-c="pos" class="rd" min="0" max="1" step="0.5" value="0" style="flex:1;min-width:40px;accent-color:#fff">
-      <span class="rd direct-temps" style="white-space:nowrap">0:00</span>
+      <input type="range" data-c="pos" class="rd" min="0" max="1" step="0.5" value="0" style="flex:1;min-width:24px;width:0;accent-color:#fff">
+      <span class="rd direct-temps" style="white-space:nowrap;font-size:11px">0:00</span>
       <button type="button" data-c="st" title="${t('Sous-titres')}" style="${BTN};margin-left:auto">CC</button><button type="button" data-c="son" title="${t('Couper ou remettre le son')}" style="${BTN}">🔊</button></div>`}
     ${muet ? '' : `<button type="button" class="direct-son" style="position:absolute;inset:0;margin:auto;width:max-content;height:max-content;padding:12px 20px;border:0;border-radius:30px;background:rgba(255,255,255,.92);font:600 15px system-ui,sans-serif;cursor:pointer">${t('Lancer le direct')}</button>`}
   </div>`;

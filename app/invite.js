@@ -37,7 +37,7 @@ async function monterDirect() {
   bloc.className = 'app'; bloc.style.cssText = 'max-width:720px;margin:0 auto';
   bloc.innerHTML = `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Des proches filment la fête : suivez-la ici, en direct.')}</p><div id="direct-lecteur"></div></div>`;
   vue.after(bloc);
-  const { lecteur } = await import('./direct.js?v=8');
+  const { lecteur } = await import('./direct.js?v=9');
   // tant que rien ne joue : l'affiche de l'invitation (le visuel de la collection, aux prénoms et à la date du couple)
   const m = evt.modele ? `../${evt.modele}/` : '';
   lecteur(bloc.querySelector('#direct-lecteur'), E, { t, affiche: { images: [m && m + 'ouverture-3d.jpg', m && m + 'ouverture.webp', evt.perso?.photo, m && m + 'photo.jpg'].filter(Boolean), titre: evt.titre, date: majuscule(dateLongue(evt.date)) } });
