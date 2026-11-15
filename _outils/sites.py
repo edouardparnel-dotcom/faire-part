@@ -28,7 +28,7 @@ OPTIONS_MARIAGE = [
   ('code', 'Avant', 'Accès par code', "Le faire-part, le site, le mur photo et le livre d'or ne s'ouvrent qu'avec le code que vous donnez à vos invités : rien ne circule hors de votre cercle.", 15, False),
   ('langue', 'Avant', 'Langue supplémentaire', "Quatorze langues, de l'anglais à l'arabe, au chinois ou au swahili : chaque invité répond dans la sienne.", 20, False),
   ('qr', 'Le jour J', "Contrôle d'entrée par QR code", "Chaque invité a son code. Seuls les invités entrent, même à trois cents.", 50, True),
-  ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "La cérémonie en direct, sur un lien réservé à vos invités.", 40, True),
+  ('direct', 'Le jour J', 'Direct privé pour les proches qui ne peuvent pas venir', "Jusqu'à trois proches filment avec leur téléphone, sans application ; vos invités suivent la fête en direct sur leur page, puis la rediffusion. 2 heures de direct et 100 connexions incluses.", 75, True),
   ('deroule', 'Le jour J', 'Déroulé en direct', "Le programme de la journée sur le téléphone de chacun, avec des rappels.", 20, False),
   ('murphoto', 'Le jour J', 'Mur photo en direct', "Les invités ajoutent leurs photos sans application, elles s'affichent pendant la fête.", 30, False),
   ('livredor', 'Le jour J', "Livre d'or vidéo et audio", "Des messages enregistrés pendant la fête, à réécouter des années plus tard.", 30, False),
@@ -84,7 +84,7 @@ def lancement(n, p):
 FORMULES_MARIAGE = [
   ('Faire-part', 125, [], ["L'invitation animée de la collection, à vos prénoms", "Les réponses de vos invités, réunies pour vous", "La version à imprimer incluse", "Passage à une formule supérieure à tout moment, en payant la différence"]),
   ('Signature', 199, ['ceremonies', 'savethedate'], ["Tout le Faire-part", "Le site du mariage, liste de cadeaux et cagnotte", "Save-the-date et invitations par cérémonie", "Plan de table, budget, planning et prestataires", "Deux langues"]),
-  ('Prestige', 399, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique', 'code'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Accès par code", "Mur photo, livre d'or et album", "Direct privé pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
+  ('Prestige', 399, ['ceremonies', 'savethedate', 'qr', 'murphoto', 'livredor', 'album', 'langue', 'direct', 'covoiturage', 'musique', 'code'], ["Tout le Signature", "Contrôle d'entrée par QR code", "Accès par code", "Mur photo, livre d'or et album", "Direct privé (2 h, 100 connexions) pour les proches qui ne peuvent pas venir", "Covoiturage entre invités et musique au choix", "Trois langues"]),
 ]
 FORMULES_EVENEMENT = [
   ('Essentiel', 49, [], ["L'invitation de la collection, à vos couleurs", "La page de l'événement et les réponses", "Envois et rappels aux invités, en un geste"]),

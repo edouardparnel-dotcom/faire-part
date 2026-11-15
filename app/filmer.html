@@ -28,12 +28,12 @@
 // Il filme en continu et envoie un morceau autonome toutes les 4 secondes ; il note sa stabilité (capteur de mouvement)
 // et la régularité de ses envois, pour que le lecteur choisisse la meilleure caméra.
 import { auth, db, storage, esc } from './commun.js?v=4';
-import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp, runTransaction } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
 const q = new URLSearchParams(location.search), E = q.get('e'), K = q.get('k'), vue = document.getElementById('vue');
-const DUREE = 4000;
+const DUREE = 4000, LIMITE = 7200;   // 2 heures de direct par mariage (toutes caméras, prises simultanées comptées une fois)
 const TYPES = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp8,opus', 'video/webm'];
 let cam, nom, flux, type, n = 0, base = 0, enCours = false, verrou = null, mouvements = [], envoisOk = 0, envoisTotal = 0, enAttente = 0;
 
@@ -56,9 +56,18 @@ async function demarrer() {
   document.getElementById('b-go').onclick = basculer;
 }
 
+function arreter(msg) {
+  const b = document.getElementById('b-go');
+  enCours = false; flux?.getTracks().forEach(x => x.stop()); verrou?.release?.();
+  if (b) { b.textContent = 'Reprendre'; b.classList.remove('arret'); }
+  etat('e-rec', msg || 'Arrêté');
+}
+const fini = () => { arreter('2 h atteintes'); const b = document.getElementById('b-go'); if (b) b.disabled = true; vue.insertAdjacentHTML('beforeend', '<p class="app-note" style="color:#f0b8a8">Les 2 heures de direct de ce mariage sont utilisées : la caméra s\'arrête. La rediffusion reste disponible pour les invités.</p>'); };
+
 async function basculer() {
   const b = document.getElementById('b-go');
-  if (enCours) { enCours = false; flux?.getTracks().forEach(x => x.stop()); verrou?.release?.(); b.textContent = 'Reprendre'; b.classList.remove('arret'); etat('e-rec', 'Arrêté'); return; }
+  if (enCours) { arreter(); return; }
+  if (((await getDoc(doc(db, `events/${E}/direct/compteur`)).catch(() => null))?.data()?.secondes || 0) >= LIMITE) { fini(); return; }
   try {
     if (window.DeviceMotionEvent?.requestPermission) await DeviceMotionEvent.requestPermission().catch(() => {});
     flux = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }, audio: true });
@@ -96,11 +105,23 @@ async function envoyer(blob, t, d) {
   try {
     await uploadBytes(ref(storage, chemin), blob, { contentType: blob.type });
     await setDoc(doc(db, `events/${E}/cameras/${cam}/segments/${String(num).padStart(10, '0')}`), { n: num, t, d, stab, chemin, mime: blob.type });
+    const total = await runTransaction(db, async tr => {
+      const ref = doc(db, `events/${E}/direct/compteur`), c = (await tr.get(ref)).data() || { secondes: 0, fin: 0 }, finMorceau = t + d * 1000;
+      const ajout = Math.min(6, Math.max(0, (finMorceau - Math.max(c.fin, t)) / 1000));
+      tr.set(ref, { secondes: c.secondes + ajout, fin: Math.max(c.fin, finMorceau) });
+      return c.secondes + ajout;
+    }).catch(() => 0);
+    if (total >= LIMITE) fini();
     if (Date.now() - avant < DUREE) envoisOk++;
     const reseau = Math.round(100 * envoisOk / envoisTotal) / 100;
     await updateDoc(doc(db, `events/${E}/cameras/${cam}`), { dernier: serverTimestamp(), n: num, stab, reseau, mime: blob.type, enDirect: true });
     etat('e-stab', `Stabilité ${Math.round(stab * 100)} %`); etat('e-reseau', `Réseau ${Math.round(reseau * 100)} %`);
-  } catch (e) { console.error('Envoi du morceau', e); etat('e-reseau', 'Réseau : envoi en échec'); }
+  } catch (e) {
+    console.error('Envoi du morceau', e);
+    // morceau refusé parce que les 2 heures sont atteintes, ou vrai souci de réseau
+    if (((await getDoc(doc(db, `events/${E}/direct/compteur`)).catch(() => null))?.data()?.secondes || 0) >= LIMITE) fini();
+    else etat('e-reseau', 'Réseau : envoi en échec');
+  }
   enAttente--;
   if (enAttente > 3) etat('e-reseau', 'Réseau lent : rapprochez-vous du Wi-Fi');
 }

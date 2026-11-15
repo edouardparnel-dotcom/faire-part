@@ -6,7 +6,7 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES, dateLangue } from './langues.js?v=9';
+import { LANGUES, dateLangue } from './langues.js?v=10';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, MESSAGES_LANGUES, proposerPlacement } from './espace.js?v=4';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -17,6 +17,7 @@ let user, E = null, evt = null, proprio = false, onglet = Q.get('onglet') || 'ac
 let invites = [], photos = [], livre = [], tables = [], budget = [], prestataires = [], taches = [], equipe = [], acces = [], outils = {};
 let album = [], jeuxRep = [], partage = {}, cadeaux = [], photoPour = null, msgOption = '', cameras = [], camerasCles = [];
 const MAX_CAMERAS = 3;   // direct : trois téléphones au plus par mariage
+let usageDirect = {};    // direct/compteur (secondes filmées) et direct/stats (connexions)
 const lienCamera = k => new URL(`filmer.html?e=${encodeURIComponent(E)}&k=${encodeURIComponent(k)}`, location.href).href;
 let tarifs = null, paiements = [], choixFormule = Q.get('formule') || '', choixOptions = new Set((Q.get('options') || '').split(',').filter(Boolean)), msgPaiement = '', msgPublier = '';
 let COLLECTIONS = [], choisirCollection = false, NUANCIERS = {};
@@ -105,6 +106,7 @@ function ouvrir(id) {
       suivre('taches', l => taches = l.sort((x, y) => (x.echeance || '').localeCompare(y.echeance || '') || (x.ordre ?? 0) - (y.ordre ?? 0)));
       suivre('equipe', l => equipe = l);
       abonnements.push(onSnapshot(collection(db, `events/${E}/cameras`), x => { cameras = x.docs.map(d => ({ id: d.id, ...d.data() })); if (onglet === 'direct') rendre(); }, () => {}));
+      for (const k of ['compteur', 'stats']) abonnements.push(onSnapshot(doc(db, `events/${E}/direct/${k}`), x => { usageDirect[k] = x.data() || {}; if (onglet === 'direct') rendre(); }, () => {}));
       abonnements.push(onSnapshot(collection(db, `events/${E}/camerasCles`), x => { camerasCles = x.docs.map(d => ({ id: d.id, ...d.data() })).sort((p, q) => p.nom.localeCompare(q.nom, 'fr', { numeric: true })); if (onglet === 'direct') rendre(); }, () => {}));
       suivre('cadeaux', l => cadeaux = recents(l).reverse());
       suivre('album', l => album = recents(l)); suivre('jeuxReponses', l => jeuxRep = l);
@@ -223,6 +225,8 @@ const VUES = {
       2. Vos invités regardent depuis leur page, dans « Le direct », avec environ 15 secondes de décalage.<br>
       3. Le jour J, la régie choisit la caméra montrée ; sans régie, la caméra la plus stable passe automatiquement.<br>
       Tout est enregistré : quand personne ne filme, vos invités voient la rediffusion.</p>
+      <p style="margin:12px 0 4px"><b>Inclus : 2 heures de direct et 100 connexions.</b> Utilisé : ${Math.floor((usageDirect.compteur?.secondes || 0) / 60)} min sur 120 · ${usageDirect.stats?.spectateurs || 0} connexion${(usageDirect.stats?.spectateurs || 0) > 1 ? 's' : ''} sur 100.</p>
+      <p class="app-note">Une connexion = un téléphone ou un ordinateur qui regarde, en direct ou en rediffusion (compté une seule fois). Les caméras qui filment en même temps ne comptent qu'une fois dans les 2 heures.</p>
       ${lignes || '<p class="app-note" style="margin-top:12px">Aucune caméra pour l\'instant.</p>'}
       <div class="puces" style="margin-top:14px">${camerasCles.length < MAX_CAMERAS ? '<button type="button" class="btn petit" data-ajouter-camera>Ajouter une caméra</button>' : `<span class="app-note">${MAX_CAMERAS} caméras au plus : retirez-en une pour en ajouter une autre.</span>`}<a class="btn petit clair" href="regie.html?e=${encodeURIComponent(E)}" target="_blank" rel="noopener">Ouvrir la régie</a></div></div>`;
   },
