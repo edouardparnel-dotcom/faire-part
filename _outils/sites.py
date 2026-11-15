@@ -795,14 +795,25 @@ def page_collections(modeles=()):
 .vignette-cat.main{{position:relative}}.vignette-cat.main small{{display:block;margin-top:6px}}
 .vignette-cat.reelle img{{aspect-ratio:420/700;object-position:top}}
 .cadre-cat{{position:relative;display:block;overflow:hidden}}.cadre-cat video.survol{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none}}.reelle.joue video.survol{{opacity:1}}
+.autres-fetes.replie .autres-contenu{{display:none}}
+.deplier{{margin-top:18px;font:inherit;font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:12px 22px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}}
+.deplier:hover{{background:#1E1B18;color:#F7F3EC}}
 .badge-une{{position:absolute;top:12px;left:12px;z-index:1;background:#A8834A;color:#fff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}}</style>
-{faites_main}  <div class="titre-section"><span class="etq">Les autres fêtes</span><h2>Anniversaires, baptêmes, naissances</h2>
-    <p>Des invitations pour les autres grands moments : chacune a sa propre structure et existe en faire-part, en save-the-date et en site ; couleurs, polices, photo et parties se changent ensuite dans votre espace, avec un aperçu en direct.</p></div>
+{faites_main}  <section class="autres-fetes replie" id="autres-fetes"><div class="titre-section"><span class="etq">Les autres fêtes</span><h2>Anniversaires, baptêmes, naissances</h2>
+    <p>Des invitations pour les autres grands moments : chacune a sa propre structure et existe en faire-part, en save-the-date et en site ; couleurs, polices, photo et parties se changent ensuite dans votre espace, avec un aperçu en direct.</p>
+    <button type="button" class="deplier" id="deplier" aria-expanded="false" aria-controls="autres-contenu">Voir les invitations des autres fêtes</button></div>
+  <div class="autres-contenu" id="autres-contenu">
   <div class="filtres" id="filtres"></div>
   <div class="bascule" id="bascule"><button data-format="fp" class="actif">Faire-part</button><button data-format="std">Save-the-date</button><button data-format="site">Site</button></div>
   <div class="catalogue" id="catalogue"></div>
+  </div></section>
 </main>
 <script>
+  // Les autres fêtes restent repliées sous les mariages : on les ouvre d'un clic (ou en arrivant par #autres-fetes)
+  (() => {{ const s = document.getElementById('autres-fetes'), b = document.getElementById('deplier');
+    const ouvrir = o => {{ s.classList.toggle('replie', !o); b.setAttribute('aria-expanded', o); b.textContent = o ? 'Replier les autres fêtes' : 'Voir les invitations des autres fêtes'; }};
+    b.addEventListener('click', () => ouvrir(s.classList.contains('replie')));
+    if (location.hash === '#autres-fetes') ouvrir(true); }})();
   // Collections de mariage : filtre par famille, et bascule du format (aperçu et page)
   let groupe = 'tous', fmt = 'fp';
   function majMain() {{
