@@ -510,6 +510,9 @@ if __name__ == '__main__':
     anglais.construire()
     for m in MODELES:
         page = VITRINE / m['slug'] / 'index.html'
+        # Les démonstrations sont publiques : on retire l'ancien « noindex » resté dans les pages retouchées sur place.
+        if page.exists() and '<meta name="robots" content="noindex">\n' in (t := page.read_text(encoding='utf-8')):
+            page.write_text(t.replace('<meta name="robots" content="noindex">\n', ''), encoding='utf-8')
         # Les collections réalistes (moodboard + suite) ont leur propre navigation : on n'y ajoute pas l'ancien bas de page.
         if (VITRINE / m['slug'] / 'photo.jpg').exists() and '_commun/suite.css' not in page.read_text(encoding='utf-8'):
             sites.pied_modele(m, page)
