@@ -3,12 +3,14 @@
 // events/{e}/cameras/{cam}/segments/{n} → Storage events/{e}/direct/{cam}/{n}.mp4. Le lecteur les joue à la suite,
 // avec deux balises vidéo qui se relaient (la suivante se charge pendant que l'autre joue), environ 15 secondes après le direct.
 // Sans personne qui filme, il rejoue tout depuis le début : la rediffusion.
-import { auth, db, storage } from './commun.js?v=4';
+import { auth, db, storage } from './commun.js?v=5';
 import { collection, doc, query, orderBy, limit, onSnapshot, getDocs, getDoc, writeBatch, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 
 export const DUREE = 4;          // secondes par morceau
 export const PLACES = 100, HEURES = 2;   // inclus : 100 connexions (appareils) et 2 heures de direct par mariage
+// Le direct étendu (option directplus) : 200 connexions et 5 heures
+export const limitesDirect = (options = []) => options.includes('directplus') ? { places: 200, heures: 5 } : { places: PLACES, heures: HEURES };
 const VIVANTE = 20e3;            // une caméra qui n'a rien envoyé depuis 20 s n'est plus en direct
 const RETARD = 2;                // on démarre deux morceaux avant le dernier reçu : de la marge si le réseau hésite
 
@@ -294,7 +296,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   });
   if (cmd) cmd.querySelector('[data-c=pos]').addEventListener('change', e => aller(Number(e.target.value)));
 
-  // Une place parmi les 100 : réservée une fois par appareil, au premier lancement (la régie, muette, ne compte pas)
+  // Une place parmi les 100 (200 avec le direct étendu) : réservée une fois par appareil, au premier lancement (la régie, muette, ne compte pas)
   let place = muet;
   async function reserver() {
     const uid = auth.currentUser?.uid; if (!uid) return false;
@@ -311,7 +313,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       if (son) son.disabled = true;
       place = await reserver();
       if (son) son.disabled = false;
-      if (!place) { montrerAffiche(true, t('Le direct a atteint ses 100 connexions')); if (son) son.hidden = true; return; }
+      if (!place) { montrerAffiche(true, t('Le direct a atteint toutes ses connexions')); if (son) son.hidden = true; return; }
     }
     pret = true; if (son) son.hidden = true;
     if (mse) { lancerMSE(); return; }

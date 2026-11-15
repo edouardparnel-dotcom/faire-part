@@ -33,7 +33,7 @@ body{margin:0;background:#EDE7DD;font-family:'Inter',system-ui,sans-serif;color:
 <div class="barre" id="barre" hidden><p>Format A5. Choisissez « Enregistrer au format PDF » pour garder le fichier, ou imprimez directement.</p><button type="button" onclick="print()">Imprimer ou enregistrer en PDF</button></div>
 <main id="vue"><p class="erreur">Chargement…</p></main>
 <script type="module">
-import { db, $, esc, dateLongue, heure, majuscule, exigerOrganisateur } from './commun.js?v=4';
+import { db, $, esc, dateLongue, heure, majuscule, exigerOrganisateur } from './commun.js?v=5';
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 const E = new URLSearchParams(location.search).get('e');
 exigerOrganisateur($('#vue'), async () => {

@@ -46,7 +46,7 @@ export function jeton() {
 
 export const NOMS_OPTIONS = {
   savethedate: 'Save-the-date', ceremonies: 'Invitations par cérémonie', guide: 'Guide de la cérémonie', etranger: "Invités venus de l'étranger",
-  tenues: 'Tenues coordonnées', langue: 'Langue supplémentaire', code: 'Accès par code', qr: "Contrôle d'entrée", direct: 'Direct privé', deroule: 'Déroulé en direct',
+  tenues: 'Tenues coordonnées', langue: 'Langue supplémentaire', code: 'Accès par code', qr: "Contrôle d'entrée", direct: 'Direct privé', directplus: 'Direct étendu (5 h, 200 connexions)', montage: 'Film souvenir', deroule: 'Déroulé en direct',
   murphoto: 'Mur photo', livredor: "Livre d'or", covoiturage: 'Covoiturage', jeux: 'Jeux', album: 'Album partagé', merci: 'Remerciements',
 };
 

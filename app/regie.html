@@ -28,9 +28,9 @@
 <script type="module">
 // Régie du direct (organisateurs) : voir chaque caméra, choisir celle qui passe à l'antenne, ou laisser l'automatique
 // (la plus stable). Ce que voient les invités s'affiche à côté, comme sur leur page.
-import { auth, db, esc } from './commun.js?v=4';
+import { auth, db, esc } from './commun.js?v=5';
 import { doc, getDoc, setDoc, collection, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
-import { lecteur, enDirect, note } from './direct.js?v=11';
+import { lecteur, enDirect, note } from './direct.js?v=12';
 
 const E = new URLSearchParams(location.search).get('e'), vue = document.getElementById('vue');
 let cameras = [], etat = {}, montees = new Set();

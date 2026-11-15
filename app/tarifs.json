@@ -55,7 +55,7 @@
    },
    "prestige": {
     "nom": "Prestige",
-    "prix": 399,
+    "prix": 495,
     "inclus": [
      "ceremonies",
      "savethedate",
@@ -70,23 +70,23 @@
      "code"
     ],
     "lancement": {
-     "prix": 280,
+     "prix": 347,
      "jusqu": "2027-01-01T00:00:00+01:00",
      "places": 50,
      "options": 0.7,
      "paliers": [
       {
        "jusqu": "2027-01-01T00:00:00+01:00",
-       "prix": 280,
+       "prix": 347,
        "options": 0.7
       },
       {
        "jusqu": "2027-04-01T00:00:00+02:00",
-       "prix": 340,
+       "prix": 421,
        "options": 0.85
       }
      ],
-     "texte": "280 € pour les 50 premiers couples, jusqu’au 31 décembre, puis 399 €"
+     "texte": "347 € pour les 50 premiers couples, jusqu’au 31 décembre, puis 495 €"
     }
    }
   },
@@ -133,7 +133,11 @@
    },
    "direct": {
     "nom": "Direct privé pour les proches qui ne peuvent pas venir",
-    "prix": 75
+    "prix": 150
+   },
+   "directplus": {
+    "nom": "Direct étendu : 5 heures et 200 connexions",
+    "prix": 150
    },
    "deroule": {
     "nom": "Déroulé en direct",
@@ -154,6 +158,10 @@
    "album": {
     "nom": "Album partagé",
     "prix": 30
+   },
+   "montage": {
+    "nom": "Film souvenir de 5 minutes",
+    "prix": 300
    },
    "merci": {
     "nom": "Remerciements personnalisés",

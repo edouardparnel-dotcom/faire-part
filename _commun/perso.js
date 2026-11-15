@@ -11,7 +11,7 @@ if (E) {
     .perso-mention{position:absolute;left:12px;right:12px;bottom:56px;z-index:5;margin:0;background:rgba(20,16,12,.72);color:#F7F3EC;font:12px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:7px 10px;border-radius:4px}
   </style>`);
   try {
-    const { db, auth, esc, dateLongue, heure, majuscule } = await import('../app/commun.js?v=4');
+    const { db, auth, esc, dateLongue, heure, majuscule } = await import('../app/commun.js?v=5');
     const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
     const { onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js');
     await new Promise(r => { const f = onAuthStateChanged(auth, () => { f(); r(); }); });

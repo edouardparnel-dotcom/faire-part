@@ -2,11 +2,11 @@
 // le budget, les prestataires, le planning, le déroulé du jour J, l'équipe (co-organisateur, wedding planner),
 // les réponses en direct, les entrées, la modération des photos et du livre d'or, le lien du direct, les exports ;
 // et les options : jeux (quiz, pronostics, classement), tenues coordonnées, remerciements, album en haute définition.
-import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=4';
+import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jeton, NOMS_OPTIONS, LOCAL, bandeau, exigerOrganisateur, deconnecter } from './commun.js?v=5';
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES, dateLangue } from './langues.js?v=13';
+import { LANGUES, dateLangue } from './langues.js?v=14';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, MESSAGES_LANGUES, proposerPlacement } from './espace.js?v=4';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -227,13 +227,15 @@ const VUES = {
       <b style="min-width:90px">${esc(k.nom)}</b><span class="${vivante(c) ? 'ok' : 'attente'}">${vivante(c) ? '● En direct' : c.n !== undefined ? 'Arrêtée' : 'Pas encore utilisée'}</span>
       ${c.stab !== undefined ? `<span class="app-note">stabilité ${Math.round(c.stab * 100)} % · réseau ${Math.round((c.reseau ?? 0) * 100)} %</span>` : ''}
       <span style="margin-left:auto" class="puces"><button type="button" class="btn petit clair" data-copier-camera="${esc(k.id)}">Copier le lien</button><button type="button" class="lien-btn" data-retirer-camera="${esc(k.id)}">Retirer</button></span></div>`; }).join('');
+    const L = a('directplus') ? { heures: 5, places: 200 } : { heures: 2, places: 100 };   // direct étendu : 5 h et 200 connexions
     return `<div class="app-carte"><h2>Le direct, filmé par vos proches</h2>
       <p class="app-note">1. Ajoutez une caméra par proche qui filmera, et envoyez-lui son lien : il l'ouvre sur son téléphone (Chrome ou Safari) et touche « Commencer à filmer ». Aucune application.<br>
       2. Vos invités regardent depuis leur page, dans « Le direct », avec environ 15 secondes de décalage.<br>
       3. Le jour J, la régie choisit la caméra montrée ; sans régie, la caméra la plus stable passe automatiquement.<br>
       Tout est enregistré : quand personne ne filme, vos invités voient la rediffusion.</p>
-      <p style="margin:12px 0 4px"><b>Inclus : 2 heures de direct et 100 connexions.</b> Utilisé : ${Math.floor((usageDirect.compteur?.secondes || 0) / 60)} min sur 120 · ${usageDirect.stats?.spectateurs || 0} connexion${(usageDirect.stats?.spectateurs || 0) > 1 ? 's' : ''} sur 100.</p>
-      <p class="app-note">Une connexion = un téléphone ou un ordinateur qui regarde, en direct ou en rediffusion (compté une seule fois). Les caméras qui filment en même temps ne comptent qu'une fois dans les 2 heures. Vos invités voient la rediffusion pendant 30 jours après le direct${usageDirect.compteur?.fin ? ` (jusqu'au ${new Date(usageDirect.compteur.fin + 30 * 864e5).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })})` : ''} ; vous, vous la gardez dans la régie.</p>
+      <p style="margin:12px 0 4px"><b>Inclus : ${L.heures} heures de direct et ${L.places} connexions.</b> Utilisé : ${Math.floor((usageDirect.compteur?.secondes || 0) / 60)} min sur ${L.heures * 60} · ${usageDirect.stats?.spectateurs || 0} connexion${(usageDirect.stats?.spectateurs || 0) > 1 ? 's' : ''} sur ${L.places}.</p>
+      ${a('directplus') ? '' : `<p class="app-note">Toute la journée à filmer, ou une grande famille ? Le direct étendu passe à 5 heures et 200 connexions (150 €). <button type="button" class="lien-btn" data-onglet="paiement">Ajouter le direct étendu</button></p>`}
+      <p class="app-note">Une connexion = un téléphone ou un ordinateur qui regarde, en direct ou en rediffusion (compté une seule fois). Les caméras qui filment en même temps ne comptent qu'une fois dans les ${L.heures} heures. Vos invités voient la rediffusion pendant 30 jours après le direct${usageDirect.compteur?.fin ? ` (jusqu'au ${new Date(usageDirect.compteur.fin + 30 * 864e5).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })})` : ''} ; vous, vous la gardez dans la régie.</p>
       ${lignes || '<p class="app-note" style="margin-top:12px">Aucune caméra pour l\'instant.</p>'}
       <div class="puces" style="margin-top:14px">${camerasCles.length < MAX_CAMERAS ? '<button type="button" class="btn petit" data-ajouter-camera>Ajouter une caméra</button>' : `<span class="app-note">${MAX_CAMERAS} caméras au plus : retirez-en une pour en ajouter une autre.</span>`}<a class="btn petit clair" href="regie.html?e=${encodeURIComponent(E)}" target="_blank" rel="noopener">Ouvrir la régie</a></div></div>`;
   },
@@ -463,7 +465,10 @@ const VUES = {
   },
 
   souvenirs() {
-    return `${a('murphoto') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Le mur photo sur grand écran</h2>
+    // Film souvenir (option montage) : monté à la main par Maison Vivat, à partir du direct, ou des photos avec un effet de profondeur
+    const film = a('montage') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Votre film souvenir</h2>
+        <p class="app-note">Un film de 5 minutes, livré ici sous 15 jours après le mariage. ${a('direct') ? 'Nous le montons avec les plus beaux plans filmés par vos proches pendant le direct, mis en musique.' : 'Nous le montons avec vos photos et celles de vos invités : chacune prend vie, avec un effet de profondeur.'} Ajoutez dans l'album les photos que vous tenez à y voir, et dites-nous votre musique préférée en répondant à notre courriel.</p></div>` : '';
+    return `${film}${a('murphoto') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Le mur photo sur grand écran</h2>
         <p class="app-note" style="margin-bottom:12px">Le jour J, branchez un ordinateur sur un écran ou un vidéoprojecteur, ouvrez le mur et passez-le en plein écran : les photos de vos invités défilent en grand, et chaque nouvelle photo apparaît aussitôt. Vos invités le voient aussi sur leur téléphone, depuis leur page.</p>
         <a class="btn" href="mur.html?e=${E}" target="_blank" rel="noopener">Ouvrir le mur photo</a></div>` : ''}<div class="app-carte"><h2>Photos des invités</h2>${a('murphoto') ? '<p class="app-note" style="margin-bottom:10px">« Masquer » retire la photo du mur et de la galerie des invités, réversible ; « Supprimer » l\'efface définitivement.</p>' : '<p class="app-note">Option « Mur photo » non activée.</p>'}
       <div class="galerie">${photos.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.auteur)}${p.visible ? '' : ' · masquée'}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-photo="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-photo="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>
