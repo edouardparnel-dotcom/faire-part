@@ -20,7 +20,7 @@
   .mur figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;font-size:13px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
   @keyframes entre{from{opacity:0;transform:scale(.96)}}
   #vue .app{color:var(--encre)}
-  .retirer{position:absolute;top:8px;right:8px;opacity:0;transition:opacity .2s;font:inherit;font-size:12px;background:rgba(20,18,16,.8);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);padding:5px 10px;cursor:pointer}
+  .retirer{height:auto;min-height:30px;line-height:1.3;position:absolute;top:8px;right:8px;opacity:0;transition:opacity .2s;font:inherit;font-size:12px;background:rgba(20,18,16,.8);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);padding:5px 10px;cursor:pointer}
   .mur figure:hover .retirer,.retirer:focus{opacity:1}
   /* Diaporama : une photo à la fois, en grand, sur un fond flouté de la même photo */
   .dia{position:fixed;inset:0;overflow:hidden;background:#000}
@@ -34,10 +34,10 @@
   .dia .vide{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px}
   .dia .vide h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(40px,6vw,80px);margin:0 0 10px}
   .lancer{position:fixed;inset:0;z-index:6;display:grid;place-items:center;background:rgba(0,0,0,.55)}
-  .lancer button{font:500 20px Inter,system-ui,sans-serif;background:#F7F3EC;color:#141210;border:0;border-radius:40px;padding:18px 34px;cursor:pointer}
+  .lancer button{display:inline-flex;align-items:center;height:auto;min-height:56px;line-height:1.3;font:500 20px/1.3 Inter,system-ui,sans-serif;background:#F7F3EC;color:#141210;border:0;border-radius:40px;padding:18px 34px;cursor:pointer}
   .lancer p{color:#E6DED2;margin-top:14px;text-align:center}
   .barre{position:fixed;top:14px;right:14px;z-index:5;display:flex;gap:8px;transition:opacity .4s}
-  .barre button{font:500 13px Inter,system-ui,sans-serif;background:rgba(20,18,16,.75);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;cursor:pointer}
+  .barre button{display:inline-flex;align-items:center;height:auto;min-height:34px;line-height:1.3;white-space:nowrap;font:500 13px/1.3 Inter,system-ui,sans-serif;background:rgba(20,18,16,.75);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;cursor:pointer}
   .barre button.actif{background:#F7F3EC;color:#141210}
   body.calme .barre{opacity:0}
   body.calme{cursor:none}
