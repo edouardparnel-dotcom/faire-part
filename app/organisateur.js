@@ -88,7 +88,7 @@ async function rejoindre(e, code) {
 }
 
 // ── Un événement : abonnements en direct ────────────────────────────────────
-function suivre(chemin, f) { abonnements.push(onSnapshot(collection(db, `events/${E}/${chemin}`), s => { f(s.docs.map(d => ({ id: d.id, ...d.data() }))); rendre(); }, () => {})); }
+function suivre(chemin, f) { abonnements.push(onSnapshot(collection(db, `events/${E}/${chemin}`), s => { f(s.docs.map(d => ({ id: d.id, ...d.data() }))); if (onglet !== 'fairepart') rendre(); }, () => {})); }
 const recents = l => l.sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
 function ouvrir(id) {
   E = id; let premiere = true;
@@ -135,6 +135,8 @@ function rendre() {
     paiement: evt.formule === 'essai' ? 'Valider ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
   if (evt.formule === 'faire-part') { const garder = [...FAIRE_PART, 'fairepart']; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à Signature ou Prestige'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
+  const ancien = document.querySelector('.fp-perso-apercu iframe'), garde = ancien && document.body.moveBefore ? document.createElement('div') : null;
+  if (garde) { garde.hidden = true; document.body.append(garde); garde.moveBefore(ancien, null); }
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
       <span class="etq" style="display:block;margin-top:12px">${esc(TYPES[evt.type])} · formule ${esc(evt.formule)}${proprio ? '' : ` · ${esc(ROLES[equipe.find(m => m.id === user.uid)?.role] || 'équipe')}`}</span><h1 class="serif">${esc(evt.titre)}</h1>
       <p class="app-note">${esc(majuscule(dateLongue(evt.date)))} · ${esc(evt.lieu)}</p></div>
@@ -148,6 +150,11 @@ function rendre() {
     ${Q.get('paiement') === 'ok' ? `<div class="app-carte bandeau-paiement ok">${evt.formule === 'essai' ? 'Paiement reçu, merci. Vos options s\'activent dans quelques secondes ; la facture arrive par courriel.' : `Paiement reçu, merci : formule ${esc(evt.formule)} active. La facture arrive par courriel.`}</div>` : Q.get('paiement') === 'annule' ? '<div class="app-carte bandeau-paiement">Paiement annulé : rien n\'a été débité.</div>' : ''}
     ${navigation(onglets)}
     <div id="contenu" class="rub-${rubriqueDe(onglet)}">${VUES[onglet]()}</div>`;
+  if (garde) {
+    const nouveau = document.querySelector('.fp-perso-apercu iframe');
+    if (nouveau && nouveau.getAttribute('src') === ancien.getAttribute('src')) { nouveau.parentNode.moveBefore(ancien, nouveau); nouveau.remove(); }
+    garde.remove();
+  }
   appliquerRecherche(); scrollTo(0, y);
 }
 
