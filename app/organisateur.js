@@ -406,7 +406,9 @@ const VUES = {
   // ── Cérémonies et déroulé du jour J ────────────────────────────────────────
   ceremonies() {
     const C = evt.ceremonies || [], D = outils.deroule?.items || [];
-    return `<div class="app-carte">${C.map((c, k) => `<div class="ceremonie"><div><h3>${esc(c.nom)}</h3><p>${esc(majuscule(dateLongue(c.date)))} à ${heure(c.date)} · ${esc(c.lieu)}</p></div>${C.length > 1 ? `<button class="btn petit clair" data-suppr-cer="${k}">Retirer</button>` : ''}</div>`).join('')}</div>
+    // chaque cérémonie se modifie sur place : nom, date et heure, lieu (la première reste celle du faire-part)
+    return `<div class="app-carte"><h2>${C.length > 1 ? 'Vos cérémonies' : 'Votre cérémonie'}</h2><p class="app-note" style="margin-bottom:6px">Modifiez le nom, la date ou le lieu directement : l'enregistrement est automatique.${C.length > 1 ? ' La première est celle de votre faire-part.' : ''}</p>
+      ${C.map((c, k) => `<div class="ceremonie modifiable"><div class="app-grille"><label>Nom<input data-cer="${k}:nom" value="${esc(c.nom)}" required maxlength="80"></label><label>Date et heure<input type="datetime-local" data-cer="${k}:date" value="${esc(c.date || '')}" required></label><label>Lieu<input data-cer="${k}:lieu" value="${esc(c.lieu || '')}" maxlength="160"></label></div>${C.length > 1 ? `<button class="btn petit clair" data-suppr-cer="${k}">Retirer</button>` : ''}</div>`).join('')}</div>
       <form class="app-carte" id="f-cer"><h2>Ajouter une cérémonie</h2><p class="app-note" style="margin-bottom:12px">Coutumier ou dot, mairie, église, soirée : chaque invité sera invité aux cérémonies que vous choisissez.</p>
         <div class="app-grille"><label>Nom<input name="nom" required placeholder="Cérémonie coutumière"></label><label>Date et heure<input name="date" type="datetime-local" required></label><label>Lieu<input name="lieu" required></label></div>
         <button class="btn">Ajouter</button></form>
@@ -896,6 +898,13 @@ document.addEventListener('change', async ev => {
   if (t.dataset.renommerTable) { const id = t.dataset.renommerTable, nom = t.value.trim().slice(0, 40); if (!nom) return;
     await updateDoc(doc(db, `events/${E}/tables/${id}`), { nom });
     return lots(invites.filter(i => i.table === id).map(i => b => b.update(doc(db, `events/${E}/invites/${i.id}`), { tableNom: nom }))); }
+  if (t.dataset.cer) {
+    const [k, champ] = t.dataset.cer.split(':'), v = t.value.trim(), L = (evt.ceremonies || []).map(x => ({ ...x }));
+    if (!L[+k] || (!v && champ !== 'lieu')) return rendre();   // nom et date obligatoires : on remet l'ancienne valeur
+    L[+k][champ] = v;
+    // la première cérémonie est celle du faire-part : sa date et son lieu restent ceux de l'événement
+    return updateDoc(doc(db, 'events', E), { ceremonies: L, ...(+k === 0 && champ !== 'nom' ? { [champ]: v } : {}) });
+  }
   if (t.dataset.deroule) { const [k, champ] = t.dataset.deroule.split(':'), L = (outils.deroule?.items || []).map(x => ({ ...x })); L[+k][champ] = t.type === 'checkbox' ? t.checked : t.value; return majDeroule(L); }
   if (t.id === 'i-csv' && t.files[0]) { const f = $('#f-import'); f.texte.value = await t.files[0].text(); f.requestSubmit(); }
 });
