@@ -99,7 +99,7 @@ function rendre() {
     ${evt.tablesVisibles && inv.tableNom ? `<div class="app-carte" id="table" style="text-align:center"><span class="etq">${t('Votre table')}</span><h2 style="font-size:34px;margin:6px 0 0">${esc(inv.tableNom)}</h2></div>` : ''}
     ${guide ? `<div class="app-carte"><h2>${esc(champ(guide, 'titre', L) || t('Le guide de la cérémonie'))}</h2>${champ(guide, 'intro', L) ? `<p class="app-note" style="margin-bottom:12px">${esc(champ(guide, 'intro', L))}</p>` : ''}
       ${(champ(guide, 'texte', L) || '').split(/\n{2,}/).map(b => b.split('\n').filter(x => x.trim())).filter(b => b.length).map(([titre, ...l], k) => `<div class="etape-guide"><span class="etq">${t('Étape')} ${k + 1}</span><h3>${esc(titre)}</h3>${l.map(x => /^\s*(conseil|tip|consejo|dica|konsèy)\s*:/i.test(x) ? `<p class="conseil"><b>${t('Bon à savoir')}</b> ${esc(x.replace(/^[^:]*:\s*/, ''))}</p>` : `<p>${esc(x)}</p>`).join('')}</div>`).join('')}</div>` : ''}
-    ${a('deroule') && evt.deroulePublic?.length && mesC.length === (evt.ceremonies || []).length ? `<div class="app-carte"><h2>${t('Le déroulé')}</h2>${evt.deroulePublic.map(d => `<div class="ceremonie"><div><h3>${esc(d.heure)} · ${esc(d.titre)}</h3>${d.lieu ? `<p>${esc(d.lieu)}</p>` : ''}</div></div>`).join('')}</div>` : ''}
+    ${a('deroule') ? deroule(mesC) : ''}
     ${a('tenues') && tenues?.tissus?.length ? formTenue() : ''}
     ${evt.cagnotte?.lien || cadeaux.length ? `<div class="app-carte" id="cadeaux"><h2>${t('Liste et cagnotte')}</h2><p class="app-note" style="margin-bottom:12px">${esc(evt.cagnotte?.texte || t('Votre présence est notre plus beau cadeau. Pour ceux qui le souhaitent :'))}</p>
       ${/^https:\/\//.test(evt.cagnotte?.lien || '') ? `<a class="btn" href="${esc(evt.cagnotte.lien)}" target="_blank" rel="noopener">${esc(evt.cagnotte.libelle || t('Participer à la cagnotte'))}</a>` : ''}
@@ -193,6 +193,14 @@ function rendreAlbum() { const g = $('#album'); if (g) g.innerHTML = album.map(x
 function rendreMots() {
   const m = $('#mots'); if (!m) return;
   m.innerHTML = mots.map(x => `<div class="mot">${x.media ? (x.media.type === 'video' ? `<video src="${esc(x.media.url)}" controls playsinline preload="metadata"></video>` : `<audio src="${esc(x.media.url)}" controls preload="metadata"></audio>`) : ''}${x.texte ? `<p>« ${esc(x.texte)} »</p>` : ''}<span>${esc(x.de)}${x.token === T ? ` · <a href="#" data-retirer-mot="${x.id}">${t('Retirer')}</a>` : ''}</span></div>`).join('');
+}
+
+// Déroulé des cérémonies auxquelles l'invité est convié (un moment sans cérémonie appartient à la première) ; un titre par cérémonie s'il y en a plusieurs.
+function deroule(mesC) {
+  const C = evt.ceremonies || [], cer = d => C.some(c => c.cle === d.cer) ? d.cer : C[0]?.cle;
+  const blocs = mesC.map(c => [c, (evt.deroulePublic || []).filter(d => cer(d) === c.cle)]).filter(([, l]) => l.length);
+  if (!blocs.length) return '';
+  return `<div class="app-carte"><h2>${t('Le déroulé')}</h2>${blocs.map(([c, l]) => `${blocs.length > 1 ? `<h3 style="margin:16px 0 4px">${esc(c.nom)}</h3>` : ''}${l.map(d => `<div class="ceremonie"><div><h3>${esc(d.heure)} · ${esc(d.titre)}</h3>${d.lieu ? `<p>${esc(d.lieu)}</p>` : ''}</div></div>`).join('')}`).join('')}</div>`;
 }
 
 // Réduit une photo à 1600 px de côté avant l'envoi au mur (moins de données pour les invités en 4G) ; l'album garde l'original,

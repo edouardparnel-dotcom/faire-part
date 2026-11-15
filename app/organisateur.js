@@ -412,12 +412,14 @@ const VUES = {
       <form class="app-carte" id="f-cer"><h2>Ajouter une cérémonie</h2><p class="app-note" style="margin-bottom:12px">Coutumier ou dot, mairie, église, soirée : chaque invité sera invité aux cérémonies que vous choisissez.</p>
         <div class="app-grille"><label>Nom<input name="nom" required placeholder="Cérémonie coutumière"></label><label>Date et heure<input name="date" type="datetime-local" required></label><label>Lieu<input name="lieu" required></label></div>
         <button class="btn">Ajouter</button></form>
-      <div class="app-carte table-defile"><h2>Déroulé du jour J</h2><p class="app-note" style="margin-bottom:12px">Heure par heure, avec qui s'en occupe : la feuille de route des témoins et des prestataires. ${a('deroule') ? 'Les moments cochés « invités » s\'affichent sur le téléphone de chacun.' : 'Avec l\'option « Déroulé en direct », les moments choisis s\'affichent aussi chez les invités.'}</p>
-        <table class="app-table"><thead><tr><th>Heure</th><th>Moment</th><th>Lieu</th><th>Qui s'en occupe</th><th>Invités</th><th></th></tr></thead><tbody>
-        ${D.map((d, k) => `<tr><td><input type="time" data-deroule="${k}:heure" value="${esc(d.heure)}"></td><td><input data-deroule="${k}:titre" value="${esc(d.titre)}"></td><td><input data-deroule="${k}:lieu" value="${esc(d.lieu)}"></td><td><input data-deroule="${k}:qui" value="${esc(d.qui)}"></td>
-          <td><input type="checkbox" data-deroule="${k}:public" ${d.public ? 'checked' : ''}></td><td><button class="icone" data-suppr-deroule="${k}">✕</button></td></tr>`).join('')}</tbody></table>
-        <form id="f-deroule" class="form-ligne" style="grid-template-columns:110px 2fr 1fr 1fr auto;margin-top:12px"><label>Heure<input name="heure" type="time" required></label><label>Moment<input name="titre" required placeholder="Entrée des mariés"></label><label>Lieu<input name="lieu"></label><label>Qui<input name="qui" placeholder="DJ, témoin…"></label><button class="btn">Ajouter</button></form>
-        ${D.length ? '' : '<button class="btn petit clair" data-deroule-type="1" style="margin-top:10px">Partir d\'un déroulé type</button>'}</div>`;
+      ${C.map((c, n) => { const lignes = D.map((d, k) => [d, k]).filter(([d]) => cerDe(d) === c.cle);
+        return `<div class="app-carte table-defile"><h2>${C.length > 1 ? `Déroulé · ${esc(c.nom)}` : 'Déroulé du jour J'}</h2><p class="app-note" style="margin-bottom:12px">${c.date ? `${esc(majuscule(dateLongue(c.date)))}${c.lieu ? ' · ' + esc(c.lieu) : ''}. ` : ''}${n ? '' : `Heure par heure, avec qui s'en occupe : la feuille de route des témoins et des prestataires. ${a('deroule') ? 'Les moments cochés « invités » s\'affichent sur le téléphone des invités de cette cérémonie.' : 'Avec l\'option « Déroulé en direct », les moments choisis s\'affichent aussi chez les invités.'}`}</p>
+        ${lignes.length ? `<table class="app-table"><thead><tr><th>Heure</th><th>Moment</th><th>Lieu</th><th>Qui s'en occupe</th>${C.length > 1 ? '<th>Cérémonie</th>' : ''}<th>Invités</th><th></th></tr></thead><tbody>
+        ${lignes.map(([d, k]) => `<tr><td><input type="time" data-deroule="${k}:heure" value="${esc(d.heure)}"></td><td><input data-deroule="${k}:titre" value="${esc(d.titre)}"></td><td><input data-deroule="${k}:lieu" value="${esc(d.lieu)}"></td><td><input data-deroule="${k}:qui" value="${esc(d.qui)}"></td>
+          ${C.length > 1 ? `<td><select data-deroule="${k}:cer" aria-label="Déplacer vers une autre cérémonie">${C.map(x => `<option value="${esc(x.cle)}" ${x.cle === c.cle ? 'selected' : ''}>${esc(x.nom)}</option>`).join('')}</select></td>` : ''}
+          <td><input type="checkbox" data-deroule="${k}:public" ${d.public ? 'checked' : ''}></td><td><button class="icone" data-suppr-deroule="${k}">✕</button></td></tr>`).join('')}</tbody></table>` : '<p class="app-note">Aucun moment pour l\'instant.</p>'}
+        <form id="f-deroule-${n}" data-cer="${esc(c.cle)}" class="form-ligne" style="grid-template-columns:110px 2fr 1fr 1fr auto;margin-top:12px"><label>Heure<input name="heure" type="time" required></label><label>Moment<input name="titre" required placeholder="${n ? 'Arrivée des familles' : 'Entrée des mariés'}"></label><label>Lieu<input name="lieu"></label><label>Qui<input name="qui" placeholder="DJ, témoin…"></label><button class="btn">Ajouter</button></form>
+        ${lignes.length || n ? '' : `<button class="btn petit clair" data-deroule-type="${esc(c.cle)}" style="margin-top:10px">Partir d'un déroulé type</button>`}</div>`; }).join('')}`;
   },
 
   // ── Budget ─────────────────────────────────────────────────────────────────
@@ -712,10 +714,12 @@ async function lots(ecritures) {   // par paquets de 400 (limite Firestore : 500
   for (let k = 0; k < ecritures.length; k += 400) { const b = writeBatch(db); ecritures.slice(k, k + 400).forEach(f => f(b)); await b.commit(); }
 }
 const placer = (id, tableId) => { const t = tables.find(x => x.id === tableId); return updateDoc(doc(db, `events/${E}/invites/${id}`), { table: t ? t.id : '', tableNom: t ? t.nom : '' }); };
+// Cérémonie d'un moment du déroulé : la sienne si elle existe encore, sinon la première (déroulés d'avant le 15/11)
+const cerDe = d => (evt.ceremonies || []).some(c => c.cle === d.cer) ? d.cer : (evt.ceremonies || [])[0]?.cle || '';
 async function majDeroule(items) {
   items = items.sort((x, y) => (x.heure || '').localeCompare(y.heure || ''));
   await setDoc(doc(db, `events/${E}/outils/deroule`), { items });
-  await updateDoc(doc(db, 'events', E), { deroulePublic: items.filter(d => d.public).map(({ heure, titre, lieu }) => ({ heure, titre, lieu: lieu || '' })) });
+  await updateDoc(doc(db, 'events', E), { deroulePublic: items.filter(d => d.public).map(d => ({ heure: d.heure, titre: d.titre, lieu: d.lieu || '', cer: cerDe(d) })) });
 }
 const MODELE_QUIZ = `Où nous sommes-nous rencontrés ?
 À une fête chez des amis
@@ -811,7 +815,7 @@ document.addEventListener('click', async ev => {
     const poste = { Lieu: 'Lieu de réception', Traiteur: 'Traiteur et boissons', Photographe: 'Photo et vidéo', Vidéaste: 'Photo et vidéo', 'DJ ou orchestre': 'Musique et animation', Fleuriste: 'Décoration et fleurs', Décorateur: 'Décoration et fleurs', Pâtissier: 'Gâteau et douceurs', 'Coiffure et maquillage': 'Tenues, coiffure et beauté', 'Couturier ou créateur': 'Tenues, coiffure et beauté', 'Location de voitures': 'Transport', Officiant: 'Cérémonies (mairie, culte, coutumier, dot)' }[p.metier] || 'Divers';
     return addDoc(collection(db, `events/${E}/budget`), { poste, libelle: `${p.metier} · ${p.nom}`, prevu: +p.montant || 0, paye: +p.verse || 0, presta: p.id }); }
   if (d.planningType) return lots(planningType(evt.type, evt.date).map(x => b => b.set(doc(collection(db, `events/${E}/taches`)), x)));
-  if (d.derouleType) return majDeroule(DEROULE_TYPE.map(([heure, titre, qui, pub]) => ({ heure, titre, lieu: '', qui, public: !!pub })));
+  if (d.derouleType) return majDeroule([...(outils.deroule?.items || []), ...DEROULE_TYPE.map(([heure, titre, qui, pub]) => ({ heure, titre, lieu: '', qui, public: !!pub, cer: d.derouleType }))]);
   if (d.supprDeroule) { const L = [...(outils.deroule?.items || [])]; L.splice(+d.supprDeroule, 1); return majDeroule(L); }
   if (d.export) return exporter(d.export);
   if (d.payer) {
@@ -972,7 +976,7 @@ document.addEventListener('submit', async ev => {
   }
   if (id === 'f-cadeau') { ev.target.reset(); await addDoc(collection(db, `events/${E}/cadeaux`), { nom: f.nom.trim(), prix: +f.prix || 0, lien: /^https:\/\//.test(f.lien.trim()) ? f.lien.trim() : '', reservePar: null, creeLe: serverTimestamp() }); }
   if (id === 'f-tache') { ev.target.reset(); await addDoc(collection(db, `events/${E}/taches`), { titre: f.titre.trim(), echeance: f.echeance || '', fait: false, ordre: taches.length }); }
-  if (id === 'f-deroule') { ev.target.reset(); await majDeroule([...(outils.deroule?.items || []), { heure: f.heure, titre: f.titre.trim(), lieu: f.lieu.trim(), qui: f.qui.trim(), public: true }]); }
+  if (id.startsWith('f-deroule')) { const cer = ev.target.dataset.cer; ev.target.reset(); await majDeroule([...(outils.deroule?.items || []), { heure: f.heure, titre: f.titre.trim(), lieu: f.lieu.trim(), qui: f.qui.trim(), public: true, cer }]); }
   if (id === 'f-jeux') {
     await setDoc(doc(db, `events/${E}/outils/quiz`), { quiz: f.quiz, pronos: f.pronos });
     if (partage.quiz?.ouvert && !partage.quiz?.revele) await setDoc(doc(db, `events/${E}/partage/quiz`), { ouvert: true, revele: false, questions: lireQuestions(f.quiz).map(({ q, choix }) => ({ q, choix })), pronos: lireQuestions(f.pronos).map(({ q, choix }) => ({ q, choix })) });
