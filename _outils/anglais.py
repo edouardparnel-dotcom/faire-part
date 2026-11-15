@@ -121,7 +121,7 @@ def page():
       <article class="revele"><h3>An invitation that opens</h3><p>Envelope, doors, rising curtain: the opening, music and art direction of your collection, with your names.</p></article>
       <article class="revele"><h3>Each ceremony, its guests</h3><p>Traditional, civil, church, party: each guest only receives what they are invited to, and replies for each moment.</p></article>
       <article class="revele"><h3>In everyone's language</h3><p>Fourteen languages, from French, English and Spanish to Arabic, Chinese and Swahili: the invitation and website in up to three languages.</p></article>
-      <article class="revele"><h3>Guests from far away</h3><p>Arrival dates, accommodation, visa letter, carpooling from home, and a private live stream for those who cannot come.</p></article>
+      <article class="revele"><h3>Guests from far away</h3><p>Arrival dates, accommodation and visa-letter requests from each guest, carpooling from home, and a private live stream for those who cannot come.</p></article>
       <article class="revele"><h3>A smooth wedding day</h3><p>QR code entry, live photo wall and video guest book, with no app to install.</p></article>
       <article class="revele"><h3>And the planning, as a bonus</h3><p>RSVPs, seating plan, budget, planning, gift list and cash fund are included at no extra cost. We never touch the money.</p></article>
     </div>
