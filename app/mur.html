@@ -30,7 +30,7 @@
   .dia .legende{position:absolute;left:0;right:0;bottom:0;padding:60px 28px 22px;background:linear-gradient(transparent,rgba(0,0,0,.7));display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
   .dia .legende b{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(26px,3.4vw,46px)}
   .dia .legende span{color:#E6DED2;font-size:clamp(14px,1.5vw,20px);text-align:right}
-  .dia .auteur{position:absolute;top:22px;left:28px;font-size:clamp(14px,1.4vw,19px);background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px}
+  .dia .auteur{position:absolute;bottom:clamp(96px,14vh,150px);left:28px;margin:0;font-size:clamp(14px,1.4vw,19px);background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px}
   .dia .vide{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px}
   .dia .vide h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(40px,6vw,80px);margin:0 0 10px}
   .barre{position:fixed;top:14px;right:14px;z-index:5;display:flex;gap:8px;transition:opacity .4s}
@@ -112,14 +112,14 @@ function dessiner() {
 // Diaporama : fondu entre deux images ; les plus récentes d'abord, puis on reboucle
 function montrer() {
   const dia = document.querySelector('.dia'); if (!dia) return;
-  dia.querySelector('.vide').hidden = !!photos.length;
-  dia.querySelector('.legende').hidden = !photos.length;
+  dia.querySelector('.vide').style.display = photos.length ? 'none' : 'grid';
+  dia.querySelector('.legende').style.display = photos.length ? 'flex' : 'none';
   if (!photos.length) return;
   rang = ((rang % photos.length) + photos.length) % photos.length;
   const p = photos[rang], [a, b] = dia.querySelectorAll('img'), visible = a.classList.contains('vue') ? a : b, cache = visible === a ? b : a;
   cache.onload = () => { cache.classList.add('vue'); visible.classList.remove('vue'); dia.querySelector('.fond').style.backgroundImage = `url("${p.url}")`; };
   cache.src = p.url;
-  const au = dia.querySelector('.auteur'); au.hidden = !p.auteur; au.textContent = p.auteur ? `Photo de ${p.auteur}` : '';
+  const au = dia.querySelector('.auteur'); au.style.display = p.auteur ? '' : 'none'; au.textContent = p.auteur ? `Photo de ${p.auteur}` : '';
   vues.add(p.id);
 }
 function relancer() { clearInterval(minuterie); minuterie = setInterval(() => { rang++; montrer(); }, DUREE); }
