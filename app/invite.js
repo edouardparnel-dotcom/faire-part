@@ -6,7 +6,7 @@ import { auth, db, storage, $, esc, heure, majuscule, LOCAL, PRET, bandeau } fro
 import { signInAnonymously, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection, query, where, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
-import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue, dateLangue } from './langues.js?v=12';
+import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue, dateLangue } from './langues.js?v=13';
 import { theme } from './themes.js?v=3';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -110,7 +110,7 @@ function rendre() {
     ${a('jeux') ? `<div class="app-carte" id="jeux"></div>` : ''}
     ${a('direct') && live ? `<div class="app-carte"><h2>${t('Le direct')}</h2><p class="app-note" style="margin-bottom:12px">${t('Vous ne pouvez pas venir ? Suivez la cérémonie ici, en direct.')}</p><div class="video"><iframe src="${esc(embed(live))}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Direct"></iframe></div></div>` : ''}
     ${a('murphoto') ? `<div class="app-carte"><h2>${t('Le mur photo')}</h2><p class="app-note" style="margin-bottom:12px">${t("Partagez vos photos de la fête : elles s'affichent sur le mur.")}</p>
-      <label class="btn clair" style="display:inline-block;cursor:pointer">${t('Ajouter des photos')}<input type="file" accept="image/*" multiple id="i-photo" hidden></label><p class="ok-msg" id="m-photo"></p><div class="galerie" id="galerie" style="margin-top:14px"></div></div>` : ''}
+      <label class="btn clair" style="display:inline-block;cursor:pointer">${t('Ajouter des photos')}<input type="file" accept="image/*" multiple id="i-photo" hidden></label> <a class="btn clair" style="display:inline-block" href="mur.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(T)}" target="_blank" rel="noopener">${t('Voir le mur en grand')}</a><p class="ok-msg" id="m-photo"></p><div class="galerie" id="galerie" style="margin-top:14px"></div></div>` : ''}
     ${a('album') ? `<div class="app-carte"><h2>${t("L'album")}</h2><p class="app-note" style="margin-bottom:12px">${t('Les photos de la fête, en haute définition. Ajoutez les vôtres en qualité originale.')}</p>
       <label class="btn clair" style="display:inline-block;cursor:pointer">${t("Ajouter à l'album")}<input type="file" accept="image/*" multiple id="i-album" hidden></label><p class="ok-msg" id="m-album"></p><div class="galerie" id="album" style="margin-top:14px"></div></div>` : ''}
     ${a('livredor') ? `<form class="app-carte" id="f-mot"><h2>${t("Le livre d'or")}</h2><label>${t('Votre prénom')}<input name="de" maxlength="60" required value="${esc(prenom)}"></label>

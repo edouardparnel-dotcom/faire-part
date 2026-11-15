@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../_commun/maison.css?v=11">
 <link rel="stylesheet" href="app.css?v=1">
 <style>
-  body{background:#141210;color:#F7F3EC}
+  body{background:#141210;color:#F7F3EC;margin:0}
   .mur-haut{text-align:center;padding:28px 16px 10px}
   .mur-haut h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(34px,5vw,64px)}
   .mur-haut p{color:#BDB4A7}
@@ -20,30 +20,124 @@
   .mur figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;font-size:13px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
   @keyframes entre{from{opacity:0;transform:scale(.96)}}
   #vue .app{color:var(--encre)}
-  .mur figure button{position:absolute;top:8px;right:8px;opacity:0;transition:opacity .2s;font:inherit;font-size:12px;background:rgba(20,18,16,.8);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);padding:5px 10px;cursor:pointer}
-  .mur figure:hover button,.mur figure button:focus{opacity:1}
+  .retirer{position:absolute;top:8px;right:8px;opacity:0;transition:opacity .2s;font:inherit;font-size:12px;background:rgba(20,18,16,.8);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);padding:5px 10px;cursor:pointer}
+  .mur figure:hover .retirer,.retirer:focus{opacity:1}
+  /* Diaporama : une photo à la fois, en grand, sur un fond flouté de la même photo */
+  .dia{position:fixed;inset:0;overflow:hidden;background:#000}
+  .dia .fond{position:absolute;inset:-40px;background:center/cover no-repeat;filter:blur(36px) brightness(.45);transition:background-image .8s}
+  .dia img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1s ease}
+  .dia img.vue{opacity:1}
+  .dia .legende{position:absolute;left:0;right:0;bottom:0;padding:60px 28px 22px;background:linear-gradient(transparent,rgba(0,0,0,.7));display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+  .dia .legende b{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(26px,3.4vw,46px)}
+  .dia .legende span{color:#E6DED2;font-size:clamp(14px,1.5vw,20px);text-align:right}
+  .dia .auteur{position:absolute;top:22px;left:28px;font-size:clamp(14px,1.4vw,19px);background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px}
+  .dia .vide{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px}
+  .dia .vide h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(40px,6vw,80px);margin:0 0 10px}
+  .barre{position:fixed;top:14px;right:14px;z-index:5;display:flex;gap:8px;transition:opacity .4s}
+  .barre button{font:500 13px Inter,system-ui,sans-serif;background:rgba(20,18,16,.75);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;cursor:pointer}
+  .barre button.actif{background:#F7F3EC;color:#141210}
+  body.calme .barre{opacity:0}
+  body.calme{cursor:none}
 </style>
 </head>
 <body>
 <div id="vue"></div>
 <script type="module">
-// Mur photo à projeter pendant la fête (option murphoto) : les photos visibles arrivent en direct, les plus récentes en haut.
-// Au survol, « Retirer » masque une photo tout de suite (elle reste récupérable dans l'espace, onglet Photos).
-import { db, $, esc, exigerOrganisateur, aLaMain } from './commun.js?v=4';
-import { doc, getDoc, updateDoc, onSnapshot, collection } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+// Mur photo (option murphoto), pour le grand écran du jour J et pour les invités sur leur téléphone.
+// Deux affichages : le diaporama (une photo à la fois, en plein écran ; chaque nouvelle photo passe aussitôt devant)
+// et la mosaïque (toutes les photos, les plus récentes en haut). Les mariés peuvent « Retirer » une photo (elle reste
+// récupérable dans l'espace, onglet Photos) ; les invités (lien personnel ?g=) regardent seulement.
+import { auth, db, $, esc, exigerOrganisateur, aLaMain } from './commun.js?v=4';
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { signInAnonymously, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
-const vue = $('#vue'), E = new URLSearchParams(location.search).get('e');
-const conteneur = document.createElement('main'); conteneur.className = 'app'; vue.append(conteneur);
-exigerOrganisateur(conteneur, async user => {
-  const evt = (await getDoc(doc(db, 'events', E))).data();
-  if (!(await aLaMain(evt, E, user.uid))) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
-  vue.innerHTML = `<div class="mur-haut"><h1>${esc(evt.titre)}</h1><p>Partagez vos photos depuis votre invitation personnelle</p></div><div class="mur" id="mur"></div>`;
-  onSnapshot(collection(db, `events/${E}/photos`), s => {
-    const photos = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.visible).sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
-    $('#mur').innerHTML = photos.map(p => `<figure><img src="${esc(p.url)}" alt=""><button data-masquer="${p.id}">Retirer</button><figcaption>${esc(p.auteur)}</figcaption></figure>`).join('') || '<p style="text-align:center;color:#BDB4A7">Les premières photos arrivent…</p>';
+const q = new URLSearchParams(location.search), vue = $('#vue'), E = q.get('e'), G = q.get('g');
+const DUREE = 7000;   // secondes par photo dans le diaporama
+let evt, photos = [], mode = q.get('vue') || (G ? 'mosaique' : 'diaporama'), organisateur = false, rang = 0, minuterie = null, vues = new Set();
+
+if (G) invite().catch(() => { vue.innerHTML = '<p class="app-note" style="padding:30px;text-align:center">Ce lien n\'est pas valable. Ouvrez le lien de votre invitation en entier.</p>'; });
+else {
+  const conteneur = document.createElement('main'); conteneur.className = 'app'; vue.append(conteneur);
+  exigerOrganisateur(conteneur, async user => {
+    evt = (await getDoc(doc(db, 'events', E))).data();
+    if (!(await aLaMain(evt, E, user.uid))) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
+    organisateur = true;
+    demarrer(collection(db, `events/${E}/photos`));
   });
-  document.addEventListener('click', ev => { const b = ev.target.closest('[data-masquer]'); if (b) updateDoc(doc(db, `events/${E}/photos/${b.dataset.masquer}`), { visible: false }); });
+}
+
+// Invité : le téléphone est relié à sa fiche (comme sur sa page), puis il voit les photos affichées sur le mur
+async function invite() {
+  await auth.authStateReady();
+  const relier = async () => {
+    const u = auth.currentUser || (await signInAnonymously(auth)).user, m = doc(db, `events/${E}/membres/${u.uid}`), s = await getDoc(m);
+    if (!s.exists()) return setDoc(m, { token: G });
+    if (s.data().token !== G) { await signOut(auth); await signInAnonymously(auth); return relier(); }
+  };
+  await relier();
+  evt = (await getDoc(doc(db, 'events', E))).data();
+  demarrer(query(collection(db, `events/${E}/photos`), where('visible', '==', true)));
+}
+
+function demarrer(source) {
+  onSnapshot(source, s => {
+    const avant = new Set(photos.map(p => p.id));
+    photos = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.visible).sort((x, y) => (y.creeLe?.seconds || 0) - (x.creeLe?.seconds || 0));
+    const nouvelle = photos.find(p => avant.size && !avant.has(p.id));
+    if (mode === 'diaporama') { if (nouvelle) { rang = photos.indexOf(nouvelle); montrer(); relancer(); } else if (!document.querySelector('.dia img.vue')) montrer(); }
+    else dessiner();
+  });
+  dessiner();
+  try { navigator.wakeLock?.request('screen'); } catch {}
+}
+
+// La barre : diaporama / mosaïque / plein écran ; elle s'efface quand la souris ne bouge plus
+function barre() {
+  return `<div class="barre"><button data-vue="diaporama" class="${mode === 'diaporama' ? 'actif' : ''}">Diaporama</button><button data-vue="mosaique" class="${mode === 'mosaique' ? 'actif' : ''}">Mosaïque</button><button data-plein>Plein écran</button></div>`;
+}
+function dessiner() {
+  clearInterval(minuterie);
+  if (mode === 'diaporama') {
+    vue.innerHTML = `${barre()}<div class="dia"><div class="fond"></div><img alt=""><img alt=""><p class="auteur" hidden></p>
+      <div class="legende"><b>${esc(evt?.titre || '')}</b><span>Partagez vos photos depuis votre invitation personnelle</span></div>
+      <div class="vide"><div><h1>${esc(evt?.titre || '')}</h1><p style="color:#BDB4A7">Les premières photos arrivent…</p></div></div>
+      ${organisateur ? '<button class="retirer" data-masquer-actuelle style="opacity:.85;top:auto;bottom:90px;right:28px">Retirer cette photo</button>' : ''}</div>`;
+    montrer(); relancer();
+  } else {
+    vue.innerHTML = `${barre()}<div class="mur-haut"><h1>${esc(evt?.titre || '')}</h1><p>Partagez vos photos depuis votre invitation personnelle</p></div><div class="mur">${
+      photos.map(p => `<figure><img src="${esc(p.url)}" alt="" loading="lazy">${organisateur ? `<button class="retirer" data-masquer="${p.id}">Retirer</button>` : ''}<figcaption>${esc(p.auteur || '')}</figcaption></figure>`).join('')
+      || '<p style="text-align:center;color:#BDB4A7">Les premières photos arrivent…</p>'}</div>`;
+  }
+}
+// Diaporama : fondu entre deux images ; les plus récentes d'abord, puis on reboucle
+function montrer() {
+  const dia = document.querySelector('.dia'); if (!dia) return;
+  dia.querySelector('.vide').hidden = !!photos.length;
+  dia.querySelector('.legende').hidden = !photos.length;
+  if (!photos.length) return;
+  rang = ((rang % photos.length) + photos.length) % photos.length;
+  const p = photos[rang], [a, b] = dia.querySelectorAll('img'), visible = a.classList.contains('vue') ? a : b, cache = visible === a ? b : a;
+  cache.onload = () => { cache.classList.add('vue'); visible.classList.remove('vue'); dia.querySelector('.fond').style.backgroundImage = `url("${p.url}")`; };
+  cache.src = p.url;
+  const au = dia.querySelector('.auteur'); au.hidden = !p.auteur; au.textContent = p.auteur ? `Photo de ${p.auteur}` : '';
+  vues.add(p.id);
+}
+function relancer() { clearInterval(minuterie); minuterie = setInterval(() => { rang++; montrer(); }, DUREE); }
+
+document.addEventListener('click', async ev => {
+  const t = ev.target;
+  if (t.dataset.vue) { mode = t.dataset.vue; dessiner(); return; }
+  if (t.closest('[data-plein]')) { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.().catch(() => {}); return; }
+  const m = t.closest('[data-masquer]'); if (m && organisateur) { updateDoc(doc(db, `events/${E}/photos/${m.dataset.masquer}`), { visible: false }); return; }
+  if (t.closest('[data-masquer-actuelle]') && organisateur && photos[rang]) { await updateDoc(doc(db, `events/${E}/photos/${photos[rang].id}`), { visible: false }); }
 });
+// Flèches du clavier ou de la télécommande : photo précédente ou suivante
+document.addEventListener('keydown', ev => {
+  if (mode !== 'diaporama') return;
+  if (ev.key === 'ArrowRight') { rang++; montrer(); relancer(); }
+  if (ev.key === 'ArrowLeft') { rang--; montrer(); relancer(); }
+});
+let calme; document.addEventListener('mousemove', () => { document.body.classList.remove('calme'); clearTimeout(calme); calme = setTimeout(() => document.body.classList.add('calme'), 3000); });
 </script>
 </body>
 </html>
