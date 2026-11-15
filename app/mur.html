@@ -33,6 +33,9 @@
   .dia .auteur{position:absolute;z-index:2;bottom:clamp(110px,16vh,170px);left:28px;margin:0;font-size:clamp(14px,1.4vw,19px);background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px}
   .dia .vide{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px}
   .dia .vide h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(40px,6vw,80px);margin:0 0 10px}
+  .lancer{position:fixed;inset:0;z-index:6;display:grid;place-items:center;background:rgba(0,0,0,.55)}
+  .lancer button{font:500 20px Inter,system-ui,sans-serif;background:#F7F3EC;color:#141210;border:0;border-radius:40px;padding:18px 34px;cursor:pointer}
+  .lancer p{color:#E6DED2;margin-top:14px;text-align:center}
   .barre{position:fixed;top:14px;right:14px;z-index:5;display:flex;gap:8px;transition:opacity .4s}
   .barre button{font:500 13px Inter,system-ui,sans-serif;background:rgba(20,18,16,.75);color:#F7F3EC;border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;cursor:pointer}
   .barre button.actif{background:#F7F3EC;color:#141210}
@@ -63,6 +66,7 @@ else {
     if (!(await aLaMain(evt, E, user.uid))) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
     organisateur = true;
     demarrer(collection(db, `events/${E}/photos`));
+    if (mode === 'diaporama') document.body.insertAdjacentHTML('beforeend', '<div class="lancer"><div><button data-lancer>Afficher en plein écran</button><p>Ou restez dans la fenêtre : touchez « Plein écran » en haut à droite quand vous voulez.</p></div></div>');
   });
 }
 
@@ -127,6 +131,8 @@ function relancer() { clearInterval(minuterie); minuterie = setInterval(() => { 
 document.addEventListener('click', async ev => {
   const t = ev.target;
   if (t.dataset.vue) { mode = t.dataset.vue; dessiner(); return; }
+  if (t.closest('[data-lancer]')) { document.querySelector('.lancer')?.remove(); document.documentElement.requestFullscreen?.().catch(() => {}); return; }
+  if (t.closest('.lancer')) { t.closest('.lancer').remove(); return; }
   if (t.closest('[data-plein]')) { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.().catch(() => {}); return; }
   const m = t.closest('[data-masquer]'); if (m && organisateur) { updateDoc(doc(db, `events/${E}/photos/${m.dataset.masquer}`), { visible: false }); return; }
   if (t.closest('[data-masquer-actuelle]') && organisateur && photos[rang]) { await updateDoc(doc(db, `events/${E}/photos/${photos[rang].id}`), { visible: false }); }
