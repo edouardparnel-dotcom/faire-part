@@ -135,6 +135,11 @@ function rendre() {
     paiement: evt.formule === 'essai' ? 'Valider ma formule' : 'Formule et options', equipe: 'Équipe', reglages: 'Réglages et exports' };
   if (evt.formule === 'faire-part') { const garder = [...FAIRE_PART, 'fairepart']; for (const k of Object.keys(onglets)) if (!garder.includes(k)) delete onglets[k]; onglets.paiement = 'Passer à Signature ou Prestige'; if (!onglets[onglet]) onglet = 'accueil'; }
   const y = scrollY;
+  // Saisies pas encore enregistrées (prénoms, lieu…) : une mise à jour arrivée entre-temps (photo envoyée, image du lieu
+  // récupérée) redessine la page ; on les remet en place, tant que la valeur enregistrée n'a pas changé (Parnel 15/11)
+  const brouillon = [...vue.querySelectorAll('form[id] input, form[id] textarea')].filter(c => (c.name || c.id) && c.type !== 'file' && c.type !== 'radio'
+    && (c.type === 'checkbox' ? c.checked !== c.defaultChecked : c.value !== c.defaultValue))
+    .map(c => ({ f: c.form.id, n: c.name || c.id, coche: c.type === 'checkbox', v: c.type === 'checkbox' ? c.checked : c.value, d: c.type === 'checkbox' ? c.defaultChecked : c.defaultValue }));
   const ancien = document.querySelector('.fp-perso-apercu iframe'), garde = ancien && document.body.moveBefore ? document.createElement('div') : null;
   if (garde) { garde.hidden = true; document.body.append(garde); garde.moveBefore(ancien, null); }
   vue.innerHTML = `<div class="app-haut"><div><a class="app-note" href="organisateur.html">← Vos événements</a>
@@ -150,6 +155,11 @@ function rendre() {
     ${Q.get('paiement') === 'ok' ? `<div class="app-carte bandeau-paiement ok">${evt.formule === 'essai' ? 'Paiement reçu, merci. Vos options s\'activent dans quelques secondes ; la facture arrive par courriel.' : `Paiement reçu, merci : formule ${esc(evt.formule)} active. La facture arrive par courriel.`}</div>` : Q.get('paiement') === 'annule' ? '<div class="app-carte bandeau-paiement">Paiement annulé : rien n\'a été débité.</div>' : ''}
     ${navigation(onglets)}
     <div id="contenu" class="rub-${rubriqueDe(onglet)}">${VUES[onglet]()}</div>`;
+  for (const x of brouillon) {
+    const c = [...(document.getElementById(x.f)?.elements || [])].find(e => (e.name || e.id) === x.n);
+    if (!c || (x.coche ? c.defaultChecked : c.defaultValue) !== x.d) continue;
+    if (x.coche) c.checked = x.v; else c.value = x.v;
+  }
   if (garde) {
     const nouveau = document.querySelector('.fp-perso-apercu iframe');
     if (nouveau && nouveau.getAttribute('src') === ancien.getAttribute('src')) { nouveau.parentNode.moveBefore(ancien, nouveau); nouveau.remove(); }
