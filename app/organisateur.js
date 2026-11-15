@@ -199,13 +199,15 @@ function couleursTenue(slug, P) {
   if (!(slug in TENUES)) {
     TENUES[slug] = null;
     fetch(`../${slug}/faire-part.html`).then(r => r.text()).then(h => {
-      const m = h.match(/class="nuancier-tenue"[\s\S]*?<\/div><\/div>/);
-      const blocs = m ? m[0].split('<b>').slice(1).map(b => [...b.matchAll(/background:(#[0-9a-fA-F]{6})/g)].map(x => x[1])) : [];
-      TENUES[slug] = blocs.length === 2 ? { h: blocs[0], f: blocs[1] } : false; rendre();
+      const p = new DOMParser().parseFromString(h, 'text/html'), t = p.querySelector('#tenue .titre-tenue');
+      const blocs = [...p.querySelectorAll('.nuancier-tenue > div')].map(d => [...d.querySelectorAll('span')].map(s => {
+        const c = s.getAttribute('style')?.match(/#[0-9a-fA-F]{6}/); return c ? c[0] : '#ffffff'; }));
+      TENUES[slug] = { ...(blocs.length === 2 ? { h: blocs[0], f: blocs[1] } : {}), titre: t?.textContent.trim() || '', texte: t?.nextElementSibling?.textContent.trim() || '' };
+      rendre();
     }).catch(() => { TENUES[slug] = false; });
   }
   const T = TENUES[slug];
-  if (!T) return '';
+  if (!T?.h) return '';
   const C = P.tenueCouleurs || {}, ligne = (k, lib) => `<div class="couleurs-tenue"><b>${lib}</b>${T[k].map((def, j) => `<input type="color" data-tenue-couleur="${k}:${j}" value="${esc(C[k]?.[j] || def)}" aria-label="${lib}, couleur ${j + 1}">`).join('')}</div>`;
   return `<div class="tenue-couleurs"><span class="app-note">Couleurs suggérées à vos invités (la pastille change dès que vous choisissez) :</span>${ligne('h', 'Messieurs')}${ligne('f', 'Mesdames')}
     ${P.tenueCouleurs ? '<button type="button" class="lien-btn" data-tenue-origine="1">Reprendre les couleurs de la collection</button>' : ''}<small class="aide">L'illustration des invités garde ses couleurs ; vous pouvez la remplacer par votre image, plus haut (« Image de la tenue »).</small></div>`;
@@ -228,6 +230,8 @@ function detailsCeremonie(c, k) {
     <div class="app-grille"><label>Image du lieu<input type="file" accept="image/*" data-cer-photo="${k}"><small class="aide">${c.photoLieu ? 'Votre image est en place.' : 'Sinon, celle de « Mon faire-part ».'}</small></label>
       <label>Répondre avant le<input type="date" data-cer="${k}:reponse" value="${esc(c.reponse || '')}"><small class="aide">Vide : un mois avant cette cérémonie.</small></label></div>
     ${c.photoLieu ? `<img class="vignette-perso large" src="${esc(c.photoLieu)}" alt="Lieu : ${esc(c.nom)}">` : ''}
+    <div class="app-grille"><label>Tenue : titre<input data-cer="${k}:tenueTitre" value="${esc(c.tenueTitre || '')}" maxlength="60" placeholder="${esc(P.tenueTitre || T?.titre || '')}"></label>
+      <label>Tenue : conseils<textarea data-cer="${k}:tenue" rows="3" placeholder="${esc(P.tenue || T?.texte || '')}">${esc(c.tenue || '')}</textarea><small class="aide">Vide : ceux de « Mon faire-part ». Enregistré dès que vous quittez la case.</small></label></div>
     ${pastilles ? `<div class="tenue-couleurs"><span class="app-note">Couleurs de tenue pour cette cérémonie :</span>${pastilles}${c.tenueCouleurs ? `<button type="button" class="lien-btn" data-cer-couleur-origine="${k}">Reprendre celles de « Mon faire-part »</button>` : ''}</div>` : ''}
     <p class="app-note">Le déroulé de cette cérémonie se règle plus bas, dans son tableau. <button type="button" class="lien-btn" data-ap-ceremonie="${esc(c.cle)}">Voir ce que reçoit un invité de « ${esc(c.nom)} »</button></p></details>`;
 }
@@ -369,7 +373,7 @@ const VUES = {
           ${src !== 'aucune' ? `<div class="choix-ligne"><label class="coche"><input type="radio" name="m-depart" data-musique-depart="coupee" ${M.depart !== 'ouverte' ? 'checked' : ''}> Coupée au départ : vos invités l'activent</label>
             <label class="coche"><input type="radio" name="m-depart" data-musique-depart="ouverte" ${M.depart === 'ouverte' ? 'checked' : ''}> Lancée à l'ouverture de l'enveloppe</label></div>` : ''}`;
         })()}</fieldset>
-        <fieldset><legend>Pour vos invités</legend>${champ('tenueTitre', 'Tenue : titre', P.tenueTitre, 'Par exemple : Chic et coloré', 'maxlength="60"')}${zone('tenue', 'Tenue : conseils', P.tenue)}
+        <fieldset><legend>Pour vos invités</legend>${champ('tenueTitre', 'Tenue : titre', P.tenueTitre || TENUES[c.slug]?.titre, 'Le titre au-dessus des conseils', 'maxlength="60"')}${zone('tenue', 'Tenue : conseils', P.tenue || TENUES[c.slug]?.texte, 'Modifiez le texte directement, puis « Enregistrer ».')}
           ${couleursTenue(c.slug, P)}
           ${champ('reponse', 'Répondre avant le', P.reponse, 'Par défaut : un mois avant', 'type="date"')}${zone('merci', 'Mot de la fin', P.merci, 'En bas du faire-part')}</fieldset>
         <p class="app-note">Le programme reprend vos cérémonies et les moments « invités » du déroulé. <button type="button" class="lien-btn" data-onglet="ceremonies">Modifier le programme</button></p>

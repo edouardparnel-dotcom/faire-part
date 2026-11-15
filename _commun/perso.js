@@ -87,6 +87,8 @@ function pourCeremonies(evt, miennes) {
   const c0 = miennes[0] || {}, P = { ...(evt.perso || {}) };
   if (c0.photoLieu) P.photoLieu = c0.photoLieu;
   if (c0.tenueCouleurs) P.tenueCouleurs = c0.tenueCouleurs;
+  if (c0.tenueTitre) P.tenueTitre = c0.tenueTitre;
+  if (c0.tenue) P.tenue = c0.tenue;
   if (c0.cle !== C[0]?.cle) P.reponse = c0.reponse || '';   // une autre cérémonie : sa date de réponse, sinon un mois avant elle
   return { ...evt, perso: P, ceremonies: miennes, deroulePublic: (evt.deroulePublic || []).filter(d => cles.includes(de(d))), date: c0.date || evt.date, lieu: c0.lieu || evt.lieu };
 }
