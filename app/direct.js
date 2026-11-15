@@ -32,6 +32,10 @@ export function choisir(cameras, etat, actuelle, depuis) {
 const urls = new Map();
 const url = chemin => urls.get(chemin) || urls.set(chemin, getDownloadURL(ref(storage, chemin))).get(chemin);
 
+// Lecture continue : les morceaux (mp4 fragmentés, H.264 + AAC) versés bout à bout dans une seule vidéo (MediaSource)
+const MIME = 'video/mp4; codecs="avc1.42E01F,mp4a.40.2"';
+const SOURCE = window.ManagedMediaSource || window.MediaSource;
+const CONTINUE = !!SOURCE?.isTypeSupported?.(MIME);
 const BTN = 'border:0;border-radius:16px;padding:5px 7px;background:rgba(255,255,255,.2);color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer';
 
 // Lecteur : conteneur → deux vidéos qui se relaient, un bandeau d'état, un bouton son.
@@ -58,13 +62,17 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   let devant = A, derriere = B, cameras = [], etat = {}, cam = null, depuis = 0, prochain = null, segs = [], arret = () => {}, mode = 'attente', pret = muet, rediffVue = false, chargeRediff = false;
   // Rediffusion : la liste complète, le rang du prochain morceau à charger, le début de chaque morceau (secondes) et la durée totale
   let rediff = [], kSuivant = 0, debuts = [], total = 0, enCours = null, gen = 0;
+  // Pour les invités (lecteur avec le son) : lecture continue si possible, sinon deux vidéos qui se relaient
+  let mse = !muet && CONTINUE, ms = null, sb = null, plan = [], nourrit = false, pauseVoulue = false;
+  const planA = x => (plan.find(p => x >= p.debut - 0.05 && x < p.fin) || plan.at(-1))?.seg;
   // Sous-titres : le texte transcrit du morceau qui joue (champ st, ajouté par le serveur quelques secondes après l'envoi)
   const stEl = conteneur.querySelector('.direct-st');
   let stOn = !muet;
   try { if (localStorage.getItem('mv-st') === '0') stOn = false; } catch {}
   function sousTitre() {
     if (!stEl) return;
-    const s = enCours && (segs.find(x => x.n === enCours.n && x.chemin === enCours.chemin) || enCours);
+    const cour = mse ? planA(A.currentTime) : enCours;
+    const s = cour && (segs.find(x => x.n === cour.n && x.chemin === cour.chemin) || cour);
     const txt = stOn && s?.st && devant.style.visibility !== 'hidden' ? s.st : '';
     stEl.style.display = txt ? '' : 'none';
     stEl.firstElementChild.textContent = txt;
@@ -94,7 +102,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
         segs = s.docs.map(d => d.data()).sort((a, b) => a.n - b.n);
         if (!segs.length) return;
         if (prochain === null || prochain > segs.at(-1).n + 1 || prochain < segs[0].n) prochain = segs.length > RETARD ? segs.at(-1 - RETARD).n : segs[0]?.n ?? null;
-        if (mode !== 'direct') { mode = 'direct'; if (pret) lancer(); }
+        if (mode !== 'direct') { mode = 'direct'; if (pret) (mse ? reinit().then(lancer) : lancer()); }
       });
     }
     if (!choix && mode === 'direct' && !cameras.some(enDirect)) { mode = 'attente'; cam = null; prochain = null; arret(); rediffVue = false; setTimeout(() => { if (!cameras.some(enDirect)) rediffusion(); }, 6000); }
@@ -123,7 +131,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     if (!rediff.length) { mode = 'attente'; montrerAffiche(true, t('Le direct commencera bientôt')); return; }
     afficher(t('Rediffusion'));
     montrerAffiche(!pret, t('Rediffusion'));
-    if (pret) lancer();
+    if (pret) (mse ? reinit().then(lancer) : lancer());
   }
 
   async function suivant() {
@@ -170,8 +178,77 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   // Le cadre prend la forme de la vidéo (téléphone tenu en largeur ou en hauteur)
   const cadre = conteneur.querySelector('.direct-lecteur');
   A.onloadedmetadata = B.onloadedmetadata = e => { if (e.target === devant || !devant.videoWidth) { const v = e.target; if (v.videoWidth) cadre.style.aspectRatio = `${v.videoWidth}/${v.videoHeight}`; } };
-  A.onended = B.onended = e => { if (e.target === devant) permuter(); };
-  A.onerror = B.onerror = e => { if (e.target === devant) permuter(); else { charge = null; preparer(); } };
+  A.addEventListener('resize', () => { if (mse && A.videoWidth) cadre.style.aspectRatio = `${A.videoWidth}/${A.videoHeight}`; });
+  A.onended = B.onended = e => {
+    if (mse) { if (mode === 'rediffusion') { mode = 'attente'; finRediff(); } return; }
+    if (e.target === devant) permuter();
+  };
+  A.onerror = B.onerror = e => { if (mse) { secours(); return; } if (e.target === devant) permuter(); else { charge = null; preparer(); } };
+
+  // ── Lecture continue (MediaSource) ──
+  const attendre = () => new Promise(r => (!sb || !sb.updating) ? r() : sb.addEventListener('updateend', r, { once: true }));
+  function ouvrirMS() {
+    return new Promise((ok, ko) => {
+      ms = new SOURCE();
+      if (window.ManagedMediaSource) A.disableRemotePlayback = true;
+      A.src = URL.createObjectURL(ms);
+      ms.addEventListener('sourceopen', () => { try { sb = ms.addSourceBuffer(MIME); sb.mode = 'sequence'; ok(); } catch (e) { ko(e); } }, { once: true });
+    });
+  }
+  // On repart de zéro (changement de mode, saut dans la rediffusion) : tampon vidé, temps placé à offset
+  async function reinit(offset = 0) {
+    gen++; plan = [];
+    if (!sb) return;
+    await attendre();
+    try { if (ms.readyState === 'open') sb.abort(); } catch {}
+    if (sb.buffered.length) { sb.remove(0, Infinity); await attendre(); }
+    sb.timestampOffset = offset;
+    A.currentTime = offset;
+  }
+  // Verser les morceaux suivants tant qu'on a moins de 12 s d'avance ; le début du tampon est vidé au fil de l'eau
+  async function nourrir() {
+    if (nourrit || !sb) return;
+    nourrit = true;
+    try {
+      while ((plan.at(-1)?.fin ?? A.currentTime) - A.currentTime < 12) {
+        const g = gen, s = await suivant();
+        if (!s) break;
+        const data = await fetch(await url(s.chemin)).then(r => r.arrayBuffer());
+        if (g !== gen) break;
+        await attendre();
+        const debut = sb.timestampOffset;
+        sb.appendBuffer(data);
+        await attendre();
+        if (g !== gen) break;
+        plan.push({ debut, fin: sb.timestampOffset, seg: s });
+        if (A.paused && pret && !pauseVoulue) A.play().then(() => { montrerAffiche(false); commandes(); }).catch(() => { if (son) son.hidden = false; });
+        if (A.currentTime > 90 && sb.buffered.length && sb.buffered.start(0) < A.currentTime - 60) { sb.remove(0, A.currentTime - 60); await attendre(); plan = plan.filter(p => p.fin > A.currentTime - 60); }
+      }
+      if (mode === 'rediffusion' && !chargeRediff && kSuivant >= rediff.length && plan.length && ms.readyState === 'open') { await attendre(); ms.endOfStream(); }
+    } catch (e) { console.warn('Lecture continue indisponible : deux vidéos qui se relaient', e); secours(); }
+    nourrit = false;
+  }
+  setInterval(() => { if (mse && pret) nourrir(); }, 1000);
+  async function lancerMSE() {
+    A.style.visibility = 'visible'; B.style.visibility = 'hidden';
+    try { if (!ms) await ouvrirMS(); } catch (e) { secours(); return; }
+    pauseVoulue = false;
+    nourrir();
+  }
+  async function allerMSE(k, x) {
+    pauseVoulue = A.paused;
+    await reinit(debuts[k]); kSuivant = k;
+    await nourrir();
+    A.currentTime = x; temps(); sousTitre();
+  }
+  function secours() {
+    if (!mse) return;
+    mse = false; gen++;
+    const deja = plan.at(-1)?.seg;
+    plan = []; ms = null; sb = null; A.removeAttribute('src'); A.load();
+    if (mode === 'rediffusion' && deja?.k !== undefined) kSuivant = deja.k;
+    if (pret) permuter();
+  }
   // Commandes : visibles quand une vidéo joue ; lecture, avance, recul et position seulement en rediffusion
   const mmss = x => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
   function commandes() {
@@ -183,8 +260,8 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     cmd.querySelector('[data-c=st]').style.opacity = stOn ? '1' : '.45';
   }
   function temps() {
-    if (!cmd || mode !== 'rediffusion' || enCours?.k === undefined) return;
-    const x = debuts[enCours.k] + devant.currentTime, pos = cmd.querySelector('[data-c=pos]');
+    if (!cmd || mode !== 'rediffusion' || (!mse && enCours?.k === undefined)) return;
+    const x = mse ? A.currentTime : debuts[enCours.k] + devant.currentTime, pos = cmd.querySelector('[data-c=pos]');
     if (document.activeElement !== pos) pos.value = x;
     cmd.querySelector('.direct-temps').textContent = `${mmss(x)} / ${mmss(total)}`;
   }
@@ -195,6 +272,7 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     if (mode !== 'rediffusion' || !rediff.length) return;
     x = Math.max(0, Math.min(total - 0.5, x));
     let k = debuts.findIndex((d, i) => x < d + (rediff[i].d || DUREE)); if (k < 0) k = rediff.length - 1;
+    if (mse) { allerMSE(k, x); return; }
     gen++; charge = null; kSuivant = k + 1; enCours = rediff[k];
     const enPause = devant.paused, v = devant;
     v.src = await url(rediff[k].chemin);
@@ -205,8 +283,8 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
     const c = e.target.closest('[data-c]')?.dataset.c;
     if (c === 'son') { A.muted = B.muted = !A.muted; commandes(); }
     if (c === 'st') { stOn = !stOn; try { localStorage.setItem('mv-st', stOn ? '1' : '0'); } catch {} commandes(); sousTitre(); }
-    if (c === 'pp') { if (devant.paused) devant.play().catch(() => {}); else devant.pause(); }
-    if (c === '-10' || c === '10') aller(debuts[enCours?.k ?? 0] + devant.currentTime + Number(c));
+    if (c === 'pp') { pauseVoulue = !devant.paused; if (devant.paused) devant.play().catch(() => {}); else devant.pause(); }
+    if (c === '-10' || c === '10') aller((mse ? A.currentTime : debuts[enCours?.k ?? 0] + devant.currentTime) + Number(c));
   });
   if (cmd) cmd.querySelector('[data-c=pos]').addEventListener('change', e => aller(Number(e.target.value)));
 
@@ -229,13 +307,15 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
       if (son) son.disabled = false;
       if (!place) { montrerAffiche(true, t('Le direct a atteint ses 100 connexions')); if (son) son.hidden = true; return; }
     }
-    pret = true; if (son) son.hidden = true; if (!devant.src || devant.ended) permuter(); }
+    pret = true; if (son) son.hidden = true;
+    if (mse) { lancerMSE(); return; }
+    if (!devant.src || devant.ended) permuter(); }
   function finRediff() {
     devant.pause(); devant.style.visibility = 'hidden';
     if (cmd) cmd.style.display = 'none';
     if (stEl) stEl.style.display = 'none';
     montrerAffiche(true, t('Rediffusion terminée'));
-    if (son) { son.textContent = t('Revoir la rediffusion'); son.hidden = false; son.onclick = () => { son.onclick = lancer; son.hidden = true; rediffVue = false; devant.removeAttribute('src'); rediffusion(); }; }
+    if (son) { son.textContent = t('Revoir la rediffusion'); son.hidden = false; son.onclick = () => { son.onclick = lancer; son.hidden = true; rediffVue = false; if (!mse) devant.removeAttribute('src'); rediffusion(); }; }
   }
   if (son) son.onclick = lancer;
   if (muet) setTimeout(lancer, 500);
