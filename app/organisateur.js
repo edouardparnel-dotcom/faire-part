@@ -6,7 +6,7 @@ import { auth, db, storage, fonctions, $, esc, dateLongue, heure, majuscule, jet
 import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, getDoc, writeBatch, increment } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import { LANGUES, dateLangue } from './langues.js?v=11';
+import { LANGUES, dateLangue } from './langues.js?v=12';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, MESSAGES_LANGUES, proposerPlacement } from './espace.js?v=4';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -226,7 +226,7 @@ const VUES = {
       3. Le jour J, la régie choisit la caméra montrée ; sans régie, la caméra la plus stable passe automatiquement.<br>
       Tout est enregistré : quand personne ne filme, vos invités voient la rediffusion.</p>
       <p style="margin:12px 0 4px"><b>Inclus : 2 heures de direct et 100 connexions.</b> Utilisé : ${Math.floor((usageDirect.compteur?.secondes || 0) / 60)} min sur 120 · ${usageDirect.stats?.spectateurs || 0} connexion${(usageDirect.stats?.spectateurs || 0) > 1 ? 's' : ''} sur 100.</p>
-      <p class="app-note">Une connexion = un téléphone ou un ordinateur qui regarde, en direct ou en rediffusion (compté une seule fois). Les caméras qui filment en même temps ne comptent qu'une fois dans les 2 heures.</p>
+      <p class="app-note">Une connexion = un téléphone ou un ordinateur qui regarde, en direct ou en rediffusion (compté une seule fois). Les caméras qui filment en même temps ne comptent qu'une fois dans les 2 heures. Vos invités voient la rediffusion pendant 30 jours après le direct${usageDirect.compteur?.fin ? ` (jusqu'au ${new Date(usageDirect.compteur.fin + 30 * 864e5).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })})` : ''} ; vous, vous la gardez dans la régie.</p>
       ${lignes || '<p class="app-note" style="margin-top:12px">Aucune caméra pour l\'instant.</p>'}
       <div class="puces" style="margin-top:14px">${camerasCles.length < MAX_CAMERAS ? '<button type="button" class="btn petit" data-ajouter-camera>Ajouter une caméra</button>' : `<span class="app-note">${MAX_CAMERAS} caméras au plus : retirez-en une pour en ajouter une autre.</span>`}<a class="btn petit clair" href="regie.html?e=${encodeURIComponent(E)}" target="_blank" rel="noopener">Ouvrir la régie</a></div></div>`;
   },

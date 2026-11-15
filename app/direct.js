@@ -115,8 +115,14 @@ export function lecteur(conteneur, E, { muet = false, camFixe = null, t = x => x
   async function rediffusion() {
     if (mode === 'rediffusion' || rediffVue || !cameras.length) return;
     mode = 'rediffusion'; rediffVue = true; chargeRediff = true;
-    const tous = (await Promise.all(cameras.map(c => getDocs(query(collection(db, `events/${E}/cameras/${c.id}/segments`), orderBy('n')))
-      .then(s => s.docs.map(d => ({ cam: c.id, ...d.data() })))))).flat().sort((a, b) => a.t - b.t);
+    let tous;
+    try {
+      tous = (await Promise.all(cameras.map(c => getDocs(query(collection(db, `events/${E}/cameras/${c.id}/segments`), orderBy('n')))
+        .then(s => s.docs.map(d => ({ cam: c.id, ...d.data() })))))).flat().sort((a, b) => a.t - b.t);
+    } catch {
+      // la rediffusion reste en ligne 30 jours après le direct
+      chargeRediff = false; mode = 'attente'; montrerAffiche(true, t('La rediffusion n\'est plus disponible')); if (son) son.hidden = true; return;
+    }
     chargeRediff = false;
     if (mode !== 'rediffusion') return;   // une caméra a repris pendant le chargement : le direct passe avant
     rediff = [];
