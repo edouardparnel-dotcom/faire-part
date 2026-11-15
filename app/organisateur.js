@@ -218,6 +218,19 @@ async function reduirePhoto(f, bord) {
   c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
   return new Promise((ok, ko) => c.toBlob(b => b ? ok(b) : ko(new Error('réduction')), 'image/jpeg', 0.87));
 }
+// Réglages propres à une cérémonie : ce que voit l'invité de cette cérémonie (la première reprend ceux de « Mon faire-part »)
+function detailsCeremonie(c, k) {
+  if (!k) return `<p class="app-note" style="margin:-6px 0 10px">Image du lieu, date de réponse et couleurs de tenue : celles de « Mon faire-part ».</p>`;
+  const T = TENUES[evt.modele] || (couleursTenue(evt.modele, evt.perso || {}), TENUES[evt.modele]), P = evt.perso || {};
+  const base = c.tenueCouleurs || P.tenueCouleurs || T || null;
+  const pastilles = base ? ['h', 'f'].map(g => `<div class="couleurs-tenue"><b>${g === 'h' ? 'Messieurs' : 'Mesdames'}</b>${(base[g] || []).map((v, j) => `<input type="color" data-cer-couleur="${k}:${g}:${j}" value="${esc(v)}" aria-label="${g === 'h' ? 'Messieurs' : 'Mesdames'}, couleur ${j + 1}">`).join('')}</div>`).join('') : '';
+  return `<details class="details-cer" ${c.photoLieu || c.reponse || c.tenueCouleurs ? 'open' : ''}><summary>Pour les invités de « ${esc(c.nom)} » : image du lieu, réponse, couleurs</summary>
+    <div class="app-grille"><label>Image du lieu<input type="file" accept="image/*" data-cer-photo="${k}"><small class="aide">${c.photoLieu ? 'Votre image est en place.' : 'Sinon, celle de « Mon faire-part ».'}</small></label>
+      <label>Répondre avant le<input type="date" data-cer="${k}:reponse" value="${esc(c.reponse || '')}"><small class="aide">Vide : un mois avant cette cérémonie.</small></label></div>
+    ${c.photoLieu ? `<img class="vignette-perso large" src="${esc(c.photoLieu)}" alt="Lieu : ${esc(c.nom)}">` : ''}
+    ${pastilles ? `<div class="tenue-couleurs"><span class="app-note">Couleurs de tenue pour cette cérémonie :</span>${pastilles}${c.tenueCouleurs ? `<button type="button" class="lien-btn" data-cer-couleur-origine="${k}">Reprendre celles de « Mon faire-part »</button>` : ''}</div>` : ''}
+    <p class="app-note">Le déroulé de cette cérémonie se règle plus bas, dans son tableau. <button type="button" class="lien-btn" data-ap-ceremonie="${esc(c.cle)}">Voir ce que reçoit un invité de « ${esc(c.nom)} »</button></p></details>`;
+}
 let apercuCer = '';   // aperçu « vu par un invité de telle cérémonie » (vide : invité à toutes)
 function apercu(f) {
   document.querySelector('.apercu-fond')?.remove();
@@ -449,7 +462,7 @@ const VUES = {
     const C = evt.ceremonies || [], D = outils.deroule?.items || [];
     // chaque cérémonie se modifie sur place : nom, date et heure, lieu (la première reste celle du faire-part)
     return `<div class="app-carte"><h2>${C.length > 1 ? 'Vos cérémonies' : 'Votre cérémonie'}</h2><p class="app-note" style="margin-bottom:6px">Modifiez le nom, la date ou le lieu directement : l'enregistrement est automatique.${C.length > 1 ? ' La première est celle de votre faire-part.' : ''}</p>
-      ${C.map((c, k) => `<div class="ceremonie modifiable"><div class="app-grille"><label>Nom<input data-cer="${k}:nom" value="${esc(c.nom)}" required maxlength="80"></label><label>Date et heure<input type="datetime-local" data-cer="${k}:date" value="${esc(c.date || '')}" required></label><label>Lieu<input data-cer="${k}:lieu" value="${esc(c.lieu || '')}" maxlength="160"></label></div>${C.length > 1 ? `<button class="btn petit clair" data-suppr-cer="${k}">Retirer</button>` : ''}</div>`).join('')}</div>
+      ${C.map((c, k) => `<div class="ceremonie modifiable"><div class="app-grille"><label>Nom<input data-cer="${k}:nom" value="${esc(c.nom)}" required maxlength="80"></label><label>Date et heure<input type="datetime-local" data-cer="${k}:date" value="${esc(c.date || '')}" required></label><label>Lieu<input data-cer="${k}:lieu" value="${esc(c.lieu || '')}" maxlength="160"></label></div>${C.length > 1 ? `<button class="btn petit clair" data-suppr-cer="${k}">Retirer</button>` : ''}</div>${C.length > 1 ? detailsCeremonie(c, k) : ''}`).join('')}</div>
       <form class="app-carte" id="f-cer"><h2>Ajouter une cérémonie</h2><p class="app-note" style="margin-bottom:12px">Coutumier ou dot, mairie, église, soirée : chaque invité sera invité aux cérémonies que vous choisissez.</p>
         <div class="app-grille"><label>Nom<input name="nom" required placeholder="Cérémonie coutumière"></label><label>Date et heure<input name="date" type="datetime-local" required></label><label>Lieu<input name="lieu" required></label></div>
         <button class="btn">Ajouter</button></form>
@@ -804,6 +817,8 @@ document.addEventListener('click', async ev => {
     return;
   }
   if (d.apercu) return apercu(d.apercu);
+  if (d.cerCouleurOrigine) { const L = (evt.ceremonies || []).map(x => ({ ...x })); delete L[+d.cerCouleurOrigine].tenueCouleurs; return updateDoc(doc(db, 'events', E), { ceremonies: L }); }
+  if (d.apCeremonie !== undefined) { apercuCer = d.apCeremonie; return apercu('fp'); }
   if (d.tenueOrigine) return updateDoc(doc(db, 'events', E), { 'perso.tenueCouleurs': deleteField() });
   if (d.nuancier) return updateDoc(doc(db, 'events', E), { 'perso.nuancier': d.nuancier === '-' ? '' : d.nuancier });
   if (d.personnaliser) { if (!COLLECTIONS.some(x => x.slug === evt.modele)) { location.href = `editeur.html?e=${E}`; return; } onglet = 'fairepart'; rendre(); scrollTo(0, 0); return; }
@@ -974,10 +989,24 @@ document.addEventListener('change', async ev => {
     return lots(invites.filter(i => i.table === id).map(i => b => b.update(doc(db, `events/${E}/invites/${i.id}`), { tableNom: nom }))); }
   if (t.dataset.cer) {
     const [k, champ] = t.dataset.cer.split(':'), v = t.value.trim(), L = (evt.ceremonies || []).map(x => ({ ...x }));
-    if (!L[+k] || (!v && champ !== 'lieu')) return rendre();   // nom et date obligatoires : on remet l'ancienne valeur
+    if (!L[+k] || (!v && (champ === 'nom' || champ === 'date'))) return rendre();   // nom et date obligatoires : on remet l'ancienne valeur
     L[+k][champ] = v;
     // la première cérémonie est celle du faire-part : sa date et son lieu restent ceux de l'événement
-    return updateDoc(doc(db, 'events', E), { ceremonies: L, ...(+k === 0 && champ !== 'nom' ? { [champ]: v } : {}) });
+    return updateDoc(doc(db, 'events', E), { ceremonies: L, ...(+k === 0 && (champ === 'date' || champ === 'lieu') ? { [champ]: v } : {}) });
+  }
+  if (t.dataset.cerCouleur) {
+    const [k, g, j] = t.dataset.cerCouleur.split(':'), L = (evt.ceremonies || []).map(x => ({ ...x })), T = TENUES[evt.modele] || { h: [], f: [] };
+    const b = L[+k].tenueCouleurs || evt.perso?.tenueCouleurs || T;
+    L[+k].tenueCouleurs = { h: [...(b.h || [])], f: [...(b.f || [])] }; L[+k].tenueCouleurs[g][+j] = t.value;
+    return updateDoc(doc(db, 'events', E), { ceremonies: L });
+  }
+  if (t.dataset.cerPhoto && t.files[0]) {
+    const k = +t.dataset.cerPhoto, r = ref(storage, `events/${E}/design/lieu-ceremonie-${k}-${Date.now()}.jpg`);
+    t.disabled = true;
+    const fichier = await reduirePhoto(t.files[0], 1800).catch(() => t.files[0]);
+    await uploadBytes(r, fichier, { contentType: fichier.type || 'image/jpeg' });
+    const L = (evt.ceremonies || []).map(x => ({ ...x })); L[k].photoLieu = await getDownloadURL(r);
+    return updateDoc(doc(db, 'events', E), { ceremonies: L });
   }
   if (t.dataset.deroule) { const [k, champ] = t.dataset.deroule.split(':'), L = (outils.deroule?.items || []).map(x => ({ ...x })); L[+k][champ] = t.type === 'checkbox' ? t.checked : t.value; return majDeroule(L); }
   if (t.id === 'i-csv' && t.files[0]) { const f = $('#f-import'); f.texte.value = await t.files[0].text(); f.requestSubmit(); }

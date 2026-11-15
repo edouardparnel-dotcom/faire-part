@@ -84,7 +84,11 @@ async function programmeInvite(evt, outils, { db, auth, doc, getDoc, u }) {
 // (un moment sans cérémonie appartient à la première, comme dans l'espace)
 function pourCeremonies(evt, miennes) {
   const C = evt.ceremonies || [], cles = miennes.map(c => c.cle), de = d => C.some(c => c.cle === d.cer) ? d.cer : C[0]?.cle;
-  return { ...evt, ceremonies: miennes, deroulePublic: (evt.deroulePublic || []).filter(d => cles.includes(de(d))), date: miennes[0].date || evt.date, lieu: miennes[0].lieu || evt.lieu };
+  const c0 = miennes[0] || {}, P = { ...(evt.perso || {}) };
+  if (c0.photoLieu) P.photoLieu = c0.photoLieu;
+  if (c0.tenueCouleurs) P.tenueCouleurs = c0.tenueCouleurs;
+  if (c0.cle !== C[0]?.cle) P.reponse = c0.reponse || '';   // une autre cérémonie : sa date de réponse, sinon un mois avant elle
+  return { ...evt, perso: P, ceremonies: miennes, deroulePublic: (evt.deroulePublic || []).filter(d => cles.includes(de(d))), date: c0.date || evt.date, lieu: c0.lieu || evt.lieu };
 }
 
 // Texte d'un élément : celui du couple, ou celui de la collection si la case est vide
@@ -121,6 +125,16 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
     if (ag) ag.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(evt.titre) + '&dates=' + iso(d) + '/' + iso(new Date(+d + 12 * 36e5)) + '&location=' + encodeURIComponent(lieu);
   }
   document.querySelectorAll('.suite-couv .lieu:not(.std-seul)').forEach(p => p.textContent = lieu);
+  const med = document.querySelector('.medaillons');
+  if (med) {
+    let autres = document.getElementById('autres-decomptes');
+    const liste = (evt.ceremonies || []).filter(c => c.date && c.date !== evt.date);
+    if (liste.length) {
+      if (!autres) { autres = document.createElement('p'); autres.id = 'autres-decomptes'; autres.style.cssText = 'margin:14px 0 0;font-size:15px;line-height:1.7'; med.after(autres); }
+      autres.innerHTML = liste.map(c => { const n = Math.ceil((new Date(c.date) - Date.now()) / 864e5);
+        return `${esc(c.nom)} : ${n > 1 ? `dans ${n} jours` : n === 1 ? 'demain' : n === 0 ? "aujourd'hui" : 'passé'} · ${esc(majuscule(dateLongue(c.date)))}`; }).join('<br>');
+    } else autres?.remove();
+  }
   const blocLieu = document.getElementById('lieu');
   if (blocLieu) {
     const p = blocLieu.querySelector('p'); if (p) p.textContent = lieu;
