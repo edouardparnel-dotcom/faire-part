@@ -478,7 +478,7 @@ const VUES = {
       ${livre.map(m => `<div class="mot" style="${m.visible ? '' : 'opacity:.4'}">${m.media ? (m.media.type === 'video' ? `<video src="${esc(m.media.url)}" controls playsinline preload="metadata"></video>` : `<audio src="${esc(m.media.url)}" controls preload="metadata"></audio>`) : ''}${m.texte ? `<p>« ${esc(m.texte)} »</p>` : ''}<span>${esc(m.de)} · <a href="#" data-visible-mot="${m.id}">${m.visible ? 'masquer' : 'afficher'}</a> · <a href="#" data-suppr-mot="${m.id}">supprimer</a></span></div>`).join('')}</div>
       ${voirOption('album') ? `<div class="app-carte"><h2>Album en haute définition</h2>${noteOption('album')}<p class="app-note" style="margin-bottom:12px">Les photos du photographe et celles que vos invités ajoutent en qualité originale. Vous pouvez tout télécharger d'un coup.</p>
         <div class="puces"><label class="btn petit" style="cursor:pointer">Ajouter les photos du photographe<input type="file" accept="image/*" multiple id="i-album-photographe" hidden></label>${album.length ? `<button class="btn petit clair" data-zip="1">Tout télécharger (${album.length} photos, .zip)</button>` : ''}</div><p class="ok-msg" id="m-album">${esc(msgOption)}</p>
-        <div class="galerie" style="margin-top:12px">${album.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.photographe ? 'Photographe' : p.auteur)}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-album="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-album="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>` : ''}`;
+        <div class="galerie" style="margin-top:12px">${album.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.apercu || p.url)}" alt="" loading="lazy"><figcaption>${esc(p.photographe ? 'Photographe' : p.auteur)}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-album="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-album="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>` : ''}`;
   },
 
   // ── Jeux : quiz sur les mariés et pronostics, ouverture, révélation, classement ──
@@ -526,7 +526,7 @@ const VUES = {
       <div class="app-carte table-defile"><h2>Carte par invité</h2>${galerie.length ? '' : '<p class="app-note">Les photos du mur et de l\'album apparaîtront ici pour choisir celle de chaque invité.</p>'}
         <table class="app-table"><thead><tr><th>Invité</th><th>Photo</th><th>Mot personnel</th><th>Envoyer</th></tr></thead><tbody>
         ${presents.map(i => `<tr><td><b>${esc(i.nom)}</b></td><td>${i.merci?.photo ? `<img class="vignette-merci" src="${esc(i.merci.photo)}" alt="">` : ''}${galerie.length ? `<button class="btn petit clair" data-choisir-photo="${i.id}">${i.merci?.photo ? 'Changer' : 'Choisir'}</button>` : ''}
-          ${photoPour === i.id ? `<div class="choix-photos">${galerie.map(p => `<img src="${esc(p.url)}" alt="" data-photo-merci="${esc(p.url)}" loading="lazy">`).join('')}</div>` : ''}</td>
+          ${photoPour === i.id ? `<div class="choix-photos">${galerie.map(p => `<img src="${esc(p.apercu || p.url)}" alt="" data-photo-merci="${esc(p.apercu || p.url)}" loading="lazy">`).join('')}</div>` : ''}</td>
           <td><input data-mot-merci="${i.id}" value="${esc(i.merci?.mot || '')}" maxlength="300" placeholder="Merci pour ton discours, Tonton !"></td>
           <td style="white-space:nowrap">${i.tel ? `<a class="btn petit clair" target="_blank" rel="noopener" data-merci-envoye="${i.id}" href="https://wa.me/${esc(i.tel.replace('+', ''))}?text=${encodeURIComponent(mess(i))}">WhatsApp</a>` : ''}${i.email ? ` <a class="btn petit clair" data-merci-envoye="${i.id}" href="mailto:${encodeURIComponent(i.email)}?subject=${encodeURIComponent('Merci')}&body=${encodeURIComponent(mess(i))}">E-mail</a>` : ''}${i.merciEnvoye ? ' <span class="ok">envoyé</span>' : ''}</td></tr>`).join('')}
         </tbody></table></div>`;
@@ -667,11 +667,23 @@ async function deposerAlbum(fichiers) {
       msgOption = `Envoi ${k + 1} sur ${fichiers.length}…`; if ($('#m-album')) $('#m-album').textContent = msgOption;
       const chemin = `events/${E}/album/${uid}/${Date.now()}-${k}.${(fi.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')}`, r = ref(storage, chemin);
       await uploadBytes(r, fi, { contentType: fi.type || 'image/jpeg' });
-      await addDoc(collection(db, `events/${E}/album`), { auteur: 'Photographe', photographe: true, chemin, url: await getDownloadURL(r), nom: fi.name.slice(0, 120), creeLe: serverTimestamp(), visible: true });
+      await addDoc(collection(db, `events/${E}/album`), { auteur: 'Photographe', photographe: true, chemin, url: await getDownloadURL(r), nom: fi.name.slice(0, 120), creeLe: serverTimestamp(), visible: true, ...await apercu(fi, chemin) });
     }
     msgOption = `${fichiers.length} photo${fichiers.length > 1 ? 's ajoutées' : ' ajoutée'} à l'album.`;
   } catch (e) { console.error('Album', e); msgOption = 'Une photo n\'a pas pu être envoyée (40 Mo au plus par photo). Réessayez.'; }
   rendre();
+}
+// Version d'affichage (1600 px) à côté de l'original : les galeries ne chargent jamais les originaux, seuls le téléchargement et le .zip le font.
+// Sans elle (format que le navigateur ne lit pas, HEIC…), la galerie montre l'original.
+async function apercu(fichier, chemin) {
+  try {
+    const img = await createImageBitmap(fichier), k = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    const cheminApercu = chemin.replace(/\.[a-z0-9]*$/, '') + '-ecran.jpg', r = ref(storage, cheminApercu);
+    await uploadBytes(r, await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.85)), { contentType: 'image/jpeg' });
+    return { cheminApercu, apercu: await getDownloadURL(r) };
+  } catch (e) { console.warn('Aperçu', e); return {}; }
 }
 async function toutTelecharger(bouton) {
   bouton.disabled = true;
@@ -830,7 +842,7 @@ document.addEventListener('click', async ev => {
   if (d.choisirPhoto) { photoPour = photoPour === d.choisirPhoto ? null : d.choisirPhoto; return rendre(); }
   if (d.merciEnvoye) return updateDoc(doc(db, `events/${E}/invites/${d.merciEnvoye}`), { merciEnvoye: serverTimestamp() });
   if (d.visibleAlbum) { const p = album.find(x => x.id === d.visibleAlbum); return updateDoc(doc(db, `events/${E}/album/${p.id}`), { visible: !p.visible }); }
-  if (d.supprAlbum) { const p = album.find(x => x.id === d.supprAlbum); await deleteObject(ref(storage, p.chemin)).catch(() => {}); return deleteDoc(doc(db, `events/${E}/album/${p.id}`)); }
+  if (d.supprAlbum) { const p = album.find(x => x.id === d.supprAlbum); await deleteObject(ref(storage, p.chemin)).catch(() => {}); if (p.cheminApercu) await deleteObject(ref(storage, p.cheminApercu)).catch(() => {}); return deleteDoc(doc(db, `events/${E}/album/${p.id}`)); }
   if (d.zip) return toutTelecharger(t);
   if (d.supprLien) { const L = [...(outils.placement?.liens || [])]; L.splice(+d.supprLien, 1); return setDoc(doc(db, `events/${E}/outils/placement`), { liens: L }); }
   if (d.proposer) {

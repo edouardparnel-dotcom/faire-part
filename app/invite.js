@@ -189,13 +189,20 @@ function rendreJeux() {
 // ── Galeries ────────────────────────────────────────────────────────────────
 // Chacun peut retirer les photos qu'il a lui-même partagées.
 function rendreGalerie() { const g = $('#galerie'); if (g) g.innerHTML = photos.map(x => `<figure><img src="${esc(x.url)}" alt="" loading="lazy">${x.token === T ? `<button class="galerie-perso" data-retirer-photo="${x.id}">${t('Retirer')}</button>` : ''}<figcaption>${esc(x.auteur)}</figcaption></figure>`).join(''); }
-function rendreAlbum() { const g = $('#album'); if (g) g.innerHTML = album.map(x => `<figure><img src="${esc(x.url)}" alt="" loading="lazy">${x.token === T ? `<button class="galerie-perso" data-retirer-album="${x.id}">${t('Retirer')}</button>` : ''}<figcaption>${esc(x.photographe ? t('Photographe') : x.auteur)} · <a href="#" data-telecharger="${x.id}">${t('Télécharger')}</a></figcaption></figure>`).join(''); }
+function rendreAlbum() { const g = $('#album'); if (g) g.innerHTML = album.map(x => `<figure><img src="${esc(x.apercu || x.url)}" alt="" loading="lazy">${x.token === T ? `<button class="galerie-perso" data-retirer-album="${x.id}">${t('Retirer')}</button>` : ''}<figcaption>${esc(x.photographe ? t('Photographe') : x.auteur)} · <a href="#" data-telecharger="${x.id}">${t('Télécharger')}</a></figcaption></figure>`).join(''); }
 function rendreMots() {
   const m = $('#mots'); if (!m) return;
   m.innerHTML = mots.map(x => `<div class="mot">${x.media ? (x.media.type === 'video' ? `<video src="${esc(x.media.url)}" controls playsinline preload="metadata"></video>` : `<audio src="${esc(x.media.url)}" controls preload="metadata"></audio>`) : ''}${x.texte ? `<p>« ${esc(x.texte)} »</p>` : ''}<span>${esc(x.de)}${x.token === T ? ` · <a href="#" data-retirer-mot="${x.id}">${t('Retirer')}</a>` : ''}</span></div>`).join('');
 }
 
-// Réduit une photo à 1600 px de côté avant l'envoi au mur (moins de données pour les invités en 4G) ; l'album garde l'original.
+// Réduit une photo à 1600 px de côté avant l'envoi au mur (moins de données pour les invités en 4G) ; l'album garde l'original,
+// avec en plus cette version réduite pour l'affichage (« apercu ») : la galerie ne télécharge jamais les originaux, seul « Télécharger » le fait.
+// Version d'affichage de l'album, à côté de l'original ; si le navigateur ne sait pas lire le format (HEIC…), la galerie montre l'original.
+async function apercu(fichier, chemin) {
+  try { const cheminApercu = chemin.replace(/\.[a-z0-9]*$/, '') + '-ecran.jpg', r = ref(storage, cheminApercu);
+    await uploadBytes(r, await reduire(fichier), { contentType: 'image/jpeg' }); return { cheminApercu, apercu: await getDownloadURL(r) }; }
+  catch (e) { console.warn('Aperçu', e); return {}; }
+}
 async function reduire(fichier) {
   const img = await createImageBitmap(fichier), k = Math.min(1, 1600 / Math.max(img.width, img.height));
   const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
@@ -259,7 +266,7 @@ document.addEventListener('click', async ev => {
     try { await deleteDoc(doc(db, `events/${E}/photos/${ph.id}`)); } catch (e) { console.error('Retrait de photo', e); c.disabled = false; }
     return;
   }
-  if (d.retirerAlbum) { const ph = album.find(x => x.id === d.retirerAlbum); if (!ph) return; c.disabled = true; await deleteObject(ref(storage, ph.chemin)).catch(() => {}); await deleteDoc(doc(db, `events/${E}/album/${ph.id}`)).catch(() => { c.disabled = false; }); return; }
+  if (d.retirerAlbum) { const ph = album.find(x => x.id === d.retirerAlbum); if (!ph) return; c.disabled = true; await deleteObject(ref(storage, ph.chemin)).catch(() => {}); if (ph.cheminApercu) await deleteObject(ref(storage, ph.cheminApercu)).catch(() => {}); await deleteDoc(doc(db, `events/${E}/album/${ph.id}`)).catch(() => { c.disabled = false; }); return; }
   if (d.retirerMot) { ev.preventDefault(); const m = mots.find(x => x.id === d.retirerMot); if (!m) return; if (m.media) await deleteObject(ref(storage, m.media.chemin)).catch(() => {}); await deleteDoc(doc(db, `events/${E}/livre/${m.id}`)).catch(() => {}); return; }
   if (d.telecharger) { ev.preventDefault(); const x = album.find(y => y.id === d.telecharger); if (x) telecharger(x); return; }
   if (d.enregistrer) return enregistrer(d.enregistrer);
@@ -327,7 +334,7 @@ document.addEventListener('change', async ev => {
       if (versAlbum && fi.size > 40 * 1024 * 1024) throw new Error('trop lourd');
       await uploadBytes(r, versAlbum ? fi : await reduire(fi), { contentType: versAlbum ? fi.type || 'image/jpeg' : 'image/jpeg' });
       const fiche = { token: T, auteur: inv.nom.split(' ')[0], chemin, url: await getDownloadURL(r), creeLe: serverTimestamp(), visible: true };
-      await addDoc(collection(db, `events/${E}/${versAlbum ? 'album' : 'photos'}`), versAlbum ? { ...fiche, nom: fi.name.slice(0, 120) } : fiche);
+      await addDoc(collection(db, `events/${E}/${versAlbum ? 'album' : 'photos'}`), versAlbum ? { ...fiche, nom: fi.name.slice(0, 120), ...await apercu(fi, chemin) } : fiche);
     }
     msg.textContent = t(fichiers.length > 1 ? 'Photos partagées, merci !' : 'Photo partagée, merci !');
   } catch (e) {
