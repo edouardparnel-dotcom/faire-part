@@ -160,6 +160,7 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
   image('.medaillon-surprise img', P.photoSurprise);
   image('.photo-galerie', P.photoGalerie);
   image('#lieu img.illus', P.photoLieu);
+  image('#tenue img.illus', P.photoTenue);   // l'image de la tenue : celle du couple (ses tissus, une inspiration) à la place des invités dessinés
   if (P.photoPos) racine.style.setProperty('--photo-pos', `${+P.photoPos.x}% ${+P.photoPos.y}%`);
   // Couleurs : le nuancier choisi (seules les couleurs du code changent, jamais les images)
   const nuance = (nuanciers[slug] || []).find(x => x.id === P.nuancier);
