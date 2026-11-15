@@ -193,16 +193,20 @@ function parcours() {
 }
 
 // Aperçu de l'invitation dans l'espace, dans un téléphone (hors de #vue : il survit aux mises à jour en direct).
+let apercuCer = '';   // aperçu « vu par un invité de telle cérémonie » (vide : invité à toutes)
 function apercu(f) {
   document.querySelector('.apercu-fond')?.remove();
   const c = COLLECTIONS.find(x => x.slug === evt.modele), d = document.createElement('div');   // collection réelle : sa page, à vos prénoms
-  const url = c ? `../${c.slug}/${f === 'site' ? 'site' : 'faire-part'}.html?e=${E}` : `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`;   // site du couple : la page site de sa collection, à ses informations (perso.js)   // le site du mariage : celui aux vraies infos du couple
+  const C = evt.ceremonies || [], cer = f === 'fp' && C.length > 1 && C.some(x => x.cle === apercuCer) ? `&cer=${encodeURIComponent(apercuCer)}` : '';
+  const url = (c ? `../${c.slug}/${f === 'site' ? 'site' : 'faire-part'}.html?e=${E}` : `fp.html?e=${E}${f === 'site' ? '&f=site' : ''}`) + cer;   // site du couple : la page site de sa collection, à ses informations (perso.js)   // le site du mariage : celui aux vraies infos du couple
   d.className = 'apercu-fond';
   d.innerHTML = `<div class="apercu-boite"><div class="puces apercu-barre"><button class="btn petit ${f === 'fp' ? '' : 'clair'}" data-ap="fp">Faire-part</button><button class="btn petit ${f === 'site' ? '' : 'clair'}" data-ap="site">Site</button>
     <a class="btn petit clair" href="${url}" target="_blank" rel="noopener">Ouvrir en grand</a><button class="btn petit clair" data-ap="fermer">Fermer</button></div>
+    ${f === 'fp' && C.length > 1 ? `<div class="puces apercu-barre" style="margin-top:-4px"><span class="app-note">Vu par un invité de :</span><button class="btn petit ${apercuCer ? 'clair' : ''}" data-ap-cer="">Toutes</button>${C.map(x => `<button class="btn petit ${x.cle === apercuCer ? '' : 'clair'}" data-ap-cer="${esc(x.cle)}">${esc(x.nom)}</button>`).join('')}</div>` : ''}
     <div class="telephone"><iframe src="${url}" title="Aperçu de votre invitation"></iframe></div>
     <p class="app-note">C'est exactement ce que verront vos invités${evt.formule === 'essai' ? ', une fois votre formule validée' : ''}.</p></div>`;
-  d.addEventListener('click', e => { const b = e.target.closest('[data-ap]'); if (e.target === d || b?.dataset.ap === 'fermer') d.remove(); else if (b) apercu(b.dataset.ap); });
+  d.addEventListener('click', e => { const k = e.target.closest('[data-ap-cer]'); if (k) { apercuCer = k.dataset.apCer; return apercu('fp'); }
+    const b = e.target.closest('[data-ap]'); if (e.target === d || b?.dataset.ap === 'fermer') d.remove(); else if (b) apercu(b.dataset.ap); });
   document.body.appendChild(d);
 }
 

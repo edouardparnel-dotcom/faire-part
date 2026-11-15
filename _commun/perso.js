@@ -23,6 +23,9 @@ if (E) {
       window.persoAppliquer = ev => appliquer(ev, outils);
       appliquer(s.data(), outils);
       await programmeInvite(s.data(), outils, { db, auth, doc, getDoc, u });
+      // Aperçu de l'organisateur « vu par un invité de telle cérémonie » (?cer=<clé>, depuis son espace)
+      const k = new URLSearchParams(location.search).get('cer'), C = s.data().ceremonies || [];
+      if (k && C.length > 1 && C.some(c => c.cle === k)) appliquer(pourCeremonies(s.data(), C.filter(c => c.cle === k)), outils);
     }
   } catch (err) { console.warn('Personnalisation', err); }
   document.documentElement.classList.remove('perso-attente');
@@ -73,8 +76,15 @@ async function programmeInvite(evt, outils, { db, auth, doc, getDoc, u }) {
     const miennes = C.filter(c => inv.ceremonies.includes(c.cle));
     if (miennes.length === C.length) return;
     // la date et le lieu de couverture : ceux de sa première cérémonie
-    appliquer({ ...evt, ceremonies: miennes, deroulePublic: [], date: miennes[0].date || evt.date, lieu: miennes[0].lieu || evt.lieu }, outils);
+    appliquer(pourCeremonies(evt, miennes), outils);
   } catch (err) { console.warn('Programme de l’invité', err); }
+}
+
+// L'invitation telle que la voit un invité de ces cérémonies : leurs dates, leur lieu, et le déroulé de ces cérémonies seulement
+// (un moment sans cérémonie appartient à la première, comme dans l'espace)
+function pourCeremonies(evt, miennes) {
+  const C = evt.ceremonies || [], cles = miennes.map(c => c.cle), de = d => C.some(c => c.cle === d.cer) ? d.cer : C[0]?.cle;
+  return { ...evt, ceremonies: miennes, deroulePublic: (evt.deroulePublic || []).filter(d => cles.includes(de(d))), date: miennes[0].date || evt.date, lieu: miennes[0].lieu || evt.lieu };
 }
 
 // Texte d'un élément : celui du couple, ou celui de la collection si la case est vide
