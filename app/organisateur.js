@@ -481,7 +481,9 @@ const VUES = {
   souvenirs() {
     // Film souvenir (option montage) : monté à la main par Maison Vivat, à partir du direct, ou des photos avec un effet de profondeur
     const film = a('montage') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Votre film souvenir</h2>
-        <p class="app-note">Un film de 5 minutes, livré ici sous 15 jours après le mariage. ${a('direct') ? 'Nous le montons avec les plus beaux plans filmés par vos proches pendant le direct, mis en musique.' : 'Nous le montons avec vos photos et celles de vos invités : chacune prend vie, avec un effet de profondeur.'} Ajoutez dans l'album les photos que vous tenez à y voir, et dites-nous votre musique préférée en répondant à notre courriel.</p></div>` : '';
+        <p class="app-note">${evt.film?.url ? 'Votre film est prêt : regardez-le ici et téléchargez-le pour le garder. ' : ''}Un film de 5 minutes, livré ici sous 15 jours après le mariage. ${a('direct') ? 'Nous le montons avec les plus beaux plans filmés par vos proches pendant le direct, mis en musique.' : 'Nous le montons avec vos photos et celles de vos invités : chacune prend vie, avec un effet de profondeur.'} Ajoutez dans l'album les photos que vous tenez à y voir, et dites-nous votre musique préférée en répondant à notre courriel.</p>
+        ${evt.film?.url ? `<video src="${esc(evt.film.url)}" controls playsinline preload="metadata" style="width:100%;max-height:70vh;margin-top:14px;background:#000;border-radius:8px"></video>
+        <div class="puces" style="margin-top:10px"><a class="btn petit" href="${esc(evt.film.url)}" download="${esc((evt.titre || 'film').replace(/[^\p{L}\d]+/gu, '-'))}-film-souvenir.mp4">Télécharger le film</a></div>` : ''}</div>` : '';
     // Durée en ligne : 12 mois après la date, plus une année par option « conservation » (même calcul que la suppression automatique)
     const fin = new Date(evt.date); fin.setMonth(fin.getMonth() + 12 * (1 + (evt.conservationAnnees || 0)));
     const duree = evt.date ? `<div class="app-carte"><h2>Combien de temps vos souvenirs restent en ligne</h2>
