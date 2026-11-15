@@ -667,7 +667,7 @@ async function deposerAlbum(fichiers) {
       msgOption = `Envoi ${k + 1} sur ${fichiers.length}…`; if ($('#m-album')) $('#m-album').textContent = msgOption;
       const chemin = `events/${E}/album/${uid}/${Date.now()}-${k}.${(fi.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')}`, r = ref(storage, chemin);
       await uploadBytes(r, fi, { contentType: fi.type || 'image/jpeg' });
-      await addDoc(collection(db, `events/${E}/album`), { auteur: 'Photographe', photographe: true, chemin, url: await getDownloadURL(r), nom: fi.name.slice(0, 120), creeLe: serverTimestamp(), visible: true, ...await apercu(fi, chemin) });
+      await addDoc(collection(db, `events/${E}/album`), { auteur: 'Photographe', photographe: true, chemin, url: await getDownloadURL(r), nom: fi.name.slice(0, 120), creeLe: serverTimestamp(), visible: true, ...await versionEcran(fi, chemin) });
     }
     msgOption = `${fichiers.length} photo${fichiers.length > 1 ? 's ajoutées' : ' ajoutée'} à l'album.`;
   } catch (e) { console.error('Album', e); msgOption = 'Une photo n\'a pas pu être envoyée (40 Mo au plus par photo). Réessayez.'; }
@@ -675,7 +675,7 @@ async function deposerAlbum(fichiers) {
 }
 // Version d'affichage (1600 px) à côté de l'original : les galeries ne chargent jamais les originaux, seuls le téléchargement et le .zip le font.
 // Sans elle (format que le navigateur ne lit pas, HEIC…), la galerie montre l'original.
-async function apercu(fichier, chemin) {
+async function versionEcran(fichier, chemin) {
   try {
     const img = await createImageBitmap(fichier), k = Math.min(1, 1600 / Math.max(img.width, img.height));
     const c = Object.assign(document.createElement('canvas'), { width: Math.round(img.width * k), height: Math.round(img.height * k) });
