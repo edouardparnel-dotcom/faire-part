@@ -432,7 +432,9 @@ def page(site, modeles):
             moments.append(f'      <div class="moment revele"><h3>{e(moment)}</h3><ul>\n{lignes}\n      </ul></div>')
     a_etoile = any(o[5] for o in site['options'])
     # L'accueil ne montre que quelques options phares ; la liste complète se déplie, et reste sur la page de commande.
-    phares = [o for o in site['options'] if o[0] in ('savethedate', 'qr', 'direct', 'murphoto', 'album')][:4]
+    # Dans cet ordre : le film souvenir puis le direct en tête (demande de Parnel, 18/11).
+    par_cle = {o[0]: o for o in site['options']}
+    phares = [par_cle[k] for k in ('montage', 'direct', 'savethedate', 'qr', 'murphoto', 'album') if k in par_cle][:4]
     selection = '\n'.join(f"""        <div class="phare-opt revele"><span class="etq">{e(mo)}</span><h4>{e(n)}</h4><p>{e(t)}</p><span class="tarif">{tarif(p)}</span></div>"""
                           for k, mo, n, t, p, d in phares)
     PRINCIPALES = ('Faire-part', 'Signature', 'Prestige')
