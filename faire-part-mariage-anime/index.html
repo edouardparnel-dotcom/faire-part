@@ -18,7 +18,14 @@
 <link rel="canonical" href="https://maisonvivat.com/faire-part-mariage-anime/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Le faire-part animé fonctionne-t-il sur tous les téléphones ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui : il s'ouvre comme une page web, sur iPhone comme sur Android, sans application à installer."}}, {"@type": "Question", "name": "Peut-on aussi l'imprimer ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui : la version à imprimer est incluse dans toutes les formules."}}, {"@type": "Question", "name": "Peut-on changer les couleurs et les textes ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui : vous écrivez vos textes et vous choisissez parmi les nuanciers de la collection, qui garde sa direction artistique."}}, {"@type": "Question", "name": "Que paie-t-on, et quand ?", "acceptedAnswer": {"@type": "Answer", "text": "Rien pour préparer : vous ne payez qu'au moment d'envoyer le lien à vos invités. Les formules vont de 125 à 495 €, avec une remise de lancement pour les 50 premiers couples."}}]}</script>
 <style>
-.demo-duo{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
+.demo-duo{display:grid;grid-template-columns:1fr;gap:40px;justify-items:center}
+.demo-duo>*{width:100%;max-width:1100px}
+.demo-duo>.demo-tel{width:auto}
+.demo-duo>div:not(.demo-ecran){text-align:center;max-width:820px}
+.demo-duo>div:has(.demo-verdict){display:grid;grid-template-columns:1fr 1fr;gap:18px;text-align:left;max-width:1100px}
+.demo-duo>div:has(.demo-verdict)>.app-note{grid-column:1/-1}
+.demo-duo>div:has(.demo-wa){display:flex;flex-direction:column;align-items:center}
+.demo-wa{text-align:left}
 .demo-ecran{border-radius:14px;overflow:hidden;background:#16130F;box-shadow:0 24px 60px rgba(30,22,14,.25);aspect-ratio:16/9}
 .demo-ecran video{width:100%;height:100%;display:block;object-fit:cover}
 .demo-tels{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
@@ -38,11 +45,13 @@
 .demo-live .compte{top:44px;left:12px}
 .demo-live .camera{bottom:64px;left:12px;opacity:.9}
 .demo-live .sous-titre{bottom:22px;left:12px;right:12px;text-align:center;background:rgba(0,0,0,.55);padding:6px;border-radius:6px;font-size:13px}
-.demo-etapes{padding-left:20px}.demo-etapes li{margin-bottom:14px}
-.demo-liste{list-style:none;padding:0}.demo-liste li{margin-bottom:12px}
+.demo-etapes{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:etape}
+.demo-etapes li{background:#FFFDF9;border:1px solid var(--filet);border-radius:14px;padding:22px;counter-increment:etape}
+.demo-etapes li::before{content:counter(etape);display:block;font-family:'Bodoni Moda',serif;font-size:30px;color:var(--accent);margin-bottom:6px}
+.demo-liste{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:center}
 .demo-verdict{background:var(--papier);border:1px solid var(--filet);border-left:4px solid #3E7D4F;border-radius:10px;padding:16px 18px;margin-bottom:14px}
 .demo-verdict.deja{border-left-color:#C08A2E}.demo-verdict h3{font-size:24px;margin:4px 0}
-@media (max-width:860px){.demo-duo{grid-template-columns:1fr;gap:28px}}
+@media (max-width:860px){.demo-duo{gap:28px}.demo-etapes{grid-template-columns:1fr}}
 </style><link rel="stylesheet" href="../_commun/pages.css?v=1">
 </head>
 <body>
