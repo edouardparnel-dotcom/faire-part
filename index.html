@@ -12,7 +12,7 @@
 <meta name="p:domain_verify" content="e429689e0f4edbe6245b75c5ab73d5c7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_commun/maison.css?v=20">
+<link rel="stylesheet" href="_commun/maison.css?v=21">
 <style>:root{--accent:#A8834A}</style>
 <script src="_commun/partenaire.js?v=1" defer></script>
 </head>
@@ -38,16 +38,27 @@
   <section id="package" class="package"><div class="conteneur">
     <div class="titre-section revele"><span class="etq">Le package Héritage</span><h2>Tout ce qu&#x27;un mariage entre deux cultures demande</h2><p>Pour les familles qui viennent de plusieurs pays et les mariages en plusieurs cérémonies.</p></div>
     <div class="fonctions">
-      <article class="revele"><h3>Dans la langue de chacun</h3><p>Chaque invité répond dans sa langue : jusqu&#x27;à trois par mariage parmi quatorze, dont l&#x27;arabe, le créole haïtien, le yoruba, le swahili et le vietnamien.</p></article>
-      <article class="revele"><h3>Envoyé sur WhatsApp</h3><p>Chaque invité reçoit son lien à son prénom et ouvre l&#x27;enveloppe sur son téléphone, sans rien installer.</p></article>
-      <article class="revele"><h3>Chaque cérémonie, ses invités</h3><p>Dot, coutumier, henné, mairie, église, soirée : chacun ne reçoit que ce à quoi il est convié.</p></article>
+      <article class="revele a-video"><h3>Dans la langue de chacun</h3><p>Chaque invité répond dans sa langue : jusqu&#x27;à trois par mariage parmi quatorze, dont l&#x27;arabe, le créole haïtien, le yoruba, le swahili et le vietnamien.</p><button type="button" class="voir-video">Voir en vidéo</button><span class="apercu-video"><video data-src="options/langue.mp4" poster="options/langue.jpg" muted loop playsinline preload="none"></video></span></article>
+      <article class="revele a-video"><h3>Envoyé sur WhatsApp</h3><p>Chaque invité reçoit son lien à son prénom et ouvre l&#x27;enveloppe sur son téléphone, sans rien installer.</p><button type="button" class="voir-video">Voir en vidéo</button><span class="apercu-video"><video data-src="options/whatsapp.mp4" poster="options/whatsapp.jpg" muted loop playsinline preload="none"></video></span></article>
+      <article class="revele a-video"><h3>Chaque cérémonie, ses invités</h3><p>Dot, coutumier, henné, mairie, église, soirée : chacun ne reçoit que ce à quoi il est convié.</p><button type="button" class="voir-video">Voir en vidéo</button><span class="apercu-video"><video data-src="options/ceremonies.mp4" poster="options/ceremonies.jpg" muted loop playsinline preload="none"></video></span></article>
       <article class="revele"><h3>Le mariage en direct</h3><p>La famille restée au pays suit la cérémonie en direct sur son téléphone : jusqu&#x27;à trois proches filment, sans application, et la rediffusion reste 30 jours.</p></article>
-      <article class="revele"><h3>Le QR code à l&#x27;entrée</h3><p>Le jour J, votre équipe scanne les invitations : vous savez qui est arrivé, sans liste papier.</p></article>
-      <article class="revele"><h3>Le mur photo</h3><p>Les photos de vos invités s&#x27;affichent en direct sur grand écran, puis restent dans votre album.</p></article>
+      <article class="revele a-video"><h3>Le QR code à l&#x27;entrée</h3><p>Le jour J, votre équipe scanne les invitations : vous savez qui est arrivé, sans liste papier.</p><button type="button" class="voir-video">Voir en vidéo</button><span class="apercu-video"><video data-src="options/qr.mp4" poster="options/qr.jpg" muted loop playsinline preload="none"></video></span></article>
+      <article class="revele a-video"><h3>Le mur photo</h3><p>Les photos de vos invités s&#x27;affichent en direct sur grand écran, puis restent dans votre album.</p><button type="button" class="voir-video">Voir en vidéo</button><span class="apercu-video"><video data-src="options/mur.mp4" poster="options/mur.jpg" muted loop playsinline preload="none"></video></span></article>
     </div>
     <p class="note revele package-prix">Tout est inclus dans la formule <b>Prestige</b> : 347 € au lancement, puis 495 €.</p>
     <p class="note revele"><a class="btn" href="creer/?evt=mariage">Créer mon espace</a> <a class="lien-or" href="#formules">Comparer les formules →</a></p>
   </div></section>
+  <script>document.querySelectorAll('.a-video').forEach(a => {
+    const v = a.querySelector('video');
+    // à côté de la carte (à droite, sinon à gauche), centrée sur elle et toujours entière dans l'écran ; sur téléphone, sous le texte (CSS)
+    const placer = b => { if (matchMedia('(max-width: 560px)').matches) return; const p = b.querySelector('.apercu-video'), r = b.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
+      p.style.left = (r.right + 16 + w < innerWidth ? r.right + 16 : r.left - 16 - w) + 'px'; p.style.top = Math.max(80, Math.min(innerHeight - h - 16, r.top + r.height / 2 - h / 2)) + 'px'; };
+    const fermer = b => { b.classList.remove('ouvert'); b.querySelector('video').pause(); };
+    const ouvrir = () => { document.querySelectorAll('.a-video.ouvert').forEach(b => b !== a && fermer(b)); placer(a); a.classList.add('ouvert'); if (!v.getAttribute('src')) v.src = v.dataset.src; v.play().catch(() => {}); };
+    if (matchMedia('(hover: hover)').matches) { a.addEventListener('mouseenter', ouvrir); a.addEventListener('mouseleave', () => fermer(a)); }
+    addEventListener('scroll', () => a.classList.contains('ouvert') && placer(a), { passive: true });
+    a.querySelector('.voir-video').addEventListener('click', () => a.classList.contains('ouvert') ? fermer(a) : ouvrir());
+  });</script>
 
   <section class="manifeste"><div class="decor-paral" aria-hidden="true"><img class="paral" src="lanternes/ouverture.webp" alt="" loading="lazy" style="left:-50px;top:14%;width:260px;--r:-12deg" data-v="0.18"><img class="paral" src="takchita/sceau.webp" alt="" loading="lazy" style="right:9%;top:16%;width:104px;--r:10deg" data-v="-0.14"><img class="paral" src="kanaval/papillon.webp" alt="" loading="lazy" style="right:4%;bottom:10%;width:92px;--r:16deg" data-v="0.32"><img class="paral" src="grand-hotel/cachet.webp" alt="" loading="lazy" style="left:12%;bottom:8%;width:74px;--r:-6deg" data-v="-0.24"></div><div class="conteneur revele">
     <span class="etq">L'art de recevoir</span>

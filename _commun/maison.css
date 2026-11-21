@@ -322,3 +322,11 @@ section{padding:64px 0;border-top:1px solid var(--filet)}
 @keyframes flotte{0%,100%{translate:0 0}50%{translate:0 -10px}}
 @media (max-width:860px){.paral{opacity:.5;scale:.62}.paral:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.paral{animation:none}}
+/* Package : vidéo de démonstration de l'option, au survol ou au toucher */
+.fonctions article.a-video{position:relative}
+.voir-video{margin-top:12px;background:none;border:0;border-bottom:1px solid var(--accent);padding:0 0 3px;font:inherit;font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--encre);cursor:pointer}
+.voir-video::before{content:"\25B6\FE0E";margin-right:8px;font-size:9px;color:var(--accent)}
+.apercu-video{position:fixed;left:0;top:0;width:220px;aspect-ratio:9/16;translate:0 8px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s,translate .25s,visibility .25s;z-index:60;border-radius:18px;overflow:hidden;background:#16130F;box-shadow:0 24px 60px rgba(30,22,14,.35)}
+.apercu-video video{width:100%;height:100%;object-fit:cover;display:block}
+.a-video.ouvert .apercu-video{opacity:1;visibility:visible;translate:0 0}
+@media (max-width:560px){.apercu-video{position:relative;left:auto!important;top:auto!important;translate:none;display:none;margin-top:14px}.a-video.ouvert .apercu-video{display:block;translate:none}}
