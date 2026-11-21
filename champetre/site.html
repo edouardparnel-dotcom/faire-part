@@ -54,5 +54,6 @@ if (window.j) { const cible = new Date(document.body.dataset.date); const tic = 
   const z = x => x.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; agenda.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(document.body.dataset.evenement) + '&dates=' + z(cible) + '/' + z(new Date(+cible + 432e5)); agenda.target = '_blank'; }
 </script>
 <script type="module" src="../_commun/perso.js?v=20"></script>
+<script src="/_commun/compteur.js" defer></script>
 </body>
 </html>

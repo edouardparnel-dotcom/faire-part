@@ -146,5 +146,6 @@ const depart = D[evt].modeles.findIndex(x => x.slug === q.get('modele'));
 if (depart > 0) { choix.modele = depart; rendre(); }
 history.replaceState(null, '', `?evt=${evt}` + (choix.formule ? `&formule=${choix.formule}` : ''));
 </script>
+<script src="/_commun/compteur.js" defer></script>
 </body>
 </html>
