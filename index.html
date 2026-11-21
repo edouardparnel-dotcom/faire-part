@@ -12,7 +12,7 @@
 <meta name="p:domain_verify" content="e429689e0f4edbe6245b75c5ab73d5c7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_commun/maison.css?v=21">
+<link rel="stylesheet" href="_commun/maison.css?v=22">
 <style>:root{--accent:#A8834A}</style>
 <script src="_commun/partenaire.js?v=1" defer></script>
 </head>
@@ -52,7 +52,7 @@
     const v = a.querySelector('video');
     // à côté de la carte (à droite, sinon à gauche), centrée sur elle et toujours entière dans l'écran ; sur téléphone, sous le texte (CSS)
     const placer = b => { if (matchMedia('(max-width: 560px)').matches) return; const p = b.querySelector('.apercu-video'), r = b.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
-      p.style.left = (r.right + 16 + w < innerWidth ? r.right + 16 : r.left - 16 - w) + 'px'; p.style.top = Math.max(80, Math.min(innerHeight - h - 16, r.top + r.height / 2 - h / 2)) + 'px'; };
+      p.style.left = Math.max(16, Math.min(innerWidth - w - 16, r.right + 16 + w < innerWidth ? r.right + 16 : r.left - 16 - w)) + 'px'; p.style.top = Math.max(80, Math.min(innerHeight - h - 16, r.top + r.height / 2 - h / 2)) + 'px'; };
     const fermer = b => { b.classList.remove('ouvert'); b.querySelector('video').pause(); };
     const ouvrir = () => { document.querySelectorAll('.a-video.ouvert').forEach(b => b !== a && fermer(b)); placer(a); a.classList.add('ouvert'); if (!v.getAttribute('src')) v.src = v.dataset.src; v.play().catch(() => {}); };
     if (matchMedia('(hover: hover)').matches) { a.addEventListener('mouseenter', ouvrir); a.addEventListener('mouseleave', () => fermer(a)); }
