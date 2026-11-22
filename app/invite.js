@@ -47,6 +47,9 @@ async function demarrer() {
   await auth.authStateReady();   // attendre l'état de connexion (l'ancienne attente pouvait rester bloquée quand il était déjà connu)
   await rattacher();
   evt = (await getDoc(doc(db, 'events', E))).data();
+  // Parrainage : une ligne discrète au pied de la page pour les invités qui se marient aussi (code créé au paiement des mariés).
+  if (evt?.type === 'mariage' && /^MV-[A-Z0-9]{5}$/.test(evt.parrainage || '')) document.getElementById('pied-mv')?.insertAdjacentHTML('afterbegin',
+    `<a href="https://maisonvivat.com/?utm_source=invitation&partenaire=${evt.parrainage}">Vous vous mariez aussi ? -10 % avec le code ${evt.parrainage}</a><br>`);
   if (evt?.formule === 'essai') { vue.innerHTML = '<div class="app-carte" style="text-align:center"><h2 class="serif">Cette invitation se prépare</h2><p class="app-note">Les hôtes mettent la dernière main à leur invitation. Revenez très vite.</p></div>'; return; }
   onSnapshot(doc(db, `events/${E}/invites/${T}`), s => { inv = s.data(); L = langueChoisie(evt.design?.langues || ['fr'], inv?.langue, evt.design?.langueDefaut); try { rendre(); } catch (e) { console.error('Affichage de la page invité', e); } }, e => console.error('Fiche invité', e));
   onSnapshot(collection(db, `events/${E}/cadeaux`), s => { cadeaux = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.creeLe?.seconds || 0) - (y.creeLe?.seconds || 0)); rendre(); }, () => {});

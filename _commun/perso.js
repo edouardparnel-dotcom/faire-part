@@ -214,7 +214,11 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
     rep.insertAdjacentHTML('beforeend', `<a class="bouton plein repondre-invite" href="../app/invite.html?e=${encodeURIComponent(E)}&g=${encodeURIComponent(G)}">Répondre à l'invitation</a>`);
   }
   // Pied de page : plus de « démonstration · couple et lieu fictifs »
-  document.querySelectorAll('.suite-pied small').forEach(s => s.innerHTML = 'Faire-part <a href="https://maisonvivat.com/">Maison Vivat</a>');
+  // Parrainage (mariage payé) : les invités qui se marient aussi ont -10 % avec le code du mariage (créé par le webhook Stripe).
+  const code = evt.type === 'mariage' && /^MV-[A-Z0-9]{5}$/.test(evt.parrainage || '') ? evt.parrainage : '';
+  const lienMV = `https://maisonvivat.com/?utm_source=invitation${code ? '&partenaire=' + code : ''}`;
+  document.querySelectorAll('.suite-pied small').forEach(s => s.innerHTML = `Faire-part <a href="${lienMV}">Maison Vivat</a>`
+    + (code ? `<br><a class="perso-parrainage" href="${lienMV}">Vous vous mariez aussi ? -10 % avec le code ${code}</a>` : ''));
   if (location.pathname.endsWith('site.html')) siteDuCouple(evt, P, esc, G);
   if (G) return;
   const bd = document.querySelector('.perso-bandeau') || document.body.appendChild(Object.assign(document.createElement('div'), { className: 'perso-bandeau' }));
