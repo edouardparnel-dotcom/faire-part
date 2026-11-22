@@ -84,6 +84,8 @@
     document.querySelectorAll(".planners-zone").forEach(z => { let n = z.nextElementSibling, vu = false;
       while (n && n.classList.contains("planner")) { vu = vu || !n.hidden; n = n.nextElementSibling; } z.hidden = !vu; });
   }));
+  // Arrivée depuis une page par tradition (?f=antillais) : la sélection s'ouvre déjà filtrée
+  { const f = new URLSearchParams(location.search).get("f"); const b = f && document.querySelector(`.planners-filtres button[data-f="${CSS.escape(f)}"]`); if (b) b.click(); }
   // Clics vers un planner (site, fiche, Instagram) : comptés comme une page « /planners/clic/<planner>/<lien> » par le compteur sans cookie,
   // pour pouvoir dire honnêtement à chacun combien de visiteurs nous lui avons envoyés.
   document.querySelectorAll(".planner-liens a").forEach(a => a.addEventListener("click", () => {
