@@ -216,8 +216,11 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
   // Pied de page : plus de « démonstration · couple et lieu fictifs »
   // Parrainage (mariage payé) : les invités qui se marient aussi ont -10 % avec le code du mariage (créé par le webhook Stripe).
   const code = evt.type === 'mariage' && /^MV-[A-Z0-9]{5}$/.test(evt.parrainage || '') ? evt.parrainage : '';
+  // Wedding planner du couple (payé avec son code partenaire) : sa signature, sauf si le couple l'a masquée.
+  const orga = evt.organisePar?.nom && !evt.organiseParMasque ? { nom: evt.organisePar.nom, site: /^https:\/\//.test(evt.organisePar.site || '') ? evt.organisePar.site : '' } : null;
   const lienMV = `https://maisonvivat.com/?utm_source=invitation${code ? '&partenaire=' + code : ''}`;
   document.querySelectorAll('.suite-pied small').forEach(s => s.innerHTML = `Faire-part <a href="${lienMV}">Maison Vivat</a>`
+    + (orga ? `<br>Mariage organisé par ${orga.site ? `<a href="${esc(orga.site)}" target="_blank" rel="noopener">${esc(orga.nom)}</a>` : esc(orga.nom)}` : '')
     + (code ? `<br><a class="perso-parrainage" href="${lienMV}">Vous vous mariez aussi ? -10 % avec le code ${code}</a>` : ''));
   if (location.pathname.endsWith('site.html')) siteDuCouple(evt, P, esc, G);
   if (G) return;
