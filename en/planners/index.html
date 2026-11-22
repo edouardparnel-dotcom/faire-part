@@ -84,6 +84,15 @@
     document.querySelectorAll(".planners-zone").forEach(z => { let n = z.nextElementSibling, vu = false;
       while (n && n.classList.contains("planner")) { vu = vu || !n.hidden; n = n.nextElementSibling; } z.hidden = !vu; });
   }));
+  // Clics vers un planner (site, fiche, Instagram) : comptés comme une page « /planners/clic/<planner>/<lien> » par le compteur sans cookie,
+  // pour pouvoir dire honnêtement à chacun combien de visiteurs nous lui avons envoyés.
+  document.querySelectorAll(".planner-liens a").forEach(a => a.addEventListener("click", () => {
+    if (!/(^|\.)maisonvivat\.com$/.test(location.hostname)) return;
+    const nom = a.closest(".planner").querySelector("h4").textContent.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const quoi = a.classList.contains("planner-insta") ? "instagram" : "site";
+    const corps = JSON.stringify({ p: (document.documentElement.lang === "en" ? "/en" : "") + "/planners/clic/" + nom + "/" + quoi, s: "", n: false, m: matchMedia("(max-width: 760px)").matches });
+    navigator.sendBeacon && navigator.sendBeacon("https://europe-west9-maison-vivat.cloudfunctions.net/compter", new Blob([corps], { type: "text/plain" }));
+  }));
 </script>
 <footer class="pied"><div class="conteneur"><p>Maison Vivat · The art of hosting · <a href="../../en/">Weddings</a> · <a href="../../planners/">Version française</a></p></div></footer>
 <script>
