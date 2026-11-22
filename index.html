@@ -39,7 +39,12 @@
   <section class="jour-j" id="jour-j"><div class="conteneur">
     <div class="titre-section revele"><span class="etq">Le jour J</span><h2>Plus qu'une enveloppe : <em>votre mariage, de l'invitation à la fête</em></h2>
       <p>Ici, la famille restée loin suit la cérémonie en direct sur son téléphone. Rien à installer, ni pour vos proches qui filment, ni pour ceux qui regardent.</p></div>
-    <div class="jj-video revele"><video src="options/direct.mp4" poster="options/direct.jpg" controls muted playsinline preload="none"></video></div>
+    <div class="jj-video revele"><video id="video-direct" data-src="options/direct.mp4" poster="options/direct.jpg" muted loop playsinline preload="none" aria-label="Démonstration du mariage en direct"></video></div>
+    <script>
+      // Lecture automatique (Parnel 22/11), chargée seulement quand la vidéo arrive à l'écran ; pause quand elle en sort
+      (() => { const v = document.getElementById("video-direct"); if (!v || !("IntersectionObserver" in window)) { if (v) { v.src = v.dataset.src; v.autoplay = true; } return; }
+        new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { if (!v.getAttribute("src")) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause(); }), { threshold: .35 }).observe(v); })();
+    </script>
     <div class="jj-cartes revele"><a class="jj-carte" href="invitations-par-ceremonie/"><h3>Une invitation par cérémonie</h3><p>Dot, mairie, église, soirée : chaque invité ne voit que ce à quoi il est convié.</p><span>Voir la démonstration →</span></a><a class="jj-carte" href="faire-part-mariage-multilingue/"><h3>Chaque invité dans sa langue</h3><p>Français, créole, arabe, anglais… il lit et répond dans la sienne.</p><span>Voir la démonstration →</span></a><a class="jj-carte" href="qr-code-entree-mariage/"><h3>Le QR code à l&#x27;entrée</h3><p>Un pass personnel par invité : l&#x27;équipe scanne, l&#x27;entrée est validée.</p><span>Voir la démonstration →</span></a><a class="jj-carte" href="mariage-en-direct/"><h3>La famille au loin, en direct</h3><p>Trois proches filment avec leur téléphone ; ceux qui n&#x27;ont pas pu venir suivent la cérémonie.</p><span>Voir la démonstration →</span></a></div>
     <div class="jj-tableau revele"><h3>Ce qui est inclus</h3><div class="jj-defile"><table>
       <thead><tr><th></th><th scope="col">Faire-part</th><th scope="col">Signature</th><th scope="col">Prestige</th></tr></thead>
