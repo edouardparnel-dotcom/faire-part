@@ -355,3 +355,8 @@ section{padding:64px 0;border-top:1px solid var(--filet)}
 .jj-tableau td a{color:var(--doux)}
 @media (max-width:980px){.jj-cartes{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.jj-cartes{grid-template-columns:1fr}}
+
+/* Haut de page des pages secondaires (partenaires, planners, collections, pages légales) : version courte */
+.ouverture-courte{padding-top:48px;padding-bottom:24px}
+.ouverture-courte .arche{width:min(300px,100%)}
+.ouverture-courte h1{font-size:clamp(38px,4.6vw,62px)}

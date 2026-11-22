@@ -12,7 +12,7 @@
 <meta name="p:domain_verify" content="e429689e0f4edbe6245b75c5ab73d5c7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../_commun/maison.css?v=24">
+<link rel="stylesheet" href="../_commun/maison.css?v=25">
 <style>:root{--accent:#A8834A}</style>
 <script src="../_commun/partenaire.js?v=1" defer></script>
 </head>
@@ -21,7 +21,17 @@
   <a class="marque" href="../index.html"><b>Maison Vivat</b><span>Collections</span></a>
   <nav class="nav" aria-label="Sites"><a href="../index.html">Mariage</a><a href="../anniversaires/index.html">Anniversaires</a><a href="../baptemes/index.html">Baptêmes</a><a href="../reveal/index.html">Gender reveal</a><a href="../naissances/index.html">Naissances</a><a class="rdv" href="../creer/index.html">Créer</a></nav>
 </div></header>
-<main class="conteneur" style="padding-top:56px;padding-bottom:96px">
+<main id="haut">
+  <div class="conteneur ouverture ">
+    <div class="revele">
+      <span class="etq">Mariage · 50 collections</span>
+      <h1>50 collections <em>signées</em></h1>
+      <p>Dessinées une à une, avec leur ouverture animée, leur musique, leur site, leur plan de table, leur mur photo et leur livre d&#x27;or. Toutes existent en faire-part, en save-the-date et en site.</p>
+      <div class="actions"><a class="btn" href="../creer/index.html">Créer mon espace</a><a class="btn clair" href="#catalogue-main">Voir les collections</a></div>
+    </div>
+    <div class="arche revele"><img src="../lakay/photo.jpg" alt="" fetchpriority="high"></div>
+  </div>
+<div class="conteneur" style="padding-bottom:96px">
 <style>.banque-groupe{font-family:'Bodoni Moda',serif;font-weight:400;font-size:30px;margin:48px 0 22px}
 .vignette-cat.main{position:relative}.vignette-cat.main small{display:block;margin-top:6px}
 .vignette-cat.reelle img{aspect-ratio:420/700;object-position:top}
@@ -30,8 +40,7 @@
 .deplier{margin-top:18px;font:inherit;font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:12px 22px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}
 .deplier:hover{background:#1E1B18;color:#F7F3EC}
 .badge-une{position:absolute;top:12px;left:12px;z-index:1;background:#A8834A;color:#fff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}</style>
-  <div class="titre-section"><span class="etq">Mariage</span><h2>50 collections signées</h2>
-    <p>Dessinées une à une, avec leur ouverture animée, leur musique, leur site, leur plan de table, leur mur photo et leur livre d'or. Toutes existent en faire-part, en save-the-date et en site.</p></div>
+  <div class="titre-section" style="text-align:left;margin-left:0"><span class="etq">Mariage</span><h2>Les collections de mariage</h2></div>
   <div class="filtres" id="filtres-main"><button data-groupe="tous" class="actif">Toutes (50)</button><button data-groupe="À la une">À la une (3)</button><button data-groupe="Héritages">Héritages (20)</button><button data-groupe="Asie">Asie (6)</button><button data-groupe="Intemporels">Intemporels (18)</button><button data-groupe="Univers">Univers (3)</button></div>
   <div class="bascule" id="bascule-main"><button data-fmt="fp" class="actif">Faire-part</button><button data-fmt="std">Save-the-date</button><button data-fmt="site">Site</button></div>
   <div class="catalogue" id="catalogue-main">
@@ -195,6 +204,7 @@
   <div class="bascule" id="bascule"><button data-format="fp" class="actif">Faire-part</button><button data-format="std">Save-the-date</button><button data-format="site">Site</button></div>
   <div class="catalogue" id="catalogue"></div>
   </div></section>
+</div>
 </main>
 <script>
   // Les autres fêtes restent repliées sous les mariages : on les ouvre d'un clic (ou en arrivant par #autres-fetes)
