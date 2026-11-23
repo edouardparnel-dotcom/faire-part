@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Le baptême de Maël — Invitation (démonstration)</title>
+<title>Faire-part de baptême sous les étoiles (démonstration) · Maison Vivat</title>
 <meta property="og:title" content="Le baptême de Maël · une petite étoile">
 <meta property="og:description" content="Dimanche 26 septembre 2027 · 11h00.">
 <meta property="og:image" content="https://maisonvivat.com/bapteme-etoiles/apercu-whatsapp.jpg">
@@ -44,6 +44,7 @@ h2{font-family:'Playfair Display',serif;font-weight:500;font-size:28px;color:var
 .pied{margin-top:30px;font-size:12px;color:var(--nuit)}
 </style>
 <link rel="canonical" href="https://maisonvivat.com/bapteme-etoiles/">
+<!-- seo:debut --><meta name="description" content="Une invitation de baptême douce comme une nuit étoilée, pour annoncer la cérémonie et réunir la famille et les parrain et marraine. Démonstration Maison Vivat."><meta property="og:description" content="Une invitation de baptême douce comme une nuit étoilée, pour annoncer la cérémonie et réunir la famille et les parrain et marraine. Démonstration Maison Vivat."><!-- seo:fin -->
 </head>
 <body class="ferme">
 <div class="ciel" data-ouverture role="button" aria-label="Ouvrir l'invitation" id="ciel"><div class="lune"></div><p>Touchez la lune</p></div>
@@ -88,5 +89,40 @@ h2{font-family:'Playfair Display',serif;font-weight:500;font-size:28px;color:var
 </nav>
 <!-- maison:fin -->
 <script src="/_commun/compteur.js" defer></script>
+<!-- desc:debut -->
+<style>
+.mv-desc-btn{position:fixed;z-index:60;bottom:calc(14px + env(safe-area-inset-bottom));width:46px;height:46px;border-radius:50%;
+ border:1px solid rgba(185,138,62,.7);background:rgba(255,252,246,.88);backdrop-filter:blur(4px);color:#7E5A1F;
+ font:italic 600 20px/1 Georgia,serif;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.18);
+ opacity:0;animation:mvDescIn .6s 3s forwards}
+@keyframes mvDescIn{to{opacity:1}}
+.mv-desc{position:fixed;z-index:70;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translateX(-50%);
+ width:min(560px,calc(100vw - 28px));max-height:70vh;overflow:auto;background:#FFFBF3;color:#2B2620;border:1px solid rgba(185,138,62,.5);
+ border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.28);padding:22px 22px 18px;font:15px/1.65 system-ui,sans-serif}
+.mv-desc[hidden]{display:none}
+.mv-desc h2{font:500 22px/1.25 Georgia,serif;margin:0 30px 10px 0}
+.mv-desc h3{font:600 12px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#8C6E36;margin:16px 0 6px}
+.mv-desc p{margin:0 0 10px}
+.mv-desc a{color:#7E5A1F}
+.mv-desc .mv-fermer{position:absolute;top:10px;right:12px;border:0;background:none;font-size:22px;cursor:pointer;color:#7E5A1F}
+</style>
+<button class="mv-desc-btn" type="button" aria-label="Description" aria-controls="mv-desc" aria-expanded="false" style="right:calc(14px + env(safe-area-inset-right))">i</button>
+<aside class="mv-desc" id="mv-desc" hidden aria-label="Description">
+  <button class="mv-fermer" type="button" aria-label="Fermer">×</button>
+  <h2>Un baptême sous les étoiles</h2>
+  <p>Une invitation de baptême douce comme une nuit étoilée, pour annoncer la cérémonie et réunir la famille et les parrain et marraine.</p>
+  <h3>Ce que comprend l'invitation</h3>
+  <p>Une invitation animée à vos prénoms et à vos couleurs, envoyée sur WhatsApp, et une page pour vos invités : programme, lieu, réponses en un geste. Vous préparez tout gratuitement et ne payez qu&#x27;au moment d&#x27;envoyer le lien.</p>
+  <p><a href="/baptemes/">Toutes les invitations de cette fête</a> · <a href="/creer/">Créer mon invitation</a></p>
+  <p style="font-size:13px;color:#7A6A5C">Démonstration : couple, prénoms et lieux fictifs.</p>
+</aside>
+<script>
+  (() => { const b = document.querySelector(".mv-desc-btn"), p = document.getElementById("mv-desc");
+    const ouvrir = o => { p.hidden = !o; b.setAttribute("aria-expanded", o); };
+    b.addEventListener("click", () => ouvrir(p.hidden));
+    p.querySelector(".mv-fermer").addEventListener("click", () => ouvrir(false));
+    addEventListener("keydown", ev => { if (ev.key === "Escape") ouvrir(false); }); })();
+</script>
+<!-- desc:fin -->
 </body>
 </html>

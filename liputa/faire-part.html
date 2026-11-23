@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Merveille &amp; Glody — Mariage (démonstration)</title>
+<title>Liputa : faire-part de mariage congolais (démonstration) · Maison Vivat</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Satisfy&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -42,6 +42,7 @@ body.ferme{overflow:hidden}
 
 </style>
 <link rel="canonical" href="https://maisonvivat.com/liputa/faire-part.html">
+<!-- seo:debut --><meta name="description" content="Au Congo, le liputa, le pagne, habille les femmes pour les grandes occasions, et la rumba congolaise, inscrite au patrimoine immatériel de… Démonstration de la collection Liputa."><meta property="og:description" content="Au Congo, le liputa, le pagne, habille les femmes pour les grandes occasions, et la rumba congolaise, inscrite au patrimoine immatériel de… Démonstration de la collection Liputa."><!-- seo:fin -->
 </head>
 <body class="ferme" data-date="2027-07-10T15:00:00+01:00" data-evenement="Mariage Merveille &amp; Glody" data-ville="Kinshasa" data-titre-std="Merveille &amp; Glody — Save the date (démonstration)" data-profondeur="decor-3d/pagne" data-profondeur-n="5" data-profondeur-mouvement="chute" data-blocs="grappe" data-titres="capitales" data-images="deborde" data-revele="zoom" data-paral="derive" data-cadre="polaroid" data-prog="ligne" data-lieu="cote" data-tenue="classique" data-compte="tuiles" data-rep="ticket" data-btn="carre" data-teinte="papier" data-collection="liputa" data-particules="petales" data-trame="centree">
 <link rel="preload" as="image" href="ouverture-3d.jpg" fetchpriority="high">
@@ -80,5 +81,40 @@ body.ferme{overflow:hidden}
 <script src="../_commun/profondeur.js?v=7"></script>
 <script type="module" src="../_commun/perso.js?v=20"></script>
 <script src="/_commun/compteur.js" defer></script>
+<!-- desc:debut -->
+<style>
+.mv-desc-btn{position:fixed;z-index:60;bottom:calc(14px + env(safe-area-inset-bottom));width:46px;height:46px;border-radius:50%;
+ border:1px solid rgba(185,138,62,.7);background:rgba(255,252,246,.88);backdrop-filter:blur(4px);color:#7E5A1F;
+ font:italic 600 20px/1 Georgia,serif;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.18);
+ opacity:0;animation:mvDescIn .6s 3s forwards}
+@keyframes mvDescIn{to{opacity:1}}
+.mv-desc{position:fixed;z-index:70;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translateX(-50%);
+ width:min(560px,calc(100vw - 28px));max-height:70vh;overflow:auto;background:#FFFBF3;color:#2B2620;border:1px solid rgba(185,138,62,.5);
+ border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.28);padding:22px 22px 18px;font:15px/1.65 system-ui,sans-serif}
+.mv-desc[hidden]{display:none}
+.mv-desc h2{font:500 22px/1.25 Georgia,serif;margin:0 30px 10px 0}
+.mv-desc h3{font:600 12px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#8C6E36;margin:16px 0 6px}
+.mv-desc p{margin:0 0 10px}
+.mv-desc a{color:#7E5A1F}
+.mv-desc .mv-fermer{position:absolute;top:10px;right:12px;border:0;background:none;font-size:22px;cursor:pointer;color:#7E5A1F}
+</style>
+<button class="mv-desc-btn" type="button" aria-label="Description" aria-controls="mv-desc" aria-expanded="false" style="right:calc(70px + env(safe-area-inset-right))">i</button>
+<aside class="mv-desc" id="mv-desc" hidden aria-label="Description">
+  <button class="mv-fermer" type="button" aria-label="Fermer">×</button>
+  <h2>Liputa : faire-part de mariage congolais</h2>
+  <p>Au Congo, le liputa, le pagne, habille les femmes pour les grandes occasions, et la rumba congolaise, inscrite au patrimoine immatériel de l&#x27;UNESCO, fait danser les mariages jusqu&#x27;au matin.</p><p>Des enveloppes en pagne wax et des hibiscus : une invitation colorée pour un mariage congolais qui danse.</p>
+  <h3>Ce que comprend l'invitation</h3>
+  <p>Le faire-part animé, qui s&#x27;ouvre en musique ; le save-the-date ; le site du mariage, avec le programme, le lieu, l&#x27;hébergement et les réponses ; le plan de table ; le mur photo et le livre d&#x27;or. Chaque invité reçoit son lien sur WhatsApp, ne voit que les cérémonies où il est attendu et répond dans sa langue. Vous ne payez qu&#x27;au moment d&#x27;envoyer le lien.</p>
+  <p><a href="index.html">La collection Liputa</a> · <a href="/faire-part-mariage-congolais">Toutes nos invitations pour un mariage congolais</a> · <a href="/creer/?evt=mariage">Créer mon espace</a></p>
+  <p style="font-size:13px;color:#7A6A5C">Démonstration : couple, prénoms et lieux fictifs.</p>
+</aside>
+<script>
+  (() => { const b = document.querySelector(".mv-desc-btn"), p = document.getElementById("mv-desc");
+    const ouvrir = o => { p.hidden = !o; b.setAttribute("aria-expanded", o); };
+    b.addEventListener("click", () => ouvrir(p.hidden));
+    p.querySelector(".mv-fermer").addEventListener("click", () => ouvrir(false));
+    addEventListener("keydown", ev => { if (ev.key === "Escape") ouvrir(false); }); })();
+</script>
+<!-- desc:fin -->
 </body>
 </html>
