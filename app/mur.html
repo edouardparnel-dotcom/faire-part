@@ -52,6 +52,7 @@
 // récupérable dans l'espace, onglet Photos) ; les invités (lien personnel ?g=) regardent seulement.
 import { auth, db, $, esc, exigerOrganisateur, aLaMain } from './commun.js?v=6';
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { appliquerRetouche } from './retouche.js?v=2';
 import { signInAnonymously, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
 const q = new URLSearchParams(location.search), vue = $('#vue'), E = q.get('e'), G = q.get('g');
@@ -65,6 +66,8 @@ else {
     evt = (await getDoc(doc(db, 'events', E))).data();
     if (!(await aLaMain(evt, E, user.uid))) { conteneur.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
     organisateur = true;
+    appliquerRetouche(evt?.perso?.retouche);
+    onSnapshot(doc(db, 'events', E), s => appliquerRetouche(s.data()?.perso?.retouche), () => {});
     demarrer(collection(db, `events/${E}/photos`));
     if (mode === 'diaporama') document.body.insertAdjacentHTML('beforeend', '<div class="lancer"><div><button data-lancer>Afficher en plein écran</button><p>Ou restez dans la fenêtre : touchez « Plein écran » en haut à droite quand vous voulez.</p></div></div>');
   });
@@ -80,6 +83,8 @@ async function invite() {
   };
   await relier();
   evt = (await getDoc(doc(db, 'events', E))).data();
+  appliquerRetouche(evt?.perso?.retouche);
+  onSnapshot(doc(db, 'events', E), s => appliquerRetouche(s.data()?.perso?.retouche), () => {});
   demarrer(query(collection(db, `events/${E}/photos`), where('visible', '==', true)));
 }
 
@@ -102,14 +107,14 @@ function barre() {
 function dessiner() {
   clearInterval(minuterie);
   if (mode === 'diaporama') {
-    vue.innerHTML = `${barre()}<div class="dia"><div class="fond"></div><img alt=""><img alt=""><p class="auteur" hidden></p>
+    vue.innerHTML = `${barre()}<div class="dia"><div class="fond"></div><img class="retouchee" alt=""><img class="retouchee" alt=""><p class="auteur" hidden></p>
       <div class="legende"><b>${esc(evt?.titre || '')}</b><span>Partagez vos photos depuis votre invitation personnelle</span></div>
       <div class="vide"><div><h1>${esc(evt?.titre || '')}</h1><p style="color:#BDB4A7">Les premières photos arrivent…</p></div></div>
       ${organisateur ? '<button class="retirer" data-masquer-actuelle style="opacity:.85;top:auto;bottom:90px;right:28px">Retirer cette photo</button>' : ''}</div>`;
     montrer(); relancer();
   } else {
     vue.innerHTML = `${barre()}<div class="mur-haut"><h1>${esc(evt?.titre || '')}</h1><p>Partagez vos photos depuis votre invitation personnelle</p></div><div class="mur">${
-      photos.map(p => `<figure><img src="${esc(p.url)}" alt="" loading="lazy">${organisateur ? `<button class="retirer" data-masquer="${p.id}">Retirer</button>` : ''}<figcaption>${esc(p.auteur || '')}</figcaption></figure>`).join('')
+      photos.map(p => `<figure><img class="retouchee" src="${esc(p.url)}" alt="" loading="lazy">${organisateur ? `<button class="retirer" data-masquer="${p.id}">Retirer</button>` : ''}<figcaption>${esc(p.auteur || '')}</figcaption></figure>`).join('')
       || '<p style="text-align:center;color:#BDB4A7">Les premières photos arrivent…</p>'}</div>`;
   }
 }

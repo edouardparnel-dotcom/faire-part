@@ -7,7 +7,7 @@ import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, dele
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { LANGUES, dateLangue } from './langues.js?v=14';
-import { STYLES } from './retouche.js?v=1';
+import { STYLES, appliquerRetouche } from './retouche.js?v=2';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, MESSAGES_LANGUES, proposerPlacement } from './espace.js?v=4';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -95,6 +95,7 @@ function ouvrir(id) {
   E = id; let premiere = true;
   abonnements.push(onSnapshot(doc(db, 'events', E), s => {
     evt = s.data();
+    appliquerRetouche(evt?.perso?.retouche);
     if (!evt) { vue.innerHTML = '<p class="app-note">Événement introuvable.</p>'; return; }
     proprio = evt.owner === user.uid;
     if (premiere) {
@@ -542,10 +543,10 @@ const VUES = {
         <p class="app-note" style="margin-bottom:12px">Le jour J, branchez un ordinateur sur un écran ou un vidéoprojecteur, ouvrez le mur et passez-le en plein écran : les photos de vos invités défilent en grand, et chaque nouvelle photo apparaît aussitôt. Vos invités le voient aussi sur leur téléphone, depuis leur page.</p>
         <a class="btn" href="mur.html?e=${E}" target="_blank" rel="noopener">Ouvrir le mur photo</a>
         <h3 style="margin:22px 0 4px">Retouche automatique des photos</h3>
-        <p class="app-note" style="margin-bottom:10px">Choisissez un style : chaque photo envoyée par vos invités est retouchée avec ce style, pour que tout le mur soit harmonieux. Les photos trop petites sont agrandies. L'album en haute définition garde les originaux.</p>
+        <p class="app-note" style="margin-bottom:10px">Choisissez un style : toutes les photos de vos invités prennent ce style, celles déjà envoyées comme les suivantes, pour un mur harmonieux. Vous pouvez en changer à tout moment, même pendant la fête. Les photos trop petites sont agrandies. L'album en haute définition garde les originaux.</p>
         <div class="puces">${Object.entries(STYLES).map(([k, st]) => `<button type="button" class="btn petit ${(evt.perso?.retouche || 'naturel') === k ? '' : 'clair'}" data-retouche="${k}" title="${esc(st.note)}">${esc(st.nom)}</button>`).join('')}</div>
         <p class="app-note" style="margin-top:8px">${esc(STYLES[evt.perso?.retouche || 'naturel']?.note || '')}</p></div>` : ''}<div class="app-carte"><h2>Photos des invités</h2>${a('murphoto') ? '<p class="app-note" style="margin-bottom:10px">« Masquer » retire la photo du mur et de la galerie des invités, réversible ; « Supprimer » l\'efface définitivement.</p>' : '<p class="app-note">Option « Mur photo » non activée.</p>'}
-      <div class="galerie">${photos.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.auteur)}${p.visible ? '' : ' · masquée'}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-photo="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-photo="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>
+      <div class="galerie">${photos.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img class="retouchee" src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.auteur)}${p.visible ? '' : ' · masquée'}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-photo="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-photo="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>
       <div class="app-carte"><h2>Livre d'or</h2>${a('livredor') ? '' : '<p class="app-note">Option « Livre d\'or » non activée.</p>'}
       ${livre.map(m => `<div class="mot" style="${m.visible ? '' : 'opacity:.4'}">${m.media ? (m.media.type === 'video' ? `<video src="${esc(m.media.url)}" controls playsinline preload="metadata"></video>` : `<audio src="${esc(m.media.url)}" controls preload="metadata"></audio>`) : ''}${m.texte ? `<p>« ${esc(m.texte)} »</p>` : ''}<span>${esc(m.de)} · <a href="#" data-visible-mot="${m.id}">${m.visible ? 'masquer' : 'afficher'}</a> · <a href="#" data-suppr-mot="${m.id}">supprimer</a></span></div>`).join('')}</div>
       ${voirOption('album') ? `<div class="app-carte"><h2>Album en haute définition</h2>${noteOption('album')}<p class="app-note" style="margin-bottom:12px">Les photos du photographe et celles que vos invités ajoutent en qualité originale. Vous pouvez tout télécharger d'un coup.</p>

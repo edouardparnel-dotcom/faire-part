@@ -8,7 +8,7 @@ import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection,
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue, dateLangue } from './langues.js?v=14';
 import { theme } from './themes.js?v=3';
-import { preparer, versBlob } from './retouche.js?v=1';
+import { preparer, versBlob, appliquerRetouche } from './retouche.js?v=2';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'), T = p.get('g');
@@ -48,6 +48,7 @@ async function demarrer() {
   await auth.authStateReady();   // attendre l'état de connexion (l'ancienne attente pouvait rester bloquée quand il était déjà connu)
   await rattacher();
   evt = (await getDoc(doc(db, 'events', E))).data();
+  appliquerRetouche(evt?.perso?.retouche);
   // Parrainage : une ligne discrète au pied de la page pour les invités qui se marient aussi (code créé au paiement des mariés).
   if (evt?.type === 'mariage' && /^MV-[A-Z0-9]{5}$/.test(evt.parrainage || '')) document.getElementById('pied-mv')?.insertAdjacentHTML('afterbegin',
     `<a href="https://maisonvivat.com/?utm_source=invitation&partenaire=${evt.parrainage}">Vous vous mariez aussi ? -10 % avec le code ${evt.parrainage}</a><br>`);
@@ -192,7 +193,7 @@ function rendreJeux() {
 
 // ── Galeries ────────────────────────────────────────────────────────────────
 // Chacun peut retirer les photos qu'il a lui-même partagées.
-function rendreGalerie() { const g = $('#galerie'); if (g) g.innerHTML = photos.map(x => `<figure><img src="${esc(x.url)}" alt="" loading="lazy">${x.token === T ? `<button class="galerie-perso" data-retirer-photo="${x.id}">${t('Retirer')}</button>` : ''}<figcaption>${esc(x.auteur)}</figcaption></figure>`).join(''); }
+function rendreGalerie() { const g = $('#galerie'); if (g) g.innerHTML = photos.map(x => `<figure><img class="retouchee" src="${esc(x.url)}" alt="" loading="lazy">${x.token === T ? `<button class="galerie-perso" data-retirer-photo="${x.id}">${t('Retirer')}</button>` : ''}<figcaption>${esc(x.auteur)}</figcaption></figure>`).join(''); }
 function rendreAlbum() { const g = $('#album'); if (g) g.innerHTML = album.map(x => `<figure><img src="${esc(x.apercu || x.url)}" alt="" loading="lazy">${x.token === T ? `<button class="galerie-perso" data-retirer-album="${x.id}">${t('Retirer')}</button>` : ''}<figcaption>${esc(x.photographe ? t('Photographe') : x.auteur)} · <a href="#" data-telecharger="${x.id}">${t('Télécharger')}</a></figcaption></figure>`).join(''); }
 function rendreMots() {
   const m = $('#mots'); if (!m) return;
@@ -344,7 +345,7 @@ document.addEventListener('change', async ev => {
       const ext = versAlbum ? (fi.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') : 'jpg';
       const chemin = `events/${E}/${versAlbum ? 'album' : 'photos'}/${uid}/${Date.now()}-${k}.${ext}`, r = ref(storage, chemin);
       if (versAlbum && fi.size > 40 * 1024 * 1024) throw new Error('trop lourd');
-      await uploadBytes(r, versAlbum ? fi : await versBlob(await preparer(fi, evt?.perso?.retouche)), { contentType: versAlbum ? fi.type || 'image/jpeg' : 'image/jpeg' });
+      await uploadBytes(r, versAlbum ? fi : await versBlob(await preparer(fi)), { contentType: versAlbum ? fi.type || 'image/jpeg' : 'image/jpeg' });
       const fiche = { token: T, auteur: inv.nom.split(' ')[0], chemin, url: await getDownloadURL(r), creeLe: serverTimestamp(), visible: true };
       await addDoc(collection(db, `events/${E}/${versAlbum ? 'album' : 'photos'}`), versAlbum ? { ...fiche, nom: fi.name.slice(0, 120), ...await apercu(fi, chemin) } : fiche);
     }
