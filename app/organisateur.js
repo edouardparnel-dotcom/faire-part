@@ -7,6 +7,7 @@ import { collection, doc, query, where, getDocs, addDoc, setDoc, updateDoc, dele
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { httpsCallable } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
 import { LANGUES, dateLangue } from './langues.js?v=14';
+import { STYLES } from './retouche.js?v=1';
 import { lireCSV, invitesDepuisCSV, telephone, telechargerCSV, personnes, declineTout, prenom, MESSAGES, remplir, planningType, POSTES, METIERS, STATUTS, euros, LIENS, DISTANCE, infractions, MESSAGES_LANGUES, proposerPlacement } from './espace.js?v=4';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
@@ -539,7 +540,11 @@ const VUES = {
         <button class="btn petit clair" data-prolonger="1">Garder une année de plus (29 €)</button></div>` : '';
     return `${film}${duree}${a('murphoto') ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Le mur photo sur grand écran</h2>
         <p class="app-note" style="margin-bottom:12px">Le jour J, branchez un ordinateur sur un écran ou un vidéoprojecteur, ouvrez le mur et passez-le en plein écran : les photos de vos invités défilent en grand, et chaque nouvelle photo apparaît aussitôt. Vos invités le voient aussi sur leur téléphone, depuis leur page.</p>
-        <a class="btn" href="mur.html?e=${E}" target="_blank" rel="noopener">Ouvrir le mur photo</a></div>` : ''}<div class="app-carte"><h2>Photos des invités</h2>${a('murphoto') ? '<p class="app-note" style="margin-bottom:10px">« Masquer » retire la photo du mur et de la galerie des invités, réversible ; « Supprimer » l\'efface définitivement.</p>' : '<p class="app-note">Option « Mur photo » non activée.</p>'}
+        <a class="btn" href="mur.html?e=${E}" target="_blank" rel="noopener">Ouvrir le mur photo</a>
+        <h3 style="margin:22px 0 4px">Retouche automatique des photos</h3>
+        <p class="app-note" style="margin-bottom:10px">Choisissez un style : chaque photo envoyée par vos invités est retouchée avec ce style, pour que tout le mur soit harmonieux. Les photos trop petites sont agrandies. L'album en haute définition garde les originaux.</p>
+        <div class="puces">${Object.entries(STYLES).map(([k, st]) => `<button type="button" class="btn petit ${(evt.perso?.retouche || 'naturel') === k ? '' : 'clair'}" data-retouche="${k}" title="${esc(st.note)}">${esc(st.nom)}</button>`).join('')}</div>
+        <p class="app-note" style="margin-top:8px">${esc(STYLES[evt.perso?.retouche || 'naturel']?.note || '')}</p></div>` : ''}<div class="app-carte"><h2>Photos des invités</h2>${a('murphoto') ? '<p class="app-note" style="margin-bottom:10px">« Masquer » retire la photo du mur et de la galerie des invités, réversible ; « Supprimer » l\'efface définitivement.</p>' : '<p class="app-note">Option « Mur photo » non activée.</p>'}
       <div class="galerie">${photos.map(p => `<figure class="${p.visible ? '' : 'masquee'}"><img src="${esc(p.url)}" alt="" loading="lazy"><figcaption>${esc(p.auteur)}${p.visible ? '' : ' · masquée'}<span class="puces" style="margin-top:4px"><button class="btn petit clair" data-visible-photo="${p.id}">${p.visible ? 'Masquer' : 'Afficher'}</button><button class="btn petit clair" data-suppr-photo="${p.id}">Supprimer</button></span></figcaption></figure>`).join('')}</div></div>
       <div class="app-carte"><h2>Livre d'or</h2>${a('livredor') ? '' : '<p class="app-note">Option « Livre d\'or » non activée.</p>'}
       ${livre.map(m => `<div class="mot" style="${m.visible ? '' : 'opacity:.4'}">${m.media ? (m.media.type === 'video' ? `<video src="${esc(m.media.url)}" controls playsinline preload="metadata"></video>` : `<audio src="${esc(m.media.url)}" controls preload="metadata"></audio>`) : ''}${m.texte ? `<p>« ${esc(m.texte)} »</p>` : ''}<span>${esc(m.de)} · <a href="#" data-visible-mot="${m.id}">${m.visible ? 'masquer' : 'afficher'}</a> · <a href="#" data-suppr-mot="${m.id}">supprimer</a></span></div>`).join('')}</div>
@@ -827,6 +832,7 @@ document.addEventListener('click', async ev => {
   if (d.cerCouleurOrigine) { const L = (evt.ceremonies || []).map(x => ({ ...x })); delete L[+d.cerCouleurOrigine].tenueCouleurs; return updateDoc(doc(db, 'events', E), { ceremonies: L }); }
   if (d.apCeremonie !== undefined) { apercuCer = d.apCeremonie; return apercu('fp'); }
   if (d.tenueOrigine) return updateDoc(doc(db, 'events', E), { 'perso.tenueCouleurs': deleteField() });
+  if (d.retouche) return updateDoc(doc(db, 'events', E), { 'perso.retouche': d.retouche in STYLES ? d.retouche : 'naturel' });
   if (d.nuancier) return updateDoc(doc(db, 'events', E), { 'perso.nuancier': d.nuancier === '-' ? '' : d.nuancier });
   if (d.personnaliser) { if (!COLLECTIONS.some(x => x.slug === evt.modele)) { location.href = `editeur.html?e=${E}`; return; } onglet = 'fairepart'; rendre(); scrollTo(0, 0); return; }
   if (d.lien) { location.href = d.lien; return; }

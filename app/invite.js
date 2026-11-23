@@ -8,6 +8,7 @@ import { doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, collection,
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js';
 import { traduire, champ, LANGUES, LOCALES, RTL, langueChoisie, memoriserLangue, dateLangue } from './langues.js?v=14';
 import { theme } from './themes.js?v=3';
+import { preparer, versBlob } from './retouche.js?v=1';
 
 if (LOCAL) bandeau('Mode local · émulateurs Firebase, données de test');
 const vue = $('#vue'), p = new URLSearchParams(location.search), E = p.get('e'), T = p.get('g');
@@ -343,7 +344,7 @@ document.addEventListener('change', async ev => {
       const ext = versAlbum ? (fi.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') : 'jpg';
       const chemin = `events/${E}/${versAlbum ? 'album' : 'photos'}/${uid}/${Date.now()}-${k}.${ext}`, r = ref(storage, chemin);
       if (versAlbum && fi.size > 40 * 1024 * 1024) throw new Error('trop lourd');
-      await uploadBytes(r, versAlbum ? fi : await reduire(fi), { contentType: versAlbum ? fi.type || 'image/jpeg' : 'image/jpeg' });
+      await uploadBytes(r, versAlbum ? fi : await versBlob(await preparer(fi, evt?.perso?.retouche)), { contentType: versAlbum ? fi.type || 'image/jpeg' : 'image/jpeg' });
       const fiche = { token: T, auteur: inv.nom.split(' ')[0], chemin, url: await getDownloadURL(r), creeLe: serverTimestamp(), visible: true };
       await addDoc(collection(db, `events/${E}/${versAlbum ? 'album' : 'photos'}`), versAlbum ? { ...fiche, nom: fi.name.slice(0, 120), ...await apercu(fi, chemin) } : fiche);
     }
