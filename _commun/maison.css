@@ -32,6 +32,7 @@ a{color:inherit}
 .nav a.langue:hover{background:var(--bleu);color:#fff}
 @media (max-width:860px){.nav a:not(.rdv):not(.espace):not(.langue){display:none}.nav{gap:8px}.nav a.espace,.nav .rdv{padding:8px 11px;font-size:12px}}
 @media (max-width:520px){.nav .rdv{display:none}.marque{font-size:15px;letter-spacing:.2em}.marque span{display:none}}
+@media (max-width:400px){.entete .conteneur{gap:8px}.marque{font-size:14px;letter-spacing:.14em}.nav{gap:6px}.nav a.espace{padding:7px 10px}.nav a.langue{padding:5px 8px}}
 
 /* Ouverture */
 .ouverture{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding-top:72px;padding-bottom:56px}
@@ -175,7 +176,8 @@ section{padding:64px 0;border-top:1px solid var(--filet)}
 .vignette span{display:block;font-family:'Bodoni Moda',serif;font-size:19px;margin-top:8px}
 .vignette.choisie img{outline-color:var(--accent)}
 .vignette.choisie span{color:var(--accent)}
-.champs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.champs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.champs label,.champs input{min-width:0;width:100%;box-sizing:border-box}
 .champs label{display:grid;gap:6px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux)}
 .champs .large{grid-column:1/-1}
 .champs input{font:inherit;font-size:16px;letter-spacing:0;text-transform:none;color:var(--encre);background:var(--papier);border:1px solid var(--filet);padding:12px 14px;border-radius:0}
@@ -211,7 +213,7 @@ section{padding:64px 0;border-top:1px solid var(--filet)}
 .ligne-total.grand{font-size:16px;border-bottom:0;padding-top:14px}
 .ligne-total.grand b{font-family:'Bodoni Moda',serif;font-size:32px;line-height:1}
 .demo-note{display:none;font-size:13px;color:var(--accent);margin-top:12px}
-@media (max-width:960px){.creer{grid-template-columns:1fr}.recap{position:static}.choix-formules{grid-template-columns:1fr}}
+@media (max-width:960px){.creer{grid-template-columns:minmax(0,1fr)}.creer>*{min-width:0}.recap{position:static}.choix-formules{grid-template-columns:1fr}}
 #evts{gap:16px;overflow-x:auto;scrollbar-width:none}
 #evts a{display:inline-block!important;white-space:nowrap}
 @media (max-width:560px){#evts a.rdv{padding:7px 10px}#evts{font-size:12px;gap:10px}.creer .marque b{width:160px;height:18px}}
