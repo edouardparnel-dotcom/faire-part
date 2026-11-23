@@ -418,7 +418,11 @@ const VUES = {
     const liste = invites.filter(i => filtreEnvoi === 'aenvoyer' ? !i.envoi : relance ? i.envoi && !i.reponduLe : true);
     const suivant = liste.find(i => i.tel);
     const etat = i => i.reponduLe ? '<span class="ok">A répondu</span>' : i.relance ? `Relancé ${i.relance.n > 1 ? i.relance.n + ' fois, ' : ''}le ${dateTs(i.relance.le)}` : i.envoi ? `Envoyé le ${dateTs(i.envoi.le)} (${esc(i.envoi.canal)})` : '<span class="attente">À envoyer</span>';
-    return `<div class="app-carte"><h2>Envoyer les invitations</h2>
+    const lienStd = new URL(`fp.html?e=${encodeURIComponent(E)}&f=std`, location.href).href;
+    const offert = evt.formule === 'essai' ? `<div class="app-carte" style="border-left:4px solid var(--accent, #A8834A)"><h2>Votre save-the-date est offert</h2>
+        <p class="app-note" style="margin-bottom:12px">Annoncez la date dès maintenant, sans rien payer : copiez le lien de votre save-the-date et partagez-le sur WhatsApp (vos groupes de famille, vos amis). Une petite mention « créé gratuitement avec Maison Vivat » apparaît en bas ; elle disparaît quand vous validez votre formule. Le faire-part et le site du mariage partiront ensuite, avec un lien personnel pour chaque invité.</p>
+        <a class="btn" href="${esc(lienStd)}" target="_blank" rel="noopener">Voir mon save-the-date</a> <button class="btn clair" data-copier-std="1">Copier le lien à partager</button><p class="ok-msg" id="m-std"></p></div>` : '';
+    return `${offert}<div class="app-carte"><h2>Envoyer les invitations</h2>
         <p class="app-note">Chaque invité reçoit son lien personnel, avec son prénom. Le message part de votre téléphone ou de votre messagerie : vos proches reconnaissent votre numéro, et rien ne finit en indésirable. Chaque envoi est noté ici, pour savoir qui relancer.</p>
         <div class="app-onglets">${Object.entries({ aenvoyer: `À envoyer (${invites.filter(i => !i.envoi).length})`, relance: `Sans réponse (${invites.filter(i => i.envoi && !i.reponduLe).length})`, tous: `Tous (${invites.length})` }).map(([k, v]) => `<button data-filtre-envoi="${k}" class="${k === filtreEnvoi ? 'actif' : ''}">${v}</button>`).join('')}</div>
         ${suivant ? `<div class="envoi-guide"><div><span class="etq">Envoi guidé</span><p>Suivant : <b>${esc(suivant.nom)}</b> · ${liste.filter(i => i.tel).length} avec un numéro</p></div><a class="btn" target="_blank" rel="noopener" data-envoi="${suivant.id}" data-canal="WhatsApp" href="${lienEnvoi(suivant, 'WhatsApp', relance)}">${relance ? 'Relancer' : 'Envoyer'} sur WhatsApp</a></div>` : liste.length ? '' : `<p class="app-note">${relance ? 'Tous les invités relancés ont répondu.' : 'Toutes les invitations sont parties.'}</p>`}
@@ -854,6 +858,12 @@ document.addEventListener('click', async ev => {
   if (d.copierCamera) { const l = lienCamera(d.copierCamera); await navigator.clipboard?.writeText(l).catch(() => {}); t.textContent = 'Lien copié'; return; }
   if (d.retirerCamera) { await deleteDoc(doc(db, `events/${E}/camerasCles/${d.retirerCamera}`)); return; }
   if (d.filtreEnvoi) { filtreEnvoi = d.filtreEnvoi; return rendre(); }
+  if (d.copierStd) {   // save-the-date offert : on l'ouvre aux invités (stdOffert) et on copie le lien général
+    if (!evt.stdOffert) await updateDoc(doc(db, 'events', E), { stdOffert: true });
+    const l = new URL(`fp.html?e=${encodeURIComponent(E)}&f=std`, location.href).href;
+    await navigator.clipboard?.writeText(l).catch(() => {});
+    $('#m-std').textContent = 'Lien copié : ' + l; return;
+  }
   if ((d.copier || d.copierMessage || d.envoi) && evt.formule === 'essai') {   // gratuit jusqu'à la publication : l'envoi aux invités se débloque au paiement
     ev.preventDefault(); onglet = 'paiement';
     msgPublier = 'Votre invitation est prête à partir. Validez votre formule pour l\'envoyer à vos invités : tout ce que vous avez préparé reste en place, rien n\'est à refaire.';

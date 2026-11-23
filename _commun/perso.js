@@ -18,7 +18,10 @@ if (E) {
     const s = await getDoc(doc(db, 'events', E)), u = auth.currentUser;
     if (s.exists()) await codeAcces(E, s.data(), u);
     // Invitation pas encore publiée : seuls les organisateurs (connectés avec un compte) la voient à leurs prénoms.
-    if (s.exists() && (s.data().formule !== 'essai' || (u && !u.isAnonymous))) {
+    // Save-the-date offert (23/11/2026) : avant tout paiement, le couple peut envoyer son save-the-date (?f=std), avec la mention Maison Vivat.
+    const orgaConnecte = !!(u && !u.isAnonymous);
+    window.mvStdOffert = s.exists() && s.data().formule === 'essai' && !!s.data().stdOffert && new URLSearchParams(location.search).get('f') === 'std' && !orgaConnecte;
+    if (s.exists() && (s.data().formule !== 'essai' || orgaConnecte || window.mvStdOffert)) {
       const outils = { esc, dateLongue, heure, majuscule, nuanciers: await fetch('../_commun/nuanciers.json?v=3').then(r => r.json()).catch(() => ({})) };
       window.persoAppliquer = ev => appliquer(ev, outils);
       appliquer(s.data(), outils);
@@ -223,9 +226,19 @@ function appliquer(evt, { esc, dateLongue, heure, majuscule, nuanciers }) {
     + (orga ? `<br>Mariage organisé par ${orga.site ? `<a href="${esc(orga.site)}" target="_blank" rel="noopener">${esc(orga.nom)}</a>` : esc(orga.nom)}` : '')
     + (code ? `<br><a class="perso-parrainage" href="${lienMV}">Vous vous mariez aussi ? -10 % avec le code ${code}</a>` : ''));
   if (location.pathname.endsWith('site.html')) siteDuCouple(evt, P, esc, G);
+  if (window.mvStdOffert) { mentionOfferte(); return; }
   if (G) return;
   const bd = document.querySelector('.perso-bandeau') || document.body.appendChild(Object.assign(document.createElement('div'), { className: 'perso-bandeau' }));
   bd.textContent = evt.formule === 'essai' ? 'Aperçu de votre faire-part · visible par vous seuls tant que la formule n\'est pas validée' : 'Votre faire-part';
+}
+
+// Mention discrète du save-the-date offert : vue par tous les invités, elle fait connaître Maison Vivat (disparaît avec une formule payée).
+function mentionOfferte() {
+  if (document.querySelector('.mv-offert')) return;
+  const a = Object.assign(document.createElement('a'), { className: 'mv-offert', href: 'https://maisonvivat.com/?utm_source=std-offert', target: '_blank', rel: 'noopener' });
+  a.textContent = 'Save-the-date créé gratuitement avec Maison Vivat';
+  a.style.cssText = 'position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:998;background:rgba(20,16,12,.72);color:#F7F3EC;font:12px/1.3 Inter,system-ui,sans-serif;padding:6px 12px;border-radius:999px;text-decoration:none;white-space:nowrap';
+  document.body.appendChild(a);
 }
 
 // Le site du mariage d'un vrai couple : la page « site » de sa collection, avec SES informations (Mon faire-part, cagnotte, réponses) ;
